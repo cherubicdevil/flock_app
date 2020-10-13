@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Test.ipa</key>
+	<array>
+		<dict>
+			<key>architectures</key>
+			<array>
+				<string>armv7</string>
+				<string>arm64</string>
+			</array>
+			<key>certificate</key>
+			<dict>
+				<key>SHA1</key>
+				<string>28268231E60D98CE441F4794E5A2AA9D7D7F7E22</string>
+				<key>dateExpires</key>
+				<string>9/10/21</string>
+				<key>type</key>
+				<string>Apple Development</string>
+			</dict>
+			<key>embeddedBinaries</key>
+			<array>
+				<dict>
+					<key>architectures</key>
+					<array>
+						<string>armv7</string>
+						<string>arm64</string>
+					</array>
+					<key>certificate</key>
+					<dict>
+						<key>SHA1</key>
+						<string>28268231E60D98CE441F4794E5A2AA9D7D7F7E22</string>
+						<key>dateExpires</key>
+						<string>9/10/21</string>
+						<key>type</key>
+						<string>Apple Development</string>
+					</dict>
+					<key>entitlements</key>
+					<dict>
+						<key>application-identifier</key>
+						<string>Y98CX2C897.com.shopwithflock.flock.shareExtension</string>
+						<key>com.apple.developer.team-identifier</key>
+						<string>Y98CX2C897</string>
+						<key>com.apple.security.application-groups</key>
+						<array>
+							<string>group.shopwithflock.flock.flockapp</string>
+						</array>
+						<key>get-task-allow</key>
+						<true/>
+					</dict>
+					<key>name</key>
+					<string>ShareExtension.appex</string>
+					<key>profile</key>
+					<dict>
+						<key>UUID</key>
+						<string>35e8d95a-f331-4be8-a2f3-52e6861b9a99</string>
+						<key>name</key>
+						<string>iOS Team Provisioning Profile: com.shopwithflock.flock.shareExtension</string>
+					</dict>
+					<key>team</key>
+					<dict>
+						<key>id</key>
+						<string>Y98CX2C897</string>
+						<key>name</key>
+						<string>Kristy Gao</string>
+					</dict>
+				</dict>
+			</array>
+			<key>entitlements</key>
+			<dict>
+				<key>application-identifier</key>
+				<string>Y98CX2C897.com.shopwithflock.flock</string>
+				<key>com.apple.developer.team-identifier</key>
+				<string>Y98CX2C897</string>
+				<key>com.apple.security.application-groups</key>
+				<array>
+					<string>group.shopwithflock.flock.flockapp</string>
+				</array>
+				<key>get-task-allow</key>
+				<true/>
+			</dict>
+			<key>name</key>
+			<string>Test.app</string>
+			<key>profile</key>
+			<dict>
+				<key>UUID</key>
+				<string>1c076f9c-9d4c-4816-9939-cf1c8976ba3e</string>
+				<key>name</key>
+				<string>iOS Team Provisioning Profile: com.shopwithflock.flock</string>
+			</dict>
+			<key>team</key>
+			<dict>
+				<key>id</key>
+				<string>Y98CX2C897</string>
+				<key>name</key>
+				<string>Kristy Gao</string>
+			</dict>
+		</dict>
+	</array>
+</dict>
+</plist>

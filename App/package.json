@@ -1,0 +1,6 @@
+{
+  "name": "App",
+  "dependencies": {
+    "react-native-video": "^5.1.0-alpha8"
+  }
+}
