@@ -6,14 +6,17 @@ import {constants} from 'App/constants';
 
 class Video extends React.Component {
 	state = {
-		vHeight: 0,
-		vWeight: 0,
+		vHeight: null,
+		vWeight: null,
 		maxWidth: Dimensions.get('window').width,
-		maxHeight: Dimensions.get('window').height - constants.NAVBARHEIGHT,
+		maxHeight: Dimensions.get('window').height,
 		muted: true,
 		paused: false,
 	};
-
+	constructor(props) {
+		super(props);
+		//console.log('viewheight:', this.props.viewHeight);
+	}
 	onBuffer() {
 		//onsole.log('buffering');
 		//console.log('THIS IS SOURCE', this.props.data);
@@ -21,6 +24,7 @@ class Video extends React.Component {
 	}
 
 	componentDidMount() {
+		///console.log('viewheight:', this.props.viewHeight);
 		// this.blurSubscription = this.props.navigation.addListener(
 		// 	'willBlur',
 		// 	() => {
@@ -28,13 +32,27 @@ class Video extends React.Component {
 		// 	},
 		// );
 	}
+	componentWillReceiveProps(nextProps) {
+		if (nextProps.viewHeight !== this.props.viewHeight) {
+			console.log('changing vHeight:', nextProps.viewHeight);
+			this.setState({vHeight: nextProps.viewHeight});
+		}
+	}
+
+	componentWillUnmount() {
+		console.log('unmounting video');
+	}
 
 	// componentWillUnmount() {
 	// 	this.blurSubscription.remove();
 	// }
 
 	renderContent() {
-		if (this.props.masonry || this.props.index === this.props.carIndex) {
+		console.log('vHeight', this.state.vHeight);
+		if (
+			(true && this.props.masonry && this.props.visible) ||
+			this.props.index === this.props.carIndex
+		) {
 			return (
 				<RVideo
 					muted={this.props.muted}
@@ -48,13 +66,16 @@ class Video extends React.Component {
 						//this.props.data.video
 						uri: this.props.data
 							? this.props.data.video
-							: 'https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4',
+							: this.props.source.uri,
 						//'https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4',
 					}} // Can be a URL or a local file.
 					ref={(ref) => {
 						this.player = ref;
 					}} // Store reference
-					style={{height: this.state.vHeight, width: this.state.vWidth}}
+					style={{
+						height: this.state.vHeight || 315.55555555555554,
+						width: this.state.vWidth || 200,
+					}}
 					onLoad={(response) => {
 						this.setState({muted: true});
 						//console.log('THIS IS RESPONSE HEIGHT: ', response.naturalSize);
@@ -65,6 +86,9 @@ class Video extends React.Component {
 								((this.props.maxWidth || this.state.maxWidth) / vidWidth);
 							//console.log(heightScaled);
 							this.setState({vHeight: heightScaled, vWidth: '100%'});
+							if (heightScaled !== 0) {
+								this.props.persistHeightFunc(heightScaled);
+							}
 						} else {
 							const widthScaled = vidWidth * (this.state.maxHeight / vidHeight);
 							//console.log(heightScaled);
@@ -79,7 +103,15 @@ class Video extends React.Component {
 				/>
 			);
 		} else {
-			return <View style={{height: '100%', width: '100%'}} />;
+			console.log('newHeight:', this.state.vHeight, this.props.visible);
+			return (
+				<View
+					style={{
+						height: 315.55555555555554,
+						//width: '100%',
+					}}
+				/>
+			);
 		}
 	}
 	render() {

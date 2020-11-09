@@ -10,7 +10,8 @@ import {
 import {ShareMenuReactView} from 'react-native-share-menu';
 import {firebase} from 'App/firebase/config';
 
-const fetchURL = 'https://powerful-everglades-32172.herokuapp.com/';
+const fetchURL =
+  'https://powerful-everglades-32172.herokuapp.com/find_product/';
 const Button = ({onPress, title, style}) => (
   <Pressable onPress={onPress}>
     <Text style={[{fontSize: 16, margin: 16}, style]}>{title}</Text>

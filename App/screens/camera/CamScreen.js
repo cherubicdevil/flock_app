@@ -17,6 +17,7 @@ import Video from 'react-native-video';
 import ViewPictures from './ViewPictures';
 import ProductChoose from 'App/screens/camera/ProductChoose';
 import AlbumDetail from './AlbumDetail';
+import ImagePicker from 'react-native-image-picker';
 
 class CamScreen extends Component {
   state = {
@@ -30,6 +31,7 @@ class CamScreen extends Component {
     description: '',
     showSuccess: false,
   };
+  componentDidMount() {}
   getPicturesFromGallery() {
     console.log('about to get cameraroll');
     CameraRoll.getPhotos({first: 20, assetType: 'Videos'}).then((res) => {
@@ -359,6 +361,13 @@ class CamScreen extends Component {
         />
       );
     }
+
+    ImagePicker.launchImageLibrary(
+      {maxWidth: 512, maxHeight: 512},
+      (response) => {
+        console.log('done');
+      },
+    );
     return (
       <View style={{flex: 1}}>
         {this.renderXBar()}

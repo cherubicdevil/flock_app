@@ -14,8 +14,6 @@ export default function setVidVisible(
 		case 'hideVid':
 			return {...state, vidVisible: false};
 		case 'sendData':
-			console.log('SENDING DATA');
-			console.log(action.payload);
 			return {...state, vidData: action.payload};
 		case 'sendIndex':
 			console.log('THIS IS ME ', action.payload);

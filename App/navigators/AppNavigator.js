@@ -16,6 +16,7 @@ import VideoPage from 'App/screens/VideoPage';
 import PaymentInfo from 'App/screens/PaymentInfo';
 import Success from 'App/screens/Success';
 import PayTest from 'App/screens/PayTest';
+import ProfileMain from 'App/screens/profile/ProfileMain';
 
 const Stack = createStackNavigator();
 
@@ -23,8 +24,10 @@ const AppNavigator5 = () => {
 	return (
 		<NavigationContainer>
 			<Stack.Navigator
+				initialRouteName="Egg"
 				screenOptions={{
 					headerShown: false,
+					animationEnabled: false,
 				}}>
 				<Stack.Screen
 					name="Home"
@@ -40,10 +43,16 @@ const AppNavigator5 = () => {
 					name="CamScreen"
 					component={CamNavigator}
 					initialParams={{vidVisible: false}}
+					option={{animationEnabled: false}}
 				/>
 				<Stack.Screen
 					name="Profile"
 					component={Profile}
+					initialParams={{vidVisible: false}}
+				/>
+				<Stack.Screen
+					name="ProfileMain"
+					component={ProfileMain}
 					initialParams={{vidVisible: false}}
 				/>
 				<Stack.Screen

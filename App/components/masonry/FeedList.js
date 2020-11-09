@@ -1,4 +1,4 @@
-import React, {Component, useEffect} from 'react';
+import React, {Component, useEffect, useState} from 'react';
 import {
 	Image,
 	Button,
@@ -10,6 +10,7 @@ import {
 	SafeAreaView,
 } from 'react-native';
 import {connect} from 'react-redux';
+import InView from 'react-native-component-inview';
 //import Masonry from 'react-native-masonry-layout'
 import Masonry from './lib';
 import {firebase} from 'App/firebase/config';
@@ -18,7 +19,8 @@ import DynImage from './DynImage';
 import HalfProduct from 'App/components/HalfProduct';
 
 class FeedList extends Component {
-	state = {album1: [], album2: [], myAr: [], visible: true};
+	state = {album1: [], album2: [], myAr: [], visible: true, inInView: false};
+
 	// testRally() {
 	// 	this.setState({ loading: true })
 	// 	fetch('http://rallycoding.herokuapp.com/api/music_albums')
@@ -36,7 +38,12 @@ class FeedList extends Component {
 		// 	//console.log(snapshot);
 		// 	props.setEgg(0);
 		// });
-		props.fetchAlbums();
+
+		//props.fetchAlbums();
+	}
+
+	checkVisible(isVisible: boolean) {
+		this.setState({isInView: isVisible});
 	}
 
 	// fetchAlbums() {
@@ -113,6 +120,7 @@ class FeedList extends Component {
 				title={al.title}
 				type={al.type}
 				key={al.title}
+				style={{backgroundColor: this.state.isInView ? 'red' : 'black'}}
 			/>
 		));
 	}
@@ -134,7 +142,11 @@ class FeedList extends Component {
 	renderProducts(albums) {
 		//return <Text>Hello</Text>;
 		return albums.map((al) => (
-			<HalfProduct navigation={this.props.navigation} album={al} />
+			<HalfProduct
+				key={al.title}
+				navigation={this.props.navigation}
+				album={al}
+			/>
 		));
 	}
 
@@ -155,21 +167,34 @@ class FeedList extends Component {
 	// }
 
 	render() {
+		console.log(this.props.array.length, this.props.productArray.length);
 		const ar = this.mergeArrays(this.props.array, this.props.productArray);
+		console.log('length of merge,', ar.length);
 		const album1 = ar.slice(0, ar.length / 2);
 		const album2 = ar.slice(ar.length / 2, ar.length);
-		return (
-			<View>
-				<ScrollView>
-					<View key="0" style={{flexDirection: 'row', flex: 1}}>
-						<View style={{flex: 1}}>{this.renderClucks(album1)}</View>
-						<View key="1" style={{flex: 1}}>
-							{this.renderClucks(album2)}
+		console.log(album1.length, album2.length);
+		if (!this.props.vidVisible) {
+			return (
+				<View>
+					<ScrollView>
+						<View
+							key="0"
+							style={{
+								flexDirection: 'row',
+								flex: 1,
+								//backgroundColor: this.state.isInView ? 'yellow' : '#f9c2ff',
+							}}>
+							<View style={{flex: 1}}>{this.renderClucks(album1)}</View>
+							<View key="1" style={{flex: 1}}>
+								{this.renderClucks(album2)}
+							</View>
 						</View>
-					</View>
-				</ScrollView>
-			</View>
-		);
+					</ScrollView>
+				</View>
+			);
+		} else {
+			return <View />;
+		}
 	}
 }
 

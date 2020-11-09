@@ -27,12 +27,6 @@ import {useFocusEffect} from '@react-navigation/native';
 const renderPostTime = (nowDate, thenDate) => {
 	//console.log(nowDate, thenDate);
 	const milli = nowDate - thenDate;
-	console.log(
-		'THIS IS THE TIME: ',
-		milli,
-		nowDate.getTime(),
-		thenDate.seconds * 1000,
-	);
 	const oneSecond = 1000;
 	const oneMinute = 60 * oneSecond;
 	const oneHour = 60 * oneMinute;
@@ -74,81 +68,183 @@ const renderPostTime = (nowDate, thenDate) => {
 };
 const CommentsModal = ({modalVisible, data, toggleFunc}) => {
 	const dispatch = useDispatch();
-	console.log('WHY IS THIS NOT RERENDERING, ', modalVisible);
 	const [comments, setComments] = useState([]);
 	const [comment, setComment] = useState('');
 	var replyText = 'Add comment...';
 	const [replyPlaceholder, setReplyPlaceholder] = useState('Add comment...');
 	const [editing, setEditing] = useState(false);
-
-	console.log('STARTS OUT AS:', modalVisible);
 	const [modalVis, setModalVis] = useState(modalVisible || true);
 	const inputEl = useRef(null);
 	const flatRef = useRef(null);
 	const selector = useSelector((state) => state);
-	var queryCursor;
-	const fetchComments = () => {
+	const [commentsCache, setCommentsCache] = useState([]);
+	var lastVisible;
+
+	const [didMount, setDidMount] = useState(false);
+
+	var sendFunction;
+
+	const fetchCommentsFromFirebase = () => {
 		const ar = [];
 		var counter = 0;
-		console.log('HLELLOO');
 		firebase
 			.firestore()
 			.collection('comments')
 			.where('cluck', '==', `${data.id}`)
-			//.orderBy('date', 'desc')
-			.limit(10)
+			.orderBy('date', 'desc')
+			.limit(250)
 			.get()
 			.then((querySnapshot) => {
 				//console.log(querySnapshot.getKey());
 				const n = querySnapshot.size;
 				querySnapshot.forEach((doc) => {
 					const entity = doc.data();
-					console.log(entity.cluck, data.id);
-					ar.push(entity);
+					ar.push({...entity, document: doc});
 					counter = counter + 1;
-					if (counter == n - 1) {
-					}
 					if (counter == n) {
 						//console.log('THIS IS ARRRRR', ar);
 						//console.log('THIS IS TRUE ID: ', data.id);
-						setComments(ar);
+						setCommentsCache(ar);
+
+						//console.log(comments[0]);
 					}
 				});
 			});
 	};
 
-	useEffect(() => {
-		fetchComments();
-		//setSendFunction(() => sendOgComment);
+	const fetchMoreCommentsFromFirebase = () => {
+		const queryCursor = commentsCache[commentsCache.length - 1].document;
+		const ar = [];
+		var counter = 0;
+		firebase
+			.firestore()
+			.collection('comments')
+			.where('cluck', '==', `${data.id}`)
+			.orderBy('date', 'desc')
+			.startAfter(queryCursor)
+			.limit(250)
+			.get()
+			.then((querySnapshot) => {
+				//console.log(querySnapshot.getKey());
+				const n = querySnapshot.size;
+				querySnapshot.forEach((doc) => {
+					const entity = doc.data();
+					ar.push({...entity, document: doc});
+					counter = counter + 1;
+					if (counter == n) {
+						//console.log('THIS IS ARRRRR', ar);
+						//console.log('THIS IS TRUE ID: ', data.id);
+						setCommentsCache([...commentsCache, ar]);
 
-		//setModalVis(modalVisible);
-	}, []);
-
-	const sendReply = (event) => {
-		if (event.nativeEvent.text.trim() !== '') {
-			const user = firebase.auth().currentUser;
-			var db = firebase.firestore();
-			const id = 'UbWIMWFCOGbs00S2ZcPN';
-			const newReplies = this.replies + 1;
-			console.log(this.replies, this.children);
-			this.children.add({
-				user: {
-					name: user.displayName,
-					photoURL: user.photoURL,
-					userId: user.uid,
-				},
-
-				cluck: data.id,
-				text: 'TESTING REPLY',
-				likes: 2,
+						//console.log(comments[0]);
+					}
+				});
 			});
-			db.collection('comments').doc(id).update({
-				replies: newReplies,
-				children: newChildren,
-			});
-			//inputEl.value = '';
-		}
 	};
+	const fetchComments = () => {
+		const ar = [];
+		var counter = 0;
+		firebase
+			.firestore()
+			.collection('comments')
+			.where('cluck', '==', `${data.id}`)
+			.orderBy('date', 'desc')
+			.limit(50)
+			.get()
+			.then((querySnapshot) => {
+				//console.log(querySnapshot.getKey());
+				const n = querySnapshot.size;
+				querySnapshot.forEach((doc) => {
+					const entity = doc.data();
+					ar.push({...entity, document: doc});
+					counter = counter + 1;
+					if (counter == n - 1) {
+						lastVisible = doc;
+					}
+					if (counter == n) {
+						//console.log('THIS IS ARRRRR', ar);
+						//console.log('THIS IS TRUE ID: ', data.id);
+						if (didMount) {
+							setComments(ar);
+						}
+						//console.log(comments[0]);
+					}
+				});
+			});
+	};
+
+	const refreshComments = () => {
+		// if (!lastVisible) {
+		// 	lastVisible = comments[comments.length - 1].document;
+		// }
+		const ar = [];
+		var counter = 0;
+		firebase
+			.firestore()
+			.collection('comments')
+			.where('cluck', '==', `${data.id}`)
+			.orderBy('date', 'desc')
+			.limit(comments.length + 1)
+			.get()
+			.then((querySnapshot) => {
+				//console.log(querySnapshot.getKey());
+				const n = querySnapshot.size;
+				querySnapshot.forEach((doc) => {
+					const entity = doc.data();
+					ar.push({...entity, document: doc});
+					counter = counter + 1;
+					if (counter == n - 1) {
+						lastVisible = doc;
+					}
+					if (counter == n) {
+						//console.log('THIS IS ARRRRR', ar);
+						//console.log('THIS IS TRUE ID: ', data.id);
+						setComments(ar);
+						//console.log(comments[0]);
+					}
+				});
+			});
+	};
+	const fetchMoreComments = () => {
+		if (!lastVisible) {
+			lastVisible = comments[comments.length - 1].document;
+		}
+		const ar = [];
+		var counter = 0;
+		console.log('comments before: ', comments);
+		firebase
+			.firestore()
+			.collection('comments')
+			.where('cluck', '==', `${data.id}`)
+			.orderBy('date', 'desc')
+			.startAfter(lastVisible)
+			.limit(10)
+			.get()
+			.then((querySnapshot) => {
+				//console.log(querySnapshot.getKey());
+				const n = querySnapshot.size;
+				console.log(n);
+				querySnapshot.forEach((doc) => {
+					const entity = doc.data();
+					ar.push({...entity, document: doc});
+					counter = counter + 1;
+					console.log('counter: ', counter);
+					console.log(counter === n);
+					if (counter === n - 1) {
+						//lastVisible = doc;
+						//console.log({...entity, document: doc});
+					}
+					if (counter === n) {
+						//console.log('THIS IS ARRRRR', ar);
+						//console.log('THIS IS TRUE ID: ', data.id);
+						console.log('HELLO THIS IS ARRAY', comments);
+						console.log(ar);
+						setComments([...comments, ...ar]);
+					}
+				});
+			});
+	};
+
 	const sendOgComment = (event) => {
 		if (event.nativeEvent.text.trim() !== '') {
 			const user = firebase.auth().currentUser;
@@ -170,20 +266,60 @@ const CommentsModal = ({modalVisible, data, toggleFunc}) => {
 				children: [],
 			};
 			db.collection('comments').doc(docId).set(commentData);
-			console.log('success?');
 			setComment('');
 		}
 	};
 
-	var sendFunction = sendOgComment;
-	console.log('sendfunction,', sendFunction);
+	useEffect(() => {
+		fetchComments();
+		//setSendFunction(() => sendOgComment);
+		sendFunction = sendOgComment;
+		//console.log(sendOgComment);
+		//setModalVis(modalVisible);
+		setDidMount(true);
+		return () => setDidMount(false);
+	}, [modalVisible]);
+
+	if (!didMount) {
+		return null;
+	}
+	// const sendReply = (event) => {
+	// 	if (event.nativeEvent.text.trim() !== '') {
+	// 		const user = firebase.auth().currentUser;
+	// 		var db = firebase.firestore();
+	// 		const id = 'AncfjGJ2YeK51RW12jpN';
+	// 		const newReplies = this.replies + 1;
+	// 		this.children.add({
+	// 			user: {
+	// 				name: user.displayName,
+	// 				photoURL: user.photoURL,
+	// 				userId: user.uid,
+	// 			},
+
+	// 			cluck: data.id,
+	// 			text: 'TESTING REPLY',
+	// 			likes: 2,
+	// 		});
+	// 		db.collection('comments').doc(id).update({
+	// 			replies: newReplies,
+	// 			children: newChildren,
+	// 		});
+	// 		//inputEl.value = '';
+	// 	}
+	// };
+
+	//var sendFunction = sendOgComment;
+	//console.log('sendfunction,', sendFunction);
 
 	const MemImage = React.memo(({source}) => {
 		return <Image source={source} style={styles.profileStyle} />;
 	});
 	const Comment = ({item}) => {
+		if (!item.user) {
+			console.log('HEKP UNFD');
+		}
 		return (
-			<View key={item.text} style={styles.commentWrapperStyle}>
+			<View key={item.text + item.date} style={styles.commentWrapperStyle}>
 				<View style={{flex: 1, flexDirection: 'row'}}>
 					<Image
 						source={{
@@ -200,11 +336,38 @@ const CommentsModal = ({modalVisible, data, toggleFunc}) => {
 						</View>
 						<View
 							onStartShouldSetResponder={() => true}
+							onResponderTerminationRequest={() => false}
 							onResponderGrant={() => {
 								setReplyPlaceholder(`Reply to ${item.user.name}`);
-								console.log(replyText);
 								inputEl.current.focus();
-								sendFunction = sendReply;
+								console.log('hello i am currently the responder');
+								console.log(item);
+								sendFunction = (event) => {
+									if (event.nativeEvent.text.trim() !== '') {
+										console.log('replying to ');
+										const user = firebase.auth().currentUser;
+										var db = firebase.firestore();
+										const id = item.commentId;
+										const newReplies = item.replies + 1;
+										item.children.push({
+											user: {
+												name: user.displayName,
+												photoURL: user.photoURL,
+												userId: user.uid,
+											},
+
+											cluck: data.id,
+											text: event.nativeEvent.text.trim(),
+											likes: 2,
+										});
+										db.collection('comments').doc(id).update({
+											replies: newReplies,
+											children: item.children,
+										});
+										//inputEl.value = '';
+									}
+								};
+								console.log(sendFunction);
 							}}>
 							<Text style={styles.commentTextStyle}>{item.text}</Text>
 						</View>
@@ -218,33 +381,38 @@ const CommentsModal = ({modalVisible, data, toggleFunc}) => {
 		const [showReplies, setShowReplies] = useState(false);
 		const renderReplies = () => {
 			if (showReplies) {
-				console.log(item.children);
 				return (
 					<View>
 						<FlatList
-							keyExtractor={(item) => item.text}
+							keyExtractor={(item) => item.text + item.date}
 							data={item.children}
 							renderItem={(it) => {
-								console.log(it.item.text);
 								return <Comment item={it.item} />;
 							}}
 						/>
-						<TouchableWithoutFeedback
-							onPress={() => {
+						<View
+							onStartShouldSetResponder={() => true}
+							onResponderGrant={() => {
+								console.log('view replies');
 								setShowReplies(false);
 							}}>
 							<Text style={styles.textBoldHide}>Hide Replies</Text>
-						</TouchableWithoutFeedback>
+						</View>
 					</View>
 				);
 			} else {
 				return (
-					<TouchableWithoutFeedback
+					<View
+						onStartShouldSetResponder={() => true}
+						onResponderGrant={() => {
+							console.log('view replies');
+							setShowReplies(true);
+						}}
 						onPress={() => {
 							setShowReplies(true);
 						}}>
 						<Text style={styles.textBoldShow}>View Replies</Text>
-					</TouchableWithoutFeedback>
+					</View>
 				);
 			}
 		};
@@ -254,7 +422,6 @@ const CommentsModal = ({modalVisible, data, toggleFunc}) => {
 			return <View />;
 		}
 	};
-	console.log('COMMENTS:', data.id, comments);
 	return (
 		<Modal animationType="slide" transparent={true} visible={modalVisible}>
 			<KeyboardAvoidingView behavior="padding" style={styles.centeredView}>
@@ -264,6 +431,7 @@ const CommentsModal = ({modalVisible, data, toggleFunc}) => {
 					onMoveShouldSetResponder={() => false}
 					onStartShouldSetResponder={() => {
 						console.log('tapping');
+						sendFunction = sendOgComment;
 						setReplyPlaceholder('Add comment...');
 						return false;
 					}}
@@ -281,24 +449,21 @@ const CommentsModal = ({modalVisible, data, toggleFunc}) => {
 					<ScrollView
 						showsVerticalScrollIndicator={false}
 						onScrollEndDrag={(e) => {
-							let paddingToBottom = 10;
+							let paddingToBottom = 950;
 							paddingToBottom += e.nativeEvent.layoutMeasurement.height;
 							if (
 								e.nativeEvent.contentOffset.y >=
 								e.nativeEvent.contentSize.height - paddingToBottom
 							) {
+								fetchMoreComments();
 								console.log('reach end');
 							}
 						}}
 						style={{width: '100%'}}>
-						<View
-							onMoveShouldSetResponder={(evt) => true}
-							onResponderGrant={() => {
-								console.log('scroll got it');
-							}}>
+						<View onMoveShouldSetResponder={(evt) => true}>
 							{(function () {
 								return comments.map((item) => (
-									<Comment key={item.text} item={item} />
+									<Comment key={item.text + item.date} item={item} />
 								));
 							})()}
 						</View>
@@ -313,8 +478,15 @@ const CommentsModal = ({modalVisible, data, toggleFunc}) => {
 						placeholderTextColor="#777"
 						ref={inputEl}
 						onSubmitEditing={(event) => {
+							if (!sendFunction) {
+								sendFunction = sendOgComment;
+							}
+							//console.log('this is sendFunction,:', sendFunction);
+							console.log('sending');
 							sendFunction(event);
-							fetchComments();
+							//fetchComments();
+							refreshComments();
+							inputEl.current.clear();
 						}}
 						style={styles.textInputStyle}
 					/>

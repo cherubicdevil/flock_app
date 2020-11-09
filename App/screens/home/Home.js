@@ -8,6 +8,7 @@ import {
 	StyleSheet,
 	TextInput,
 	Image,
+	ImageBackground,
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {firebase} from 'App/firebase/config';
@@ -24,7 +25,7 @@ import Brochures from 'App/components/masonry/Brochures';
 import SideScroll from 'App/components/miscell/SideScroll';
 import VideoPage from 'App/screens/VideoPage';
 import VideoCarousel from 'App/screens/VideoCarousel';
-
+import {constants} from 'App/constants';
 import HomeHeader from './HomeHeader';
 
 const Home = ({route, navigation}) => {
@@ -32,7 +33,7 @@ const Home = ({route, navigation}) => {
 	const [productAr, setProductAr] = useState([]);
 	//console.log('VIDVISIBLE: ', navigation.state.params.vidVisible);
 	//	console.log('navigation params:', navigation.state.params);
-	console.log('THIS IS NAVIGATION: ', route.params.vidVisible);
+
 	let params;
 	// if (navigation.state.params) {
 	// 	console.log(navigation.state.params.vidVisible);
@@ -40,15 +41,13 @@ const Home = ({route, navigation}) => {
 	// } else {
 	// 	params = false;
 	// }
-	console.log('PARAMS: ', route.params);
+
 	const [vidVisible, setVidVisible] = useState(true);
 
 	useEffect(() => {
-		console.log('CHANGING');
 		setVidVisible(route.params.vidVisible);
 	});
 
-	console.log('start of vidVisible:', vidVisible);
 	const [index, setIndex] = useState(0);
 	const dispatch = useDispatch();
 
@@ -59,7 +58,7 @@ const Home = ({route, navigation}) => {
 			.firestore()
 			.collection('posts')
 			.where('type', '==', 'video')
-			.limit(3)
+			.limit(10)
 			.get()
 			.then((querySnapshot) => {
 				//console.log(querySnapshot.getKey());
@@ -70,7 +69,6 @@ const Home = ({route, navigation}) => {
 
 					const entity = {...doc.data(), id: doc.id};
 					//console.log(Image.prefetch(entity.image))
-					console.log('DFISL:KFJDSL:FJDS', entity);
 					ar.push(entity);
 					counter = counter + 1;
 					//console.log(counter);
@@ -89,30 +87,38 @@ const Home = ({route, navigation}) => {
 			});
 
 		const productAr = [];
-		counter = 0;
+
 		firebase
 			.firestore()
 			.collection('products')
 			.limit(6)
 			.get()
 			.then((querySnapshot) => {
+				counter = 0;
 				const n = querySnapshot.size;
+
 				querySnapshot.forEach((doc) => {
 					const entity = doc.data();
 
 					productAr.push(entity);
 					counter = counter + 1;
-					if (counter == n) {
+					if (counter === n) {
 						setProductAr(productAr);
 					}
 				});
 			});
 	};
 
+	const renderNavBar = (route, navigation) => {
+		if (!vidVisible) {
+			return <NavBar route={route} navigation={navigation} />;
+		} else {
+			return <View />;
+		}
+	};
 	const renderOverview = () => {
 		const vidIndex = useSelector((state) => state.videopage.vidIndex);
 		const {vidData: vidData} = useSelector((state) => state.videopage);
-		console.log('THIS IS VIDVISIBLE: ', vidVisible);
 		//console.log(vidVisible, vidData, vidIndex);
 		if (vidVisible) {
 			//useDispatch()({type: 'hideVid'});
@@ -148,16 +154,41 @@ const Home = ({route, navigation}) => {
 	var user = firebase.auth().currentUser;
 	//console.log(myAr);
 	return (
-		<View style={{flex: 1, backgroundColor: '#fff'}}>
+		<View style={{flex: 1, backgroundColor: constants.GREY}}>
 			<View style={styles.sectionOneStyle}>
-				<View style={styles.topBox}>
-					<Image
-						style={styles.iconStyle}
-						source={require('App/Assets/Images/flockicon4.png')}
-					/>
-					<TextInput style={styles.textBoxStyle} />
-					{/*<Button onPress={() => navigation.navigate('')} />*/}
-				</View>
+				<ImageBackground
+					imageStyle={{borderRadius: 25}}
+					style={styles.topBox}
+					source={require('App/Assets/Images/Orange_Gradient_Small.png')}>
+					<View
+						style={{
+							flexDirection: 'row',
+							margin: 2.2,
+							marginLeft: 4.3,
+							marginRight: 4.3,
+							backgroundColor: constants.GREY,
+							width: '98%',
+							borderRadius: 25,
+							paddingLeft: 15,
+							paddingRight: 15,
+							paddingTop: 7,
+							paddingBottom: 7,
+						}}>
+						<TextInput style={styles.textBoxStyle} />
+						<Image
+							source={require('App/Assets/Images/Search.png')}
+							style={{
+								tintColor: constants.ICONGREY,
+								flex: 1,
+								width: 20,
+								resizeMode: 'contain',
+								height: 20,
+								marginRight: -10,
+							}}
+						/>
+						{/*<Button onPress={() => navigation.navigate('')} />*/}
+					</View>
+				</ImageBackground>
 			</View>
 
 			{/*<View style={styles.sectionTwoStyle}>
@@ -165,6 +196,7 @@ const Home = ({route, navigation}) => {
 			</View>*/}
 			<View style={styles.sectionThreeStyle}>
 				<FeedList
+					vidVisible={vidVisible}
 					fetchAlbums={fetchAlbums}
 					array={myAr}
 					productArray={productAr}
@@ -172,8 +204,8 @@ const Home = ({route, navigation}) => {
 				/>
 			</View>
 
-			<NavBar route={route} navigation={navigation} />
 			{renderOverview()}
+			{renderNavBar(route, navigation)}
 		</View>
 	);
 };
@@ -181,32 +213,38 @@ const Home = ({route, navigation}) => {
 const styles = StyleSheet.create({
 	sectionOneStyle: {
 		paddingLeft: 5,
-		paddingBottom: 5,
+		paddingBottom: 4,
 		paddingRight: 5,
 		width: '100%',
 		flex: 3,
+
 		flexDirection: 'row',
-		marginTop: 35,
+		paddingTop: 35,
+		marginTop: 0,
+		marginBottom: 5,
 		//height: '20%',
 		//shadowOffset: { width: 0, height: 2 },
 		borderRadius: 3,
-		backgroundColor: '#db9421',
-		backgroundColor: '#FFF',
+		//backgroundColor: '#db9421',
+		backgroundColor: '#fff',
+	},
+	topInnerBox: {
+		width: '100%',
+		backgroundColor: constants.GREY,
 	},
 	topBox: {
 		flexDirection: 'row',
 		flex: 8,
-		paddingTop: 5,
-		paddingBottom: 5,
-		paddingLeft: 15,
-		paddingRight: 15,
-		backgroundColor: '#FFF',
-		borderWidth: 2,
-		borderColor: '#db9421',
-		borderRadius: 15,
+		marginLeft: 10,
+		marginRight: 10,
+		justifyContent: 'center',
+		alignItems: 'center',
+		//width: '100%',
+		//backgroundColor: constants.GREY,
 	},
 	textBoxStyle: {
-		flex: 8,
+		fontFamily: 'Nunito-Light',
+		flex: 10,
 	},
 	sectionTwoStyle: {
 		flex: 1.5,

@@ -7,6 +7,8 @@ import {
 	Image,
 	TouchableOpacity,
 } from 'react-native';
+//import InView from 'react-native-component-inview';
+import InViewPort from 'App/components/InViewPort';
 import {useDispatch} from 'react-redux';
 //import Video from 'react-native-video';
 import FastImage from 'react-native-fast-image';
@@ -15,11 +17,95 @@ import {increaseAction} from 'App/actions';
 import {firebase} from 'App/firebase/config';
 import Video from 'App/components/Video';
 import RVideo from 'react-native-video';
-
+import LinearGradient from 'react-native-linear-gradient';
+import {constants} from 'App/constants';
 const berryRate = 0.2;
 
 const database = firebase.database();
 
+const renderRightBlurb = (product, title) => {
+	if (product.image) {
+		return (
+			<View
+				style={{
+					flex: 1,
+					flexDirection: 'row',
+					color: '#000',
+					opacity: 1.0,
+					//borderLeftWidth: 1,
+					//borderColor: '#aeaeb2',
+					paddingLeft: 15,
+				}}>
+				<Image
+					source={{uri: product.image}}
+					style={{
+						borderRadius: 10,
+						marginTop: 5,
+						opacity: 1.0,
+						width: '100%',
+						height: undefined,
+
+						aspectRatio: 1,
+						resizeMode: 'cover',
+						flex: 1,
+					}}
+				/>
+				<View style={{flex: 2, paddingLeft: 5}}>
+					<View
+						style={{
+							flex: 1,
+							marginTop: 5,
+							height: 70,
+							marginRight: 5,
+							flexDirection: 'column',
+							justifyContent: 'space-around',
+							color: '#000',
+						}}>
+						<Text
+							style={{
+								fontFamily: 'Nunito-Light',
+								flex: 2,
+								paddingRight: 5,
+								fontSize: 14,
+								color: '#000',
+							}}>
+							{title}
+						</Text>
+						<Text
+							style={{
+								flex: 1,
+								color: constants.PURPLEORANGE,
+								fontFamily: 'Nunito-Light',
+							}}>
+							${product.price}
+						</Text>
+					</View>
+				</View>
+			</View>
+		);
+	} else {
+		return <View />;
+	}
+};
+const renderProduct = (data) => {
+	if (data && data.product) {
+		return (
+			<View
+				style={{
+					width: '100%',
+					overflow: 'hidden',
+					backgroundColor: 'rgb(255,255,255)',
+					//borderRadius: 15,
+					borderBottomLeftRadius: 15,
+					borderBottomRightRadius: 15,
+				}}>
+				{renderRightBlurb(data.product, data.product.title)}
+			</View>
+		);
+	} else {
+		return <View />;
+	}
+};
 const renderBerry = () => {
 	const [berryVisible, setBerry] = useState(true);
 	const ran = Math.random();
@@ -91,7 +177,22 @@ const DynImage = ({
 	}
 	//console.log(width, height);
 
-	const renderMedia = () => {
+	const [isInView, setIsInView] = useState(false);
+	const checkVisible = (isVisible: boolean) => {
+		if (isVisible) {
+			setIsInView(isVisible);
+		} else {
+			setIsInView(isVisible);
+		}
+	};
+	const RenderMedia = () => {
+		const [vh, setVH] = useState(0);
+		const changeViewHeight = (height) => {
+			//console.log('changing vheight:', vh);
+			//console.log(height);
+			setVH(height);
+			//console.log('changed vheight: ', vh);
+		};
 		if (type !== null && type === 'video') {
 			const dispatch = useDispatch();
 			return (
@@ -102,14 +203,39 @@ const DynImage = ({
 						dispatch({type: 'showVid'});
 						navigation.navigate('Home', {vidVisible: true, scrollIndex: index});
 					}}>
-					<Video
-						masonry={true}
-						muted={true}
-						paused={false}
-						repeat={repeat}
-						data={data}
-						maxWidth={width}
-					/>
+					<View style={{backgroundColor: '#ddd'}}>
+						<Video
+							viewHeight={vh}
+							persistHeightFunc={changeViewHeight}
+							visible={isInView}
+							masonry={true}
+							muted={true}
+							paused={false}
+							repeat={repeat}
+							data={data}
+							maxWidth={width}
+						/>
+					</View>
+					<LinearGradient
+						colors={['transparent', '#000']}
+						style={{
+							height: 70,
+							width: '100%',
+							position: 'absolute',
+							bottom: 0,
+							justifyContent: 'center',
+							//backgroundColor: 'rgba(0,0,0,0.7)',
+							zIndex: 40,
+						}}>
+						<Text
+							style={{
+								marginLeft: 10,
+								color: isInView ? '#fff' : '#aea',
+								fontFamily: 'Nunito-Bold',
+							}}>
+							{title}
+						</Text>
+					</LinearGradient>
 				</TouchableOpacity>
 			);
 		} else {
@@ -124,20 +250,27 @@ const DynImage = ({
 		}
 	};
 	return (
-		<View style={{marginLeft: 5, width: width}}>
-			{renderBerry()}
-			{renderMedia()}
+		<InViewPort
+			onChange={(isVisible) => {
+				console.log(isVisible);
+				setIsInView(isVisible);
+			}}>
 			<View
 				style={{
-					width: '100%',
-					backgroundColor: 'rgba(0,0,0,0.8)',
-					borderBottomLeftRadius: 15,
-					borderBottomRightRadius: 15,
+					borderRadius: 15,
+					overflow: 'hidden',
+					marginLeft: 5,
+					width: width,
+					//height: 400,
 				}}>
-				<Text style={{marginLeft: 10, color: '#fff'}}>{title}</Text>
+				{renderBerry()}
+
+				<RenderMedia />
+
+				{renderProduct(data)}
+				<View style={{height: 10}} />
 			</View>
-			<View style={{height: 10}} />
-		</View>
+		</InViewPort>
 	);
 };
 

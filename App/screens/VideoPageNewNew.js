@@ -13,6 +13,8 @@ import {
 	TextInput,
 	TouchableWithoutFeedback,
 	Share,
+	ImageBackground,
+	TouchableHighlight,
 } from 'react-native';
 import CommentsModal from 'App/components/CommentsModal';
 import Video from 'App/components/Video';
@@ -27,35 +29,115 @@ import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 //import {useFocusEffect} from 'react-navigation-hooks';
 import {useFocusEffect} from '@react-navigation/native';
 
+const ICON_SIZE = 37;
 const config = {
 	velocityThreshold: 0.3,
 	directionalOffsetThreshold: 80,
 };
 
-const renderProfile = () => {};
-const renderProduct = (navigation, data) => {
-	if (data && data.product) {
-		return (
-			<VideoDescription
-				album={data.product}
-				user={data.username}
-				description={data.title}
-				navigation={navigation}
+const CircleBorderProfile = ({photoUrl}) => {
+	return (
+		<View
+			style={{
+				//justifyContent: 'center',
+				alignItems: 'center',
+			}}>
+			<ImageBackground
+				source={require('App/Assets/Images/Orange_Gradient_Small.png')}
+				imageStyle={{borderRadius: 45}}
 				style={{
 					position: 'absolute',
-					bottom: constants.NAVBARHEIGHT + 20,
-					width: '100%',
-					zIndex: 20,
+					height: 62,
+					width: 60,
+					bottom: 160,
+					borderRadius: 45,
+					left: 15,
+					//borderWidth: 3,
+					borderColor: '#f73',
+					backgroundColor: 'rgba(255,255,255,0)',
 				}}
 			/>
-		);
-	} else {
-		return <View />;
-	}
+			<View
+				style={{
+					position: 'absolute',
+					marginBottom: 4,
+					height: 54,
+					width: 54,
+					left: 18,
+					bottom: 160,
+					borderRadius: 45,
+					//borderWidth: 5,
+					borderColor: '#f23',
+					backgroundColor: 'rgba(255,255,255,0)',
+				}}
+			/>
+			<Image
+				style={{
+					marginBottom: 6,
+					height: 50,
+					left: 20,
+					width: 50,
+					position: 'absolute',
+					bottom: 160,
+					borderRadius: 25,
+				}}
+				source={photoUrl}
+			/>
+		</View>
+	);
+};
+var renderProduct = (navigation, data) => {
+	return (
+		<VideoDescription
+			album={data.product}
+			user={data.username}
+			description={data.title}
+			navigation={navigation}
+			style={{
+				position: 'absolute',
+				bottom: 40,
+				alignSelf: 'center',
+				zIndex: 20,
+			}}
+		/>
+	);
 };
 
+// renderProduct = (navigation, data) => {
+// 	if (data && data.product) {
+// 		return (
+// 			<ImageBackground
+// 				source={require('App/Assets/Images/blurb.png')}
+// style={{
+// 	resizeMode: 'contain',
+// 	position: 'absolute',
+// 	bottom: constants.NAVBARHEIGHT + 20,
+// 	//height: 400,
+// 	width: '100%',
+// 	left: 5,
+// 	//bottom: 10,
+// 	//left: 20,
+// 	zIndex: 20,
+// 	paddingLeft: 5,
+// 	paddingRight: 5,
+// }}>
+// 				<VideoDescription
+// 					album={data.product}
+// 					user={data.username}
+// 					description={data.title}
+// 					navigation={navigation}
+// 					style={{marginTop: 30}}
+// 				/>
+// 			</ImageBackground>
+// 		);
+// 	} else {
+// 		return <View />;
+// 	}
+// };
+
 const VideoPageNewNew = ({navigation, array, index, data}) => {
-	console.log("THIS IS THIS PAGE's ID", data.id);
+	var likes = data.likes || 0;
+	var liked = null;
 	const selector = useSelector((state) => state);
 	const dispatch = useDispatch();
 	// console.log('NAVIGATION CONTEXT:', navigation);
@@ -78,37 +160,149 @@ const VideoPageNewNew = ({navigation, array, index, data}) => {
 		React.useCallback(() => {
 			setPaused(false);
 
-			return () => setPaused(true);
+			db.collection('posts').doc(data.id).update({likes: likes});
+
+			return () => {
+				setPaused(true);
+				//console.log('leaving');
+
+				// if (liked !== null) {
+				// 	firebase
+				// 		.database()
+				// 		.ref('users')
+				// 		.child(firebase.auth().currentUser.uid)
+				// 		.child('likedPosts')
+				// 		.child(data.id)
+				// 		.setValue(liked);
+				//console.log('value set');
+				//};
+			};
 		}),
 	);
 
+	const renderClose = (navigation) => {
+		return (
+			<TouchableWithoutFeedback
+				onPress={() => {
+					navigation.navigate('VideoMasonry', {vidVisible: false});
+					setPaused(true);
+				}}>
+				<Image
+					style={{
+						height: 20,
+						width: 20,
+						paddingLeft: 10,
+						paddingBottom: 10,
+						position: 'absolute',
+						top: 55,
+						right: 25,
+						zIndex: 30,
+					}}
+					source={require('App/Assets/Images/Close_Icon_White.png')}
+				/>
+			</TouchableWithoutFeedback>
+		);
+	};
+	const renderProfile = () => {
+		// return (
+		// 	<Image
+		// 		style={{
+		// 			height: 50,
+		// 			width: 50,
+		// 			position: 'absolute',
+		// 			bottom: 150,
+		// 			left: 10,
+		// 			borderRadius: 25,
+		// 		}}
+		// 		source={require('App/Assets/Images/Profile_Egg_Icon.png')}
+		// 	/>
+		// );
+		return (
+			<CircleBorderProfile
+				photoUrl={require('App/Assets/Images/Profile_Egg_Icon.png')}
+				style={{
+					resizeMode: 'contain',
+					position: 'absolute',
+					bottom: constants.NAVBARHEIGHT + 50,
+					//height: 400,
+					left: 20,
+					zIndex: 20,
+					paddingLeft: 5,
+					paddingRight: 5,
+				}}
+			/>
+		);
+	};
+	const HeartIcon = () => {
+		const [heartColor, setHeartColor] = useState(false);
+		useEffect(() => {
+			dataRef = firebase
+				.database()
+				.ref('users')
+				.child(firebase.auth().currentUser.uid)
+				.child('likedPosts')
+				.child(data.id)
+				.once('value')
+				.then(function (snapshot) {
+					//console.log('snapshot val', snapshot.val());
+					if (snapshot.val()) {
+						setHeartColor(true);
+					}
+				});
+		}, []);
+
+		return (
+			<View>
+				<TouchableHighlight
+					onPress={() => {
+						//var likes = data.likes || 0;
+						var change = 1;
+						if (heartColor) {
+							change = -1;
+						}
+						likes = likes + change;
+
+						data.likes += change;
+						liked = !liked;
+						setHeartColor(!heartColor);
+						console.log(data.likes);
+					}}>
+					<Image
+						style={{
+							height: ICON_SIZE,
+							width: ICON_SIZE,
+							tintColor: heartColor ? constants.RED : '#fff',
+						}}
+						source={require('App/Assets/Images/Heart_Icon_White.png')}
+					/>
+				</TouchableHighlight>
+				<Text style={styles.buttonText}>{data.likes}</Text>
+			</View>
+		);
+	};
 	const renderIcons = () => {
 		return (
 			<View
 				style={{
+					alignItems: 'center',
 					position: 'absolute',
 					right: 10,
 					width: 50,
-					bottom: '30%',
+					bottom: 155,
 					zIndex: 25,
 				}}>
 				<View style={{marginTop: 10}}>
-					<Image
-						style={{height: 50, width: 50}}
-						source={require('App/Assets/Images/heart.png')}
-					/>
-					<Text style={styles.buttonText}>3</Text>
+					<HeartIcon />
 				</View>
 				<View style={{marginTop: 10}}>
 					<TouchableOpacity
 						onPress={function () {
 							dispatch({type: 'toggle'});
 							setModalVisible(true);
-							console.log('setting modal visible', selector.modal.visible);
 						}}>
 						<Image
-							style={{height: 50, width: 50}}
-							source={require('App/Assets/Images/comments-64.png')}
+							style={{height: ICON_SIZE, width: ICON_SIZE}}
+							source={require('App/Assets/Images/Comment_Icon_White.png')}
 						/>
 					</TouchableOpacity>
 					<Text style={styles.buttonText}>5</Text>
@@ -122,10 +316,11 @@ const VideoPageNewNew = ({navigation, array, index, data}) => {
 						});
 					}}>
 					<Image
-						style={{height: 50, width: 50}}
-						source={require('App/Assets/Images/arrow.png')}
+						style={{height: ICON_SIZE, width: ICON_SIZE}}
+						source={require('App/Assets/Images/Share_Icon_White.png')}
 					/>
 				</TouchableWithoutFeedback>
+				<Text style={styles.buttonText}>share</Text>
 			</View>
 		);
 	};
@@ -135,7 +330,6 @@ const VideoPageNewNew = ({navigation, array, index, data}) => {
 				style={{
 					height: '100%',
 					backgroundColor: '#000',
-					justifyContent: 'flex-start',
 				}}>
 				<Image
 					style={{
@@ -157,7 +351,9 @@ const VideoPageNewNew = ({navigation, array, index, data}) => {
 					data={data}
 					index={index}
 				/>
+				{renderClose(navigation)}
 				{renderProduct(navigation, data)}
+				{renderProfile()}
 				{renderIcons()}
 				<CommentsModal
 					data={data}
@@ -173,7 +369,11 @@ const VideoPageNewNew = ({navigation, array, index, data}) => {
 };
 
 const styles = StyleSheet.create({
-	buttonText: {textAlign: 'center', color: '#fff'},
+	buttonText: {
+		fontFamily: 'Nunito-Light',
+		textAlign: 'center',
+		color: '#fff',
+	},
 
 	centeredView: {
 		flex: 1,

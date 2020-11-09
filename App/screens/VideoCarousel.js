@@ -7,6 +7,7 @@ import {
 	ScrollView,
 	Button,
 	FlatList,
+	SectionList,
 } from 'react-native';
 import {useDispatch} from 'react-redux';
 import VideoPageNewNew from 'App/screens/VideoPageNewNew';
@@ -38,6 +39,20 @@ const VideoCarousel = ({route, navigation, array, index = 0}) => {
 			</View>
 		));
 	};
+
+	const renderAlbum = (al) => {
+		return (
+			<View key={al.id + Math.random()} style={styles.outer}>
+				<VideoPageNewNew
+					key={Math.random()}
+					route={route}
+					navigation={navigation}
+					array={array}
+					index={array.indexOf(al)}
+					data={al}></VideoPageNewNew>
+			</View>
+		);
+	};
 	// console.log('array is: ', array);
 	// return (
 	// 	<ScrollView
@@ -61,26 +76,38 @@ const VideoCarousel = ({route, navigation, array, index = 0}) => {
 	// );
 
 	return (
-		<View>
-			<ScrollView
-				showsVerticalScrollIndicator={false}
-				onScroll={function (event: Object) {
-					dispatch({
-						type: 'sendCarouselIndex',
-						payload:
-							event.nativeEvent.contentOffset.y /
-							Dimensions.get('window').height,
-					});
-				}}
-				horizontal={false}
-				pagingEnabled={true}
-				style={styles.container}>
-				{renderAlbums(array)}
-			</ScrollView>
-
-			<NavBar route={route} navigation={navigation} />
-		</View>
+		<ScrollView
+			showsVerticalScrollIndicator={false}
+			onScroll={function (event: Object) {
+				dispatch({
+					type: 'sendCarouselIndex',
+					payload:
+						event.nativeEvent.contentOffset.y / Dimensions.get('window').height,
+				});
+			}}
+			horizontal={false}
+			pagingEnabled={true}>
+			{renderAlbums(array)}
+		</ScrollView>
 	);
+
+	// return (
+	// 	<FlatList
+	// 		keyExtractor={() => {
+	// 			return '' + Math.random();
+	// 		}}
+	// 		data={array}
+	// 		renderItem={renderAlbum}
+	// 		onScroll={function (event: Object) {
+	// 			dispatch({
+	// 				type: 'sendCarouselIndex',
+	// 				payload:
+	// 					event.nativeEvent.contentOffset.y / Dimensions.get('window').height,
+	// 			});
+	// 		}}
+	// 		horizontal={false}
+	// 	/>
+	// );
 };
 
 const styles = StyleSheet.create({

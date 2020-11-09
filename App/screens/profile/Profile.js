@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useRef, useEffect} from 'react';
 import {
 	View,
 	Text,
@@ -8,18 +8,93 @@ import {
 	TouchableOpacity,
 	Image,
 	Platform,
+	SafeAreaView,
+	ScrollView,
 } from 'react-native';
 import ImagePicker from 'react-native-image-picker';
+import {constants} from 'App/constants';
 //import Input from 'App/components/common/Input';
 import {firebase} from 'App/firebase/config';
-
+import OptionsModal from 'App/components/OptionsModal';
 import NavBar from 'App/components/static/NavBar';
 //import Base64 from 'base-64';
 
 // global.atob = Base64.encode;
 
-const user = firebase.auth().currentUser;
+const ProfilePicture = () => {
+	const user = firebase.auth().currentUser;
+	const options = {
+		//customButtons: [{name: 'fb', title: 'Choose Photo From Facebook'}],
+		maxWidth: 512,
+		maxHeight: 512,
+	};
+	const [avatar, setAvatar] = useState({
+		//user.photoUrl,
+		uri: user.photoURL || '',
+	});
+	const [openModal, setOpenModal] = useState(false);
 
+	const getResponse = (response) => {
+		//console.log('Response = ', response);
+
+		console.log('launchgin before');
+		if (response.didCancel) {
+			console.log('User cancelled image picker');
+		} else if (response.error) {
+			console.log('ImagePicker Error: ', response.error);
+		} else if (response.customButton) {
+			console.log('User tapped custom button: ', response.customButton);
+		} else {
+			console.log('launching inside');
+			console.log(response.uri);
+			uploadImage(response);
+
+			setAvatar({uri: response.uri});
+		}
+	};
+	//ImagePicker.launchImageLibrary(options, getResponse);
+	return (
+		<View style={{zIndex: 300}}>
+			<OptionsModal
+				style={{zIndex: 300}}
+				text1="Take Photo"
+				text2="Choose from Library"
+				func1={() => {
+					ImagePicker.launchCamera(options, getResponse);
+				}}
+				func2={() => {
+					console.log('launcghin');
+					ImagePicker.launchImageLibrary(options, getResponse);
+				}}
+				toggleFunc={() => {
+					setOpenModal(false);
+				}}
+				modalVisible={openModal}
+			/>
+			<View
+				style={{
+					alignSelf: 'center',
+					width: 120,
+					height: 120,
+					borderRadius: 60,
+				}}>
+				<Image
+					style={{width: 120, height: 120, borderRadius: 60}}
+					source={avatar}
+				/>
+				<TouchableOpacity
+					onPress={() => {
+						setOpenModal(true);
+						//ImagePicker.showImagePicker(options, getResponse);
+					}}>
+					<Text style={{textAlign: 'center', color: constants.RED}}>
+						Change Profile Picture
+					</Text>
+				</TouchableOpacity>
+			</View>
+		</View>
+	);
+};
 function urlToBlob(url) {
 	return new Promise((resolve, reject) => {
 		var xhr = new XMLHttpRequest();
@@ -36,6 +111,7 @@ function urlToBlob(url) {
 }
 
 const uploadImage = async ({data, filename, uri}) => {
+	const user = firebase.auth().currentUser;
 	if (typeof global.atob === 'undefined') {
 		global.atob = (a) => Buffer.from(a, 'base64').toString('binary');
 	}
@@ -93,91 +169,164 @@ const uploadImage = async ({data, filename, uri}) => {
 };
 
 const Profile = ({navigation}) => {
-	const options = {
-		maxWidth: 512,
-		maxHeight: 512,
+	const user = firebase.auth().currentUser;
+	const settings = {
+		username: {
+			placeholder: 'Username',
+			label: 'I want to be known as @',
+			ref: useRef(user.displayName),
+			state: useState(user.displayName),
+			defaultValue: user.displayName,
+			flex: 1,
+		},
+
+		bio: {
+			placeholder: 'Bio',
+			label: 'About me',
+			ref: useRef(null),
+			defaultValue: null,
+			flex: 0.26,
+		},
+		age: {
+			placeholder: 'Age',
+			label: 'My age is',
+			ref: useRef(null),
+			defaultValue: null,
+			flex: 0.25,
+		},
+		gender: {
+			placeholder: 'Gender',
+			label: 'I identify as',
+			ref: useRef(null),
+			defaultValue: null,
+			flex: 0.3,
+		},
 	};
+	const bioRef = useRef(null);
+
+	const [modalOpen, setModalOpen] = useState(false);
 
 	const [username, setUserName] = useState(user.displayName || '');
 	const [email, setEmail] = useState(user.email || '');
-	console.log('photoURL', user.photoURL);
-	const [avatar, setAvatar] = useState({
-		//user.photoUrl,
-		uri: user.photoURL,
-	});
+	//settings.username.ref.current = user.displayName;
+	console.log('my ref', settings.username.ref.current);
+	//console.log('photoURL', user.photoURL);
+
+	const renderFormBoxes = () => {
+		return Object.entries(settings).map(([key, item]) => {
+			return (
+				<View
+					style={{
+						//borderBottomWidth: 1,
+						borderColor: constants.GREY,
+						alignItems: 'center',
+						height: 40,
+						flexDirection: 'row',
+						backgroundColor: constants.BGGREY,
+					}}>
+					<Text
+						style={{
+							//fontVariant: ['tabular-nums'],
+							fontFamily: 'Nunito-Light',
+
+							flex: item.flex,
+						}}>
+						{item.label}
+					</Text>
+					<TextInput
+						defaultValue={item.defaultValue}
+						placeholder={item.placeholder}
+						style={{
+							//margin: 10,
+							paddingTop: 8,
+							paddingBottom: 8,
+							flex: 1,
+							paddingLeft: 10,
+							borderRadius: 10,
+							backgroundColor: constants.GREY,
+						}}
+						ref={item.ref}
+					/>
+				</View>
+			);
+		});
+	};
 	useEffect(() => {}, []);
 	return (
-		<View style={{flex: 1, marginLeft: 40}}>
-			<View style={{flex: 2, paddingTop: 40}}>
-				<Text style={{fontSize: 24, marginBottom: 20}}>Update Info</Text>
-				<TouchableOpacity
-					onPress={() => {
-						ImagePicker.showImagePicker(options, (response) => {
-							//console.log('Response = ', response);
+		<SafeAreaView style={{flex: 1, marginLeft: 30, marginRight: 20}}>
+			<Image
+				source={require('App/Assets/Images/Orange_Gradient_Small.png')}
+				style={{
+					position: 'absolute',
+					marginLeft: -50,
+					marginRight: -50,
+					width: '150%',
+					top: 0,
+					height: 200,
+				}}
+			/>
+			<ScrollView style={{paddingTop: 20}}>
+				<Text style={{fontSize: 24, textAlign: 'center', marginBottom: 20}}>
+					Update Info
+				</Text>
+				<ProfilePicture />
 
-							if (response.didCancel) {
-								console.log('User cancelled image picker');
-							} else if (response.error) {
-								console.log('ImagePicker Error: ', response.error);
-							} else if (response.customButton) {
-								console.log(
-									'User tapped custom button: ',
-									response.customButton,
-								);
-							} else {
-								console.log(response.uri);
-								uploadImage(response);
+				<View style={{marginTop: 50, justifyContent: 'flex-start'}}>
+					{renderFormBoxes()}
+				</View>
+				<View style={{flex: 1}} />
+				<View style={{justifyContent: 'center', flexDirection: 'row'}}>
+					<TouchableOpacity
+						style={{
+							width: 80,
+							margin: 10,
+							borderRadius: 20,
+							borderWidth: 2,
+							padding: 5,
+							borderWidth: 2,
+							paddingTop: 3,
+							borderColor: '#aaa',
+						}}
+						onPress={() => navigation.goBack()}
+						title="logout">
+						<Text
+							style={{
+								color: '#bbb',
+								textAlign: 'center',
+								fontFamily: 'Nunito-Bold',
+							}}>
+							Cancel
+						</Text>
+					</TouchableOpacity>
+					<TouchableOpacity
+						title="update"
+						style={{
+							width: 80,
+							margin: 10,
+							borderRadius: 20,
+							//borderWidth: 2,
+							padding: 5,
+							borderColor: 'white',
+							backgroundColor: constants.ORANGE,
+						}}
+						onPress={() => {
+							user.updateProfile({displayName: username});
+							user.updateEmail(email);
+						}}>
+						<Text
+							style={{
+								color: 'white',
+								textAlign: 'center',
+								fontFamily: 'Nunito-Bold',
+							}}>
+							Update
+						</Text>
+					</TouchableOpacity>
+				</View>
+			</ScrollView>
 
-								setAvatar({uri: response.uri});
-							}
-						});
-					}}>
-					<Image
-						style={{width: 120, height: 120, borderRadius: 60}}
-						source={avatar}
-					/>
-				</TouchableOpacity>
-				<View style={{margin: 5, marginTop: 20}}>
-					<Text>Username</Text>
-					<TextInput
-						label="Username"
-						placeholder={'John Doe'}
-						onChangeText={(text) => {
-							//console.log(text);
-							setUserName(text);
-						}}
-						style={styles.inputStyle}
-						value={username}
-					/>
-				</View>
-				<View style={{margin: 5}}>
-					<Text>Email</Text>
-					<TextInput
-						label="Email"
-						placeholder={'email'}
-						onChangeText={(text) => {
-							//console.log(text);
-							setEmail(text);
-						}}
-						style={styles.inputStyle}
-						value={email}
-					/>
-				</View>
-				<Button
-					title="update"
-					onPress={() => {
-						user.updateProfile({displayName: username});
-						user.updateEmail(email);
-					}}
-				/>
-				<Button
-					style={{position: 'absolute', right: 0}}
-					onPress={() => firebase.auth().signOut()}
-					title="logout"
-				/>
-			</View>
 			{/*<NavBar style={{ flex: 3 }} navigation={navigation} />*/}
-		</View>
+		</SafeAreaView>
 	);
 };
 
