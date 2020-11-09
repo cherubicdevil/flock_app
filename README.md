@@ -13,3 +13,4 @@ To run the app on Android:
 - Have an Android emulator running (quickest way to get started), or a device connected
 - `yarn react-native run-android`
 - You may need to run `yarn start` (more information about this [here](https://facebook.github.io/react-native/docs/getting-started.html#troubleshooting-run))
+# flock_app
