@@ -328,12 +328,16 @@ const CamScreenTwo = ({navigation}) => {
                         var ar = data.image.split('//');
 
                         setImageState('https://' + ar[ar.length - 1]);
-                        setTimeout(() => {
-                          setEnlarge(false);
-                        }, 500);
-                        Keyboard.dismiss();
+                        // setTimeout(() => {
+                        //   setEnlarge(false);
+                        // }, 500);
+                        // Keyboard.dismiss();
                         console.log(data);
                       });
+                    setTimeout(() => {
+                      setEnlarge(false);
+                    }, 500);
+                    Keyboard.dismiss();
                   }}
                   style={{
                     height: 25,
