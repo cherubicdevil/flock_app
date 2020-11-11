@@ -171,8 +171,16 @@ const CamScreenTwo = ({navigation}) => {
             opacity: 0.6,
             position: 'absolute',
             zIndex: 300,
-          }}
-        />
+          }}>
+          <TouchableOpacity
+            style={{height: '100%', width: '100%'}}
+            onPress={() => {
+              setEnlarge(false);
+              Keyboard.dismiss();
+            }}
+          />
+        </View>
+
         <ProgressHeader
           headerText="Find a Product"
           goBack={true}
