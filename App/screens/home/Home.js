@@ -126,13 +126,7 @@ const Home = ({route, navigation, lastVisible = null}) => {
     //     });
     //   });
 
-    firebase
-      .firestore()
-      .collection('posts')
-      .get()
-      .catch((err) => {
-        console.log(err);
-      });
+    firebase.firestore().collection('posts').get();
   };
 
   return (
