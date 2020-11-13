@@ -1,8 +1,7 @@
 import React from 'react';
 import {Dimensions, View, Text, StyleSheet} from 'react-native';
 import RVideo from 'react-native-video';
-import {connect, useSelector} from 'react-redux';
-import {constants} from 'App/constants';
+import {connect} from 'react-redux';
 
 class Video extends React.Component {
   state = {
@@ -12,7 +11,6 @@ class Video extends React.Component {
     maxHeight: Dimensions.get('window').height,
     muted: true,
     paused: false,
-    dummyState: false,
   };
   constructor(props) {
     super(props);
@@ -23,37 +21,7 @@ class Video extends React.Component {
     //console.log('THIS IS SOURCE', this.props.data);
     //this.setState({muted: true});
   }
-  fetchStreamableSource = async (src) => {
-    console.log(src);
-    if (src === null || src === undefined) {
-      return new Promise(function (resolve, reject) {
-        resolve(
-          'https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4',
-        );
-      });
-    }
-    const fetchVar = fetch(constants.HEROKU + 'getStreamableSource/' + src);
-    const responseVar = fetchVar.then((response) => response.json());
-    const urlVar = responseVar.then((response) => {
-      return new Promise(function (resolve, reject) {
-        // resolve(
-        //   'https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4',
-        // );
-        resolve(response.streamableVideo);
-      });
-    });
 
-    return await urlVar;
-  };
-
-  updateData() {
-    const next = (url) => {
-      this.props.data.video = url;
-      console.log('DATA VIDEO: ', this.props.data.video);
-      this.setState({dummyState: !this.state.dummyState});
-    };
-    this.fetchStreamableSource(this.props.data.video).then(next.bind(this));
-  }
   componentDidMount() {
     ///console.log('viewheight:', this.props.viewHeight);
     // this.blurSubscription = this.props.navigation.addListener(
@@ -62,18 +30,13 @@ class Video extends React.Component {
     // 		this.setState({paused: true});
     // 	},
     // );
-    const next = (url) => {
-      this.props.data.video = url;
-      console.log('DATA VIDEO: ', this.props.data.video);
-      this.setState({dummyState: !this.state.dummyState});
-    };
-    //this.fetchStreamableSource(this.props.data.video).then(next.bind(this));
   }
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.viewHeight !== this.props.viewHeight) {
-      this.setState({vHeight: nextProps.viewHeight});
-    }
-  }
+  // componentWillReceiveProps(nextProps) {
+  //   if (nextProps.viewHeight !== this.props.viewHeight) {
+  //     this.setState({vHeight: nextProps.viewHeight});
+  //   }
+  // }
+  // ^ I don't know what this does so I'm commenting it out for now.
 
   componentWillUnmount() {}
 

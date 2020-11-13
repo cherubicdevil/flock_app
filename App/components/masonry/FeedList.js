@@ -167,12 +167,12 @@ class FeedList extends Component {
   // }
 
   render() {
-    console.log(this.props.array.length, this.props.productArray.length);
+    //console.log(this.props.array.length, this.props.productArray.length);
     const ar = this.mergeArrays(this.props.array, this.props.productArray);
-    console.log('length of merge,', ar.length);
+    //console.log('length of merge,', ar.length);
     const album1 = ar.slice(0, ar.length / 2);
     const album2 = ar.slice(ar.length / 2, ar.length);
-    console.log(album1.length, album2.length);
+    //console.log(album1.length, album2.length);
     if (!this.props.vidVisible) {
       return (
         <View>
