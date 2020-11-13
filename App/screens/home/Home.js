@@ -50,6 +50,12 @@ const Home = ({route, navigation, lastVisible = null}) => {
   //   every render.
   //
   //
+  const [index, setIndex] = useState(0);
+  // I'm not sure what this does. Perhaps set the index of VideoCarousel?
+  // In which case it should be set by a route param, coming from FeedList
+  const dispatch = useDispatch(); // for redux send array off to feedlist
+  const {vidData: vidData} = useSelector((state) => state.videopage);
+
   const [myAr, setMyAr] = useState([]);
   const [productAr, setProductAr] = useState([]);
   // {myAr} and {productAr} are the two arrays that get merged in FeedList.
@@ -68,14 +74,6 @@ const Home = ({route, navigation, lastVisible = null}) => {
     // --{route.params.vidVisible}.
   });
 
-  const [index, setIndex] = useState(0);
-  // I'm not sure what this does. Perhaps set the index of VideoCarousel?
-  // In which case it should be set by a route param, coming from FeedList
-
-  const dispatch = useDispatch();
-  // Should useDispatch be initialized here? Every render?? Maybe put it--
-  // --in useEffect.
-
   const fetchAlbums = () => {
     const ar = [];
     var counter = 0;
@@ -87,26 +85,30 @@ const Home = ({route, navigation, lastVisible = null}) => {
       .limit(10)
       .get()
       .then((querySnapshot) => {
-        //console.log(querySnapshot.getKey());
         const n = querySnapshot.size;
-
         querySnapshot.forEach(async (doc) => {
-          console.log('THIS IS TEH KEY', doc.id);
           const newSource = await fetchStreamableSource(doc.data().video);
           const entity = {...doc.data(), id: doc.id, video: newSource};
           ar.push(entity);
           counter = counter + 1;
           if (counter == n) {
             setMyAr(ar);
-            console.log(ar);
+            // TODO: change to setMyAr(...myAr,...ar) so that it appends
             lastVisible = doc;
             dispatch({type: 'sendData', payload: ar[0]});
+            // sends off the first datum in array...---
+            // ---...presumably to carousel?
           }
         });
       });
 
-    const productAr = [];
+    /*
+	  Fetch products from firebase.collections('products')
+	  Almost same code as for 'posts'.
 
+	  TODO: Should I extract it and put it in utils?
+	  */
+    const productAr = [];
     firebase
       .firestore()
       .collection('products')
@@ -128,47 +130,6 @@ const Home = ({route, navigation, lastVisible = null}) => {
       });
   };
 
-  const renderNavBar = (route, navigation) => {
-    if (!vidVisible) {
-      return <NavBar route={route} navigation={navigation} />;
-    } else {
-      return <View />;
-    }
-  };
-  const renderOverview = () => {
-    const vidIndex = useSelector((state) => state.videopage.vidIndex);
-    const {vidData: vidData} = useSelector((state) => state.videopage);
-    if (vidVisible) {
-      return (
-        <View
-          style={{
-            width: '100%',
-            height: '100%',
-            backgroundColor: '#000',
-            position: 'absolute',
-            bottom: 0,
-            left: 0,
-            zIndex: 200,
-            flex: 1,
-            backgroundColor: '#000',
-            justifyContent: 'center',
-          }}>
-          <VideoCarousel
-            route={route}
-            navigation={navigation}
-            array={myAr}
-            index={index}
-            data={vidData}
-            style={{}}
-          />
-        </View>
-      );
-    } else {
-      return <View />;
-    }
-  };
-
-  var user = firebase.auth().currentUser;
   return (
     <View style={{flex: 1, backgroundColor: constants.GREY}}>
       <View style={styles.sectionOneStyle}>
@@ -176,20 +137,7 @@ const Home = ({route, navigation, lastVisible = null}) => {
           imageStyle={{borderRadius: 25}}
           style={styles.topBox}
           source={require('App/Assets/Images/Orange_Gradient_Small.png')}>
-          <View
-            style={{
-              flexDirection: 'row',
-              margin: 2.2,
-              marginLeft: 4.3,
-              marginRight: 4.3,
-              backgroundColor: constants.GREY,
-              width: '98%',
-              borderRadius: 25,
-              paddingLeft: 15,
-              paddingRight: 15,
-              paddingTop: 7,
-              paddingBottom: 7,
-            }}>
+          <View style={styles.textBoxWrapper}>
             <TextInput style={styles.textBoxStyle} />
             <Image
               source={require('App/Assets/Images/Search.png')}
@@ -216,8 +164,20 @@ const Home = ({route, navigation, lastVisible = null}) => {
         />
       </View>
 
-      {renderOverview()}
-      {renderNavBar(route, navigation)}
+      {vidVisible ? (
+        <View style={styles.carouselWrapper}>
+          <VideoCarousel
+            route={route}
+            navigation={navigation}
+            array={myAr}
+            index={index}
+            data={vidData}
+            style={{}}
+          />
+        </View>
+      ) : (
+        <NavBar route={route} navigation={navigation} />
+      )}
     </View>
   );
 };
@@ -249,6 +209,19 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  textBoxWrapper: {
+    flexDirection: 'row',
+    margin: 2.2,
+    marginLeft: 4.3,
+    marginRight: 4.3,
+    backgroundColor: constants.GREY,
+    width: '98%',
+    borderRadius: 25,
+    paddingLeft: 15,
+    paddingRight: 15,
+    paddingTop: 7,
+    paddingBottom: 7,
+  },
   textBoxStyle: {
     fontFamily: 'Nunito-Light',
     flex: 10,
@@ -265,6 +238,18 @@ const styles = StyleSheet.create({
   },
   columnStyle: {
     flex: 1,
+  },
+  carouselWrapper: {
+    width: '100%',
+    height: '100%',
+    backgroundColor: '#000',
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    zIndex: 200,
+    flex: 1,
+    backgroundColor: '#000',
+    justifyContent: 'center',
   },
   logout: {
     flex: 1,
