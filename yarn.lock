@@ -7981,6 +7981,11 @@ react-native-animated-splash-screen@^2.0.5:
   dependencies:
     prop-types "^15.7.2"
 
+react-native-bubble-input@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/react-native-bubble-input/-/react-native-bubble-input-1.0.1.tgz#066fa549c95bc2807c0acdb2abe0df53acdf5dc0"
+  integrity sha512-lXcUClDOZwd9Lh2wrXzvQm4iu2U9yEgP0qfALqX2BKCh5SXC30T76HCOGDPVSWLn3+WgCdXpNGoBiXSeZiEfSw==
+
 react-native-collapsible@^1.5.3:
   version "1.5.3"
   resolved "https://registry.yarnpkg.com/react-native-collapsible/-/react-native-collapsible-1.5.3.tgz#d6bc7274ae8f40f7688cca23ededa263e6c81c63"

@@ -45,6 +45,15 @@ class Video extends React.Component {
 
     return await urlVar;
   };
+
+  updateData() {
+    const next = (url) => {
+      this.props.data.video = url;
+      console.log('DATA VIDEO: ', this.props.data.video);
+      this.setState({dummyState: !this.state.dummyState});
+    };
+    this.fetchStreamableSource(this.props.data.video).then(next.bind(this));
+  }
   componentDidMount() {
     ///console.log('viewheight:', this.props.viewHeight);
     // this.blurSubscription = this.props.navigation.addListener(
@@ -58,9 +67,7 @@ class Video extends React.Component {
       console.log('DATA VIDEO: ', this.props.data.video);
       this.setState({dummyState: !this.state.dummyState});
     };
-    this.fetchStreamableSource(this.props.data.streamableVideo).then(
-      next.bind(this),
-    );
+    //this.fetchStreamableSource(this.props.data.video).then(next.bind(this));
   }
   componentWillReceiveProps(nextProps) {
     if (nextProps.viewHeight !== this.props.viewHeight) {
@@ -79,7 +86,7 @@ class Video extends React.Component {
       'https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4';
     //const video_uri = example_url;
     const video_uri = this.props.data.video;
-    console.log('ACTUAL RENDERED VIDEO: ', this.props.data.video);
+    //console.log('ACTUAL RENDERED VIDEO: ', this.props.data.video);
     if (
       (true && this.props.masonry && this.props.visible) ||
       this.props.index === this.props.carIndex

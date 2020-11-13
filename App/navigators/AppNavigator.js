@@ -21,69 +21,69 @@ import ProfileMain from 'App/screens/profile/ProfileMain';
 const Stack = createStackNavigator();
 
 const AppNavigator5 = () => {
-	return (
-		<NavigationContainer>
-			<Stack.Navigator
-				initialRouteName="Egg"
-				screenOptions={{
-					headerShown: false,
-					animationEnabled: false,
-				}}>
-				<Stack.Screen
-					name="Home"
-					component={Home}
-					initialParams={{vidVisible: true}}
-				/>
-				<Stack.Screen
-					name="VideoMasonry"
-					component={Home}
-					initialParams={{vidVisible: false}}
-				/>
-				<Stack.Screen
-					name="CamScreen"
-					component={CamNavigator}
-					initialParams={{vidVisible: false}}
-					option={{animationEnabled: false}}
-				/>
-				<Stack.Screen
-					name="Profile"
-					component={Profile}
-					initialParams={{vidVisible: false}}
-				/>
-				<Stack.Screen
-					name="ProfileMain"
-					component={ProfileMain}
-					initialParams={{vidVisible: false}}
-				/>
-				<Stack.Screen
-					name="Products"
-					component={Products}
-					initialParams={{vidVisible: false}}
-				/>
-				<Stack.Screen
-					name="Product"
-					component={Product}
-					initialParams={{vidVisible: false}}
-				/>
-				<Stack.Screen
-					name="PayTest"
-					component={PayTest}
-					initialParams={{vidVisible: false}}
-				/>
-				<Stack.Screen
-					name="Payment"
-					component={PaymentInfo}
-					initialParams={{vidVisible: false}}
-				/>
-				<Stack.Screen
-					name="Success"
-					component={Success}
-					initialParams={{vidVisible: false}}
-				/>
-				<Stack.Screen name="Egg" component={Egg} />
-			</Stack.Navigator>
-		</NavigationContainer>
-	);
+  return (
+    <NavigationContainer>
+      <Stack.Navigator
+        initialRouteName="Home"
+        screenOptions={{
+          headerShown: false,
+          animationEnabled: false,
+        }}>
+        <Stack.Screen
+          name="Home"
+          component={Home}
+          initialParams={{vidVisible: true}}
+        />
+        <Stack.Screen
+          name="VideoMasonry"
+          component={Home}
+          initialParams={{vidVisible: false}}
+        />
+        <Stack.Screen
+          name="CamScreen"
+          component={CamNavigator}
+          initialParams={{vidVisible: false}}
+          option={{animationEnabled: false}}
+        />
+        <Stack.Screen
+          name="Profile"
+          component={Profile}
+          initialParams={{vidVisible: false}}
+        />
+        <Stack.Screen
+          name="ProfileMain"
+          component={ProfileMain}
+          initialParams={{vidVisible: false}}
+        />
+        <Stack.Screen
+          name="Products"
+          component={Products}
+          initialParams={{vidVisible: false}}
+        />
+        <Stack.Screen
+          name="Product"
+          component={Product}
+          initialParams={{vidVisible: false}}
+        />
+        <Stack.Screen
+          name="PayTest"
+          component={PayTest}
+          initialParams={{vidVisible: false}}
+        />
+        <Stack.Screen
+          name="Payment"
+          component={PaymentInfo}
+          initialParams={{vidVisible: false}}
+        />
+        <Stack.Screen
+          name="Success"
+          component={Success}
+          initialParams={{vidVisible: false}}
+        />
+        <Stack.Screen name="Egg" component={Egg} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
 };
 
 // const AppNavigator = createStackNavigator(

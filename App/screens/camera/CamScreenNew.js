@@ -18,6 +18,7 @@ import ProgressHeader from 'App/components/ProgressHeader';
 //import Video from 'App/components/Video';
 
 const CamScreenNew = ({navigation}) => {
+  fetch(constants.HEROKU + 'setup');
   const titleRef = useRef(null);
   const descRef = useRef(null);
 
