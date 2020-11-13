@@ -3,6 +3,17 @@
 * All rights reserved.
 * Flock © 2020
 *
+*
+			 _______  ___        ______    ______   __   ___  
+			/"     "||"  |      /    " \  /" _  "\ |/"| /  ") 
+			(: ______)||  |     // ____  \(: ( \___)(: |/   /  
+			\/    |  |:  |    /  /    ) :)\/ \     |    __/   
+			// ___)   \  |___(: (____/ // //  \ _  (// _  \   
+			(:  (     ( \_|:  \\        / (:   _) \ |: | \  \  
+			\__/      \_______)\"_____/   \_______)(__|  \__)
+*
+*/
+/*
 * Home.js
 *
 * This file contains code for the Home page of flock the app.
@@ -14,16 +25,6 @@
 * store. (We may be using redux anyway, so this may be outdated. TODO: 
 	separate into two files. Keep the data array in redux).
 *
-*
-			 _______  ___        ______    ______   __   ___  
-			/"     "||"  |      /    " \  /" _  "\ |/"| /  ") 
-			(: ______)||  |     // ____  \(: ( \___)(: |/   /  
-			\/    |  |:  |    /  /    ) :)\/ \     |    __/   
-			// ___)   \  |___(: (____/ // //  \ _  (// _  \   
-			(:  (     ( \_|:  \\        / (:   _) \ |: | \  \  
-			\__/      \_______)\"_____/   \_______)(__|  \__)
-*
-*
 */
 
 import React, {useState, useEffect} from 'react';
@@ -34,48 +35,47 @@ import {
   Image,
   ImageBackground,
 } from 'react-native';
-import {useSelector, useDispatch} from 'react-redux';
-import {firebase} from 'App/firebase/config';
 import NavBar from 'App/components/static/NavBar';
 import FeedList from 'App/components/masonry/FeedList';
 import VideoCarousel from 'App/screens/VideoCarousel';
+import {useSelector, useDispatch} from 'react-redux';
+import {firebase} from 'App/firebase/config';
 import {constants} from 'App/constants';
+import {fetchStreamableSource} from 'App/utils';
 
 const Home = ({route, navigation, lastVisible = null}) => {
+  // These are the params of this class ^^.
+  // {route} and {navigation} come by default when using React navigator.
+  // {lastVisible} I put here so that it doesn't get re-initialized
+  //   every render.
+  //
+  //
   const [myAr, setMyAr] = useState([]);
   const [productAr, setProductAr] = useState([]);
+  // {myAr} and {productAr} are the two arrays that get merged in FeedList.
+  // Thus they both get passed in to FeedList.
+  // They are both fetched from firebase server.
 
   const [vidVisible, setVidVisible] = useState(true);
+  // {vidVisible} determines the visibility of the overlay containing--
+  // --VideoCarousel.
+  // {vidVisible} is set to true in the beginning, but it don't matter--
+  // --because it is determined by route.params.
 
   useEffect(() => {
     setVidVisible(route.params.vidVisible);
+    // React navigator determines which screen to navigate to through--
+    // --{route.params.vidVisible}.
   });
 
   const [index, setIndex] = useState(0);
+  // I'm not sure what this does. Perhaps set the index of VideoCarousel?
+  // In which case it should be set by a route param, coming from FeedList
+
   const dispatch = useDispatch();
+  // Should useDispatch be initialized here? Every render?? Maybe put it--
+  // --in useEffect.
 
-  const fetchStreamableSource = async (src) => {
-    console.log(src);
-    if (src === null || src === undefined) {
-      return new Promise(function (resolve, reject) {
-        resolve(
-          'https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4',
-        );
-      });
-    }
-    const fetchVar = fetch(constants.HEROKU + 'getStreamableSource/' + src);
-    const responseVar = fetchVar.then((response) => response.json());
-    const urlVar = responseVar.then((response) => {
-      return new Promise(function (resolve, reject) {
-        // resolve(
-        //   'https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4',
-        // );
-        resolve(response.streamableVideo);
-      });
-    });
-
-    return await urlVar;
-  };
   const fetchAlbums = () => {
     const ar = [];
     var counter = 0;
