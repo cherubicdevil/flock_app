@@ -66,22 +66,13 @@ const Home = ({route, navigation, lastVisible = null}) => {
           console.log('THIS IS TEH KEY', doc.id);
           const newSource = await fetchStreamableSource(doc.data().video);
           const entity = {...doc.data(), id: doc.id, video: newSource};
-          //console.log(Image.prefetch(entity.image))
           ar.push(entity);
           counter = counter + 1;
-          //console.log(counter);
           if (counter == n) {
-            //console.log(ar);
             setMyAr(ar);
             console.log(ar);
             lastVisible = doc;
             dispatch({type: 'sendData', payload: ar[0]});
-            //console.log('HERE IS MY MAR', ar);
-            // this.setState({
-            // 	myAr: ar,
-            // 	album1: ar.slice(0, ar.length / 2),
-            // 	album2: ar.slice(ar.length / 2, ar.length),
-            // });
           }
         });
       });
@@ -119,9 +110,7 @@ const Home = ({route, navigation, lastVisible = null}) => {
   const renderOverview = () => {
     const vidIndex = useSelector((state) => state.videopage.vidIndex);
     const {vidData: vidData} = useSelector((state) => state.videopage);
-    //console.log(vidVisible, vidData, vidIndex);
     if (vidVisible) {
-      //useDispatch()({type: 'hideVid'});
       return (
         <View
           style={{
@@ -152,7 +141,6 @@ const Home = ({route, navigation, lastVisible = null}) => {
   };
 
   var user = firebase.auth().currentUser;
-  //console.log(myAr);
   return (
     <View style={{flex: 1, backgroundColor: constants.GREY}}>
       <View style={styles.sectionOneStyle}>
@@ -186,14 +174,10 @@ const Home = ({route, navigation, lastVisible = null}) => {
                 marginRight: -10,
               }}
             />
-            {/*<Button onPress={() => navigation.navigate('')} />*/}
           </View>
         </ImageBackground>
       </View>
 
-      {/*<View style={styles.sectionTwoStyle}>
-				<SideScroll />
-			</View>*/}
       <View style={styles.sectionThreeStyle}>
         <FeedList
           vidVisible={vidVisible}
@@ -222,10 +206,7 @@ const styles = StyleSheet.create({
     paddingTop: 35,
     marginTop: 0,
     marginBottom: 5,
-    //height: '20%',
-    //shadowOffset: { width: 0, height: 2 },
     borderRadius: 3,
-    //backgroundColor: '#db9421',
     backgroundColor: '#fff',
   },
   topInnerBox: {
@@ -239,8 +220,6 @@ const styles = StyleSheet.create({
     marginRight: 10,
     justifyContent: 'center',
     alignItems: 'center',
-    //width: '100%',
-    //backgroundColor: constants.GREY,
   },
   textBoxStyle: {
     fontFamily: 'Nunito-Light',
@@ -267,8 +246,6 @@ const styles = StyleSheet.create({
   sectionFourStyle: {
     marginTop: 10,
     flex: 7,
-
-    //backgroundColor: '#000',
   },
   iconStyle: {
     marginLeft: 5,
