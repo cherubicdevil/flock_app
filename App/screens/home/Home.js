@@ -1,3 +1,31 @@
+/* 
+* Made by Kevin Gao, for Flock Shopping.
+* All rights reserved.
+* Flock © 2020
+*
+* Home.js
+*
+* This file contains code for the Home page of flock the app.
+* By Home, it refers to both the FeedList gallery of videos, and also
+* the VideoCarousel overlay of videos.
+*
+* This may seem counter-intuitive. It was designed so that both Feedlist
+* and VideoCarousel could share the same array of data without using a 
+* store. (We may be using redux anyway, so this may be outdated. TODO: 
+	separate into two files. Keep the data array in redux).
+*
+*
+			 _______  ___        ______    ______   __   ___  
+			/"     "||"  |      /    " \  /" _  "\ |/"| /  ") 
+			(: ______)||  |     // ____  \(: ( \___)(: |/   /  
+			\/    |  |:  |    /  /    ) :)\/ \     |    __/   
+			// ___)   \  |___(: (____/ // //  \ _  (// _  \   
+			(:  (     ( \_|:  \\        / (:   _) \ |: | \  \  
+			\__/      \_______)\"_____/   \_______)(__|  \__)
+*
+*
+*/
+
 import React, {useState, useEffect} from 'react';
 import {
   View,
