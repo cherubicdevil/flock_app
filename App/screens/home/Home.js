@@ -75,59 +75,64 @@ const Home = ({route, navigation, lastVisible = null}) => {
   });
 
   const fetchAlbums = () => {
-    // const ar = [];
-    // var counter = 0;
-    // firebase
-    //   .firestore()
-    //   .collection('posts')
-    //   .orderBy('title')
-    //   .startAfter(lastVisible)
-    //   .limit(10)
-    //   .get()
-    //   .then((querySnapshot) => {
-    //     const n = querySnapshot.size;
-    //     querySnapshot.forEach(async (doc) => {
-    //       const newSource = await fetchStreamableSource(doc.data().video);
-    //       //const entity = {...doc.data(), id: doc.id, video: newSource};
-    //       //ar.push(entity);
-    //       counter = counter + 1;
-    //       if (counter == n) {
-    //         setMyAr(ar);
-    //         // TODO: change to setMyAr(...myAr,...ar) so that it appends
-    //         lastVisible = doc;
-    //         dispatch({type: 'sendData', payload: ar[0]});
-    //         // sends off the first datum in array...---
-    //         // ---...presumably to carousel?
-    //       }
-    //     });
-    //   });
+    const ar = [];
+    var counter = 0;
+    firebase
+      .firestore()
+      .collection('posts')
+      .orderBy('title')
+      .startAfter(lastVisible)
+      .limit(10)
+      .get()
+      .then((querySnapshot) => {
+        const n = querySnapshot.size;
+        querySnapshot.forEach(async (doc) => {
+          const newSource = await fetchStreamableSource(doc.data().video);
+          const entity = {
+            ...doc.data(),
+            id: doc.id,
+            video: newSource,
+          };
+          ar.push(entity);
+          counter = counter + 1;
+          if (counter == n) {
+            setMyAr(ar);
+            // TODO: change to setMyAr(...myAr,...ar) so that it appends
+            lastVisible = doc;
+            dispatch({type: 'sendData', payload: ar[0]});
+            // sends off the first datum in array...---
+            // ---...presumably to carousel?
+          }
+        });
+      });
     /*
 	  Fetch products from firebase.collections('products')
 	  Almost same code as for 'posts'.
 
 	  TODO: Should I extract it and put it in utils?
 	  */
-    // const productAr = [];
-    // firebase
-    //   .firestore()
-    //   .collection('products')
-    //   .limit(6)
-    //   .get()
-    //   .then((querySnapshot) => {
-    //     counter = 0;
-    //     const n = querySnapshot.size;
-    //     querySnapshot.forEach((doc) => {
-    //       const entity = doc.data();
-    //       productAr.push(entity);
-    //       counter = counter + 1;
-    //       if (counter === n) {
-    //         setProductAr(productAr);
-    //       }
-    //     });
-    //   });
-
-    firebase.firestore().collection('posts').get();
+    const productAr = [];
+    firebase
+      .firestore()
+      .collection('products')
+      .limit(6)
+      .get()
+      .then((querySnapshot) => {
+        counter = 0;
+        const n = querySnapshot.size;
+        querySnapshot.forEach((doc) => {
+          const entity = doc.data();
+          productAr.push(entity);
+          counter = counter + 1;
+          if (counter === n) {
+            setProductAr(productAr);
+          }
+        });
+      });
+    //firebase.firestore().collection('posts').get();
   };
+
+  //return <View style={{flex: 1, backgroundColor: constants.GREY}}></View>;
 
   return (
     <View style={{flex: 1, backgroundColor: constants.GREY}}>

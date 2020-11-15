@@ -86,26 +86,5 @@ const AppNavigator5 = () => {
   );
 };
 
-// const AppNavigator = createStackNavigator(
-// 	{
-// 		Home: {screen: Home},
-// 		VideoMasonry: {screen: Home},
-// 		Profile: {screen: Profile},
-// 		CamScreen: {screen: CamNavigator},
-// 		Products: {screen: Products},
-// 		Product: {screen: Product},
-// 		Egg: {screen: Egg},
-// 		Payment: {screen: PaymentInfo},
-// 		Success: {screen: Success},
-// 		PayTest: {screen: PayTest},
-// 	},
-// 	{
-// 		initialRouteName: 'Home',
-// 		defaultNavigationOptions: {vidVisible: true},
-// 		screenOptions: {vidVisible: true},
-// 		headerMode: 'none',
-// 	},
-// );
-
 export default AppNavigator5;
 //export default createAppContainer(AppNavigator);

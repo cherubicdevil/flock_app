@@ -13,7 +13,7 @@ import NavBar from 'App/components/static/NavBar';
 import {Constants} from 'react-native-unimodules';
 import {GLView} from 'expo-gl';
 import * as THREE from 'three';
-import {Renderer} from 'expo-three';
+//import {Renderer} from 'expo-three';
 //console.log(Constants.systemFonts);
 
 // const _onGLContextCreate = async (gl) => {
@@ -232,6 +232,7 @@ const Egg = ({route, navigation}) => {
       );
     }
   };
+  //return <View />;
   return (
     <ImageBackground
       style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}
@@ -270,7 +271,7 @@ const Egg = ({route, navigation}) => {
             source={require('App/Assets/Images/default-profile-picture.jpg')}
           />
         </TouchableWithoutFeedback>
-        {render3dEgg()}
+        {renderEgg()}
       </View>
       <NavBar route={route} navigation={navigation} />
     </ImageBackground>

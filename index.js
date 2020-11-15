@@ -4,7 +4,7 @@
 
 import React, {Component} from 'react';
 import {AppRegistry, View} from 'react-native';
-import App from './App1';
+import App from './App';
 //import App from './App.js';
 import AnimatedSplash from 'react-native-animated-splash-screen';
 import Share from './Share';
