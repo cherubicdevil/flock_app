@@ -199,7 +199,7 @@ const DynImage = ({
       return (
         <TouchableOpacity
           onPress={() => {
-            console.log(console.log(videoAr.indexOf(data)));
+            console.log(videoAr.indexOf(data), data.title);
             dispatch({type: 'sendData', payload: data});
             dispatch({
               type: 'sendCarouselIndex',

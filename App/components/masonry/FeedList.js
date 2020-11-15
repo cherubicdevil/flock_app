@@ -108,23 +108,6 @@ class FeedList extends Component {
       }
     });
   }
-  renderAlbums(albums) {
-    return albums.map((al) => (
-      <DynImage
-        mute={true}
-        repeat={true}
-        ar={this.state.myAr}
-        index={this.state.myAr.indexOf(al)}
-        navigation={this.props.navigation}
-        data={al}
-        source={{uri: al.image || al.video}}
-        title={al.title}
-        type={al.type}
-        key={al.title}
-        style={{backgroundColor: this.state.isInView ? 'red' : 'black'}}
-      />
-    ));
-  }
 
   mergeArrays(ar1, ar2) {
     let ar3 = [];
@@ -151,29 +134,17 @@ class FeedList extends Component {
     ));
   }
 
-  // renderAlbums(albums) {
-  // 	return albums.map((al) =>
-  // 		al.image ? (
-  // 			<DynImage
-  // 				source={{uri: al.image}}
-  // 				title={al.title}
-  // 				style={{}}
-  // 				type={al.type}
-  // 				key={'hi'.concat(Math.random())}
-  // 			/>
-  // 		) : (
-  // 			<View key={Math.random()} />
-  // 		),
-  // 	);
-  // }
-
   render() {
     //console.log(this.props.array.length, this.props.productArray.length);
     const ar = this.mergeArrays(this.props.array, this.props.productArray);
     //console.log('length of merge,', ar.length);
     const album1 = ar.slice(0, ar.length / 2);
     const album2 = ar.slice(ar.length / 2, ar.length);
-    console.log('lengths:', album1.length, album2.length, ar.length);
+    //console.log('lengths:', album1.length, album2.length, ar.length);
+    console.log('START OF FEEDLIST');
+    this.props.array.forEach((item) => {
+      console.log(item.title);
+    });
     if (!this.props.vidVisible) {
       return (
         <View>

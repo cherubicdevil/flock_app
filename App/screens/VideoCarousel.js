@@ -106,6 +106,10 @@ const VideoCarousel = ({route, navigation, array, index = 0}) => {
   // );
 
   //scrollRef.current.scrollTo(0, index * Dimensions.get('window').height);
+  console.log('START OF CAROUSEL');
+  array.forEach((item) => {
+    console.log(item.title);
+  });
   return (
     <View>
       <ScrollView
