@@ -169,6 +169,7 @@ const Home = ({route, navigation, lastVisible = null}) => {
           array={myAr}
           productArray={productAr}
           navigation={navigation}
+          route={route}
         />
       </View>
 

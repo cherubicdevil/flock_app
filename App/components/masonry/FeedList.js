@@ -136,7 +136,9 @@ class FeedList extends Component {
 
   render() {
     //console.log(this.props.array.length, this.props.productArray.length);
-    const ar = this.mergeArrays(this.props.array, this.props.productArray);
+    console.log('route', this.props.route);
+    const videoAr = this.props?.route?.params?.videoData || this.props.array;
+    const ar = this.mergeArrays(videoAr, this.props.productArray);
     //console.log('length of merge,', ar.length);
     const album1 = ar.slice(0, ar.length / 2);
     const album2 = ar.slice(ar.length / 2, ar.length);

@@ -24,7 +24,7 @@ const renderArray = (navigation, array) => {
   });
 };
 
-const renderClose = (navigation, dispatch) => {
+const renderClose = (navigation, dispatch, array) => {
   return (
     <TouchableWithoutFeedback
       onPress={() => {
@@ -32,7 +32,10 @@ const renderClose = (navigation, dispatch) => {
           type: 'sendCarouselIndex',
           payload: -1,
         });
-        navigation.navigate('VideoMasonry', {vidVisible: false});
+        navigation.navigate('VideoMasonry', {
+          vidVisible: false,
+          videoData: array,
+        });
       }}>
       <Image
         style={{
@@ -127,7 +130,7 @@ const VideoCarousel = ({route, navigation, array, index = 0}) => {
         pagingEnabled={true}>
         {renderAlbums(array)}
       </ScrollView>
-      {renderClose(navigation, dispatch)}
+      {renderClose(navigation, dispatch, array)}
     </View>
   );
 
