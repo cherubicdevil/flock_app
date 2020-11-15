@@ -173,7 +173,7 @@ class FeedList extends Component {
     //console.log('length of merge,', ar.length);
     const album1 = ar.slice(0, ar.length / 2);
     const album2 = ar.slice(ar.length / 2, ar.length);
-    //console.log(album1.length, album2.length);
+    console.log('lengths:', album1.length, album2.length, ar.length);
     if (!this.props.vidVisible) {
       return (
         <View>

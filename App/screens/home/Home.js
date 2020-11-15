@@ -85,7 +85,7 @@ const Home = ({route, navigation, lastVisible = null}) => {
       .collection('posts')
       .orderBy('title')
       .startAfter(lastVisible)
-      .limit(10)
+      .limit(7)
       .get()
       .then((querySnapshot) => {
         const n = querySnapshot.size;
@@ -105,7 +105,7 @@ const Home = ({route, navigation, lastVisible = null}) => {
             lastVisible = doc;
             dispatch({type: 'sendData', payload: ar[0]});
             // sends off the first datum in array...---
-            // ---...presumably to carousel?
+            // ---...presumably to carousel? is this still needed?
           }
         });
       });
@@ -115,24 +115,24 @@ const Home = ({route, navigation, lastVisible = null}) => {
 
 	  TODO: Should I extract it and put it in utils?
 	  */
-    const productAr = [];
-    firebase
-      .firestore()
-      .collection('products')
-      .limit(6)
-      .get()
-      .then((querySnapshot) => {
-        counter = 0;
-        const n = querySnapshot.size;
-        querySnapshot.forEach((doc) => {
-          const entity = doc.data();
-          productAr.push(entity);
-          counter = counter + 1;
-          if (counter === n) {
-            setProductAr(productAr);
-          }
-        });
-      });
+    // const productAr = [];
+    // firebase
+    //   .firestore()
+    //   .collection('products')
+    //   .limit(6)
+    //   .get()
+    //   .then((querySnapshot) => {
+    //     counter = 0;
+    //     const n = querySnapshot.size;
+    //     querySnapshot.forEach((doc) => {
+    //       const entity = doc.data();
+    //       productAr.push(entity);
+    //       counter = counter + 1;
+    //       if (counter === n) {
+    //         setProductAr(productAr);
+    //       }
+    //     });
+    //   });
     //firebase.firestore().collection('posts').get();
   };
 
