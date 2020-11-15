@@ -177,7 +177,21 @@ class FeedList extends Component {
     if (!this.props.vidVisible) {
       return (
         <View>
-          <ScrollView>
+          <ScrollView
+            onScroll={(event) => {
+              if (
+                event.nativeEvent.contentOffset.y >
+                0.3 * event.nativeEvent.contentSize.height
+              ) {
+                console.log('should be fetching albums');
+                this.props.fetchAlbums();
+              }
+
+              console.log(
+                event.nativeEvent.contentOffset.y,
+                0.3 * event.nativeEvent.contentSize.height,
+              );
+            }}>
             <View
               key="0"
               style={{
