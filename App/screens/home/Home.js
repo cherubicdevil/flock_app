@@ -77,6 +77,7 @@ const Home = ({route, navigation, lastVisible = null}) => {
   const fetchAlbums = () => {
     const ar = [];
     var counter = 0;
+    console.log('poster1');
     firebase
       .firestore()
       .collection('posts')
@@ -88,10 +89,12 @@ const Home = ({route, navigation, lastVisible = null}) => {
         const n = querySnapshot.size;
         querySnapshot.forEach(async (doc) => {
           const newSource = await fetchStreamableSource(doc.data().video);
+          console.log('poster', newSource);
           const entity = {
             ...doc.data(),
             id: doc.id,
-            video: newSource,
+            video: newSource.streamableVideo,
+            poster: newSource.posterSource,
           };
           ar.push(entity);
           counter = counter + 1;

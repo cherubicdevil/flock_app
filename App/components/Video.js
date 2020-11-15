@@ -105,14 +105,7 @@ class Video extends React.Component {
         />
       );
     } else {
-      return (
-        <View
-          style={{
-            height: 315.55555555555554,
-            //width: '100%',
-          }}
-        />
-      );
+      return <View />;
     }
   }
   render() {

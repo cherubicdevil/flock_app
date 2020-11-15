@@ -44,7 +44,10 @@ const fetchStreamableSource = async (src) => {
       // resolve(
       //   'https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4',
       // );
-      resolve(response.streamableVideo);
+      resolve({
+        streamableVideo: response.streamableVideo,
+        posterSource: response.posterSource,
+      });
     });
   });
   return await urlVar;
