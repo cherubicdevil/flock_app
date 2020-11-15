@@ -105,16 +105,11 @@ const VideoCarousel = ({route, navigation, array, index = 0}) => {
   // 	</View>
   // );
 
-  scrollRef.scrollTo({
-    x: 0,
-    y: index * Dimensions.get('window').height,
-    animated: false,
-  });
   //scrollRef.current.scrollTo(0, index * Dimensions.get('window').height);
   return (
     <View>
       <ScrollView
-        ref={(c) => (scrollRef = c)}
+        contentOffset={{y: index * Dimensions.get('window').height}}
         showsVerticalScrollIndicator={false}
         onScroll={function (event) {
           dispatch({
