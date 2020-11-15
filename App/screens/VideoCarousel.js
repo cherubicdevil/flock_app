@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useRef, createRef} from 'react';
 import {
   Dimensions,
   View,
@@ -52,6 +52,7 @@ const renderClose = (navigation, dispatch) => {
 };
 const VideoCarousel = ({route, navigation, array, index = 0}) => {
   const dispatch = useDispatch();
+  const scrollRef = useRef(null);
   const {myArray, setArray} = useState(array);
   const {myIndex, setIndex} = useState(index);
 
@@ -104,9 +105,16 @@ const VideoCarousel = ({route, navigation, array, index = 0}) => {
   // 	</View>
   // );
 
+  scrollRef.scrollTo({
+    x: 0,
+    y: index * Dimensions.get('window').height,
+    animated: false,
+  });
+  //scrollRef.current.scrollTo(0, index * Dimensions.get('window').height);
   return (
     <View>
       <ScrollView
+        ref={(c) => (scrollRef = c)}
         showsVerticalScrollIndicator={false}
         onScroll={function (event) {
           dispatch({

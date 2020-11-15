@@ -95,6 +95,7 @@ class FeedList extends Component {
             mute={true}
             repeat={true}
             ar={this.state.myAr}
+            videoAr={this.props.array}
             index={this.state.myAr.indexOf(al)}
             navigation={this.props.navigation}
             data={al}

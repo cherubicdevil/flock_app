@@ -50,11 +50,14 @@ const Home = ({route, navigation, lastVisible = null}) => {
   //   every render.
   //
   //
-  const [index] = useState(0);
+  //const [index] = useState(0);
+  const index = route.params.scrollIndex;
+  console.log('receive index', index);
   // I'm not sure what this does. Perhaps set the index of VideoCarousel?
   // In which case it should be set by a route param, coming from FeedList
   const dispatch = useDispatch(); // for redux send array off to feedlist
-  const {vidData: vidData} = useSelector((state) => state.videopage);
+  //const {vidData: vidData} = useSelector((state) => state.videopage);
+  const vidData = route.params.vidData;
 
   const [myAr, setMyAr] = useState([]);
   const [productAr, setProductAr] = useState([]);
@@ -77,7 +80,6 @@ const Home = ({route, navigation, lastVisible = null}) => {
   const fetchAlbums = () => {
     const ar = [];
     var counter = 0;
-    console.log('poster1');
     firebase
       .firestore()
       .collection('posts')
@@ -89,7 +91,6 @@ const Home = ({route, navigation, lastVisible = null}) => {
         const n = querySnapshot.size;
         querySnapshot.forEach(async (doc) => {
           const newSource = await fetchStreamableSource(doc.data().video);
-          console.log('poster', newSource);
           const entity = {
             ...doc.data(),
             id: doc.id,
