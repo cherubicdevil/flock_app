@@ -41,7 +41,7 @@ import VideoCarousel from 'App/screens/VideoCarousel';
 import {useSelector, useDispatch} from 'react-redux';
 import {firebase} from 'App/firebase/config';
 import {constants} from 'App/constants';
-import {fetchStreamableSource} from 'App/utils';
+import {fetchAlbums} from 'App/utils';
 
 const Home = ({route, navigation, lastVisible = null}) => {
   // These are the params of this class ^^.
@@ -77,65 +77,6 @@ const Home = ({route, navigation, lastVisible = null}) => {
     // --{route.params.vidVisible}.
   });
 
-  const fetchAlbums = () => {
-    const ar = [];
-    var counter = 0;
-    firebase
-      .firestore()
-      .collection('posts')
-      .orderBy('title')
-      .startAfter(lastVisible)
-      .limit(7)
-      .get()
-      .then((querySnapshot) => {
-        const n = querySnapshot.size;
-        querySnapshot.forEach(async (doc) => {
-          const newSource = await fetchStreamableSource(doc.data().video);
-          const entity = {
-            ...doc.data(),
-            id: doc.id,
-            video: newSource.streamableVideo,
-            poster: newSource.posterSource,
-          };
-          ar.push(entity);
-          counter = counter + 1;
-          if (counter == n) {
-            setMyAr([...myAr, ...ar]);
-            // TODO: change to setMyAr(...myAr,...ar) so that it appends
-            lastVisible = doc;
-            dispatch({type: 'sendData', payload: ar[0]});
-            // sends off the first datum in array...---
-            // ---...presumably to carousel? is this still needed?
-          }
-        });
-      });
-    /*
-	  Fetch products from firebase.collections('products')
-	  Almost same code as for 'posts'.
-
-	  TODO: Should I extract it and put it in utils?
-	  */
-    // const productAr = [];
-    // firebase
-    //   .firestore()
-    //   .collection('products')
-    //   .limit(6)
-    //   .get()
-    //   .then((querySnapshot) => {
-    //     counter = 0;
-    //     const n = querySnapshot.size;
-    //     querySnapshot.forEach((doc) => {
-    //       const entity = doc.data();
-    //       productAr.push(entity);
-    //       counter = counter + 1;
-    //       if (counter === n) {
-    //         setProductAr(productAr);
-    //       }
-    //     });
-    //   });
-    //firebase.firestore().collection('posts').get();
-  };
-
   //return <View style={{flex: 1, backgroundColor: constants.GREY}}></View>;
 
   return (
@@ -165,7 +106,22 @@ const Home = ({route, navigation, lastVisible = null}) => {
       <View style={styles.sectionThreeStyle}>
         <FeedList
           vidVisible={vidVisible}
-          fetchAlbums={fetchAlbums}
+          fetchAlbums={async () => {
+            // const test = await (async () => {
+            //   return new Promise((reso) => {
+            //     (async () => {
+            //       return new Promise((res) => {
+            //         res('hello');
+            //       });
+            //     })().then((hello) => {
+            //       return reso(hello);
+            //     });
+            //   });
+            // })();
+            const {lastVisible: last, ar: ar} = await fetchAlbums();
+            lastVisible = last;
+            setMyAr([...myAr, ...ar]);
+          }}
           array={myAr}
           productArray={productAr}
           navigation={navigation}

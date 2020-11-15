@@ -28,6 +28,7 @@
 */
 
 import {constants} from 'App/constants';
+import {firebase} from 'App/firebase/config';
 
 const fetchStreamableSource = async (src) => {
   if (src === null || src === undefined) {
@@ -53,38 +54,41 @@ const fetchStreamableSource = async (src) => {
   return await urlVar;
 };
 
-const fetchAlbums = (lastVisible) => {
-  const ar = [];
-  var counter = 0;
-  firebase
-    .firestore()
-    .collection('posts')
-    .orderBy('title')
-    .startAfter(lastVisible)
-    .limit(7)
-    .get()
-    .then((querySnapshot) => {
-      const n = querySnapshot.size;
-      querySnapshot.forEach(async (doc) => {
-        const newSource = await fetchStreamableSource(doc.data().video);
-        const entity = {
-          ...doc.data(),
-          id: doc.id,
-          video: newSource.streamableVideo,
-          poster: newSource.posterSource,
-        };
-        ar.push(entity);
-        counter = counter + 1;
-        if (counter == n) {
-          // TODO: change to setMyAr(...myAr,...ar) so that it appends
-          lastVisible = doc;
-          return {ar: ar, lastVisible: lastVisible};
-          // dispatch({type: 'sendData', payload: ar[0]});
-          // sends off the first datum in array...---
-          // ---...presumably to carousel? is this still needed?
-        }
+const fetchAlbums = async (lastVisible = null) => {
+  return new Promise(async (resolve) => {
+    var counter = 0;
+    await firebase
+      .firestore()
+      .collection('posts')
+      .orderBy('title')
+      .startAfter(lastVisible)
+      .limit(7)
+      .get()
+      .then(async (querySnapshot) => {
+        const n = querySnapshot.size;
+        const ar = [];
+        console.log('my ar:', ar);
+        querySnapshot.forEach(async (doc) => {
+          const newSource = await fetchStreamableSource(doc.data().video);
+          const entity = {
+            ...doc.data(),
+            id: doc.id,
+            video: newSource.streamableVideo,
+            poster: newSource.posterSource,
+          };
+          ar.push(entity);
+          counter = counter + 1;
+          if (counter == n) {
+            // TODO: change to setMyAr(...myAr,...ar) so that it appends
+            lastVisible = doc;
+            resolve({ar: ar, lastVisible: lastVisible});
+            // dispatch({type: 'sendData', payload: ar[0]});
+            // sends off the first datum in array...---
+            // ---...presumably to carousel? is this still needed?
+          }
+        });
       });
-    });
+  });
   /*
   Fetch products from firebase.collections('products')
   Almost same code as for 'posts'.
@@ -114,4 +118,4 @@ const fetchProducts = (lastVisible = null) => {
     });
 };
 
-export {fetchStreamableSource};
+export {fetchStreamableSource, fetchAlbums, fetchProducts};
