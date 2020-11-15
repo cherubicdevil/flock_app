@@ -53,4 +53,65 @@ const fetchStreamableSource = async (src) => {
   return await urlVar;
 };
 
+const fetchAlbums = (lastVisible) => {
+  const ar = [];
+  var counter = 0;
+  firebase
+    .firestore()
+    .collection('posts')
+    .orderBy('title')
+    .startAfter(lastVisible)
+    .limit(7)
+    .get()
+    .then((querySnapshot) => {
+      const n = querySnapshot.size;
+      querySnapshot.forEach(async (doc) => {
+        const newSource = await fetchStreamableSource(doc.data().video);
+        const entity = {
+          ...doc.data(),
+          id: doc.id,
+          video: newSource.streamableVideo,
+          poster: newSource.posterSource,
+        };
+        ar.push(entity);
+        counter = counter + 1;
+        if (counter == n) {
+          // TODO: change to setMyAr(...myAr,...ar) so that it appends
+          lastVisible = doc;
+          return {ar: ar, lastVisible: lastVisible};
+          // dispatch({type: 'sendData', payload: ar[0]});
+          // sends off the first datum in array...---
+          // ---...presumably to carousel? is this still needed?
+        }
+      });
+    });
+  /*
+  Fetch products from firebase.collections('products')
+  Almost same code as for 'posts'.
+
+  TODO: Should I extract it and put it in utils?
+  */
+};
+
+const fetchProducts = (lastVisible = null) => {
+  const productAr = [];
+  firebase
+    .firestore()
+    .collection('products')
+    .limit(6)
+    .get()
+    .then((querySnapshot) => {
+      counter = 0;
+      const n = querySnapshot.size;
+      querySnapshot.forEach((doc) => {
+        const entity = doc.data();
+        productAr.push(entity);
+        counter = counter + 1;
+        if (counter === n) {
+          return {productAr: productAr, lastVisible: lastVisible};
+        }
+      });
+    });
+};
+
 export {fetchStreamableSource};
