@@ -51,7 +51,7 @@ class Video extends React.Component {
     const video_uri = this.props.data.video;
     //console.log('ACTUAL RENDERED VIDEO: ', this.props.data.video);
     if (
-      (true && this.props.masonry && this.props.visible) ||
+      ((!this.props.leave || this.props.masonry) && this.props.visible) ||
       this.props.index === this.props.carIndex
     ) {
       return (
@@ -105,7 +105,15 @@ class Video extends React.Component {
         />
       );
     } else {
-      return <View />;
+      return (
+        <View
+          style={{
+            height: 315.55555555555554,
+            // height large enough so that feedlist doesn't jump
+            //width: '100%',
+          }}
+        />
+      );
     }
   }
   render() {

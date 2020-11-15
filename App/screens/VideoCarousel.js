@@ -8,6 +8,8 @@ import {
   Button,
   FlatList,
   SectionList,
+  TouchableWithoutFeedback,
+  Image,
 } from 'react-native';
 import {useDispatch} from 'react-redux';
 import VideoPageNewNew from 'App/screens/VideoPageNewNew';
@@ -20,6 +22,29 @@ const renderArray = (navigation, array) => {
   return array.map((data) => {
     <VideoPageNewNew navigation={navigation} data={data} array={array} />;
   });
+};
+
+const renderClose = (navigation) => {
+  return (
+    <TouchableWithoutFeedback
+      onPress={() => {
+        navigation.navigate('VideoMasonry', {vidVisible: false});
+      }}>
+      <Image
+        style={{
+          height: 20,
+          width: 20,
+          paddingLeft: 10,
+          paddingBottom: 10,
+          position: 'absolute',
+          top: 55,
+          right: 25,
+          zIndex: 30,
+        }}
+        source={require('App/Assets/Images/Close_Icon_White.png')}
+      />
+    </TouchableWithoutFeedback>
+  );
 };
 const VideoCarousel = ({route, navigation, array, index = 0}) => {
   const dispatch = useDispatch();
@@ -76,19 +101,23 @@ const VideoCarousel = ({route, navigation, array, index = 0}) => {
   // );
 
   return (
-    <ScrollView
-      showsVerticalScrollIndicator={false}
-      onScroll={function (event) {
-        dispatch({
-          type: 'sendCarouselIndex',
-          payload:
-            event.nativeEvent.contentOffset.y / Dimensions.get('window').height,
-        });
-      }}
-      horizontal={false}
-      pagingEnabled={true}>
-      {renderAlbums(array)}
-    </ScrollView>
+    <View>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        onScroll={function (event) {
+          dispatch({
+            type: 'sendCarouselIndex',
+            payload:
+              event.nativeEvent.contentOffset.y /
+              Dimensions.get('window').height,
+          });
+        }}
+        horizontal={false}
+        pagingEnabled={true}>
+        {renderAlbums(array)}
+      </ScrollView>
+      {renderClose(navigation)}
+    </View>
   );
 
   // return (

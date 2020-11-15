@@ -180,29 +180,6 @@ const VideoPageNewNew = ({navigation, array, index, data}) => {
     }),
   );
 
-  const renderClose = (navigation) => {
-    return (
-      <TouchableWithoutFeedback
-        onPress={() => {
-          navigation.navigate('VideoMasonry', {vidVisible: false});
-          setPaused(true);
-        }}>
-        <Image
-          style={{
-            height: 20,
-            width: 20,
-            paddingLeft: 10,
-            paddingBottom: 10,
-            position: 'absolute',
-            top: 55,
-            right: 25,
-            zIndex: 30,
-          }}
-          source={require('App/Assets/Images/Close_Icon_White.png')}
-        />
-      </TouchableWithoutFeedback>
-    );
-  };
   const renderProfile = () => {
     // return (
     // 	<Image
@@ -325,11 +302,16 @@ const VideoPageNewNew = ({navigation, array, index, data}) => {
     );
   };
   const renderVid = () => {
+    if (leavePage) {
+      console.log('LEAVING');
+      return <View />;
+    }
     return (
       <View
         style={{
           height: '100%',
           backgroundColor: '#000',
+          justifyContent: 'center',
         }}>
         <View
           style={{
@@ -342,10 +324,11 @@ const VideoPageNewNew = ({navigation, array, index, data}) => {
           <Image
             style={{
               position: 'absolute',
-              height: 315,
+              height: '100%',
               width: '100%',
               zIndex: -10,
             }}
+            blurRadius={10}
             source={{uri: data.poster}}
           />
         </View>
@@ -357,8 +340,9 @@ const VideoPageNewNew = ({navigation, array, index, data}) => {
           navigation={navigation}
           data={data}
           index={index}
+          leave={leavePage}
         />
-        {renderClose(navigation)}
+        {/* {renderClose(navigation)} */}
         {renderProduct(navigation, data)}
         {renderProfile()}
         {renderIcons()}
