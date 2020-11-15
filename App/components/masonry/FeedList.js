@@ -178,10 +178,10 @@ class FeedList extends Component {
       return (
         <View>
           <ScrollView
-            onScroll={(event) => {
+            onScrollEndDrag={(event) => {
               if (
-                event.nativeEvent.contentOffset.y >
-                0.3 * event.nativeEvent.contentSize.height
+                event.nativeEvent.contentOffset.y + 400 >
+                0.8 * event.nativeEvent.contentSize.height
               ) {
                 console.log('should be fetching albums');
                 this.props.fetchAlbums();
@@ -189,7 +189,7 @@ class FeedList extends Component {
 
               console.log(
                 event.nativeEvent.contentOffset.y,
-                0.3 * event.nativeEvent.contentSize.height,
+                0.8 * event.nativeEvent.contentSize.height,
               );
             }}>
             <View

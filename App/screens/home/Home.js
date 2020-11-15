@@ -100,7 +100,7 @@ const Home = ({route, navigation, lastVisible = null}) => {
           ar.push(entity);
           counter = counter + 1;
           if (counter == n) {
-            setMyAr(ar);
+            setMyAr([...myAr, ...ar]);
             // TODO: change to setMyAr(...myAr,...ar) so that it appends
             lastVisible = doc;
             dispatch({type: 'sendData', payload: ar[0]});
