@@ -106,7 +106,11 @@ const Home = ({route, navigation, lastVisible = null}) => {
             alignItems: 'center',
             justifyContent: 'center',
           }}>
-          <Text>Curating your clucks</Text>
+          <Image
+            style={{width: 60, height: 60}}
+            source={require('App/Assets/Images/cute_duck.png')}
+          />
+          <Text style={{fontFamily: 'Nunito-Light'}}>Curating your clucks</Text>
         </View>
         <FeedList
           vidVisible={vidVisible}

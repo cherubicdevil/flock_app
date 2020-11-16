@@ -199,7 +199,9 @@ class FeedList extends Component {
                 flex: 1,
                 //backgroundColor: this.state.isInView ? 'yellow' : '#f9c2ff',
               }}>
-              <View style={{flex: 1}}>{this.renderClucks(album1)}</View>
+              <View style={{flex: 1, backgroundColor: '#ddd'}}>
+                {this.renderClucks(album1)}
+              </View>
               <View key="1" style={{flex: 1}}>
                 {this.renderClucks(album2)}
               </View>
