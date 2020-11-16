@@ -54,10 +54,10 @@ const fetchStreamableSource = async (src) => {
   return await urlVar;
 };
 
-const fetchAlbums = async (lastVisible = null) => {
+const fetchAlbums = (lastVisible = null) => {
   return new Promise(async (resolve) => {
     var counter = 0;
-    await firebase
+    firebase
       .firestore()
       .collection('posts')
       .orderBy('title')

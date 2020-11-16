@@ -17,7 +17,7 @@ import {firebase} from 'App/firebase/config';
 import AlbumDetail from '../unused/AlbumDetail';
 import DynImage from './DynImage';
 import HalfProduct from 'App/components/HalfProduct';
-import constants from 'App/constants';
+import {constants} from 'App/constants';
 
 class FeedList extends Component {
   state = {album1: [], album2: [], myAr: [], visible: true, inInView: false};
@@ -185,7 +185,7 @@ class FeedList extends Component {
                 0.8 * event.nativeEvent.contentSize.height
               ) {
                 console.log('should be fetching albums');
-                this.props.fetchAlbums();
+                //this.props.fetchAlbums();
               }
 
               console.log(
