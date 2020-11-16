@@ -77,8 +77,6 @@ const Home = ({route, navigation, lastVisible = null}) => {
     // --{route.params.vidVisible}.
   });
 
-  //return <View style={{flex: 1, backgroundColor: constants.GREY}}></View>;
-
   return (
     <View style={{flex: 1, backgroundColor: constants.GREY}}>
       <View style={styles.sectionOneStyle}>
@@ -107,17 +105,6 @@ const Home = ({route, navigation, lastVisible = null}) => {
         <FeedList
           vidVisible={vidVisible}
           fetchAlbums={async () => {
-            // const test = await (async () => {
-            //   return new Promise((reso) => {
-            //     (async () => {
-            //       return new Promise((res) => {
-            //         res('hello');
-            //       });
-            //     })().then((hello) => {
-            //       return reso(hello);
-            //     });
-            //   });
-            // })();
             const {lastVisible: last, ar: ar} = await fetchAlbums();
             lastVisible = last;
             setMyAr([...myAr, ...ar]);

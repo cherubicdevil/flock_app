@@ -17,6 +17,7 @@ import PaymentInfo from 'App/screens/PaymentInfo';
 import Success from 'App/screens/Success';
 import PayTest from 'App/screens/PayTest';
 import ProfileMain from 'App/screens/profile/ProfileMain';
+import Carousel from 'App/screens/Carousel';
 
 const Stack = createStackNavigator();
 
@@ -24,18 +25,23 @@ const AppNavigator5 = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="Home"
+        initialRouteName="Carousel"
         screenOptions={{
           headerShown: false,
           animationEnabled: false,
         }}>
         <Stack.Screen
-          name="Home"
-          component={Home}
+          name="Carousel"
+          component={Carousel}
           initialParams={{vidVisible: true}}
         />
         <Stack.Screen
           name="VideoMasonry"
+          component={Home}
+          initialParams={{vidVisible: false}}
+        />
+        <Stack.Screen
+          name="Home"
           component={Home}
           initialParams={{vidVisible: false}}
         />
