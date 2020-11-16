@@ -40,7 +40,7 @@ class FeedList extends Component {
     // 	props.setEgg(0);
     // });
 
-    props.fetchAlbums();
+    //props.fetchAlbums();
   }
 
   checkVisible(isVisible) {

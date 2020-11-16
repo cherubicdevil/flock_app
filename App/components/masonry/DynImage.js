@@ -135,7 +135,6 @@ const DynImage = ({
   return (
     <InViewPort
       onChange={(isVisible) => {
-        console.log(isVisible);
         setIsInView(isVisible);
       }}>
       <View
