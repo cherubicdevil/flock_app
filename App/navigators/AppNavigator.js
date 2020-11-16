@@ -20,74 +20,76 @@ import ProfileMain from 'App/screens/profile/ProfileMain';
 import Carousel from 'App/screens/Carousel';
 
 const Stack = createStackNavigator();
+const Tab = createBottomTabNavigator();
 
 const AppNavigator5 = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator
+      <Tab.Navigator
         initialRouteName="Carousel"
         screenOptions={{
           headerShown: false,
           animationEnabled: false,
         }}>
-        <Stack.Screen
+        <Tab.Screen
           name="Carousel"
           component={Carousel}
+          options={{tabBarVisible: false}}
           initialParams={{vidVisible: true}}
         />
-        <Stack.Screen
+        <Tab.Screen
           name="VideoMasonry"
           component={Home}
           initialParams={{vidVisible: false}}
         />
-        <Stack.Screen
+        <Tab.Screen
           name="Home"
           component={Home}
           initialParams={{vidVisible: false}}
         />
-        <Stack.Screen
+        <Tab.Screen
           name="CamScreen"
           component={CamNavigator}
           initialParams={{vidVisible: false}}
           option={{animationEnabled: false}}
         />
-        <Stack.Screen
+        <Tab.Screen
           name="Profile"
           component={Profile}
           initialParams={{vidVisible: false}}
         />
-        <Stack.Screen
+        <Tab.Screen
           name="ProfileMain"
           component={ProfileMain}
           initialParams={{vidVisible: false}}
         />
-        <Stack.Screen
+        <Tab.Screen
           name="Products"
           component={Products}
           initialParams={{vidVisible: false}}
         />
-        <Stack.Screen
+        <Tab.Screen
           name="Product"
           component={Product}
           initialParams={{vidVisible: false}}
         />
-        <Stack.Screen
+        <Tab.Screen
           name="PayTest"
           component={PayTest}
           initialParams={{vidVisible: false}}
         />
-        <Stack.Screen
+        <Tab.Screen
           name="Payment"
           component={PaymentInfo}
           initialParams={{vidVisible: false}}
         />
-        <Stack.Screen
+        <Tab.Screen
           name="Success"
           component={Success}
           initialParams={{vidVisible: false}}
         />
-        <Stack.Screen name="Egg" component={Egg} />
-      </Stack.Navigator>
+        <Tab.Screen name="Egg" component={Egg} />
+      </Tab.Navigator>
     </NavigationContainer>
   );
 };
