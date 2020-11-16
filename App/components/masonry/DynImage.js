@@ -1,12 +1,5 @@
 import React, {useState} from 'react';
-import {
-  Dimensions,
-  View,
-  Text,
-  StyleSheet,
-  Image,
-  TouchableOpacity,
-} from 'react-native';
+import {Dimensions, View, Text, Image, TouchableOpacity} from 'react-native';
 //import InView from 'react-native-component-inview';
 import InViewPort from 'App/components/InViewPort';
 import {useDispatch} from 'react-redux';
@@ -21,7 +14,139 @@ import LinearGradient from 'react-native-linear-gradient';
 import {constants} from 'App/constants';
 const berryRate = 0.2;
 
-const database = firebase.database();
+const DynImage = ({
+  mute,
+  repeat,
+  ar,
+  index,
+  style,
+  source,
+  title,
+  type,
+  video,
+  videoAr,
+  navigation,
+  data,
+}) => {
+  const [width, setWidth] = useState(Dimensions.get('window').width / 2 - 10);
+  const [height, setHeight] = useState(0);
+  // const [vHeight, setVHeight] = useState(20);
+  // const [loading, setLoad] = useState(false);
+  // const maxWidth = Dimensions.get('window').width / 2 - 10;
+  // const maxHeight = Dimensions.get('window').height;
+  // if (data.type !== 'video') {
+  //   Image.getSize(
+  //     source.uri,
+  //     (srcWidth, srcHeight) => {
+  //       const ratio = Math.min(maxWidth / srcWidth, maxHeight / srcHeight);
+  //       setWidth(srcWidth * ratio);
+  //       setHeight(srcHeight * ratio);
+  //     },
+  //     () => {
+  //       setWidth(Dimensions.get('window').width / 2 - 10);
+  //       setHeight(100);
+  //     },
+  //   );
+  // }
+
+  const [isInView, setIsInView] = useState(false);
+  const checkVisible = (isVisible) => {
+    if (isVisible) {
+      setIsInView(isVisible);
+    } else {
+      setIsInView(isVisible);
+    }
+  };
+  const RenderMedia = () => {
+    const [vh, setVH] = useState(0);
+    const changeViewHeight = (height) => {
+      setVH(height);
+    };
+    if (type !== null && type === 'video') {
+      const dispatch = useDispatch();
+      return (
+        <TouchableOpacity
+          onPress={() => {
+            console.log(console.log(videoAr.indexOf(data)));
+            dispatch({type: 'sendData', payload: data});
+            dispatch({
+              type: 'sendCarouselIndex',
+              payload: videoAr.indexOf(data),
+            });
+            navigation.navigate('Carousel', {
+              scrollIndex: videoAr.indexOf(data),
+              vidData: data,
+            });
+          }}>
+          <View style={{backgroundColor: '#ddd'}}>
+            <Video
+              viewHeight={vh}
+              persistHeightFunc={changeViewHeight}
+              visible={isInView}
+              masonry={true}
+              muted={true}
+              paused={false}
+              repeat={repeat}
+              data={data}
+              maxWidth={width}
+            />
+          </View>
+          <LinearGradient
+            colors={['transparent', '#000']}
+            style={{
+              height: 70,
+              width: '100%',
+              position: 'absolute',
+              bottom: 0,
+              justifyContent: 'center',
+              zIndex: 40,
+            }}>
+            <Text
+              style={{
+                marginLeft: 10,
+                color: isInView ? '#fff' : '#aea',
+                fontFamily: 'Nunito-Bold',
+              }}>
+              {title}
+            </Text>
+          </LinearGradient>
+        </TouchableOpacity>
+      );
+    } else {
+      return (
+        <FastImage
+          style={[styles.mediaStyle, {width: width, height: height}]}
+          source={{
+            uri: source.uri,
+          }}
+        />
+      );
+    }
+  };
+  return (
+    <InViewPort
+      onChange={(isVisible) => {
+        console.log(isVisible);
+        setIsInView(isVisible);
+      }}>
+      <View
+        style={{
+          borderRadius: 15,
+          overflow: 'hidden',
+          marginLeft: 5,
+          width: width,
+          //height: 400,
+        }}>
+        {renderBerry()}
+
+        <RenderMedia />
+
+        {renderProduct(data)}
+        <View style={{height: 10}} />
+      </View>
+    </InViewPort>
+  );
+};
 
 const renderRightBlurb = (product, title) => {
   if (product.image) {
@@ -139,150 +264,7 @@ const renderBerry = () => {
   }
 };
 
-const DynImage = ({
-  mute,
-  repeat,
-  ar,
-  index,
-  style,
-  source,
-  title,
-  type,
-  video,
-  videoAr,
-  navigation,
-  data,
-}) => {
-  const [width, setWidth] = useState(Dimensions.get('window').width / 2 - 10);
-  const [height, setHeight] = useState(0);
-  const [vHeight, setVHeight] = useState(20);
-  const [loading, setLoad] = useState(false);
-  const maxWidth = Dimensions.get('window').width / 2 - 10;
-  const maxHeight = Dimensions.get('window').height;
-  if (data.type !== 'video') {
-    Image.getSize(
-      source.uri,
-      (srcWidth, srcHeight) => {
-        const ratio = Math.min(maxWidth / srcWidth, maxHeight / srcHeight);
-        //console.log(source.uri, srcWidth, srcHeight);
-        setWidth(srcWidth * ratio);
-        setHeight(srcHeight * ratio);
-        // console.log(`successful imageGet: ${srcWidth} ${srcHeight}`)
-      },
-      () => {
-        //console.log(source.uri);
-        setWidth(Dimensions.get('window').width / 2 - 10);
-        setHeight(100);
-      },
-    );
-  }
-  //console.log(width, height);
-
-  const [isInView, setIsInView] = useState(false);
-  const checkVisible = (isVisible) => {
-    if (isVisible) {
-      setIsInView(isVisible);
-    } else {
-      setIsInView(isVisible);
-    }
-  };
-  const RenderMedia = () => {
-    const [vh, setVH] = useState(0);
-    const changeViewHeight = (height) => {
-      //console.log('changing vheight:', vh);
-      //console.log(height);
-      setVH(height);
-      //console.log('changed vheight: ', vh);
-    };
-    if (type !== null && type === 'video') {
-      const dispatch = useDispatch();
-      return (
-        <TouchableOpacity
-          onPress={() => {
-            console.log(console.log(videoAr.indexOf(data)));
-            dispatch({type: 'sendData', payload: data});
-            dispatch({
-              type: 'sendCarouselIndex',
-              payload: videoAr.indexOf(data),
-            });
-            // dispatch({type: 'showVid'});
-            navigation.navigate('Carousel', {
-              scrollIndex: videoAr.indexOf(data),
-              vidData: data,
-            });
-          }}>
-          <View style={{backgroundColor: '#ddd'}}>
-            <Video
-              viewHeight={vh}
-              persistHeightFunc={changeViewHeight}
-              visible={isInView}
-              masonry={true}
-              muted={true}
-              paused={false}
-              repeat={repeat}
-              data={data}
-              maxWidth={width}
-            />
-          </View>
-          <LinearGradient
-            colors={['transparent', '#000']}
-            style={{
-              height: 70,
-              width: '100%',
-              position: 'absolute',
-              bottom: 0,
-              justifyContent: 'center',
-              //backgroundColor: 'rgba(0,0,0,0.7)',
-              zIndex: 40,
-            }}>
-            <Text
-              style={{
-                marginLeft: 10,
-                color: isInView ? '#fff' : '#aea',
-                fontFamily: 'Nunito-Bold',
-              }}>
-              {title}
-            </Text>
-          </LinearGradient>
-        </TouchableOpacity>
-      );
-    } else {
-      return (
-        <FastImage
-          style={[styles.mediaStyle, {width: width, height: height}]}
-          source={{
-            uri: source.uri,
-          }}
-        />
-      );
-    }
-  };
-  return (
-    <InViewPort
-      onChange={(isVisible) => {
-        console.log(isVisible);
-        setIsInView(isVisible);
-      }}>
-      <View
-        style={{
-          borderRadius: 15,
-          overflow: 'hidden',
-          marginLeft: 5,
-          width: width,
-          //height: 400,
-        }}>
-        {renderBerry()}
-
-        <RenderMedia />
-
-        {renderProduct(data)}
-        <View style={{height: 10}} />
-      </View>
-    </InViewPort>
-  );
-};
-
-const styles = StyleSheet.create({
+const styles = {
   textStyle: {
     color: '#fff',
     backgroundColor: 'rgba(0,0,0,0.3)',
@@ -293,6 +275,6 @@ const styles = StyleSheet.create({
 
     backgroundColor: 'rgba(0,0,0,0.3)',
   },
-});
+};
 
 export default DynImage;

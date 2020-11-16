@@ -28,13 +28,7 @@
 */
 
 import React, {useState, useEffect} from 'react';
-import {
-  View,
-  StyleSheet,
-  TextInput,
-  Image,
-  ImageBackground,
-} from 'react-native';
+import {View, Text, TextInput, Image, ImageBackground} from 'react-native';
 import NavBar from 'App/components/static/NavBar';
 import FeedList from 'App/components/masonry/FeedList';
 import VideoCarousel from 'App/screens/VideoCarousel';
@@ -102,6 +96,18 @@ const Home = ({route, navigation, lastVisible = null}) => {
       </View>
 
       <View style={styles.sectionThreeStyle}>
+        <View
+          style={{
+            position: 'absolute',
+            flex: 1,
+            height: '100%',
+            width: '100%',
+            zIndex: -10,
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}>
+          <Text>Curating your clucks</Text>
+        </View>
         <FeedList
           vidVisible={vidVisible}
           fetchAlbums={async () => {
@@ -121,7 +127,7 @@ const Home = ({route, navigation, lastVisible = null}) => {
   );
 };
 
-const styles = StyleSheet.create({
+const styles = {
   sectionOneStyle: {
     paddingLeft: 5,
     paddingBottom: 4,
@@ -209,6 +215,6 @@ const styles = StyleSheet.create({
     width: 24,
     borderRadius: 12,
   },
-});
+};
 
 export default Home;
