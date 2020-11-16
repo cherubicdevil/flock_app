@@ -18,18 +18,11 @@ import AlbumDetail from '../unused/AlbumDetail';
 import DynImage from './DynImage';
 import HalfProduct from 'App/components/HalfProduct';
 import {constants} from 'App/constants';
+import {fetchAlbums} from 'App/utils';
 
 class FeedList extends Component {
   state = {album1: [], album2: [], myAr: [], visible: true, inInView: false};
 
-  // testRally() {
-  // 	this.setState({ loading: true })
-  // 	fetch('http://rallycoding.herokuapp.com/api/music_albums')
-  // 		.then((response) => response.json())
-  // 		.then((responseData) => {
-  // 			this.setState({ albums: responseData, loading: false })
-  // 		})
-  // };
   constructor(props) {
     super(props);
     // const userId = firebase.auth().currentUser.uid;
@@ -41,41 +34,24 @@ class FeedList extends Component {
     // });
 
     //props.fetchAlbums();
+    console.log('HELLO WORLD');
+    try {
+      console.log(this.props.route.params);
+    } catch (err) {
+      console.log('ERROR IN FEEDLIST GETTING PARAMS', err);
+    }
   }
 
   checkVisible(isVisible) {
     this.setState({isInView: isVisible});
   }
-
-  // fetchAlbums() {
-  // 	const ar = [];
-  // 	var counter = 0;
-  // 	firebase
-  // 		.firestore()
-  // 		.collection('posts')
-  // 		//.where()
-  // 		.limit(7)
-  // 		.get()
-  // 		.then((querySnapshot) => {
-  // 			const n = querySnapshot.size;
-  // 			querySnapshot.forEach((doc) => {
-  // 				const entity = doc.data();
-  // 				//console.log(Image.prefetch(entity.image))
-  // 				ar.push(entity);
-  // 				counter = counter + 1;
-  // 				//console.log(counter);
-  // 				if (counter == n) {
-  // 					//console.log(ar);
-  // this.setState({
-  // 	myAr: ar,
-  // 	album1: ar.slice(0, ar.length / 2),
-  // 	album2: ar.slice(ar.length / 2, ar.length),
-  // });
-  // 				}
-  // 			});
-  // 		});
-  // }
   componentDidMount() {
+    console.log('HELLO WORLD');
+    try {
+      console.log(this.props.route.params.videoData.length);
+    } catch (err) {
+      console.log('ERROR IN FEEDLIST GETTING PARAMS', err);
+    }
     this.setState({
       album1: this.props.array.slice(0, this.props.array.length / 2),
       album2: this.props.array.slice(
@@ -142,7 +118,6 @@ class FeedList extends Component {
   }
 
   renderProducts(albums) {
-    //return <Text>Hello</Text>;
     return albums.map((al) => (
       <HalfProduct
         key={al.title}
@@ -152,25 +127,9 @@ class FeedList extends Component {
     ));
   }
 
-  // renderAlbums(albums) {
-  // 	return albums.map((al) =>
-  // 		al.image ? (
-  // 			<DynImage
-  // 				source={{uri: al.image}}
-  // 				title={al.title}
-  // 				style={{}}
-  // 				type={al.type}
-  // 				key={'hi'.concat(Math.random())}
-  // 			/>
-  // 		) : (
-  // 			<View key={Math.random()} />
-  // 		),
-  // 	);
-  // }
-
   render() {
     //console.log(this.props.array.length, this.props.productArray.length);
-    const ar = this.mergeArrays(this.props.array, this.props.productArray);
+    const ar = this.mergeArrays(this.props.route.params.videoData, []);
     //console.log('length of merge,', ar.length);
     const album1 = ar.slice(0, ar.length / 2);
     const album2 = ar.slice(ar.length / 2, ar.length);
@@ -216,11 +175,6 @@ class FeedList extends Component {
   }
 }
 
-function mapDispatchToProps(dispatch) {
-  return {
-    setEgg: () => dispatch('setEgg'),
-  };
-}
 const styles = {
   columnStyle: {flex: 1, backgroundColor: constants.GREY},
 };

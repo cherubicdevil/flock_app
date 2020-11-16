@@ -67,7 +67,6 @@ const fetchAlbums = (lastVisible = null) => {
       .then(async (querySnapshot) => {
         const n = querySnapshot.size;
         const ar = [];
-        console.log('my ar:', ar);
         querySnapshot.forEach(async (doc) => {
           const newSource = await fetchStreamableSource(doc.data().video);
           const entity = {

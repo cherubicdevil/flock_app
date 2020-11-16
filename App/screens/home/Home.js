@@ -46,12 +46,12 @@ const Home = ({route, navigation, lastVisible = null}) => {
   //
   //const [index] = useState(0);
   const index = route.params.scrollIndex;
-  console.log('receive index', index);
   // I'm not sure what this does. Perhaps set the index of VideoCarousel?
   // In which case it should be set by a route param, coming from FeedList
   const dispatch = useDispatch(); // for redux send array off to feedlist
   //const {vidData: vidData} = useSelector((state) => state.videopage);
   const vidData = route.params.vidData;
+  console.log('HOME', route.params);
 
   const [myAr, setMyAr] = useState([]);
   const [productAr, setProductAr] = useState([]);

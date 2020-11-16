@@ -32,7 +32,7 @@ const VideoCarousel = ({route, navigation, array, index = 0, data}) => {
 
   // assert: is array and data always going to be defined now?
   try {
-    console.log('HELLOOO');
+    ar.length;
   } catch (err) {
     console.log('ERR: looks like array is not defined', err);
   }
@@ -54,7 +54,7 @@ const VideoCarousel = ({route, navigation, array, index = 0, data}) => {
         pagingEnabled={true}>
         {renderAlbums(ar, route, navigation)}
       </ScrollView>
-      {renderClose(navigation, dispatch, array, lastVisible)}
+      {renderClose(navigation, dispatch, ar, lastVisible)}
     </View>
   );
 };
@@ -85,9 +85,10 @@ const renderClose = (navigation, dispatch, array, lastVisible) => {
           type: 'sendCarouselIndex',
           payload: -1,
         });
-        navigation.navigate('Home', {
+        navigation.navigate('VideoMasonry', {
           videoData: array,
           lastVisible: lastVisible,
+          hello: 'hello',
         });
       }}>
       <Image
