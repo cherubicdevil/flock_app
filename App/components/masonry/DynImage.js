@@ -12,6 +12,7 @@ import Video from 'App/components/Video';
 import RVideo from 'react-native-video';
 import LinearGradient from 'react-native-linear-gradient';
 import {constants} from 'App/constants';
+import {getIndexByTitle} from 'App/utils';
 const berryRate = 0.2;
 
 const DynImage = ({
@@ -74,7 +75,7 @@ const DynImage = ({
       return (
         <TouchableOpacity
           onPress={() => {
-            console.log(console.log(videoAr.indexOf(data)));
+            console.log('DYN index', getIndexByTitle(videoAr, data));
             dispatch({type: 'sendData', payload: data});
             dispatch({
               type: 'sendCarouselIndex',

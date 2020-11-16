@@ -51,7 +51,6 @@ const Home = ({route, navigation, lastVisible = null}) => {
   const dispatch = useDispatch(); // for redux send array off to feedlist
   //const {vidData: vidData} = useSelector((state) => state.videopage);
   const vidData = route.params.vidData;
-  console.log('HOME', route.params);
 
   const [myAr, setMyAr] = useState([]);
   const [productAr, setProductAr] = useState([]);

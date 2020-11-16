@@ -34,9 +34,8 @@ class FeedList extends Component {
     // });
 
     //props.fetchAlbums();
-    console.log('HELLO WORLD');
     try {
-      console.log(this.props.route.params);
+      this.props.route.params;
     } catch (err) {
       console.log('ERROR IN FEEDLIST GETTING PARAMS', err);
     }
@@ -72,7 +71,7 @@ class FeedList extends Component {
             mute={true}
             repeat={true}
             ar={this.state.myAr}
-            videoAr={this.props.array}
+            videoAr={this.props.route.params.videoData}
             index={this.state.myAr.indexOf(al)}
             navigation={this.props.navigation}
             data={al}
@@ -133,7 +132,7 @@ class FeedList extends Component {
     //console.log('length of merge,', ar.length);
     const album1 = ar.slice(0, ar.length / 2);
     const album2 = ar.slice(ar.length / 2, ar.length);
-    console.log('lengths:', album1.length, album2.length, ar.length);
+    console.log(this.props.route.params.videoData[0].title);
     if (!this.props.vidVisible) {
       return (
         <View>

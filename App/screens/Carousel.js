@@ -16,7 +16,10 @@ const VideoCarousel = ({route, navigation, array, index = 0, data}) => {
   const scrollRef = useRef(null);
   const [ar, setAr] = useState([]);
   var lastVisible = null;
-
+  if (route?.params?.scrollIndex !== undefined) {
+    index = route.params.scrollIndex;
+  }
+  console.log('index', index);
   useEffect(() => {
     (async () => {
       if (route?.params?.array === undefined) {
