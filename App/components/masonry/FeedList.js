@@ -17,6 +17,7 @@ import {firebase} from 'App/firebase/config';
 import AlbumDetail from '../unused/AlbumDetail';
 import DynImage from './DynImage';
 import HalfProduct from 'App/components/HalfProduct';
+import constants from 'App/constants';
 
 class FeedList extends Component {
   state = {album1: [], album2: [], myAr: [], visible: true, inInView: false};
@@ -102,7 +103,7 @@ class FeedList extends Component {
             source={{uri: al.image || al.video}}
             title={al.title}
             type={al.type}
-            key={al.title}
+            key={al.title + Math.random()}
           />
         );
       }
@@ -199,10 +200,10 @@ class FeedList extends Component {
                 flex: 1,
                 //backgroundColor: this.state.isInView ? 'yellow' : '#f9c2ff',
               }}>
-              <View style={{flex: 1, backgroundColor: '#ddd'}}>
+              <View style={styles.columnStyle}>
                 {this.renderClucks(album1)}
               </View>
-              <View key="1" style={{flex: 1}}>
+              <View key="1" style={styles.columnStyle}>
                 {this.renderClucks(album2)}
               </View>
             </View>
@@ -220,6 +221,8 @@ function mapDispatchToProps(dispatch) {
     setEgg: () => dispatch('setEgg'),
   };
 }
-const styles = StyleSheet.create({});
+const styles = {
+  columnStyle: {flex: 1, backgroundColor: constants.GREY},
+};
 
 export default FeedList;
