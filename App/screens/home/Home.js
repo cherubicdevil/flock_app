@@ -116,20 +116,7 @@ const Home = ({route, navigation, lastVisible = null}) => {
         />
       </View>
 
-      {vidVisible ? (
-        <View style={styles.carouselWrapper}>
-          <VideoCarousel
-            route={route}
-            navigation={navigation}
-            array={myAr}
-            index={index}
-            data={vidData}
-            style={{}}
-          />
-        </View>
-      ) : (
-        <NavBar route={route} navigation={navigation} />
-      )}
+      <NavBar route={route} navigation={navigation} />
     </View>
   );
 };

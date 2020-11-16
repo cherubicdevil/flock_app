@@ -206,8 +206,7 @@ const DynImage = ({
               payload: videoAr.indexOf(data),
             });
             // dispatch({type: 'showVid'});
-            navigation.navigate('Home', {
-              vidVisible: true,
+            navigation.navigate('Carousel', {
               scrollIndex: videoAr.indexOf(data),
               vidData: data,
             });

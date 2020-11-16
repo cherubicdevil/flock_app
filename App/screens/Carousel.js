@@ -54,7 +54,7 @@ const VideoCarousel = ({route, navigation, array, index = 0, data}) => {
         pagingEnabled={true}>
         {renderAlbums(ar, route, navigation)}
       </ScrollView>
-      {renderClose(navigation, dispatch, array)}
+      {renderClose(navigation, dispatch, array, lastVisible)}
     </View>
   );
 };
@@ -77,7 +77,7 @@ const renderAlbums = (array, route, navigation) => {
   }
 };
 
-const renderClose = (navigation, dispatch, array) => {
+const renderClose = (navigation, dispatch, array, lastVisible) => {
   return (
     <TouchableWithoutFeedback
       onPress={() => {
@@ -85,9 +85,9 @@ const renderClose = (navigation, dispatch, array) => {
           type: 'sendCarouselIndex',
           payload: -1,
         });
-        navigation.navigate('VideoMasonry', {
-          vidVisible: false,
+        navigation.navigate('Home', {
           videoData: array,
+          lastVisible: lastVisible,
         });
       }}>
       <Image
