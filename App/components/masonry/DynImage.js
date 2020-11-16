@@ -62,66 +62,57 @@ const DynImage = ({
     const changeViewHeight = (height) => {
       setVH(height);
     };
-    if (type !== null && type === 'video') {
-      const dispatch = useDispatch();
-      return (
-        <TouchableOpacity
-          onPress={() => {
-            console.log(console.log(videoAr.indexOf(data)));
-            dispatch({type: 'sendData', payload: data});
-            dispatch({
-              type: 'sendCarouselIndex',
-              payload: videoAr.indexOf(data),
-            });
-            navigation.navigate('Carousel', {
-              scrollIndex: videoAr.indexOf(data),
-              vidData: data,
-            });
+    // maybe check for type null
+    // FLOCK_BUG ??
+    const dispatch = useDispatch();
+    return (
+      <TouchableOpacity
+        onPress={() => {
+          console.log(console.log(videoAr.indexOf(data)));
+          dispatch({type: 'sendData', payload: data});
+          dispatch({
+            type: 'sendCarouselIndex',
+            payload: videoAr.indexOf(data),
+          });
+          navigation.navigate('Carousel', {
+            scrollIndex: videoAr.indexOf(data),
+            vidData: data,
+          });
+        }}>
+        <View style={{backgroundColor: '#ddd'}}>
+          <Video
+            viewHeight={vh}
+            persistHeightFunc={changeViewHeight}
+            visible={isInView}
+            masonry={true}
+            muted={true}
+            paused={false}
+            repeat={repeat}
+            data={data}
+            maxWidth={width}
+          />
+        </View>
+        <LinearGradient
+          colors={['transparent', '#000']}
+          style={{
+            height: 70,
+            width: '100%',
+            position: 'absolute',
+            bottom: 0,
+            justifyContent: 'center',
+            zIndex: 40,
           }}>
-          <View style={{backgroundColor: '#ddd'}}>
-            <Video
-              viewHeight={vh}
-              persistHeightFunc={changeViewHeight}
-              visible={isInView}
-              masonry={true}
-              muted={true}
-              paused={false}
-              repeat={repeat}
-              data={data}
-              maxWidth={width}
-            />
-          </View>
-          <LinearGradient
-            colors={['transparent', '#000']}
+          <Text
             style={{
-              height: 70,
-              width: '100%',
-              position: 'absolute',
-              bottom: 0,
-              justifyContent: 'center',
-              zIndex: 40,
+              marginLeft: 10,
+              color: isInView ? '#fff' : '#aea',
+              fontFamily: 'Nunito-Bold',
             }}>
-            <Text
-              style={{
-                marginLeft: 10,
-                color: isInView ? '#fff' : '#aea',
-                fontFamily: 'Nunito-Bold',
-              }}>
-              {title}
-            </Text>
-          </LinearGradient>
-        </TouchableOpacity>
-      );
-    } else {
-      return (
-        <FastImage
-          style={[styles.mediaStyle, {width: width, height: height}]}
-          source={{
-            uri: source.uri,
-          }}
-        />
-      );
-    }
+            {title}
+          </Text>
+        </LinearGradient>
+      </TouchableOpacity>
+    );
   };
   return (
     <InViewPort
