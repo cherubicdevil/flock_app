@@ -34,7 +34,6 @@ import styles from './home/Home.style.ios';
 
 const Egg = ({route, navigation}) => {
   const selector = useSelector((state) => state);
-
   return (
     <ImageBackground style={{flex: 1}} source={constants.GRADIENT2}>
       <View style={styles.contentWrapper}>
