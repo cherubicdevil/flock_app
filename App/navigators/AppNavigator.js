@@ -68,7 +68,7 @@ const TestBar = ({descriptors, state, navigation}) => {
   );
 };
 const AddItem = ({image, text, navigation, route}) => {
-  const [modalOpen, setModalOpen] = useState(true);
+  const [modalOpen, setModalOpen] = useState(false);
   return (
     <>
       <OptionsModal
@@ -103,16 +103,37 @@ const AddItem = ({image, text, navigation, route}) => {
         }}
       />
       <TouchableOpacity
+        style={{flex: 1}}
         onPress={() => {
           setModalOpen(true);
         }}>
-        <NavItem
-          image={image}
-          text={text}
-          navigation={navigation}
-          route={route}
-        />
+        <InItem image={image} text={text} />
       </TouchableOpacity>
+    </>
+  );
+};
+
+const InItem = ({image, text, focused}) => {
+  return (
+    <>
+      <Image
+        source={image}
+        style={{
+          height: '100%',
+          width: null,
+          marginTop: -5,
+          resizeMode: 'contain',
+          tintColor: focused ? constants.PURPLE : constants.ICONGREY,
+        }}
+      />
+      <Text
+        style={{
+          fontFamily: constants.FONT,
+          color: focused ? constants.PURPLE : constants.ICONGREY,
+          textAlign: 'center',
+        }}>
+        {text}
+      </Text>
     </>
   );
 };
@@ -124,25 +145,8 @@ const NavItem = ({image, text, focused, navigation, route}) => {
           navigation.navigate(route.name);
         }
       }}
-      style={{flex: 1, marginBottom: 10}}>
-      <Image
-        source={image}
-        style={{
-          height: '100%',
-          width: null,
-          resizeMode: 'contain',
-          tintColor: focused ? constants.PURPLE : constants.ICONGREY,
-        }}
-      />
-      <Text
-        style={{
-          fontFamily: constants.FONT,
-          marginBottom: 10,
-          color: focused ? constants.PURPLE : constants.ICONGREY,
-          textAlign: 'center',
-        }}>
-        {text}
-      </Text>
+      style={{flex: 1}}>
+      <InItem image={image} text={text} focused={focused} />
     </TouchableOpacity>
   );
 };
