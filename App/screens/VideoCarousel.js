@@ -82,6 +82,7 @@ const VideoCarousel = ({route, navigation, array, index = 0}) => {
           navigation={navigation}
           array={array}
           index={array.indexOf(al)}
+          currIndex={index}
           data={al}></VideoPageNewNew>
       </View>
     );

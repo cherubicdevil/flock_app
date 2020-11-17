@@ -15,6 +15,7 @@ const VideoCarousel = ({route, navigation, array, index = 0, data}) => {
   const dispatch = useDispatch();
   const scrollRef = useRef(null);
   const [ar, setAr] = useState([]);
+  const [dat, setDat] = useState(data);
   var lastVisible = null;
   if (route?.params?.scrollIndex !== undefined) {
     index = route.params.scrollIndex;
@@ -29,6 +30,8 @@ const VideoCarousel = ({route, navigation, array, index = 0, data}) => {
         //console.log('ARR', arr);
         // I'm going to assume data is always defined when array is
         // possible FLOCK_BUG
+        // also, what if array is empty?
+        setDat(arr[0]);
       }
     })();
   }, []);
@@ -55,14 +58,14 @@ const VideoCarousel = ({route, navigation, array, index = 0, data}) => {
         }}
         horizontal={false}
         pagingEnabled={true}>
-        {renderAlbums(ar, route, navigation)}
+        {renderAlbums(ar, route, navigation, index)}
       </ScrollView>
       {renderClose(navigation, dispatch, ar, lastVisible)}
     </View>
   );
 };
 
-const renderAlbums = (array, route, navigation) => {
+const renderAlbums = (array, route, navigation, currIndex) => {
   try {
     return array.map((al) => (
       <View key={al.id + Math.random()} style={styles.outer}>
@@ -72,6 +75,7 @@ const renderAlbums = (array, route, navigation) => {
           navigation={navigation}
           array={array}
           index={array.indexOf(al)}
+          currIndex={currIndex}
           data={al}></VideoPageNewNew>
       </View>
     ));

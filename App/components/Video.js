@@ -52,7 +52,7 @@ class Video extends React.Component {
     //console.log('ACTUAL RENDERED VIDEO: ', this.props.data.video);
     if (
       ((!this.props.leave || this.props.masonry) && this.props.visible) ||
-      this.props.index === this.props.carIndex
+      this.props.index === this.props.currIndex
     ) {
       return (
         <RVideo

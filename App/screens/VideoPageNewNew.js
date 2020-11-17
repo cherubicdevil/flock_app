@@ -135,7 +135,7 @@ var renderProduct = (navigation, data) => {
 // 	}
 // };
 
-const VideoPageNewNew = ({navigation, array, index, data}) => {
+const VideoPageNewNew = ({navigation, array, index, data, currIndex}) => {
   var likes = data.likes || 0;
   var liked = null;
   const selector = useSelector((state) => state);
@@ -302,6 +302,7 @@ const VideoPageNewNew = ({navigation, array, index, data}) => {
     );
   };
   const renderVid = () => {
+    console.log('COMARE', index, currIndex);
     if (leavePage) {
       console.log('LEAVING');
       return <View />;
@@ -340,6 +341,7 @@ const VideoPageNewNew = ({navigation, array, index, data}) => {
           navigation={navigation}
           data={data}
           index={index}
+          currIndex={currIndex}
           leave={leavePage}
         />
         {/* {renderClose(navigation)} */}
