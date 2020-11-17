@@ -16,8 +16,6 @@ import ImagePicker from 'react-native-image-picker';
 import {constants} from 'App/constants';
 //import Input from 'App/components/common/Input';
 import {firebase} from 'App/firebase/config';
-import OptionsModal from 'App/components/OptionsModal';
-import NavBar from 'App/components/static/NavBar';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 //import Base64 from 'base-64';
 

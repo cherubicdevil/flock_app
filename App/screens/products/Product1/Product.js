@@ -9,7 +9,6 @@ import {
   View,
 } from 'react-native';
 //import Flockit from './Flockit';
-import NavBar from 'App/components/static/NavBar';
 import PropTypes from 'prop-types';
 
 import productData from './product.json';
@@ -184,8 +183,6 @@ class Product extends Component {
             <Text style={styles.textFooter}>Cluck</Text>
           </TouchableOpacity>
         </View>
-
-        <NavBar route={this.props.route} navigation={this.props.navigation} />
       </View>
     );
   }

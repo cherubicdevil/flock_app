@@ -24,7 +24,6 @@
 
 import React from 'react';
 import {View, Text, TextInput, Image, ImageBackground} from 'react-native';
-import NavBar from 'App/components/static/NavBar';
 import FeedList from 'App/components/masonry/FeedList';
 import {constants} from 'App/constants';
 import styles from './Home.style.ios';
@@ -62,8 +61,6 @@ const Home = ({route, navigation, lastVisible = null}) => {
         </View>
         <FeedList navigation={navigation} route={route} />
       </View>
-
-      <NavBar route={route} navigation={navigation} />
     </View>
   );
 };

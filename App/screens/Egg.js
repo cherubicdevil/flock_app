@@ -28,7 +28,6 @@
 import React from 'react';
 import {ImageBackground, View, Text, Image} from 'react-native';
 import {useSelector} from 'react-redux';
-import NavBar from 'App/components/static/NavBar';
 import ProfileIcon from 'App/components/ProfileIcon';
 import {constants} from 'App/constants';
 
@@ -46,7 +45,6 @@ const Egg = ({route, navigation}) => {
         />
         {renderEgg(selector)}
       </View>
-      <NavBar route={route} navigation={navigation} />
     </ImageBackground>
   );
 };
