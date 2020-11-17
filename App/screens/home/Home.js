@@ -14,64 +14,25 @@
 *
 */
 /*
-* Home.js
-*
-* This file contains code for the Home page of flock the app.
-* By Home, it refers to both the FeedList gallery of videos, and also
-* the VideoCarousel overlay of videos.
-*
-* This may seem counter-intuitive. It was designed so that both Feedlist
-* and VideoCarousel could share the same array of data without using a 
-* store. (We may be using redux anyway, so this may be outdated. TODO: 
-	separate into two files. Keep the data array in redux).
-*
-*/
+ * Home.js
+ *
+ * This file contains code for the Home page of flock the app that has the
+ * FeedList and searchBar.
+ *
+ *
+ */
 
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 import {View, Text, TextInput, Image, ImageBackground} from 'react-native';
 import NavBar from 'App/components/static/NavBar';
 import FeedList from 'App/components/masonry/FeedList';
-import VideoCarousel from 'App/screens/VideoCarousel';
-import {useSelector, useDispatch} from 'react-redux';
-import {firebase} from 'App/firebase/config';
-import {constants} from 'App/constants';
-import {fetchAlbums} from 'App/utils';
+import styles from './Home.style.ios';
 
 const Home = ({route, navigation, lastVisible = null}) => {
-  // These are the params of this class ^^.
-  // {route} and {navigation} come by default when using React navigator.
-  // {lastVisible} I put here so that it doesn't get re-initialized
-  //   every render.
-  //
-  //
-  //const [index] = useState(0);
-  const index = route.params.scrollIndex;
-  // I'm not sure what this does. Perhaps set the index of VideoCarousel?
-  // In which case it should be set by a route param, coming from FeedList
-  const dispatch = useDispatch(); // for redux send array off to feedlist
-  //const {vidData: vidData} = useSelector((state) => state.videopage);
-  const vidData = route.params.vidData;
-
-  const [myAr, setMyAr] = useState([]);
-  const [productAr, setProductAr] = useState([]);
-  // {myAr} and {productAr} are the two arrays that get merged in FeedList.
-  // Thus they both get passed in to FeedList.
-  // They are both fetched from firebase server.
-
-  const [vidVisible, setVidVisible] = useState(true);
-  // {vidVisible} determines the visibility of the overlay containing--
-  // --VideoCarousel.
-  // {vidVisible} is set to true in the beginning, but it don't matter--
-  // --because it is determined by route.params.
-
-  useEffect(() => {
-    setVidVisible(route.params.vidVisible);
-    // React navigator determines which screen to navigate to through--
-    // --{route.params.vidVisible}.
-  });
+  // {lastVisible} for keep track of firebase paging
 
   return (
-    <View style={{flex: 1, backgroundColor: constants.GREY}}>
+    <View style={styles.wrapperAll}>
       <View style={styles.sectionOneStyle}>
         <ImageBackground
           imageStyle={{borderRadius: 25}}
@@ -81,143 +42,26 @@ const Home = ({route, navigation, lastVisible = null}) => {
             <TextInput style={styles.textBoxStyle} />
             <Image
               source={require('App/Assets/Images/Search.png')}
-              style={{
-                tintColor: constants.ICONGREY,
-                flex: 1,
-                width: 20,
-                resizeMode: 'contain',
-                height: 20,
-                marginRight: -10,
-              }}
+              style={styles.searchIcon}
             />
           </View>
         </ImageBackground>
       </View>
 
       <View style={styles.sectionThreeStyle}>
-        <View
-          style={{
-            position: 'absolute',
-            flex: 1,
-            height: '100%',
-            width: '100%',
-            zIndex: -10,
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}>
+        <View style={styles.loadingBackground}>
           <Image
             style={{width: 60, height: 60}}
             source={require('App/Assets/Images/cute_duck.png')}
           />
           <Text style={{fontFamily: 'Nunito-Light'}}>Curating your clucks</Text>
         </View>
-        <FeedList
-          vidVisible={vidVisible}
-          fetchAlbums={async () => {
-            const {lastVisible: last, ar: ar} = await fetchAlbums();
-            lastVisible = last;
-            setMyAr([...myAr, ...ar]);
-          }}
-          array={myAr}
-          productArray={productAr}
-          navigation={navigation}
-          route={route}
-        />
+        <FeedList navigation={navigation} route={route} />
       </View>
 
       <NavBar route={route} navigation={navigation} />
     </View>
   );
-};
-
-const styles = {
-  sectionOneStyle: {
-    paddingLeft: 5,
-    paddingBottom: 4,
-    paddingRight: 5,
-    width: '100%',
-    flex: 3,
-
-    flexDirection: 'row',
-    paddingTop: 35,
-    marginTop: 0,
-    marginBottom: 5,
-    borderRadius: 3,
-    backgroundColor: '#fff',
-  },
-  topInnerBox: {
-    width: '100%',
-    backgroundColor: constants.GREY,
-  },
-  topBox: {
-    flexDirection: 'row',
-    flex: 8,
-    marginLeft: 10,
-    marginRight: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  textBoxWrapper: {
-    flexDirection: 'row',
-    margin: 2.2,
-    marginLeft: 4.3,
-    marginRight: 4.3,
-    backgroundColor: constants.GREY,
-    width: '98%',
-    borderRadius: 25,
-    paddingLeft: 15,
-    paddingRight: 15,
-    paddingTop: 7,
-    paddingBottom: 7,
-  },
-  textBoxStyle: {
-    fontFamily: 'Nunito-Light',
-    flex: 10,
-  },
-  sectionTwoStyle: {
-    flex: 1.5,
-    marginBottom: 5,
-  },
-  sectionThreeStyle: {
-    flex: 55,
-  },
-  twoColumnStyle: {
-    flexDirection: 'row',
-  },
-  columnStyle: {
-    flex: 1,
-  },
-  carouselWrapper: {
-    width: '100%',
-    height: '100%',
-    backgroundColor: '#000',
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    zIndex: 200,
-    flex: 1,
-    backgroundColor: '#000',
-    justifyContent: 'center',
-  },
-  logout: {
-    flex: 1,
-    borderRadius: 2,
-    backgroundColor: '#000',
-  },
-  sectionFourStyle: {
-    marginTop: 10,
-    flex: 7,
-  },
-  iconStyle: {
-    marginLeft: 5,
-    marginRight: 5,
-    marginBottom: 15,
-    flex: 1,
-    resizeMode: 'cover',
-    height: '100%',
-    width: 24,
-    borderRadius: 12,
-  },
 };
 
 export default Home;

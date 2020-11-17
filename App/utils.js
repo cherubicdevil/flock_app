@@ -117,17 +117,4 @@ const fetchProducts = (lastVisible = null) => {
     });
 };
 
-function getIndexByTitle(ar, data) {
-  // ar and each data has the structure
-  // [ { title,...},...]
-  console.log(ar.length);
-  for (el of ar) {
-    console.log('COMPARE:', el.title, data.title);
-    if (el.title === data.title) {
-      return el;
-    }
-  }
-  return -1;
-}
-
-export {fetchStreamableSource, fetchAlbums, fetchProducts, getIndexByTitle};
+export {fetchStreamableSource, fetchAlbums, fetchProducts};

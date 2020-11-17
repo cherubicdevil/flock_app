@@ -18,7 +18,7 @@ import AlbumDetail from '../unused/AlbumDetail';
 import DynImage from './DynImage';
 import HalfProduct from 'App/components/HalfProduct';
 import {constants} from 'App/constants';
-import {fetchAlbums} from 'App/utils';
+import {fetchAlbums, fetchProducts} from 'App/utils';
 
 class FeedList extends Component {
   state = {album1: [], album2: [], myAr: [], visible: true, inInView: false};
@@ -51,13 +51,6 @@ class FeedList extends Component {
     } catch (err) {
       console.log('ERROR IN FEEDLIST GETTING PARAMS', err);
     }
-    this.setState({
-      album1: this.props.array.slice(0, this.props.array.length / 2),
-      album2: this.props.array.slice(
-        this.props.array.length / 2,
-        this.props.array.length,
-      ),
-    });
   }
 
   renderClucks(album) {
@@ -133,44 +126,38 @@ class FeedList extends Component {
     const album1 = ar.slice(0, ar.length / 2);
     const album2 = ar.slice(ar.length / 2, ar.length);
     console.log(this.props.route.params.videoData[0].title);
-    if (!this.props.vidVisible) {
-      return (
-        <View>
-          <ScrollView
-            onScrollEndDrag={(event) => {
-              if (
-                event.nativeEvent.contentOffset.y + 400 >
-                0.8 * event.nativeEvent.contentSize.height
-              ) {
-                console.log('should be fetching albums');
-                //this.props.fetchAlbums();
-              }
+    return (
+      <View>
+        <ScrollView
+          onScrollEndDrag={(event) => {
+            if (
+              event.nativeEvent.contentOffset.y + 400 >
+              0.8 * event.nativeEvent.contentSize.height
+            ) {
+              console.log('should be fetching albums');
+              //this.props.fetchAlbums();
+            }
 
-              console.log(
-                event.nativeEvent.contentOffset.y,
-                0.8 * event.nativeEvent.contentSize.height,
-              );
+            console.log(
+              event.nativeEvent.contentOffset.y,
+              0.8 * event.nativeEvent.contentSize.height,
+            );
+          }}>
+          <View
+            key="0"
+            style={{
+              flexDirection: 'row',
+              flex: 1,
+              //backgroundColor: this.state.isInView ? 'yellow' : '#f9c2ff',
             }}>
-            <View
-              key="0"
-              style={{
-                flexDirection: 'row',
-                flex: 1,
-                //backgroundColor: this.state.isInView ? 'yellow' : '#f9c2ff',
-              }}>
-              <View style={styles.columnStyle}>
-                {this.renderClucks(album1)}
-              </View>
-              <View key="1" style={styles.columnStyle}>
-                {this.renderClucks(album2)}
-              </View>
+            <View style={styles.columnStyle}>{this.renderClucks(album1)}</View>
+            <View key="1" style={styles.columnStyle}>
+              {this.renderClucks(album2)}
             </View>
-          </ScrollView>
-        </View>
-      );
-    } else {
-      return <View />;
-    }
+          </View>
+        </ScrollView>
+      </View>
+    );
   }
 }
 
