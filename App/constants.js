@@ -42,4 +42,6 @@ export const constants = {
     'https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4',
   GRADIENT2: require('App/Assets/Images/UpsideDownBackground.png'),
   DEFAULT_PROFILE_ICON1: require('App/Assets/Images/default-profile-picture.jpg'),
+  BERRY: require('App/Assets/Images/Berry_Percent.png'),
+  BERRY_RATE: 0.2,
 };

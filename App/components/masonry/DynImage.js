@@ -1,82 +1,40 @@
-import React, {useState} from 'react';
-import {Dimensions, View, Text, Image, TouchableOpacity} from 'react-native';
-import InViewPort from 'App/components/InViewPort';
-import {useDispatch} from 'react-redux';
-import FastImage from 'react-native-fast-image';
-import {firebase} from 'App/firebase/config';
-import Video from 'App/components/Video';
-import LinearGradient from 'react-native-linear-gradient';
-import {constants} from 'App/constants';
-const berryRate = 0.2;
+/* 
+* Made by Kevin Gao, for Flock Shopping.
+* All rights reserved.
+* Flock © 2020
+*
+*
+			 _______  ___        ______    ______   __   ___  
+			/"     "||"  |      /    " \  /" _  "\ |/"| /  ") 
+			(: ______)||  |     // ____  \(: ( \___)(: |/   /  
+			\/    |  |:  |    /  /    ) :)\/ \     |    __/   
+			// ___)   \  |___(: (____/ // //  \ _  (// _  \   
+			(:  (     ( \_|:  \\        / (:   _) \ |: | \  \  
+			\__/      \_______)\"_____/   \_______)(__|  \__)
+*
+*/
+/*
+ * DynImage.js
+ *
+ * This file contains code for the DynImage of Flock the app.
+ * Is a container for the Video clucks on FeedList.
+ *
+ *
+ */
 
-const DynImage = ({repeat, source, title, type, videoAr, navigation, data}) => {
-  const [width, setWidth] = useState(Dimensions.get('window').width / 2 - 10);
-  const [height, setHeight] = useState(0);
-  const [vHeight, setVHeight] = useState(20);
-  const [loading, setLoad] = useState(false);
-  const maxWidth = Dimensions.get('window').width / 2 - 10;
-  const maxHeight = Dimensions.get('window').height;
-  if (data.type !== 'video') {
-    Image.getSize(
-      source.uri,
-      (srcWidth, srcHeight) => {
-        const ratio = Math.min(maxWidth / srcWidth, maxHeight / srcHeight);
-        setWidth(srcWidth * ratio);
-        setHeight(srcHeight * ratio);
-      },
-      () => {
-        setWidth(Dimensions.get('window').width / 2 - 10);
-        setHeight(100);
-      },
-    );
-  }
+import React, {useState} from 'react';
+import {Dimensions, View} from 'react-native';
+import InViewPort from 'App/components/InViewPort';
+import ProductBlurb from 'App/components/masonry/ProductBlurb';
+import Berry from 'App/components/masonry/Berry';
+import {constants} from 'App/constants';
+import Media from 'App/components/masonry/Media';
+
+const DynImage = ({videoAr, navigation, data}) => {
+  const width = Dimensions.get('window').width / 2 - 10;
 
   const [isInView, setIsInView] = useState(false);
-  const checkVisible = (isVisible) => {
-    if (isVisible) {
-      setIsInView(isVisible);
-    } else {
-      setIsInView(isVisible);
-    }
-  };
-  const Media = () => {
-    const [vh, setVH] = useState(0);
-    const changeViewHeight = (height) => {
-      setVH(height);
-    };
-    // check if type == null?
-    // potential FLOCK_BUG
-    const dispatch = useDispatch();
-    return (
-      <TouchableOpacity
-        onPress={() => {
-          dispatch({type: 'sendData', payload: data});
-          dispatch({
-            type: 'sendCarouselIndex',
-            payload: videoAr.indexOf(data),
-          });
-          navigation.navigate('Carousel', {
-            scrollIndex: videoAr.indexOf(data),
-            vidData: data,
-          });
-        }}>
-        <View style={{backgroundColor: '#ddd'}}>
-          <Video
-            viewHeight={vh}
-            persistHeightFunc={changeViewHeight}
-            visible={isInView}
-            masonry={true}
-            muted={true}
-            paused={false}
-            repeat={repeat}
-            data={data}
-            maxWidth={width}
-          />
-        </View>
-        <VideoGradient />
-      </TouchableOpacity>
-    );
-  };
+
   return (
     <InViewPort
       onChange={(isVisible) => {
@@ -88,155 +46,19 @@ const DynImage = ({repeat, source, title, type, videoAr, navigation, data}) => {
           overflow: 'hidden',
           marginLeft: 5,
           width: width,
-          //height: 400,
         }}>
-        {renderBerry()}
-
-        <Media />
-
-        {renderProduct(data)}
+        <Berry />
+        <Media
+          isInView={isInView}
+          width={width}
+          navigation={navigation}
+          data={data}
+          videoAr={videoAr}
+        />
+        <ProductBlurb data={data} />
         <View style={{height: 10}} />
       </View>
     </InViewPort>
-  );
-};
-
-const renderRightBlurb = (product, title) => {
-  if (product.image) {
-    return (
-      <View
-        style={{
-          flex: 1,
-          flexDirection: 'row',
-          color: '#000',
-          opacity: 1.0,
-          //borderLeftWidth: 1,
-          //borderColor: '#aeaeb2',
-          paddingLeft: 15,
-        }}>
-        <Image
-          source={{uri: product.image}}
-          style={{
-            borderRadius: 10,
-            marginTop: 5,
-            opacity: 1.0,
-            width: '100%',
-            height: undefined,
-
-            aspectRatio: 1,
-            resizeMode: 'cover',
-            flex: 1,
-          }}
-        />
-        <View style={{flex: 2, paddingLeft: 5}}>
-          <View
-            style={{
-              flex: 1,
-              marginTop: 5,
-              height: 70,
-              marginRight: 5,
-              flexDirection: 'column',
-              justifyContent: 'space-around',
-              color: '#000',
-            }}>
-            <Text
-              style={{
-                fontFamily: 'Nunito-Light',
-                flex: 2,
-                paddingRight: 5,
-                fontSize: 14,
-                color: '#000',
-              }}>
-              {title}
-            </Text>
-            <Text
-              style={{
-                flex: 1,
-                color: constants.PURPLEORANGE,
-                fontFamily: 'Nunito-Light',
-              }}>
-              ${product.price}
-            </Text>
-          </View>
-        </View>
-      </View>
-    );
-  } else {
-    return <View />;
-  }
-};
-const renderProduct = (data) => {
-  if (data && data.product) {
-    return (
-      <View
-        style={{
-          width: '100%',
-          overflow: 'hidden',
-          backgroundColor: 'rgb(255,255,255)',
-          //borderRadius: 15,
-          borderBottomLeftRadius: 15,
-          borderBottomRightRadius: 15,
-        }}>
-        {renderRightBlurb(data.product, data.product.title)}
-      </View>
-    );
-  } else {
-    return <View />;
-  }
-};
-const renderBerry = () => {
-  const [berryVisible, setBerry] = useState(true);
-  const ran = Math.random();
-  const dispatch = useDispatch();
-  if (ran < berryRate && berryVisible) {
-    return (
-      <TouchableOpacity
-        style={{
-          position: 'absolute',
-          width: 64,
-          height: 64,
-          top: 0,
-          left: 0,
-          zIndex: 50,
-        }}
-        onPress={() => {
-          const userId = firebase.auth().currentUser.uid;
-          //const value = database.ref('users/'+userId).
-          //database.ref('users/' + userId).set({eggs: 100});
-          setBerry(false);
-          dispatch({type: 'increase'});
-        }}>
-        <Image
-          style={{width: 30, height: 30}}
-          source={require('App/Assets/Images/Berry_Percent.png')}
-        />
-      </TouchableOpacity>
-    );
-  } else {
-    return <View />;
-  }
-};
-
-const VideoGradient = () => {
-  return (
-    <LinearGradient
-      colors={['transparent', '#000']}
-      style={{
-        height: 70,
-        width: '100%',
-        position: 'absolute',
-        bottom: 0,
-        justifyContent: 'center',
-        zIndex: 40,
-      }}>
-      <Text
-        style={{
-          marginLeft: 10,
-          fontFamily: constants.FONTBOLD,
-        }}>
-        {title}
-      </Text>
-    </LinearGradient>
   );
 };
 
