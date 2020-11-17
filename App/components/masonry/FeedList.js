@@ -29,6 +29,7 @@ import DynImage from './DynImage';
 import HalfProduct from 'App/components/HalfProduct';
 import {constants} from 'App/constants';
 import {fetchAlbums, fetchProducts, mergeArrays} from 'App/utils';
+import LinearGradient from 'react-native-linear-gradient';
 
 class FeedList extends React.Component {
   state = {album1: [], album2: [], myAr: [], visible: true, inInView: false};
@@ -72,6 +73,15 @@ class FeedList extends React.Component {
     console.log(this.props.route.params.videoData[0].title);
     return (
       <View>
+        <LinearGradient
+          colors={[constants.LIGHTGREY, 'transparent']}
+          style={{
+            height: 70,
+            width: '100%',
+            position: 'absolute',
+            top: 0,
+            zIndex: 40,
+          }}></LinearGradient>
         <ScrollView
           onScrollEndDrag={(event) => {
             if (
