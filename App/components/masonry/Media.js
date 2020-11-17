@@ -33,6 +33,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import {constants} from 'App/constants';
 
 const Media = ({isInView = true, width, navigation, videoAr, data, title}) => {
+  console.log(isInView);
   const [vh, setVH] = useState(0);
   const changeViewHeight = (height) => {
     setVH(height);

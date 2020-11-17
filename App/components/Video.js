@@ -51,6 +51,16 @@ class Video extends React.Component {
     const video_uri = this.props.data.video;
     //console.log('ACTUAL RENDERED VIDEO: ', this.props.data.video);
     if (
+      this.props.index !== this.props.carIndex &&
+      this.props.index !== this.props.currIndex
+    ) {
+      return <View style={{height: '100%'}} />;
+    }
+    if (this.props.visible === false && this.props.masonry) {
+      console.log('IM INVISIBLE');
+      return <View style={{height: 350}} />;
+    }
+    if (
       ((!this.props.leave || this.props.masonry) && this.props.visible) ||
       this.props.index === this.props.currIndex ||
       this.props.index === this.props.carIndex
