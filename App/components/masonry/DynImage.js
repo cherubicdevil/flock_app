@@ -30,7 +30,7 @@ import Berry from 'App/components/masonry/Berry';
 import {constants} from 'App/constants';
 import Media from 'App/components/masonry/Media';
 
-const DynImage = ({videoAr, navigation, data}) => {
+const DynImage = ({videoAr, navigation, data, title}) => {
   const width = Dimensions.get('window').width / 2 - 10;
 
   const [isInView, setIsInView] = useState(false);
@@ -54,6 +54,7 @@ const DynImage = ({videoAr, navigation, data}) => {
           navigation={navigation}
           data={data}
           videoAr={videoAr}
+          title={title}
         />
         <ProductBlurb data={data} />
         <View style={{height: 10}} />

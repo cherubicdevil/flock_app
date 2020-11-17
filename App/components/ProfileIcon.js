@@ -21,6 +21,8 @@
  *
  *
  */
+import React from 'react';
+import {TouchableWithoutFeedback, Image} from 'react-native';
 import {constants} from 'App/constants';
 const ProfileIcon = ({navigation, style}) => {
   return (

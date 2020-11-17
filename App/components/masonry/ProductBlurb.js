@@ -1,10 +1,11 @@
 import React from 'react';
-import {View} from 'react-native';
+import {View, Image, Text} from 'react-native';
+import {constants} from 'App/constants';
 
 const ProductBlurb = ({data}) => {
   // Possible FLOCK_BUG
   // do I need to check for null?
-  if (data?.product !== undefined) {
+  if (data?.product === undefined) {
     return <View />;
   }
 

@@ -32,7 +32,7 @@ import Video from 'App/components/Video';
 import LinearGradient from 'react-native-linear-gradient';
 import {constants} from 'App/constants';
 
-const Media = ({isInView = true, width, navigation, videoAr, data}) => {
+const Media = ({isInView = true, width, navigation, videoAr, data, title}) => {
   const [vh, setVH] = useState(0);
   const changeViewHeight = (height) => {
     setVH(height);
@@ -68,7 +68,7 @@ const Media = ({isInView = true, width, navigation, videoAr, data}) => {
           maxWidth={width}
         />
       </View>
-      <VideoGradient title={data.product.title} />
+      <VideoGradient title={title} />
     </TouchableOpacity>
   );
 };
@@ -89,6 +89,7 @@ const VideoGradient = ({title}) => {
         style={{
           marginLeft: 10,
           fontFamily: constants.FONTBOLD,
+          color: 'white',
         }}>
         {title}
       </Text>

@@ -44,7 +44,7 @@ const Egg = ({route, navigation}) => {
           navigation={navigation}
           style={styles.profileSpatialPosition}
         />
-        {renderEgg()}
+        {renderEgg(selector)}
       </View>
       <NavBar route={route} navigation={navigation} />
     </ImageBackground>
