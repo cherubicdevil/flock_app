@@ -1,3 +1,27 @@
+/* 
+* Made by Kevin Gao, for Flock Shopping.
+* All rights reserved.
+* Flock © 2020
+*
+*
+			 _______  ___        ______    ______   __   ___  
+			/"     "||"  |      /    " \  /" _  "\ |/"| /  ") 
+			(: ______)||  |     // ____  \(: ( \___)(: |/   /  
+			\/    |  |:  |    /  /    ) :)\/ \     |    __/   
+			// ___)   \  |___(: (____/ // //  \ _  (// _  \   
+			(:  (     ( \_|:  \\        / (:   _) \ |: | \  \  
+			\__/      \_______)\"_____/   \_______)(__|  \__)
+*
+*/
+/*
+ * ProfileIcon.js
+ *
+ * This file contains code for the default ProfileIcon of flock the app.
+ * It shows on the Egg screen.
+ *
+ *
+ */
+import {constants} from 'App/constants';
 const ProfileIcon = ({navigation, style}) => {
   return (
     <TouchableWithoutFeedback
@@ -13,7 +37,7 @@ const ProfileIcon = ({navigation, style}) => {
           },
           style,
         ]}
-        source={require('App/Assets/Images/default-profile-picture.jpg')}
+        source={constants.DEFAULT_PROFILE_ICON1}
       />
     </TouchableWithoutFeedback>
   );

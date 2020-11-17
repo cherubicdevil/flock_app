@@ -1,33 +1,15 @@
 import React, {useState} from 'react';
 import {Dimensions, View, Text, Image, TouchableOpacity} from 'react-native';
-//import InView from 'react-native-component-inview';
 import InViewPort from 'App/components/InViewPort';
 import {useDispatch} from 'react-redux';
-//import Video from 'react-native-video';
 import FastImage from 'react-native-fast-image';
-//import AnimatedLoader from 'react-native-animated-loader';
-import {increaseAction} from 'App/actions';
 import {firebase} from 'App/firebase/config';
 import Video from 'App/components/Video';
-import RVideo from 'react-native-video';
 import LinearGradient from 'react-native-linear-gradient';
 import {constants} from 'App/constants';
 const berryRate = 0.2;
 
-const DynImage = ({
-  mute,
-  repeat,
-  ar,
-  index,
-  style,
-  source,
-  title,
-  type,
-  video,
-  videoAr,
-  navigation,
-  data,
-}) => {
+const DynImage = ({repeat, source, title, type, videoAr, navigation, data}) => {
   const [width, setWidth] = useState(Dimensions.get('window').width / 2 - 10);
   const [height, setHeight] = useState(0);
   const [vHeight, setVHeight] = useState(20);
@@ -39,19 +21,15 @@ const DynImage = ({
       source.uri,
       (srcWidth, srcHeight) => {
         const ratio = Math.min(maxWidth / srcWidth, maxHeight / srcHeight);
-        //console.log(source.uri, srcWidth, srcHeight);
         setWidth(srcWidth * ratio);
         setHeight(srcHeight * ratio);
-        // console.log(`successful imageGet: ${srcWidth} ${srcHeight}`)
       },
       () => {
-        //console.log(source.uri);
         setWidth(Dimensions.get('window').width / 2 - 10);
         setHeight(100);
       },
     );
   }
-  //console.log(width, height);
 
   const [isInView, setIsInView] = useState(false);
   const checkVisible = (isVisible) => {
@@ -61,75 +39,43 @@ const DynImage = ({
       setIsInView(isVisible);
     }
   };
-  const RenderMedia = () => {
+  const Media = () => {
     const [vh, setVH] = useState(0);
     const changeViewHeight = (height) => {
-      //console.log('changing vheight:', vh);
-      //console.log(height);
       setVH(height);
-      //console.log('changed vheight: ', vh);
     };
-    if (type !== null && type === 'video') {
-      const dispatch = useDispatch();
-      return (
-        <TouchableOpacity
-          onPress={() => {
-            dispatch({type: 'sendData', payload: data});
-            dispatch({
-              type: 'sendCarouselIndex',
-              payload: videoAr.indexOf(data),
-            });
-            // dispatch({type: 'showVid'});
-            navigation.navigate('Carousel', {
-              scrollIndex: videoAr.indexOf(data),
-              vidData: data,
-            });
-          }}>
-          <View style={{backgroundColor: '#ddd'}}>
-            <Video
-              viewHeight={vh}
-              persistHeightFunc={changeViewHeight}
-              visible={isInView}
-              masonry={true}
-              muted={true}
-              paused={false}
-              repeat={repeat}
-              data={data}
-              maxWidth={width}
-            />
-          </View>
-          <LinearGradient
-            colors={['transparent', '#000']}
-            style={{
-              height: 70,
-              width: '100%',
-              position: 'absolute',
-              bottom: 0,
-              justifyContent: 'center',
-              //backgroundColor: 'rgba(0,0,0,0.7)',
-              zIndex: 40,
-            }}>
-            <Text
-              style={{
-                marginLeft: 10,
-                color: isInView ? '#fff' : '#aea',
-                fontFamily: 'Nunito-Bold',
-              }}>
-              {title}
-            </Text>
-          </LinearGradient>
-        </TouchableOpacity>
-      );
-    } else {
-      return (
-        <FastImage
-          style={[styles.mediaStyle, {width: width, height: height}]}
-          source={{
-            uri: source.uri,
-          }}
-        />
-      );
-    }
+    // check if type == null?
+    // potential FLOCK_BUG
+    const dispatch = useDispatch();
+    return (
+      <TouchableOpacity
+        onPress={() => {
+          dispatch({type: 'sendData', payload: data});
+          dispatch({
+            type: 'sendCarouselIndex',
+            payload: videoAr.indexOf(data),
+          });
+          navigation.navigate('Carousel', {
+            scrollIndex: videoAr.indexOf(data),
+            vidData: data,
+          });
+        }}>
+        <View style={{backgroundColor: '#ddd'}}>
+          <Video
+            viewHeight={vh}
+            persistHeightFunc={changeViewHeight}
+            visible={isInView}
+            masonry={true}
+            muted={true}
+            paused={false}
+            repeat={repeat}
+            data={data}
+            maxWidth={width}
+          />
+        </View>
+        <VideoGradient />
+      </TouchableOpacity>
+    );
   };
   return (
     <InViewPort
@@ -146,7 +92,7 @@ const DynImage = ({
         }}>
         {renderBerry()}
 
-        <RenderMedia />
+        <Media />
 
         {renderProduct(data)}
         <View style={{height: 10}} />
@@ -269,6 +215,29 @@ const renderBerry = () => {
   } else {
     return <View />;
   }
+};
+
+const VideoGradient = () => {
+  return (
+    <LinearGradient
+      colors={['transparent', '#000']}
+      style={{
+        height: 70,
+        width: '100%',
+        position: 'absolute',
+        bottom: 0,
+        justifyContent: 'center',
+        zIndex: 40,
+      }}>
+      <Text
+        style={{
+          marginLeft: 10,
+          fontFamily: constants.FONTBOLD,
+        }}>
+        {title}
+      </Text>
+    </LinearGradient>
+  );
 };
 
 const styles = {
