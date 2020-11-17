@@ -1,5 +1,5 @@
 //import {createStackNavigator} from 'react-navigation-stack';
-import React from 'react';
+import React, {useState} from 'react';
 import {View, Text, Image, TouchableOpacity} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
@@ -22,6 +22,7 @@ import Carousel from 'App/screens/Carousel';
 import NavButton from 'App/components/static/NavButton';
 //import NavBar from 'App/components/static/NavBar';
 import Chat from 'App/screens/Chat';
+import OptionsModal from 'App/components/OptionsModal';
 
 import {constants} from 'App/constants';
 
@@ -41,7 +42,17 @@ const TestBar = ({descriptors, state, navigation}) => {
         if (options.title === undefined) {
           return null;
         }
-
+        if (options.title === 'CamScreen') {
+          console.log('und?', route === undefined);
+          return (
+            <AddItem
+              image={options.image}
+              text={options.cap}
+              navigation={navigation}
+              route={route}
+            />
+          );
+        }
         const isFocused = state.index === index;
         return (
           <NavItem
@@ -56,12 +67,62 @@ const TestBar = ({descriptors, state, navigation}) => {
     </View>
   );
 };
-
+const AddItem = ({image, text, navigation, route}) => {
+  const [modalOpen, setModalOpen] = useState(true);
+  return (
+    <>
+      <OptionsModal
+        text1="I want to save..."
+        text2="I want to recommend..."
+        func1={() => {
+          console.log('you chose 1');
+        }}
+        func2={() => {
+          //navigation.navigate('CamScreen');
+          // ImagePicker.launchImageLibrary(imagePickerOptions, (response) => {
+          // 	//console.log('Response = ', response);
+          // 	//navigation.navigate('CamScreen');
+          // 	if (response.didCancel) {
+          // 		console.log('User cancelled image picker');
+          // 	} else if (response.error) {
+          // 		console.log('ImagePicker Error: ', response.error);
+          // 	} else if (response.customButton) {
+          // 		console.log('User tapped custom button: ', response.customButton);
+          // 	} else {
+          // 		console.log(response.uri);
+          // 		//uploadImage(response);
+          // 	}
+          // 	//navigation.navigate('CamScreen');
+          // });
+          navigation.navigate('CamScreen');
+        }}
+        modalVisible={modalOpen}
+        toggleFunc={() => {
+          setModalOpen(false);
+          //ImagePicker.showImagePicker(options, get)
+        }}
+      />
+      <TouchableOpacity
+        onPress={() => {
+          setModalOpen(true);
+        }}>
+        <NavItem
+          image={image}
+          text={text}
+          navigation={navigation}
+          route={route}
+        />
+      </TouchableOpacity>
+    </>
+  );
+};
 const NavItem = ({image, text, focused, navigation, route}) => {
   return (
     <TouchableOpacity
       onPress={() => {
-        navigation.navigate(route.name);
+        if (navigation !== undefined) {
+          navigation.navigate(route.name);
+        }
       }}
       style={{flex: 1, marginBottom: 10}}>
       <Image
