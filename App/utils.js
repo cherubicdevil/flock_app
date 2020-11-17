@@ -25,6 +25,17 @@
         the actual source that can be loaded off browser.
         Returns a promise.
         Is async.
+*-- fetchAlbums
+        takes in optional parameter lastVisible to mark firebase paging.
+        main function to get data from firebase
+        returns array of data and new lastVisible reference.
+*-- fetchProducts
+        takes in optional parameter lastVisible
+        returns array of products and new lastVisible reference.
+*-- mergeArrays
+        used in feedlist to merge video and product arrays
+*-- onGLContextCreate (unused) and create3dEgg (unused) and render3dEgg(unused)
+        used to create a 3d egg for Egg.js
 */
 
 import {constants} from 'App/constants';
@@ -33,18 +44,13 @@ import {firebase} from 'App/firebase/config';
 const fetchStreamableSource = async (src) => {
   if (src === null || src === undefined) {
     return new Promise(function (resolve, reject) {
-      resolve(
-        'https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4',
-      );
+      resolve(constants.TEST_URL);
     });
   }
   const fetchVar = fetch(constants.HEROKU + 'getStreamableSource/' + src);
   const responseVar = fetchVar.then((response) => response.json());
   const urlVar = responseVar.then((response) => {
-    return new Promise(function (resolve, reject) {
-      // resolve(
-      //   'https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4',
-      // );
+    return new Promise(function (resolve) {
       resolve({
         streamableVideo: response.streamableVideo,
         posterSource: response.posterSource,
@@ -78,22 +84,12 @@ const fetchAlbums = (lastVisible = null) => {
           ar.push(entity);
           counter = counter + 1;
           if (counter == n) {
-            // TODO: change to setMyAr(...myAr,...ar) so that it appends
             lastVisible = doc;
             resolve({ar: ar, lastVisible: lastVisible});
-            // dispatch({type: 'sendData', payload: ar[0]});
-            // sends off the first datum in array...---
-            // ---...presumably to carousel? is this still needed?
           }
         });
       });
   });
-  /*
-  Fetch products from firebase.collections('products')
-  Almost same code as for 'posts'.
-
-  TODO: Should I extract it and put it in utils?
-  */
 };
 
 const fetchProducts = (lastVisible = null) => {

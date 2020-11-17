@@ -14,4 +14,7 @@ export const constants = {
   BGGREY: 'rgb(242,242,242)',
   HEROKU: 'https://powerful-everglades-32172.herokuapp.com/',
   FONT: 'Nunito-Light',
+  TEST_URL:
+    'https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4',
+  GRADIENT2: require('App/Assets/Images/UpsideDownBackground.png'),
 };
