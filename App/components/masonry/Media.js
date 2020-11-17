@@ -26,7 +26,7 @@
  */
 
 import React, {useState} from 'react';
-import {View, TouchableOpacity} from 'react-native';
+import {View, TouchableOpacity, Text} from 'react-native';
 import {useDispatch} from 'react-redux';
 import Video from 'App/components/Video';
 import LinearGradient from 'react-native-linear-gradient';
@@ -68,12 +68,12 @@ const Media = ({isInView = true, width, navigation, videoAr, data}) => {
           maxWidth={width}
         />
       </View>
-      <VideoGradient />
+      <VideoGradient title={data.product.title} />
     </TouchableOpacity>
   );
 };
 
-const VideoGradient = () => {
+const VideoGradient = ({title}) => {
   return (
     <LinearGradient
       colors={['transparent', '#000']}

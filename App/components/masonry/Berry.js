@@ -1,6 +1,7 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {View, Image, TouchableOpacity} from 'react-native';
 import {constants} from 'App/constants';
+import {useDispatch} from 'react-redux';
 
 const Berry = () => {
   const [berryVisible, setBerry] = useState(true);

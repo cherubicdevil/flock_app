@@ -30,6 +30,7 @@ import {ImageBackground, View, Text, Image} from 'react-native';
 import {useSelector} from 'react-redux';
 import NavBar from 'App/components/static/NavBar';
 import ProfileIcon from 'App/components/ProfileIcon';
+import {constants} from 'App/constants';
 
 const Egg = ({route, navigation}) => {
   const selector = useSelector((state) => state);
@@ -55,7 +56,7 @@ const renderEgg = (selector) => {
   if (percent < 100) {
     return (
       <View style={imageSize}>
-        <View style={styles.eggBackfillContainer}>
+        <View style={[styles.eggBackfillContainer, {height: `${percent}%`}]}>
           <Image style={styles.eggBackfill} source={eggFill} />
         </View>
         <Image style={[imageSize, {zIndex: 10}]} source={eggOutline} />
@@ -69,7 +70,7 @@ const renderEgg = (selector) => {
 const styles = {
   eggBackfillContainer: {
     width: '100%',
-    height: `${percent}%`,
+
     position: 'absolute',
     bottom: 0,
     zIndex: 1,
