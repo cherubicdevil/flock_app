@@ -41,6 +41,5 @@ export const constants = {
   TEST_URL:
     'https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4',
   GRADIENT2: require('App/Assets/Images/UpsideDownBackground.png'),
-  DEFAULT_PROFILE_
-  ICON1: require('App/Assets/Images/default-profile-picture.jpg'),
+  DEFAULT_PROFILE_ICON1: require('App/Assets/Images/default-profile-picture.jpg'),
 };
