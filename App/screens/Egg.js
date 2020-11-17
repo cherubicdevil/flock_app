@@ -30,7 +30,6 @@ import {ImageBackground, View, Text, Image} from 'react-native';
 import {useSelector} from 'react-redux';
 import NavBar from 'App/components/static/NavBar';
 import ProfileIcon from 'App/components/ProfileIcon';
-import styles from './home/Home.style.ios';
 
 const Egg = ({route, navigation}) => {
   const selector = useSelector((state) => state);

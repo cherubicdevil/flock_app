@@ -1,3 +1,30 @@
+/* 
+* Made by Kevin Gao, for Flock Shopping.
+* All rights reserved.
+* Flock © 2020
+*
+*
+			 _______  ___        ______    ______   __   ___  
+			/"     "||"  |      /    " \  /" _  "\ |/"| /  ") 
+			(: ______)||  |     // ____  \(: ( \___)(: |/   /  
+			\/    |  |:  |    /  /    ) :)\/ \     |    __/   
+			// ___)   \  |___(: (____/ // //  \ _  (// _  \   
+			(:  (     ( \_|:  \\        / (:   _) \ |: | \  \  
+			\__/      \_______)\"_____/   \_______)(__|  \__)
+*
+*/
+/*
+ * Media.js
+ *
+ * This file contains code for the Media component of flock the app.
+ * It resides on the HomePage, in a masonry format to show both
+ * clucks.
+ *
+ * It is one of the base items in FeedList. The other is HalfProduct.
+ *
+ *
+ */
+
 import React, {useState} from 'react';
 import {View, TouchableOpacity} from 'react-native';
 import {useDispatch} from 'react-redux';
