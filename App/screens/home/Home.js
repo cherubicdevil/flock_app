@@ -26,6 +26,7 @@ import React from 'react';
 import {View, Text, TextInput, Image, ImageBackground} from 'react-native';
 import NavBar from 'App/components/static/NavBar';
 import FeedList from 'App/components/masonry/FeedList';
+import {constants} from 'App/constants';
 import styles from './Home.style.ios';
 
 const Home = ({route, navigation, lastVisible = null}) => {
@@ -39,7 +40,10 @@ const Home = ({route, navigation, lastVisible = null}) => {
           style={styles.topBox}
           source={require('App/Assets/Images/Orange_Gradient_Small.png')}>
           <View style={styles.textBoxWrapper}>
-            <TextInput style={styles.textBoxStyle} />
+            <TextInput
+              placeholder="Search products and clucks"
+              style={styles.textBoxStyle}
+            />
             <Image
               source={require('App/Assets/Images/Search.png')}
               style={styles.searchIcon}
@@ -54,7 +58,7 @@ const Home = ({route, navigation, lastVisible = null}) => {
             style={{width: 60, height: 60}}
             source={require('App/Assets/Images/cute_duck.png')}
           />
-          <Text style={{fontFamily: 'Nunito-Light'}}>Curating your clucks</Text>
+          <Text style={{fontFamily: constants.FONT}}>Curating your clucks</Text>
         </View>
         <FeedList navigation={navigation} route={route} />
       </View>

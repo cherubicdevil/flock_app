@@ -117,4 +117,18 @@ const fetchProducts = (lastVisible = null) => {
     });
 };
 
-export {fetchStreamableSource, fetchAlbums, fetchProducts};
+const mergeArrays = (ar1, ar2) => {
+  let ar3 = [];
+  for (var i = 0, j = 0; j < ar1.length + ar2.length; i++) {
+    if (i < ar1.length) {
+      ar3[j++] = ar1[i];
+    }
+    if (i < ar2.length) {
+      ar3[j++] = ar2[i];
+    }
+  }
+
+  return ar3;
+};
+
+export {fetchStreamableSource, fetchAlbums, fetchProducts, mergeArrays};

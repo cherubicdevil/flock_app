@@ -13,4 +13,5 @@ export const constants = {
   DARKGREY: 'rgb(174,174,178)',
   BGGREY: 'rgb(242,242,242)',
   HEROKU: 'https://powerful-everglades-32172.herokuapp.com/',
+  FONT: 'Nunito-Light',
 };
