@@ -16,13 +16,14 @@ import {constants} from 'App/constants';
 import Video from 'react-native-video';
 import ProgressHeader from 'App/components/ProgressHeader';
 //import Video from 'App/components/Video';
+import {pickVideo} from 'App/utils';
 
 const CamScreenNew = ({navigation}) => {
   fetch(constants.HEROKU + 'setup');
   const titleRef = useRef(null);
   const descRef = useRef(null);
 
-  const [pic, setPic] = useState({uri: ''});
+  const [pic, setPic] = useState(null);
   const [vHeight, setVHeight] = useState(null);
   useFocusEffect(
     React.useCallback(() => {
@@ -34,13 +35,8 @@ const CamScreenNew = ({navigation}) => {
       // 	},
       // );
       setTimeout(() => {
-        ImagePicker.launchImageLibrary(
-          {maxWidth: 1024, maxHeight: 1024, mediaType: 'video'},
-          (response) => {
-            console.log('setting', response.uri);
-            setPic({uri: response.uri});
-          },
-        );
+        console.log('picking video');
+        if (pic === null) pickVideo(setPic);
       }, 500);
 
       return () => {

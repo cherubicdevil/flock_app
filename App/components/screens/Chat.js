@@ -1,4 +1,5 @@
 import React, {useEffect, useState, useRef} from 'react';
+import {constants} from 'App/constants';
 import Collapsible from 'react-native-collapsible';
 import {
   Button,
@@ -546,34 +547,56 @@ const Chat = () => {
       edgeWidth={200}
       drawerContent={(props) => {
         return (
-          <DrawerContentScrollView>
+          <DrawerContentScrollView style={{backgroundColor: constants.PURPLE}}>
             <DrawerItem
-              label="FlockChat™"
-              labelStyle={{fontSize: 20, fontWeight: '800'}}
-              style={{}}
+              label="Kevin Gao"
+              labelStyle={{
+                fontSize: 20,
+                fontFamily: constants.FONT,
+                paddingLeft: 10,
+                fontWeight: '800',
+              }}
+              style={{
+                borderRadius: 25,
+                backgroundColor: 'rgba(255,255,255,0.04)',
+              }}
             />
             <View
               style={{
-                marginBottom: -15,
-                //backgroundColor: "red",
-                flexDirection: 'row',
+                marginTop: 10,
+                marginLeft: 10,
+                marginRight: 10,
+                borderRadius: 20,
+                backgroundColor: 'rgba(255,255,255,0.04)',
               }}>
-              <DrawerItem
-                label="your flocks"
-                labelStyle={{fontSize: 15, fontWeight: '600'}}
-                style={{flex: 1}}
-              />
-              <View style={{justifyContent: 'center', paddingBottom: 5}}>
-                <Button
-                  title="+"
-                  onPress={() => {
-                    console.log('hi');
+              <View
+                style={{
+                  marginBottom: -15,
+                  //backgroundColor: "red",
+                  flexDirection: 'row',
+                }}>
+                <DrawerItem
+                  label="your flocks"
+                  labelStyle={{
+                    fontFamily: constants.FONT,
+                    color: 'rgba(50,30,30,1)',
+                    fontSize: 15,
+                    fontWeight: '600',
                   }}
+                  style={{flex: 1}}
                 />
+                <View style={{justifyContent: 'center', paddingBottom: 5}}>
+                  <Button
+                    title="+"
+                    onPress={() => {
+                      console.log('hi');
+                    }}
+                  />
+                </View>
               </View>
-            </View>
-            <View style={{marginLeft: 10}}>
-              <DrawerItemList {...props} />
+              <View style={{marginLeft: 10}}>
+                <DrawerItemList {...props} />
+              </View>
             </View>
           </DrawerContentScrollView>
         );

@@ -40,6 +40,7 @@
 
 import {constants} from 'App/constants';
 import {firebase} from 'App/firebase/config';
+import ImagePicker from 'react-native-image-picker';
 
 const fetchStreamableSource = async (src) => {
   if (src === null || src === undefined) {
@@ -127,4 +128,20 @@ const mergeArrays = (ar1, ar2) => {
   return ar3;
 };
 
-export {fetchStreamableSource, fetchAlbums, fetchProducts, mergeArrays};
+const pickVideo = (setPic) => {
+  ImagePicker.launchImageLibrary(
+    {maxWidth: 1024, maxHeight: 1024, mediaType: 'video'},
+    (response) => {
+      console.log('setting', response.uri);
+      setPic({uri: response.uri});
+    },
+  );
+};
+
+export {
+  fetchStreamableSource,
+  fetchAlbums,
+  fetchProducts,
+  mergeArrays,
+  pickVideo,
+};
