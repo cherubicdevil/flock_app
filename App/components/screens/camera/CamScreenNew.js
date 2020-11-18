@@ -55,6 +55,7 @@ const CamScreenNew = ({navigation}) => {
         nextRoute="Search Product"
         index={1}
         navigation={navigation}
+        canGoNext={pic !== null && pic?.uri !== undefined}
       />
 
       <View
