@@ -2,6 +2,7 @@ import React, {useState, useEffect, useRef} from 'react';
 import {useFocusEffect} from '@react-navigation/native';
 import {
   TouchableOpacity,
+  TouchableWithoutFeedback,
   View,
   Text,
   StyleSheet,
@@ -36,7 +37,8 @@ const CamScreenNew = ({navigation}) => {
       // );
       setTimeout(() => {
         console.log('picking video');
-        if (pic === null) pickVideo(setPic);
+        console.log(pic);
+        if (pic === null || pic?.uri === undefined) pickVideo(setPic);
       }, 500);
 
       return () => {
@@ -65,7 +67,13 @@ const CamScreenNew = ({navigation}) => {
           alignItems: 'flex-start',
           backgroundColor: '#000',
         }}>
-        <VideoFrame pic={pic} />
+        <TouchableWithoutFeedback
+          style={{flex: 1, height: 405}}
+          onPress={() => {
+            pickVideo(setPic);
+          }}>
+          <VideoFrame pic={pic} />
+        </TouchableWithoutFeedback>
         <View
           style={{
             flex: 1,
@@ -118,6 +126,32 @@ const VideoFrame = ({pic}) => {
         backgroundColor: '#333',
         borderWidth: 2,
       }}>
+      <View
+        style={{
+          height: '100%',
+          width: '100%',
+          justifyContent: 'center',
+          alignItems: 'center',
+          position: 'absolute',
+          zIndex: -10,
+          paddingBottom: 30,
+        }}>
+        <View
+          style={{
+            borderRadius: 40,
+            backgroundColor: 'rgba(255,255,255,0.2)',
+            alignItems: 'center',
+            padding: 15,
+          }}>
+          <Image
+            style={{width: 60, height: 60}}
+            source={constants.PLACEHOLDER_IMAGE}
+          />
+          <Text style={{color: 'white', fontFamily: constants.FONT}}>
+            Pick a video!
+          </Text>
+        </View>
+      </View>
       <Video
         masonry={true}
         muted

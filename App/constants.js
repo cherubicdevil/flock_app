@@ -44,4 +44,5 @@ export const constants = {
   DEFAULT_PROFILE_ICON1: require('App/Assets/Images/default-profile-picture.jpg'),
   BERRY: require('App/Assets/Images/Berry_Percent.png'),
   BERRY_RATE: 0.2,
+  PLACEHOLDER_IMAGE: require('App/Assets/Images/cute_duck.png'),
 };
