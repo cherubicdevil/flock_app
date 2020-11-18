@@ -45,4 +45,8 @@ export const constants = {
   BERRY: require('App/Assets/Images/Berry_Percent.png'),
   BERRY_RATE: 0.2,
   PLACEHOLDER_IMAGE: require('App/Assets/Images/cute_duck.png'),
+  OFF_BLACK: 'rgba(50,30,30,1)',
+  DARK_BLUE: 'rgba(70, 50, 140,1)',
+  LIGHT_BLUE: 'rgba(70, 100, 200,0.5)',
+  BIRDS: require('App/Assets/Images/birds.png'),
 };

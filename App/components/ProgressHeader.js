@@ -147,7 +147,9 @@ const ProgressHeader = ({
         }}
         onPress={() => {
           console.log('hello');
-          navigation.navigate(nextRoute);
+          if (canGoNext) {
+            navigation.navigate(nextRoute);
+          }
         }}>
         <ImageBackground
           style={{width: 50, height: 25}}

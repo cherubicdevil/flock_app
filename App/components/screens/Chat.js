@@ -540,6 +540,47 @@ function App({route, navigation}) {
 
 const Drawer = createDrawerNavigator();
 
+const MyDrawerItemList = ({descriptors, state, navigation}) => {
+  console.log(state);
+  return (
+    <View style={{marginTop: 10}}>
+      {state.routes.map((route, index) => {
+        const isFocused = state.index === index;
+        return (
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate(route.name);
+            }}>
+            <View
+              style={{
+                height: 30,
+                marginLeft: 10,
+                paddingLeft: 10,
+                justifyContent: 'center',
+                borderTopLeftRadius: 20,
+                borderBottomLeftRadius: 20,
+                backgroundColor: isFocused
+                  ? constants.LIGHT_BLUE
+                  : 'transparent',
+                width: '100%',
+              }}>
+              <Text
+                style={{
+                  fontFamily: constants.FONT,
+                  color: isFocused ? 'black' : constants.OFF_BLACK,
+
+                  fontWeight: '500',
+                }}>
+                {route.name}
+              </Text>
+            </View>
+          </TouchableOpacity>
+        );
+      })}
+    </View>
+  );
+};
+
 const Chat = () => {
   return (
     <Drawer.Navigator
@@ -547,58 +588,75 @@ const Chat = () => {
       edgeWidth={200}
       drawerContent={(props) => {
         return (
-          <DrawerContentScrollView style={{backgroundColor: constants.PURPLE}}>
-            <DrawerItem
-              label="Kevin Gao"
-              labelStyle={{
-                fontSize: 20,
-                fontFamily: constants.FONT,
-                paddingLeft: 10,
-                fontWeight: '800',
-              }}
+          <>
+            <Image
+              source={constants.BIRDS}
               style={{
-                borderRadius: 25,
-                backgroundColor: 'rgba(255,255,255,0.04)',
+                tintColor: constants.PURPLE,
+                position: 'absolute',
+                zIndex: 2,
+                top: 200,
+                left: 0,
+                opacity: 0.4,
+                width: 230,
+                height: 200,
               }}
             />
-            <View
-              style={{
-                marginTop: 10,
-                marginLeft: 10,
-                marginRight: 10,
-                borderRadius: 20,
-                backgroundColor: 'rgba(255,255,255,0.04)',
-              }}>
+            <DrawerContentScrollView style={{backgroundColor: constants.RED}}>
+              <DrawerItem
+                label="Kevin Gao"
+                labelStyle={{
+                  fontSize: 20,
+                  fontFamily: constants.FONT,
+                  paddingLeft: 10,
+                  fontWeight: '800',
+                }}
+                style={{
+                  borderRadius: 25,
+                  backgroundColor: 'rgba(255,255,255,0.04)',
+                }}
+              />
               <View
                 style={{
-                  marginBottom: -15,
-                  //backgroundColor: "red",
-                  flexDirection: 'row',
+                  marginTop: 10,
+                  marginLeft: 10,
+                  marginRight: 10,
+                  borderRadius: 20,
+                  backgroundColor: 'rgba(0,255,255,0.04)',
                 }}>
-                <DrawerItem
-                  label="your flocks"
-                  labelStyle={{
-                    fontFamily: constants.FONT,
-                    color: 'rgba(50,30,30,1)',
-                    fontSize: 15,
-                    fontWeight: '600',
-                  }}
-                  style={{flex: 1}}
-                />
-                <View style={{justifyContent: 'center', paddingBottom: 5}}>
-                  <Button
-                    title="+"
-                    onPress={() => {
-                      console.log('hi');
+                <View
+                  style={{
+                    marginBottom: -15,
+                    //backgroundColor: "red",
+                    flexDirection: 'row',
+                  }}>
+                  <DrawerItem
+                    label="your flocks"
+                    labelStyle={{
+                      fontFamily: constants.FONT,
+                      color: constants.OFF_BLACK,
+                      fontSize: 15,
+                      fontWeight: '600',
                     }}
+                    style={{flex: 1}}
                   />
+                  <View style={{justifyContent: 'center', paddingBottom: 5}}>
+                    <TouchableOpacity
+                      onPress={() => {
+                        console.log('hi');
+                      }}>
+                      <Text style={{fontSize: 30, color: constants.DARK_BLUE}}>
+                        +
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+                <View style={{marginLeft: 10}}>
+                  <MyDrawerItemList {...props} />
                 </View>
               </View>
-              <View style={{marginLeft: 10}}>
-                <DrawerItemList {...props} />
-              </View>
-            </View>
-          </DrawerContentScrollView>
+            </DrawerContentScrollView>
+          </>
         );
       }}>
       {renderDrawers(data)}
