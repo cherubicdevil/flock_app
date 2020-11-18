@@ -65,41 +65,11 @@ const CamScreenNew = ({navigation}) => {
           alignItems: 'flex-start',
           backgroundColor: '#000',
         }}>
-        <View
-          style={{
-            marginLeft: 10,
-            paddingRight: 2,
-            borderRadius: 30,
-            borderWidth: 0,
-            justifyContent: 'flex-start',
-            overflow: 'hidden',
-            flex: 1,
-            //width: Dimensions.get('window').width / 2,
-            backgroundColor: '#000',
-          }}>
-          <Video
-            masonry={true}
-            muted
-            paused={false}
-            repeat
-            source={pic}
-            onLoad={(response) => {
-              const {height: vidHeight, width: vidWidth} = response.naturalSize;
-              setVHeight(
-                ((vidHeight / vidWidth) * Dimensions.get('window').width) / 2,
-              );
-            }}
-            style={{
-              width: Dimensions.get('window').width / 2,
-              height: vHeight,
-              //backgroundColor: constants.LIGHTGREY,
-            }}
-          />
-        </View>
+        <VideoFrame pic={pic} />
         <View
           style={{
             flex: 1,
-            height: vHeight || 300,
+            height: 400,
             //paddingTop: 10,
             paddingLeft: 10,
           }}>
@@ -129,6 +99,46 @@ const CamScreenNew = ({navigation}) => {
   );
 };
 
+const VideoFrame = ({pic}) => {
+  const [vHeight, setVHeight] = useState(null);
+  return (
+    <View
+      style={{
+        marginLeft: 10,
+        paddingRight: 2,
+        borderRadius: 30,
+        borderWidth: 0,
+        height: 405,
+        justifyContent: 'center',
+        justifyContent: 'flex-start',
+        overflow: 'hidden',
+
+        flex: 1,
+        //width: Dimensions.get('window').width / 2,
+        backgroundColor: '#333',
+        borderWidth: 2,
+      }}>
+      <Video
+        masonry={true}
+        muted
+        paused={false}
+        repeat
+        source={pic}
+        onLoad={(response) => {
+          const {height: vidHeight, width: vidWidth} = response.naturalSize;
+          setVHeight(
+            ((vidHeight / vidWidth) * Dimensions.get('window').width) / 2,
+          );
+        }}
+        style={{
+          width: Dimensions.get('window').width / 2,
+          height: vHeight,
+          //backgroundColor: constants.LIGHTGREY,
+        }}
+      />
+    </View>
+  );
+};
 const styles = StyleSheet.create({
   textInputStyle: {
     borderRadius: 20,
