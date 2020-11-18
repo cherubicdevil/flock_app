@@ -89,16 +89,7 @@ const ProfileMain = ({navigation}) => {
       <ImageBackground
         source={require('App/Assets/Images/Orange_Gradient_Small.png')}
         style={{
-          //position: 'absolute',
-          //marginLeft: -50,
-          //marginRight: -50,
           flex: 1,
-          //justifyContent: 'flex-end',
-
-          //paddingTop: 250,
-
-          //top: 0,
-          //height: 300,
         }}>
         <View
           style={{

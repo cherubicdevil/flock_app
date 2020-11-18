@@ -16,15 +16,13 @@ import {
   ImageBackground,
   TouchableHighlight,
 } from 'react-native';
+import {constants} from 'App/constants';
 import CommentsModal from 'App/components/CommentsModal';
 import Video from 'App/components/Video';
-import StaticVideo from 'App/components/StaticVideo';
-//import Share from 'react-native-share';
-import AlbumDetail from 'App/screens/products/AlbumDetail';
 import VideoDescription from 'App/components/VideoDescription';
 import {firebase} from 'App/firebase/config';
 import {useDispatch, useSelector} from 'react-redux';
-import {constants} from 'App/constants';
+
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 //import {useFocusEffect} from 'react-navigation-hooks';
 import {useFocusEffect} from '@react-navigation/native';
