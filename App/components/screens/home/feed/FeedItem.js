@@ -14,9 +14,9 @@
 *
 */
 /*
- * DynImage.js
+ * FeedItem.js
  *
- * This file contains code for the DynImage of Flock the app.
+ * This file contains code for the FeedItem of Flock the app.
  * Is a container for the Video clucks on FeedList.
  *
  *
@@ -25,12 +25,11 @@
 import React, {useState} from 'react';
 import {Dimensions, View} from 'react-native';
 import InViewPort from 'App/components/InViewPort';
-import ProductBlurb from 'App/components/masonry/ProductBlurb';
-import Berry from 'App/components/masonry/Berry';
-import {constants} from 'App/constants';
-import Media from 'App/components/masonry/Media';
+import ProductBlurb from './ProductBlurb';
+import Berry from './Berry';
+import Media from './Media';
 
-const DynImage = ({videoAr, navigation, data, title}) => {
+const FeedItem = ({videoAr, navigation, data, title}) => {
   const width = Dimensions.get('window').width / 2 - 10;
 
   const [isInView, setIsInView] = useState(false);
@@ -76,4 +75,4 @@ const styles = {
   },
 };
 
-export default DynImage;
+export default FeedItem;

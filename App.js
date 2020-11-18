@@ -7,7 +7,7 @@ import {createStore} from 'redux';
 
 import AppNavigator from 'App/navigators/AppNavigator';
 import AuthNavigator from 'App/navigators/AuthNavigator';
-import reducers from 'App/reducers';
+import reducers from 'App/redux/reducers';
 
 class App extends React.Component {
   state = {
@@ -52,7 +52,7 @@ class App extends React.Component {
       <AnimatedSplash
         translucent={true}
         isLoaded={this.state.isLoaded}
-        logoImage={require('./App/Assets/Images/flockicon3.png')}
+        logoImage={require('App/Assets/Images/flockicon3.png')}
         backgroundColor={'#262626'}
         logoHeight={150}
         logoWidth={150}>

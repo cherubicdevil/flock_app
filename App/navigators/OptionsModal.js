@@ -1,3 +1,31 @@
+/* 
+* Made by Kevin Gao, for Flock Shopping.
+* All rights reserved.
+* Flock © 2020
+*
+*
+			 _______  ___        ______    ______   __   ___  
+			/"     "||"  |      /    " \  /" _  "\ |/"| /  ") 
+			(: ______)||  |     // ____  \(: ( \___)(: |/   /  
+			\/    |  |:  |    /  /    ) :)\/ \     |    __/   
+			// ___)   \  |___(: (____/ // //  \ _  (// _  \   
+			(:  (     ( \_|:  \\        / (:   _) \ |: | \  \  
+			\__/      \_______)\"_____/   \_______)(__|  \__)
+*
+*/
+/*
+ * OptionsModal.js
+ *
+ * This file contains code for the OptionsModal that is currently used on
+ *  the AppNavigator tab navigation bar to show the Add slide up modal.
+ *
+ * Is general enough to use for general purpose.
+ * To use, set a State that allows modal to be on or off. Connect this state
+ *  to modalOpen prop.
+ *
+ *
+ */
+
 import {constants} from 'App/constants';
 import {View, Modal, Text, Animated, TouchableOpacity} from 'react-native';
 import React, {useRef} from 'react';

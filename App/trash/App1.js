@@ -5,7 +5,7 @@ import {createStore, applyMiddleware} from 'redux';
 import thunk from 'redux-thunk';
 //import firebase from 'firebase'
 import {firebase} from 'App/firebase/config';
-import reducers from 'App/reducers';
+import reducers from 'App/redux/reducers';
 import {Button, CardSection, Spinner} from 'App/components/common';
 import AppNavigator from 'App/navigators/AppNavigator';
 import AuthNavigator from 'App/navigators/AuthNavigator';

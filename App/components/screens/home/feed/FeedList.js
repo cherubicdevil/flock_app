@@ -25,8 +25,8 @@
 
 import React from 'react';
 import {ScrollView, View} from 'react-native';
-import DynImage from './DynImage';
-import HalfProduct from 'App/components/HalfProduct';
+import FeedItem from './FeedItem';
+import HalfProduct from './HalfProduct';
 import {constants} from 'App/constants';
 import {fetchAlbums, fetchProducts, mergeArrays} from 'App/utils';
 import LinearGradient from 'react-native-linear-gradient';
@@ -48,7 +48,7 @@ class FeedList extends React.Component {
         return <HalfProduct navigation={this.props.navigation} album={al} />;
       } else {
         return (
-          <DynImage
+          <FeedItem
             mute={true}
             repeat={true}
             ar={this.state.myAr}

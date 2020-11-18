@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import {View, Text, TouchableOpacity, Image} from 'react-native';
-import OptionsModal from 'App/components/OptionsModal';
-import NavButton from 'App/components/static/NavButton';
+import OptionsModal from './OptionsModal';
 import {constants} from 'App/constants';
 
 const CustomBar = ({descriptors, state, navigation}) => {

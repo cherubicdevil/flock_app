@@ -9,7 +9,7 @@ import {
 import {connect} from 'react-redux';
 
 import {Input} from './Input';
-import {emailChanged, passwordChanged} from 'App/actions';
+import {emailChanged, passwordChanged} from 'App/redux/actions';
 import {firebase} from 'App/firebase/config';
 
 class Myform extends Component {

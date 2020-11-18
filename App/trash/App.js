@@ -3,9 +3,9 @@ import {View, Text, Image} from 'react-native';
 import {Provider} from 'react-redux';
 import {createStore} from 'redux';
 //import firebase from 'firebase'
+import AnimatedSplash from 'react-native-animated-splash-screen';
 import {firebase} from 'App/firebase/config';
-import reducers from 'App/reducers';
-import {Button, CardSection, Spinner} from 'App/components/common';
+import reducers from 'App/redux/reducers';
 import AppNavigator from 'App/navigators/AppNavigator';
 import AuthNavigator from 'App/navigators/AuthNavigator';
 import {constants} from 'App/constants';
@@ -76,16 +76,22 @@ class App extends Component {
           </Provider>
         );
       default:
-        return (
-          <View style={{height: '70%', justifyContent: 'center'}}>
-            <Spinner />
-          </View>
-        );
+        return <View style={{height: '70%', justifyContent: 'center'}}></View>;
     }
   }
 
   render() {
-    return <View style={{flex: 1}}>{this.renderContent()}</View>;
+    return (
+      <AnimatedSplash
+        translucent={true}
+        isLoaded={this.state.isLoaded}
+        logoImage={require('App/Assets/Images/flockicon3.png')}
+        backgroundColor={'#262626'}
+        logoHeight={150}
+        logoWidth={150}>
+        <View style={{flex: 1}}>{this.renderContent()}</View>
+      </AnimatedSplash>
+    );
   }
 }
 

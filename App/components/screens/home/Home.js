@@ -24,7 +24,7 @@
 
 import React from 'react';
 import {View, Text, TextInput, Image, ImageBackground} from 'react-native';
-import FeedList from 'App/components/masonry/FeedList';
+import FeedList from './feed/FeedList';
 import {constants} from 'App/constants';
 import styles from './Home.style.ios';
 

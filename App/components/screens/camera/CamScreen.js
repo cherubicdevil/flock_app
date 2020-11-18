@@ -15,7 +15,7 @@ import {Input} from 'App/components/common';
 import CameraRoll from '@react-native-community/cameraroll';
 import Video from 'react-native-video';
 import ViewPictures from './ViewPictures';
-import ProductChoose from 'App/screens/camera/ProductChoose';
+import ProductChoose from 'App/components/camera/ProductChoose';
 import AlbumDetail from './AlbumDetail';
 import ImagePicker from 'react-native-image-picker';
 

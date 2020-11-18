@@ -1,3 +1,27 @@
+/* 
+* Made by Kevin Gao, for Flock Shopping.
+* All rights reserved.
+* Flock © 2020
+*
+*
+			 _______  ___        ______    ______   __   ___  
+			/"     "||"  |      /    " \  /" _  "\ |/"| /  ") 
+			(: ______)||  |     // ____  \(: ( \___)(: |/   /  
+			\/    |  |:  |    /  /    ) :)\/ \     |    __/   
+			// ___)   \  |___(: (____/ // //  \ _  (// _  \   
+			(:  (     ( \_|:  \\        / (:   _) \ |: | \  \  
+			\__/      \_______)\"_____/   \_______)(__|  \__)
+*
+*/
+/*
+ * VideoPage.js
+ *
+ * This file contains code for each discrete page of Carousel's scrollview
+ * of videos.
+ *
+ *
+ */
+
 import React, {useState, useEffect, useRef} from 'react';
 import {
   KeyboardAvoidingView,
@@ -17,9 +41,9 @@ import {
   TouchableHighlight,
 } from 'react-native';
 import {constants} from 'App/constants';
-import CommentsModal from 'App/components/CommentsModal';
+import CommentsModal from './CommentsModal';
 import Video from 'App/components/Video';
-import VideoDescription from 'App/components/VideoDescription';
+import VideoDescription from './VideoDescription';
 import {firebase} from 'App/firebase/config';
 import {useDispatch, useSelector} from 'react-redux';
 
@@ -133,7 +157,7 @@ var renderProduct = (navigation, data) => {
 // 	}
 // };
 
-const VideoPageNewNew = ({navigation, array, index, data, currIndex}) => {
+const VideoPage = ({navigation, array, index, data, currIndex}) => {
   var likes = data.likes || 0;
   var liked = null;
   const selector = useSelector((state) => state);
@@ -423,4 +447,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default VideoPageNewNew;
+export default VideoPage;

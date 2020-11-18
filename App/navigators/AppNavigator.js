@@ -5,23 +5,23 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
-import Carousel from 'App/screens/Carousel';
-import Home from 'App/screens/home/Home';
+import Carousel from 'App/components/screens/videopage/Carousel';
+import Home from 'App/components/screens/home/Home';
 import CamNavigator from './CamNavigator';
-import Chat from 'App/screens/Chat';
-import Egg from 'App/screens/Egg';
+import Chat from 'App/components/screens/Chat';
+import Egg from 'App/components/screens/Egg';
 
-import Profile from 'App/screens/profile/Profile';
+import Profile from 'App/components/screens/profile/Profile';
 
-import Products from 'App/screens/products/Products';
-import Product from 'App/screens/products/Product1/Product';
+import Products from 'App/components/screens/products/Products';
+import Product from 'App/components/screens/products/Product1/Product';
 
-import PaymentInfo from 'App/screens/PaymentInfo';
-import Success from 'App/screens/Success';
-import PayTest from 'App/screens/PayTest';
-import ProfileMain from 'App/screens/profile/ProfileMain';
+import PaymentInfo from 'App/components/screens/PaymentInfo';
+import Success from 'App/components/screens/Success';
+import PayTest from 'App/components/screens/PayTest';
+import ProfileMain from 'App/components/screens/profile/ProfileMain';
 
-import CustomBar from 'App/navigators/CustomBar';
+import CustomBar from './CustomBar';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();

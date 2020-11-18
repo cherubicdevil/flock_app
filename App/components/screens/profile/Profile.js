@@ -15,7 +15,8 @@ import ImagePicker from 'react-native-image-picker';
 import {constants} from 'App/constants';
 //import Input from 'App/components/common/Input';
 import {firebase} from 'App/firebase/config';
-import OptionsModal from 'App/components/OptionsModal';
+import OptionsModal from 'App/navigators/OptionsModal';
+// FLOCK_TODO: make this into an npm module so I don't have to put it here.
 //import Base64 from 'base-64';
 
 // global.atob = Base64.encode;

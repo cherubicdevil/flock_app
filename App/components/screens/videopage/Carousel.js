@@ -8,7 +8,7 @@ import {
   Image,
 } from 'react-native';
 import {useDispatch} from 'react-redux';
-import VideoPageNewNew from 'App/screens/VideoPageNewNew';
+import VideoPage from './VideoPage';
 import {fetchAlbums} from 'App/utils';
 
 const VideoCarousel = ({route, navigation, array, index = 0, data}) => {
@@ -69,14 +69,14 @@ const renderAlbums = (array, route, navigation, currIndex) => {
   try {
     return array.map((al) => (
       <View key={al.id + Math.random()} style={styles.outer}>
-        <VideoPageNewNew
+        <VideoPage
           key={Math.random()}
           route={route}
           navigation={navigation}
           array={array}
           index={array.indexOf(al)}
           currIndex={currIndex}
-          data={al}></VideoPageNewNew>
+          data={al}></VideoPage>
       </View>
     ));
   } catch (err) {

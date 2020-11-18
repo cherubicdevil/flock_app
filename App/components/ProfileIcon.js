@@ -19,6 +19,7 @@
  * This file contains code for the default ProfileIcon of flock the app.
  * It shows on the Egg screen.
  *
+ * location: App/components/ProfileIcon.js
  *
  */
 import React from 'react';
