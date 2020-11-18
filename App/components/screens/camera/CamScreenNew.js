@@ -67,13 +67,13 @@ const CamScreenNew = ({navigation}) => {
           alignItems: 'flex-start',
           backgroundColor: '#000',
         }}>
-        <TouchableWithoutFeedback
+        <TouchableOpacity
           style={{flex: 1, height: 405}}
           onPress={() => {
             pickVideo(setPic);
           }}>
           <VideoFrame pic={pic} />
-        </TouchableWithoutFeedback>
+        </TouchableOpacity>
         <View
           style={{
             flex: 1,
