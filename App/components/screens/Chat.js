@@ -22,6 +22,7 @@ import {
   DrawerItemList,
   DrawerItem,
   createDrawerNavigator,
+  useIsDrawerOpen,
 } from '@react-navigation/drawer';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
@@ -107,7 +108,6 @@ const BuyInfo = ({route}) => {
                   const index = route.params.data.buys.indexOf(data);
                   const bought = route.params.data.buys.splice(index, 1);
                   route.params.data.boughts.splice(0, 0, bought[0]);
-                  console.log(route.params.data.boughts);
                   setTimeout(() => {
                     setBigDummyState(!bigDummyState);
                   }, 500);
@@ -196,9 +196,7 @@ const Info = ({route, navigation}) => {
                 alignItems: 'center',
                 paddingBottom: 2,
               }}
-              onPress={() => {
-                console.log('hi');
-              }}>
+              onPress={() => {}}>
               <Text style={{fontSize: 15, color: '#cae', fontWeight: 'bold'}}>
                 +
               </Text>
@@ -277,8 +275,6 @@ const Openable = ({data, moveFunc, bought, messages, openId, route}) => {
         <Button
           title="buy"
           onPress={() => {
-            console.log('MY DATA');
-            console.log(data);
             Alert.alert(
               'Confirm',
               `You are about to contribute $${formatMoney(
@@ -542,7 +538,6 @@ function App({route, navigation}) {
 const Drawer = createDrawerNavigator();
 
 const MyDrawerItemList = ({descriptors, state, navigation}) => {
-  console.log(state);
   return (
     <View style={{marginTop: 10}}>
       {state.routes.map((route, index) => {
@@ -589,87 +584,11 @@ const Chat = ({navigation, route}) => {
       edgeWidth={200}
       drawerContent={(props) => {
         return (
-          <>
-            {/* <View
-              style={{
-                width: 700,
-                height: 100,
-                position: 'absolute',
-                bottom: 70,
-                zIndex: 900,
-                backgroundColor: 'black',
-              }}
-            /> */}
-            <NavBar navigation={navigation} route={route} />
-            <Image
-              source={constants.BIRDS}
-              style={{
-                tintColor: constants.PURPLE,
-                position: 'absolute',
-                zIndex: 2,
-                top: 200,
-                left: 0,
-                opacity: 0.4,
-                width: 230,
-                height: 200,
-              }}
-            />
-            <DrawerContentScrollView style={{backgroundColor: constants.RED}}>
-              <DrawerItem
-                label="Kevin Gao"
-                labelStyle={{
-                  fontSize: 20,
-                  fontFamily: constants.FONT,
-                  paddingLeft: 10,
-                  fontWeight: '800',
-                }}
-                style={{
-                  borderRadius: 25,
-                  backgroundColor: 'rgba(255,255,255,0.04)',
-                }}
-              />
-              <View
-                style={{
-                  marginTop: 10,
-                  marginLeft: 10,
-                  marginRight: 10,
-                  borderRadius: 20,
-                  backgroundColor: 'rgba(0,255,255,0.04)',
-                }}>
-                <View
-                  style={{
-                    marginBottom: -15,
-                    //backgroundColor: "red",
-                    flexDirection: 'row',
-                  }}>
-                  <DrawerItem
-                    label="Your Flocks"
-                    labelStyle={{
-                      fontFamily: constants.FONT,
-                      fontSize: 17,
-                      color: constants.OFF_BLACK,
-                      fontSize: 15,
-                      fontWeight: '500',
-                    }}
-                    style={{flex: 1}}
-                  />
-                  <View style={{justifyContent: 'center', paddingBottom: 5}}>
-                    <TouchableOpacity
-                      onPress={() => {
-                        console.log('hi');
-                      }}>
-                      <Text style={{fontSize: 30, color: constants.DARK_BLUE}}>
-                        +
-                      </Text>
-                    </TouchableOpacity>
-                  </View>
-                </View>
-                <View style={{marginLeft: 10}}>
-                  <MyDrawerItemList {...props} />
-                </View>
-              </View>
-            </DrawerContentScrollView>
-          </>
+          <DrawerContentComponent
+            {...props}
+            navigation={navigation}
+            route={route}
+          />
         );
       }}>
       {renderDrawers(data)}
@@ -688,5 +607,99 @@ const renderDrawers = (data) => {
       />
     );
   });
+};
+
+const DrawerContentComponent = (props) => {
+  const wasDrawerOpen = useIsDrawerOpen();
+  useEffect(() => {
+    return () => {
+      console.log(props.state);
+
+      console.log('WAS DRAWER OPEN');
+      console.log(wasDrawerOpen);
+    };
+  }, [props.state]);
+  return (
+    <>
+      {/* <View
+    style={{
+      width: 700,
+      height: 100,
+      position: 'absolute',
+      bottom: 70,
+      zIndex: 900,
+      backgroundColor: 'black',
+    }}
+  /> */}
+      {!wasDrawerOpen ? null : (
+        <NavBar navigation={props.navigation} route={props.route} />
+      )}
+      <Image
+        source={constants.BIRDS}
+        style={{
+          tintColor: constants.PURPLE,
+          position: 'absolute',
+          zIndex: 2,
+          top: 200,
+          left: 0,
+          opacity: 0.4,
+          width: 230,
+          height: 200,
+        }}
+      />
+      <DrawerContentScrollView style={{backgroundColor: constants.RED}}>
+        <DrawerItem
+          label="Kevin Gao"
+          labelStyle={{
+            fontSize: 20,
+            fontFamily: constants.FONT,
+            paddingLeft: 10,
+            fontWeight: '800',
+          }}
+          style={{
+            borderRadius: 25,
+            backgroundColor: 'rgba(255,255,255,0.04)',
+          }}
+        />
+        <View
+          style={{
+            marginTop: 10,
+            marginLeft: 10,
+            marginRight: 10,
+            borderRadius: 20,
+            backgroundColor: 'rgba(0,255,255,0.04)',
+          }}>
+          <View
+            style={{
+              marginBottom: -15,
+              //backgroundColor: "red",
+              flexDirection: 'row',
+            }}>
+            <DrawerItem
+              label="Your Flocks"
+              labelStyle={{
+                fontFamily: constants.FONT,
+                fontSize: 17,
+                color: constants.OFF_BLACK,
+                fontSize: 15,
+                fontWeight: '500',
+              }}
+              style={{flex: 1}}
+            />
+            <View style={{justifyContent: 'center', paddingBottom: 5}}>
+              <TouchableOpacity onPress={() => {}}>
+                <Text style={{fontSize: 30, color: constants.DARK_BLUE}}>
+                  +
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+          <View style={{marginLeft: 10}}>
+            <MyDrawerItemList {...props} />
+          </View>
+        </View>
+      </DrawerContentScrollView>
+    </>
+  );
 };
 export default Chat;

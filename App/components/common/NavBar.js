@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, Text, Modal, TouchableOpacity} from 'react-native';
 import NavButton from './NavButton';
 import {constants} from 'App/constants';
@@ -69,6 +69,11 @@ const NavBar = ({style, route, navigation}) => {
   const {navigate} = navigation;
   const [modalOpen, setModalOpen] = useState(false);
 
+  useEffect(() => {
+    return () => {
+      console.log('unmounting navbar from chat');
+    };
+  }, []);
   const renderNavButton = (navItem) => {
     return (
       <NavButton
