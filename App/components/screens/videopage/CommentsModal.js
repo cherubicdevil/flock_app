@@ -14,6 +14,7 @@ import {
   TextInput,
   TouchableWithoutFeedback,
 } from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
 import {firebase} from 'App/firebase/config';
 import {useDispatch, useSelector} from 'react-redux';
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
@@ -454,6 +455,31 @@ const CommentsModal = ({modalVisible, data, toggleFunc}) => {
           onResponderTerminate={() => {
             console.log('lost responder');
           }}>
+          <View
+            style={{
+              position: 'absolute',
+              top: 0,
+              borderRadius: 20,
+              overflow: 'hidden',
+              width: '100%',
+              height: 100,
+              zIndex: -10,
+            }}>
+            <LinearGradient
+              colors={[
+                constants.COMMENT_COLOR,
+                constants.COMMENT_COLOR,
+                'rgba(255,255,255,0)',
+              ]}
+              style={{
+                height: 100,
+                width: '100%',
+                position: 'absolute',
+                top: 0,
+                zIndex: -10,
+              }}
+            />
+          </View>
           <Text style={styles.modalText}>Comments</Text>
           <ScrollView
             showsVerticalScrollIndicator={false}
@@ -610,7 +636,7 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     paddingBottom: 10,
     marginLeft: 20,
-    backgroundColor: 'rgb(240, 240, 255)',
+    backgroundColor: constants.COMMENT_COLOR,
   },
   textInputStyle: {
     paddingLeft: 10,
