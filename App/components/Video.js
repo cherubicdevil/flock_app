@@ -45,15 +45,16 @@ class Video extends React.Component {
   // }
 
   renderContent() {
+    var trueIndex = this.props.currIndex;
+    if (this.props.currIndex !== this.props.carIndex) {
+      trueIndex = this.props.carIndex;
+    }
     const example_url =
       'https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4';
     //const video_uri = example_url;
     const video_uri = this.props.data.video;
     //console.log('ACTUAL RENDERED VIDEO: ', this.props.data.video);
-    if (
-      this.props.index !== this.props.carIndex &&
-      this.props.index !== this.props.currIndex
-    ) {
+    if (this.props.index !== trueIndex && !this.props.masonry) {
       return <View style={{height: '100%'}} />;
     }
     if (this.props.visible === false && this.props.masonry) {
