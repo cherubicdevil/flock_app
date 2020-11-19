@@ -159,9 +159,7 @@ var renderProduct = (navigation, data) => {
 // };
 
 const VideoPage = ({navigation, array, index, data, currIndex}) => {
-  const selector = useSelector((state) => state);
   var likes = data.likes || 0;
-  var liked = selector.userInfo.likedVideos.includes(data.id);
   const dispatch = useDispatch();
   // console.log('NAVIGATION CONTEXT:', navigation);
   const [myData, setMyData] = useState(data);
@@ -200,20 +198,6 @@ const VideoPage = ({navigation, array, index, data, currIndex}) => {
         // 		.setValue(liked);
         //console.log('value set');
         //};
-
-        if (liked) {
-          dispatch({
-            type: 'LIKED_VIDEO',
-            payload:
-              // send doc id
-              data.id,
-          });
-        } else {
-          dispatch({
-            type: 'DISLIKED_VIDEO',
-            payload: data.id,
-          });
-        }
       };
     }),
   );
@@ -249,6 +233,8 @@ const VideoPage = ({navigation, array, index, data, currIndex}) => {
     );
   };
   const HeartIcon = () => {
+    const selector = useSelector((state) => state);
+    var liked = selector.userInfo.likedVideos.includes(data.id);
     const [heartColor, setHeartColor] = useState(liked);
     useEffect(() => {
       dataRef = firebase
@@ -264,6 +250,22 @@ const VideoPage = ({navigation, array, index, data, currIndex}) => {
             setHeartColor(true);
           }
         });
+
+      return () => {
+        if (liked) {
+          dispatch({
+            type: 'LIKED_VIDEO',
+            payload:
+              // send doc id
+              data.id,
+          });
+        } else {
+          dispatch({
+            type: 'DISLIKED_VIDEO',
+            payload: data.id,
+          });
+        }
+      };
     }, []);
 
     return (
@@ -278,7 +280,6 @@ const VideoPage = ({navigation, array, index, data, currIndex}) => {
             likes = likes + change;
 
             data.likes += change;
-            liked = !liked;
             setHeartColor(!heartColor);
             console.log('IS LIKED?: ', liked);
           }}>
