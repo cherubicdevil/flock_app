@@ -15,6 +15,7 @@ import {
   TouchableWithoutFeedback,
 } from 'react-native';
 // import io from "socket.io-client";
+import NavBar from 'App/components/common/NavBar';
 import {GiftedChat} from 'react-native-gifted-chat';
 import {
   DrawerContentScrollView,
@@ -581,7 +582,7 @@ const MyDrawerItemList = ({descriptors, state, navigation}) => {
   );
 };
 
-const Chat = () => {
+const Chat = ({navigation, route}) => {
   return (
     <Drawer.Navigator
       minSwipeDistance={30}
@@ -589,6 +590,17 @@ const Chat = () => {
       drawerContent={(props) => {
         return (
           <>
+            {/* <View
+              style={{
+                width: 700,
+                height: 100,
+                position: 'absolute',
+                bottom: 70,
+                zIndex: 900,
+                backgroundColor: 'black',
+              }}
+            /> */}
+            <NavBar navigation={navigation} route={route} />
             <Image
               source={constants.BIRDS}
               style={{
@@ -631,12 +643,13 @@ const Chat = () => {
                     flexDirection: 'row',
                   }}>
                   <DrawerItem
-                    label="your flocks"
+                    label="Your Flocks"
                     labelStyle={{
                       fontFamily: constants.FONT,
+                      fontSize: 17,
                       color: constants.OFF_BLACK,
                       fontSize: 15,
-                      fontWeight: '600',
+                      fontWeight: '500',
                     }}
                     style={{flex: 1}}
                   />

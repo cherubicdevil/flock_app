@@ -106,6 +106,7 @@ const AppNavigator5 = () => {
           name="Chat"
           component={Chat}
           options={{
+            tabBarVisible: false,
             title: 'Chat',
             cap: 'flocks',
             image: require('App/Assets/Images/Group_Chat_Icon.png'),
