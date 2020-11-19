@@ -1,4 +1,5 @@
 import React, {useState, useEffect, useRef} from 'react';
+import Collapsible from 'react-native-collapsible';
 import {
   KeyboardAvoidingView,
   ScrollView,
@@ -18,6 +19,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 //import {useFocusEffect} from 'react-navigation-hooks';
 import {useFocusEffect} from '@react-navigation/native';
+import {constants} from 'App/constants';
 
 const renderPostTime = (nowDate, thenDate) => {
   //console.log(nowDate, thenDate);
@@ -375,41 +377,53 @@ const CommentsModal = ({modalVisible, data, toggleFunc}) => {
   const RepliesButton = ({item}) => {
     const [showReplies, setShowReplies] = useState(false);
     const renderReplies = () => {
-      if (showReplies) {
-        return (
-          <View>
-            <FlatList
-              keyExtractor={(item) => item.text + item.date}
-              data={item.children}
-              renderItem={(it) => {
-                return <Comment item={it.item} />;
-              }}
-            />
-            <View
-              onStartShouldSetResponder={() => true}
-              onResponderGrant={() => {
-                console.log('view replies');
-                setShowReplies(false);
-              }}>
-              <Text style={styles.textBoldHide}>Hide Replies</Text>
-            </View>
-          </View>
-        );
-      } else {
-        return (
-          <View
-            onStartShouldSetResponder={() => true}
-            onResponderGrant={() => {
-              console.log('view replies');
-              setShowReplies(true);
-            }}
+      return (
+        <>
+          <TouchableOpacity
             onPress={() => {
-              setShowReplies(true);
+              setShowReplies(!showReplies);
             }}>
-            <Text style={styles.textBoldShow}>View Replies</Text>
-          </View>
-        );
-      }
+            <Text style={styles.textBoldShow}>
+              {showReplies ? 'Hide Replies' : 'Show Replies'}
+            </Text>
+          </TouchableOpacity>
+          <Collapsible collapsed={!showReplies}>
+            <View style={{marginTop: 10}}>
+              <FlatList
+                keyExtractor={(item) => item.text + item.date}
+                data={item.children}
+                renderItem={(it) => {
+                  return <Comment item={it.item} />;
+                }}
+              />
+              <View
+                onStartShouldSetResponder={() => true}
+                onResponderGrant={() => {
+                  console.log('view replies');
+                  setShowReplies(false);
+                }}>
+                <Text style={styles.textBoldHide}>Hide Replies</Text>
+              </View>
+            </View>
+          </Collapsible>
+        </>
+      );
+      //   );
+      // } else {
+      //   return (
+      //     <View
+      //       onStartShouldSetResponder={() => true}
+      //       onResponderGrant={() => {
+      //         console.log('view replies');
+      //         setShowReplies(true);
+      //       }}
+      //       onPress={() => {
+      //         setShowReplies(true);
+      //       }}>
+      //       <Text style={styles.textBoldShow}>View Replies</Text>
+      //     </View>
+      //   );
+      // }
     };
     if (item.replies > 0) {
       return <View>{renderReplies()}</View>;
@@ -570,7 +584,7 @@ const styles = StyleSheet.create({
   },
   textBoldHide: {
     marginTop: 5,
-    marginLeft: 40,
+    marginLeft: 20,
     fontWeight: 'bold',
     fontSize: 10,
     color: '#777',
@@ -588,7 +602,16 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     //width: '90%',
   },
-  commentWrapperStyle: {paddingBottom: 10, paddingTop: 20, marginLeft: 20},
+  commentWrapperStyle: {
+    marginRight: 20,
+    marginBottom: 15,
+    borderRadius: 20,
+    paddingTop: 10,
+    paddingLeft: 10,
+    paddingBottom: 10,
+    marginLeft: 20,
+    backgroundColor: 'rgb(240, 240, 255)',
+  },
   textInputStyle: {
     paddingLeft: 10,
     paddingTop: 0,
