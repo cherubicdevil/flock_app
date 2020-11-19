@@ -264,6 +264,8 @@ const CommentsModal = ({modalVisible, data, toggleFunc}) => {
         children: [],
       };
       db.collection('comments').doc(docId).set(commentData);
+      // FLOCK_CONFUSION... why does the new comments show up even when you don't fetch
+      // or refresh?
       setComment('');
     }
   };
