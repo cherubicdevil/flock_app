@@ -371,17 +371,19 @@ const VideoPage = ({navigation, array, index, data, currIndex}) => {
             source={{uri: data.poster}}
           />
         </View>
-        <Video
-          style={{zIndex: 10}}
-          masonry={false}
-          paused={paused}
-          muted={false || leavePage}
-          navigation={navigation}
-          data={data}
-          index={index}
-          currIndex={currIndex}
-          leave={leavePage}
-        />
+        <View pointerEvents="none">
+          <Video
+            style={{zIndex: 10}}
+            masonry={false}
+            paused={paused}
+            muted={false || leavePage}
+            navigation={navigation}
+            data={data}
+            index={index}
+            currIndex={currIndex}
+            leave={leavePage}
+          />
+        </View>
         {/* {renderClose(navigation)} */}
         {renderProduct(navigation, data)}
         {renderProfile()}
