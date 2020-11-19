@@ -59,11 +59,16 @@ const config = {
 };
 
 const CircleBorderProfile = ({photoUrl}) => {
+  // Possible FLOCK_BUG
+  // don't know why each of these have to be absolute position
+  // if the profile pictures look uncentered later, look at this again.
   return (
     <View
       style={{
         //justifyContent: 'center',
         alignItems: 'center',
+        position: 'absolute',
+        bottom: 230,
       }}>
       <ImageBackground
         source={require('App/Assets/Images/Orange_Gradient_Small.png')}
@@ -72,7 +77,6 @@ const CircleBorderProfile = ({photoUrl}) => {
           position: 'absolute',
           height: 62,
           width: 60,
-          bottom: 160,
           borderRadius: 45,
           left: 15,
           //borderWidth: 3,
@@ -87,7 +91,6 @@ const CircleBorderProfile = ({photoUrl}) => {
           height: 54,
           width: 54,
           left: 18,
-          bottom: 160,
           borderRadius: 45,
           //borderWidth: 5,
           borderColor: '#f23',
@@ -96,12 +99,11 @@ const CircleBorderProfile = ({photoUrl}) => {
       />
       <Image
         style={{
+          position: 'absolute',
           marginBottom: 6,
           height: 50,
           left: 20,
           width: 50,
-          position: 'absolute',
-          bottom: 160,
           borderRadius: 25,
         }}
         source={photoUrl}
@@ -270,7 +272,7 @@ const VideoPage = ({navigation, array, index, data, currIndex}) => {
 
     return (
       <View style={{zIndex: 900}}>
-        <TouchableHighlight
+        <TouchableOpacity
           onPress={() => {
             //var likes = data.likes || 0;
             var change = 1;
@@ -291,7 +293,7 @@ const VideoPage = ({navigation, array, index, data, currIndex}) => {
             }}
             source={require('App/Assets/Images/Heart_Icon_White.png')}
           />
-        </TouchableHighlight>
+        </TouchableOpacity>
         <Text style={styles.buttonText}>{data.likes}</Text>
       </View>
     );
@@ -321,7 +323,7 @@ const VideoPage = ({navigation, array, index, data, currIndex}) => {
               source={require('App/Assets/Images/Comment_Icon_White.png')}
             />
           </TouchableOpacity>
-          <Text style={styles.buttonText}>5</Text>
+          <Text style={styles.buttonText}></Text>
         </View>
         <TouchableWithoutFeedback
           onPress={() => {

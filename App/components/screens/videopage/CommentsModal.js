@@ -482,7 +482,7 @@ const CommentsModal = ({modalVisible, data, toggleFunc}) => {
               }}
             />
           </View>
-          <Text style={styles.modalText}>Comments</Text>
+          <Text style={styles.modalText}>Comments ({comments.length}) </Text>
           <ScrollView
             showsVerticalScrollIndicator={false}
             onScrollEndDrag={(e) => {
