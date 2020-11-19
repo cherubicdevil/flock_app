@@ -269,7 +269,7 @@ const VideoPage = ({navigation, array, index, data, currIndex}) => {
     }, []);
 
     return (
-      <View>
+      <View style={{zIndex: 900}}>
         <TouchableHighlight
           onPress={() => {
             //var likes = data.likes || 0;
