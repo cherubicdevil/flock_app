@@ -1,6 +1,6 @@
 import {ADD_GOOSE} from '../actions/types';
 
-const INITIAL_STATE = {email: '', password: '', count: 0};
+// why do i have to go into goose to access this?
 
 export default function counter(state = {count: 0}, action) {
   const count = state.count;

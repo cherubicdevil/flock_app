@@ -50,6 +50,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 //import {useFocusEffect} from 'react-navigation-hooks';
 import {useFocusEffect} from '@react-navigation/native';
+import {database} from 'firebase';
 
 const ICON_SIZE = 37;
 const config = {
@@ -158,9 +159,9 @@ var renderProduct = (navigation, data) => {
 // };
 
 const VideoPage = ({navigation, array, index, data, currIndex}) => {
-  var likes = data.likes || 0;
-  var liked = null;
   const selector = useSelector((state) => state);
+  var likes = data.likes || 0;
+  var liked = selector.userInfo.likedVideos.includes(data.id);
   const dispatch = useDispatch();
   // console.log('NAVIGATION CONTEXT:', navigation);
   const [myData, setMyData] = useState(data);
@@ -182,9 +183,10 @@ const VideoPage = ({navigation, array, index, data, currIndex}) => {
     React.useCallback(() => {
       setPaused(false);
 
-      db.collection('posts').doc(data.id).update({likes: likes});
+      // db.collection('posts').doc(data.id).update({likes: likes});
 
       return () => {
+        db.collection('posts').doc(data.id).update({likes: likes});
         setPaused(true);
         //console.log('leaving');
 
@@ -198,6 +200,20 @@ const VideoPage = ({navigation, array, index, data, currIndex}) => {
         // 		.setValue(liked);
         //console.log('value set');
         //};
+
+        if (liked) {
+          dispatch({
+            type: 'LIKED_VIDEO',
+            payload:
+              // send doc id
+              data.id,
+          });
+        } else {
+          dispatch({
+            type: 'DISLIKED_VIDEO',
+            payload: data.id,
+          });
+        }
       };
     }),
   );
@@ -218,7 +234,7 @@ const VideoPage = ({navigation, array, index, data, currIndex}) => {
     // );
     return (
       <CircleBorderProfile
-        photoUrl={require('App/Assets/Images/Profile_Egg_Icon.png')}
+        photoUrl={constants.PLACEHOLDER_IMAGE}
         style={{
           resizeMode: 'contain',
           position: 'absolute',
@@ -233,7 +249,7 @@ const VideoPage = ({navigation, array, index, data, currIndex}) => {
     );
   };
   const HeartIcon = () => {
-    const [heartColor, setHeartColor] = useState(false);
+    const [heartColor, setHeartColor] = useState(liked);
     useEffect(() => {
       dataRef = firebase
         .database()
@@ -264,7 +280,7 @@ const VideoPage = ({navigation, array, index, data, currIndex}) => {
             data.likes += change;
             liked = !liked;
             setHeartColor(!heartColor);
-            console.log(data.likes);
+            console.log('IS LIKED?: ', liked);
           }}>
           <Image
             style={{
@@ -324,7 +340,6 @@ const VideoPage = ({navigation, array, index, data, currIndex}) => {
     );
   };
   const renderVid = () => {
-    console.log('COMARE', index, currIndex);
     if (leavePage) {
       console.log('LEAVING');
       return <View />;
