@@ -1,10 +1,11 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, Modal, TouchableOpacity} from 'react-native';
+import {View, Text, Modal, TouchableOpacity, Animated} from 'react-native';
 import NavButton from './NavButton';
 import {constants} from 'App/constants';
 import OptionsModal from 'App/navigators/OptionsModal';
 //import OptionsModalModified from 'App/components/OptionsModalModified';
 import ImagePicker from 'react-native-image-picker';
+import {fadeIn} from 'App/utils';
 
 const imagePickerOptions = {
   //customButtons: [{name: 'fb', title: 'Choose Photo From Facebook'}],
@@ -68,8 +69,10 @@ const NavBar = ({style, route, navigation}) => {
   const routeName = route.name; // navigation.state.routeName
   const {navigate} = navigation;
   const [modalOpen, setModalOpen] = useState(false);
+  const [fade, setFade] = useState(new Animated.Value(0));
 
   useEffect(() => {
+    fadeIn(fade, 500);
     return () => {
       console.log('unmounting navbar from chat');
     };
@@ -93,12 +96,13 @@ const NavBar = ({style, route, navigation}) => {
   };
 
   return (
-    <View
+    <Animated.View
       style={{
         position: 'absolute',
         zIndex: 900,
         bottom: constants.NAVBARHEIGHT / 4,
         height: 90,
+        opacity: fade,
         width: '150%',
       }}>
       <OptionsModal
@@ -140,7 +144,7 @@ const NavBar = ({style, route, navigation}) => {
         {renderNavButton(navOptions.Products)}
         {renderNavButton(navOptions.Egg)}
       </View>
-    </View>
+    </Animated.View>
   );
 };
 

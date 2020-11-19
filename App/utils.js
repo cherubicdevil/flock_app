@@ -41,6 +41,7 @@
 import {constants} from 'App/constants';
 import {firebase} from 'App/firebase/config';
 import ImagePicker from 'react-native-image-picker';
+import {Animated} from 'react-native';
 
 const fetchStreamableSource = async (src) => {
   if (src === null || src === undefined) {
@@ -138,10 +139,50 @@ const pickVideo = (setPic) => {
   );
 };
 
+const fadeOut = (val, duration) => {
+  Animated.timing(
+    // Animate over time
+    val, // The animated value to drive
+    {
+      toValue: 0, // Animate to opacity: 1 (opaque)
+      duration: duration, // 2000ms
+      useNativeDriver: true,
+    },
+  ).start();
+};
+
+const fadeIn = (val, duration) => {
+  Animated.timing(
+    // Animate over time
+    val, // The animated value to drive
+    {
+      toValue: 1, // Animate to opacity: 1 (opaque)
+      duration: duration, // 2000ms
+      useNativeDriver: true,
+    },
+  ).start();
+};
+
+const springUp = (val, target, duration) => {
+  Animated.spring(
+    // Animate over time
+    val, // The animated value to drive
+    {
+      toValue: 0,
+      friction: 5,
+      //toValue: target, // Animate to opacity: 1 (opaque)
+      duration: duration, // 2000ms
+      useNativeDriver: true,
+    },
+  ).start();
+};
+
 export {
   fetchStreamableSource,
   fetchAlbums,
   fetchProducts,
   mergeArrays,
   pickVideo,
+  fadeIn,
+  springUp,
 };
