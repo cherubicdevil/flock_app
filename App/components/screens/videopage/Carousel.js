@@ -48,6 +48,7 @@ const VideoCarousel = ({route, navigation, array, index = 0, data}) => {
       <ScrollView
         contentOffset={{y: index * Dimensions.get('window').height}}
         showsVerticalScrollIndicator={false}
+        scrollEventThrottle={1}
         onScroll={function (event) {
           dispatch({
             type: 'sendCarouselIndex',

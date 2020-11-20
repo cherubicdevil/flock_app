@@ -58,7 +58,6 @@ class Video extends React.Component {
       return <View style={{height: '100%'}} />;
     }
     if (this.props.visible === false && this.props.masonry) {
-      console.log('IM INVISIBLE');
       return <View style={{height: 350}} />;
     }
     if (

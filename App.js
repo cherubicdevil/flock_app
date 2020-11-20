@@ -8,6 +8,7 @@ import {createStore} from 'redux';
 import AppNavigator from 'App/navigators/AppNavigator';
 import AuthNavigator from 'App/navigators/AuthNavigator';
 import reducers from 'App/redux/reducers';
+import {fetchUserData} from './App/utils';
 
 class App extends React.Component {
   state = {
@@ -21,6 +22,9 @@ class App extends React.Component {
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         this.setState({loggedIn: true});
+        fetchUserData(user).then((user) => {
+          console.log('USER', user);
+        });
       } else {
         this.setState({loggedIn: false});
       }

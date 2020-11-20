@@ -239,22 +239,24 @@ const VideoPage = ({navigation, array, index, data, currIndex}) => {
     var liked = selector.userInfo.likedVideos.includes(data.id);
     const [heartColor, setHeartColor] = useState(liked);
     useEffect(() => {
-      dataRef = firebase
-        .database()
-        .ref('users')
-        .child(firebase.auth().currentUser.uid)
-        .child('likedPosts')
-        .child(data.id)
-        .once('value')
-        .then(function (snapshot) {
-          //console.log('snapshot val', snapshot.val());
-          if (snapshot.val()) {
-            setHeartColor(true);
-          }
-        });
+      // dataRef = firebase
+      //   .database()
+      //   .ref('users')
+      //   .child(firebase.auth().currentUser.uid)
+      //   .child('likedPosts')
+      //   .child(data.id)
+      //   .once('value')
+      //   .then(function (snapshot) {
+      //     //console.log('snapshot val', snapshot.val());
+      //     if (snapshot.val()) {
+      //       setHeartColor(true);
+      //     }
+      //   });
 
       return () => {
-        if (liked) {
+        console.log('heartColor', heartColor);
+        if (heartColor) {
+          console.log('liked');
           dispatch({
             type: 'LIKED_VIDEO',
             payload:
@@ -268,7 +270,7 @@ const VideoPage = ({navigation, array, index, data, currIndex}) => {
           });
         }
       };
-    }, []);
+    }, [heartColor]);
 
     return (
       <View style={{zIndex: 900}}>
@@ -283,7 +285,7 @@ const VideoPage = ({navigation, array, index, data, currIndex}) => {
 
             data.likes += change;
             setHeartColor(!heartColor);
-            console.log('IS LIKED?: ', liked);
+            console.log('HEART COLOR:', heartColor);
           }}>
           <Image
             style={{

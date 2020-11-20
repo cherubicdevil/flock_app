@@ -62,6 +62,17 @@ const fetchStreamableSource = async (src) => {
   return await urlVar;
 };
 
+const fetchUserData = (user) => {
+  return new Promise(async (resolve) => {
+    const doc = await firebase
+      .firestore()
+      .collection('users')
+      .doc(user.uid)
+      .get();
+    resolve(doc.data());
+  });
+};
+
 const fetchAlbums = (lastVisible = null) => {
   return new Promise(async (resolve) => {
     var counter = 0;
@@ -177,6 +188,11 @@ const springUp = (val, target, duration) => {
   ).start();
 };
 
+const uploadUserInfo = (info) => {
+  const user = firebase.auth().currentUser.uid;
+  firebase.firestore().collection('users').doc(user).set(info);
+};
+
 export {
   fetchStreamableSource,
   fetchAlbums,
@@ -185,4 +201,6 @@ export {
   pickVideo,
   fadeIn,
   springUp,
+  fetchUserData,
+  uploadUserInfo,
 };
