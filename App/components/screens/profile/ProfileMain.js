@@ -10,13 +10,18 @@ import {
   Platform,
   SafeAreaView,
   ScrollView,
+  FlatList,
   ImageBackground,
+  Dimensions,
 } from 'react-native';
 import ImagePicker from 'react-native-image-picker';
+import Video from 'react-native-video';
+import {useSelector} from 'react-redux';
 import {constants} from 'App/constants';
 //import Input from 'App/components/common/Input';
 import {firebase} from 'App/firebase/config';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
+import {fetchStreamableSource} from '../../../utils';
 //import Base64 from 'base-64';
 
 // global.atob = Base64.encode;
@@ -28,12 +33,6 @@ const userInfo = {
   gender: 'Male',
 };
 
-const Test1 = () => {
-  return <Text>Test1</Text>;
-};
-const Test2 = () => {
-  return <Text>Test2</Text>;
-};
 const ProfilePicture = () => {
   const user = firebase.auth().currentUser;
 
@@ -60,7 +59,55 @@ const ProfilePicture = () => {
   );
 };
 const ProfileMain = ({navigation}) => {
+  const selector = useSelector((state) => state);
   //const user = firebase.auth().currentUser;
+  const Test1 = () => {
+    return (
+      <View
+        style={{marginTop: 30, alignSelf: 'center', justifyContent: 'center'}}>
+        <Image source={constants.PLACEHOLDER_IMAGE} />
+        <Text
+          style={{
+            fontFamily: constants.FONT,
+            marginTop: 10,
+            width: 120,
+            textAlign: 'center',
+            flexWrap: 'wrap',
+          }}>
+          You don't have any posted clucks yet!
+        </Text>
+      </View>
+    );
+  };
+
+  const Test2 = () => {
+    var data = selector.userInfo.likedVideos;
+    const [resp, setResp] = useState('');
+    return (
+      <>
+        <Text>Hello world</Text>
+        <FlatList
+          data={data}
+          renderItem={(el) => {
+            console.log('HELLO');
+            fetchStreamableSource(el).then((resp) => {
+              setResp(resp);
+            });
+            return (
+              <Video
+                source={{uri: resp}}
+                style={{
+                  backgroundColor: 'black',
+                  height: 100,
+                  width: Dimensions.get('window').width / 3,
+                }}
+              />
+            );
+          }}
+        />
+      </>
+    );
+  };
 
   useEffect(() => {}, []);
   const Tab = createMaterialTopTabNavigator();
@@ -148,8 +195,8 @@ const ProfileMain = ({navigation}) => {
       </ImageBackground>
       <View style={{flex: 2}}>
         <Tab.Navigator>
-          <Tab.Screen name="Test1" component={Test1} />
-          <Tab.Screen name="Test2" component={Test2} />
+          <Tab.Screen name="posts" component={Test1} />
+          <Tab.Screen name="Liked" component={Test2} />
         </Tab.Navigator>
       </View>
     </View>

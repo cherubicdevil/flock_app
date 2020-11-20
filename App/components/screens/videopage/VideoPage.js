@@ -236,7 +236,7 @@ const VideoPage = ({navigation, array, index, data, currIndex}) => {
   };
   const HeartIcon = () => {
     const selector = useSelector((state) => state);
-    var liked = selector.userInfo.likedVideos.includes(data.id);
+    var liked = selector.userInfo.likedVideos.includes(data.video);
     const [heartColor, setHeartColor] = useState(liked);
     useEffect(() => {
       // dataRef = firebase
@@ -261,12 +261,12 @@ const VideoPage = ({navigation, array, index, data, currIndex}) => {
             type: 'LIKED_VIDEO',
             payload:
               // send doc id
-              data.id,
+              data.video,
           });
         } else {
           dispatch({
             type: 'DISLIKED_VIDEO',
-            payload: data.id,
+            payload: data.video,
           });
         }
       };
