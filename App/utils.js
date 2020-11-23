@@ -61,6 +61,7 @@ const fetchStreamableSource = async (src) => {
         resolve({
           streamableVideo: response.streamableVideo,
           posterSource: resp.path,
+          size: {height: resp.height, width: resp.width},
         });
       });
       // resolve({
@@ -103,6 +104,7 @@ const fetchAlbums = (lastVisible = null) => {
             id: doc.id,
             video: newSource.streamableVideo,
             poster: newSource.posterSource,
+            size: newSource.size,
           };
           ar.push(entity);
           counter = counter + 1;

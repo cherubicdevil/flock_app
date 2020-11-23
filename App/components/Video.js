@@ -58,7 +58,15 @@ class Video extends React.Component {
       return <View style={{height: '100%'}} />;
     }
     if (this.props.visible === false && this.props.masonry) {
-      return <View style={{height: 350}} />;
+      return (
+        <View
+          style={{
+            height:
+              (this.props.data.size.height / this.props.data.size.width) *
+              (Dimensions.get('window').width / 2 - 20),
+          }}
+        />
+      );
     }
     if (
       ((!this.props.leave || this.props.masonry) && this.props.visible) ||
@@ -119,7 +127,7 @@ class Video extends React.Component {
       return (
         <View
           style={{
-            height: 315.55555555555554,
+            height: 0,
             // height large enough so that feedlist doesn't jump
             //width: '100%',
           }}
