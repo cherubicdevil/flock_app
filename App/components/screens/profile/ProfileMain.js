@@ -82,24 +82,33 @@ const ProfileMain = ({navigation}) => {
 
   const Test2 = () => {
     var data = selector.userInfo.likedVideos;
-    const [resp, setResp] = useState('');
+    const [resp, setResp] = useState(constants.TEST_URL);
     return (
       <>
         <Text>Hello world</Text>
         <FlatList
           data={data}
+          keyExtractor={() => {
+            return '' + Math.random();
+          }}
           renderItem={(el) => {
             console.log('HELLO');
-            fetchStreamableSource(el).then((resp) => {
-              setResp(resp);
-            });
+            //console.log(el.item);
+            // fetchStreamableSource(el.item).then((resp) => {
+            //   console.log('HELLOOOO');
+            //   setResp(resp);
+            //   console.log(resp);
+            // });
             return (
               <Video
-                source={{uri: resp}}
+                paused={true}
+                source={{uri: el.item}}
                 style={{
                   backgroundColor: 'black',
-                  height: 100,
-                  width: Dimensions.get('window').width / 3,
+                  height: 200,
+                  borderRadius: 20,
+                  margin: 5,
+                  width: Dimensions.get('window').width / 3 - 10,
                 }}
               />
             );
