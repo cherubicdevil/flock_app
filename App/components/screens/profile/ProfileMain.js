@@ -93,18 +93,20 @@ const ProfileMain = ({navigation}) => {
             return el.title;
           }}
           renderItem={(el) => {
-            console.log('HELLO');
             //console.log(el.item);
             // fetchStreamableSource(el.item).then((resp) => {
             //   console.log('HELLOOOO');
             //   setResp(resp);
             //   console.log(resp);
             // });
-            console.log(el.item);
             return (
-              <View
-                style={{
-                  resizeMode: 'cover',
+              <TouchableOpacity
+                onPress={() => {
+                  console.log(data);
+                  navigation.navigate('Carousel', {
+                    scrollIndex: 0,
+                    array: data,
+                  });
                 }}>
                 <Image
                   transition={false}
@@ -118,7 +120,7 @@ const ProfileMain = ({navigation}) => {
                     height: 200,
                   }}
                 />
-              </View>
+              </TouchableOpacity>
             );
           }}
         />

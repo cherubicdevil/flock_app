@@ -459,7 +459,7 @@ function App({route, navigation}) {
   //   setDummyState(!dummyState);
   // };
   const onSend = (messages) => {
-    socket.current.emit('message', messages[0].text);
+    //socket.current.emit('message', messages[0].text);
     console.log(route.params.data);
     updateCache(route.params.data.id, recvMessages);
     setRecvMessages((prevState) => GiftedChat.append(prevState, messages));
@@ -546,6 +546,7 @@ const MyDrawerItemList = ({descriptors, state, navigation}) => {
           <TouchableOpacity
             onPress={() => {
               navigation.navigate(route.name);
+              console.log('navigating to', route.name);
             }}>
             <View
               style={{
@@ -611,14 +612,7 @@ const renderDrawers = (data) => {
 
 const DrawerContentComponent = (props) => {
   const wasDrawerOpen = useIsDrawerOpen();
-  useEffect(() => {
-    return () => {
-      console.log(props.state);
-
-      console.log('WAS DRAWER OPEN');
-      console.log(wasDrawerOpen);
-    };
-  }, [props.state]);
+  const [dummyState, setDummyState] = useState(false);
   return (
     <>
       {/* <View
@@ -634,19 +628,7 @@ const DrawerContentComponent = (props) => {
       {!wasDrawerOpen ? null : (
         <NavBar navigation={props.navigation} route={props.route} />
       )}
-      <Image
-        source={constants.BIRDS}
-        style={{
-          tintColor: constants.PURPLE,
-          position: 'absolute',
-          zIndex: 2,
-          top: 200,
-          left: 0,
-          opacity: 0.4,
-          width: 230,
-          height: 200,
-        }}
-      />
+
       <DrawerContentScrollView style={{backgroundColor: constants.RED}}>
         <DrawerItem
           label="Kevin Gao"
@@ -687,7 +669,13 @@ const DrawerContentComponent = (props) => {
               style={{flex: 1}}
             />
             <View style={{justifyContent: 'center', paddingBottom: 5}}>
-              <TouchableOpacity onPress={() => {}}>
+              <TouchableOpacity
+                onPress={() => {
+                  console.log('adding');
+                  // data[2] = {flock: 'Test'};
+                  // setDummyState(!dummyState);
+                  //console.log(data);
+                }}>
                 <Text style={{fontSize: 30, color: constants.DARK_BLUE}}>
                   +
                 </Text>
@@ -698,6 +686,16 @@ const DrawerContentComponent = (props) => {
             <MyDrawerItemList {...props} />
           </View>
         </View>
+        <Image
+          source={constants.BIRDS}
+          style={{
+            tintColor: constants.PURPLE,
+            zIndex: 1,
+            opacity: 0.4,
+            width: 230,
+            height: 200,
+          }}
+        />
       </DrawerContentScrollView>
     </>
   );

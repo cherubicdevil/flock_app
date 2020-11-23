@@ -54,6 +54,7 @@ const Media = ({isInView = true, width, navigation, videoAr, data, title}) => {
         navigation.navigate('Carousel', {
           scrollIndex: videoAr.indexOf(data),
           vidData: data,
+          array: videoAr,
         });
       }}>
       <View style={{backgroundColor: '#ddd'}}>

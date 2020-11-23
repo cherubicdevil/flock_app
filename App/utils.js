@@ -58,7 +58,6 @@ const fetchStreamableSource = async (src) => {
         url: response.streamableVideo,
         timeStamp: 0,
       }).then((resp) => {
-        console.log('THUMBNAIL:', resp);
         resolve({
           streamableVideo: response.streamableVideo,
           posterSource: resp.path,

@@ -22,8 +22,10 @@ const VideoCarousel = ({route, navigation, array, index = 0, data}) => {
   }
   console.log('index', index);
   useEffect(() => {
+    console.log('ROUTE aRRAY USEEFFECT', route.params.array);
     (async () => {
       if (route?.params?.array === undefined) {
+        console.log('FETCHING ARRAY');
         const arr = await fetchAlbums();
         setAr(arr.ar);
         lastVisible = arr.lastVisible;
@@ -42,7 +44,6 @@ const VideoCarousel = ({route, navigation, array, index = 0, data}) => {
   } catch (err) {
     console.log('ERR: looks like array is not defined', err);
   }
-
   return (
     <View>
       <ScrollView
@@ -59,7 +60,7 @@ const VideoCarousel = ({route, navigation, array, index = 0, data}) => {
         }}
         horizontal={false}
         pagingEnabled={true}>
-        {renderAlbums(ar, route, navigation, index)}
+        {renderAlbums(route?.params?.array || ar, route, navigation, index)}
       </ScrollView>
       {renderClose(navigation, dispatch, ar, lastVisible)}
     </View>

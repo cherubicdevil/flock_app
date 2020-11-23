@@ -236,7 +236,10 @@ const VideoPage = ({navigation, array, index, data, currIndex}) => {
   };
   const HeartIcon = () => {
     const selector = useSelector((state) => state);
-    var liked = selector.userInfo.likedVideos.includes(data);
+    //var liked = selector.userInfo.likedVideos.includes(data);
+    var liked = selector.userInfo.likedVideos.some(
+      (item) => item.title === data.title,
+    );
     const [heartColor, setHeartColor] = useState(liked);
     useEffect(() => {
       // dataRef = firebase
