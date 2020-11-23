@@ -81,14 +81,12 @@ const ProfileMain = ({navigation}) => {
   };
 
   const Test2 = () => {
-    var ref = useRef(null);
     var data = selector.userInfo.likedVideos;
-    const [resp, setResp] = useState(constants.TEST_URL);
     return (
       <>
-        <Text>Hello world</Text>
         <FlatList
-          contentContainerStyle={{flexDirection: 'row', flexWrap: 'wrap'}}
+          //contentContainerStyle={{flexDirection: 'row', flexWrap: 'wrap'}}
+          numColumns={3}
           data={data}
           keyExtractor={() => {
             return '' + Math.random();
@@ -101,21 +99,20 @@ const ProfileMain = ({navigation}) => {
             //   setResp(resp);
             //   console.log(resp);
             // });
+            console.log(el.item);
             return (
-              <View style={{resizeMode: 'cover'}}>
-                <Video
-                  paused={true}
-                  ref={(videoPlayer) => (ref = videoPlayer)}
-                  source={{uri: el.item}}
+              <View
+                style={{
+                  resizeMode: 'cover',
+                }}>
+                <Image
+                  source={{uri: el.item.poster}}
                   style={{
-                    backgroundColor: 'black',
-                    height: 200,
-                    borderRadius: 20,
+                    //backgroundColor: constants.LIGHTGREY,
+                    borderRadius: 10,
                     margin: 5,
                     width: Dimensions.get('window').width / 3 - 10,
-                  }}
-                  onLoad={() => {
-                    ref.seek(1);
+                    height: 200,
                   }}
                 />
               </View>

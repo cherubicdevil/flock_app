@@ -14,6 +14,7 @@ class App extends React.Component {
   state = {
     isLoaded: false,
     loggedIn: null,
+    userData: null,
   };
 
   componentDidMount() {
@@ -21,9 +22,8 @@ class App extends React.Component {
     this.setState({isLoaded: true});
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
-        this.setState({loggedIn: true});
         fetchUserData(user).then((user) => {
-          console.log('USER', user);
+          this.setState({loggedIn: true, userData: user});
         });
       } else {
         this.setState({loggedIn: false});
@@ -35,7 +35,8 @@ class App extends React.Component {
     switch (this.state.loggedIn) {
       case true:
         return (
-          <Provider store={createStore(reducers)}>
+          <Provider
+            store={createStore(reducers, {userInfo: this.state.userData})}>
             <AppNavigator />
           </Provider>
         );
