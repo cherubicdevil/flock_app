@@ -7649,6 +7649,11 @@ react-native-component-inview@^1.0.2:
   resolved "https://registry.yarnpkg.com/react-native-component-inview/-/react-native-component-inview-1.0.2.tgz#da2140bb6c89f40706695ffaed2efbb007f491e7"
   integrity sha512-BlzgpZDxpGx+5MQD0xA1jKzlej/0tOw72DEIHVb7FOEaGduXkWMIKag+nf50jgbez0S7qAFRH53ctF6q5xrrBw==
 
+react-native-create-thumbnail@^1.2.2:
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/react-native-create-thumbnail/-/react-native-create-thumbnail-1.2.2.tgz#4944e1e815dc494be8cb5864682a13c351c402ae"
+  integrity sha512-V5Ty3cfHnLRzP2xh4wZzMG4V1It+sqiK6weqRDIAGSKikABcB+Ho8koiidd6Bbqk0tZuBzW/WPwT/e6LsWC2nw==
+
 react-native-dropdown-picker@^3.7.0:
   version "3.7.1"
   resolved "https://registry.yarnpkg.com/react-native-dropdown-picker/-/react-native-dropdown-picker-3.7.1.tgz#ead80b69108bfe8cf56fef5a68d5545d5063b33c"

@@ -1,4 +1,4 @@
-import React, {useState, useRef, useEffect} from 'react';
+import React, {useState, useRef, useEffect, createRef} from 'react';
 import {
   View,
   Text,
@@ -81,12 +81,14 @@ const ProfileMain = ({navigation}) => {
   };
 
   const Test2 = () => {
+    var ref = useRef(null);
     var data = selector.userInfo.likedVideos;
     const [resp, setResp] = useState(constants.TEST_URL);
     return (
       <>
         <Text>Hello world</Text>
         <FlatList
+          contentContainerStyle={{flexDirection: 'row', flexWrap: 'wrap'}}
           data={data}
           keyExtractor={() => {
             return '' + Math.random();
@@ -100,17 +102,23 @@ const ProfileMain = ({navigation}) => {
             //   console.log(resp);
             // });
             return (
-              <Video
-                paused={true}
-                source={{uri: el.item}}
-                style={{
-                  backgroundColor: 'black',
-                  height: 200,
-                  borderRadius: 20,
-                  margin: 5,
-                  width: Dimensions.get('window').width / 3 - 10,
-                }}
-              />
+              <View style={{resizeMode: 'cover'}}>
+                <Video
+                  paused={true}
+                  ref={(videoPlayer) => (ref = videoPlayer)}
+                  source={{uri: el.item}}
+                  style={{
+                    backgroundColor: 'black',
+                    height: 200,
+                    borderRadius: 20,
+                    margin: 5,
+                    width: Dimensions.get('window').width / 3 - 10,
+                  }}
+                  onLoad={() => {
+                    ref.seek(1);
+                  }}
+                />
+              </View>
             );
           }}
         />

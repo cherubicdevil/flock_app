@@ -42,6 +42,7 @@ import {constants} from 'App/constants';
 import {firebase} from 'App/firebase/config';
 import ImagePicker from 'react-native-image-picker';
 import {Animated} from 'react-native';
+import {createThumbnail} from 'react-native-create-thumbnail';
 
 const fetchStreamableSource = async (src) => {
   if (src === null || src === undefined) {
@@ -53,10 +54,20 @@ const fetchStreamableSource = async (src) => {
   const responseVar = fetchVar.then((response) => response.json());
   const urlVar = responseVar.then((response) => {
     return new Promise(function (resolve) {
-      resolve({
-        streamableVideo: response.streamableVideo,
-        posterSource: response.posterSource,
+      createThumbnail({
+        url: response.streamableVideo,
+        timeStamp: 0,
+      }).then((resp) => {
+        console.log('THUMBNAIL:', resp);
+        resolve({
+          streamableVideo: response.streamableVideo,
+          posterSource: resp.path,
+        });
       });
+      // resolve({
+      //   streamableVideo: response.streamableVideo,
+      //   posterSource: response.posterSource,
+      // });
     });
   });
   return await urlVar;
