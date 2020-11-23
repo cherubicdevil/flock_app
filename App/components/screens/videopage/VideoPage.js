@@ -364,16 +364,7 @@ const VideoPage = ({navigation, array, index, data, currIndex}) => {
             justifyContent: 'center',
             zIndex: -10,
           }}>
-          <Image
-            style={{
-              position: 'absolute',
-              height: '100%',
-              width: '100%',
-              zIndex: -10,
-            }}
-            blurRadius={10}
-            source={{uri: data.poster}}
-          />
+          <PosterImage source={{uri: data.poster}} />
         </View>
         <View pointerEvents="none">
           <Video
@@ -403,6 +394,29 @@ const VideoPage = ({navigation, array, index, data, currIndex}) => {
     );
   };
   return <View>{renderVid()}</View>;
+};
+
+const PosterImage = ({source}) => {
+  const [width, setWidth] = useState(0);
+  const [height, setHeight] = useState(0);
+  Image.getSize(source.uri, (w, h) => {
+    const ratio = Dimensions.get('window').height / h;
+    setWidth(w * ratio);
+    setHeight(Dimensions.get('window').height);
+  });
+
+  return (
+    <Image
+      source={source}
+      style={{
+        position: 'absolute',
+        zIndex: -10,
+        opacity: 0.935,
+        width: width,
+        height: height,
+      }}
+    />
+  );
 };
 
 const styles = StyleSheet.create({
