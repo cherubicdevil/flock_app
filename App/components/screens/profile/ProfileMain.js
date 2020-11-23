@@ -88,8 +88,9 @@ const ProfileMain = ({navigation}) => {
           //contentContainerStyle={{flexDirection: 'row', flexWrap: 'wrap'}}
           numColumns={3}
           data={data}
-          keyExtractor={() => {
-            return '' + Math.random();
+          keyExtractor={(el) => {
+            console.log(el.title);
+            return el.title;
           }}
           renderItem={(el) => {
             console.log('HELLO');
@@ -106,6 +107,8 @@ const ProfileMain = ({navigation}) => {
                   resizeMode: 'cover',
                 }}>
                 <Image
+                  transition={false}
+                  defaultSource={{uri: el.item.poster}}
                   source={{uri: el.item.poster}}
                   style={{
                     //backgroundColor: constants.LIGHTGREY,
