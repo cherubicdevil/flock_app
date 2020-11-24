@@ -84,6 +84,7 @@ const ProfileMain = ({navigation}) => {
     var data = selector.userInfo.likedVideos;
     return (
       <>
+        <Text>Hello World</Text>
         <FlatList
           //contentContainerStyle={{flexDirection: 'row', flexWrap: 'wrap'}}
           numColumns={3}
@@ -99,6 +100,7 @@ const ProfileMain = ({navigation}) => {
             //   setResp(resp);
             //   console.log(resp);
             // });
+            console.log('POSTER', el.item.poster);
             return (
               <TouchableOpacity
                 onPress={() => {
@@ -109,7 +111,6 @@ const ProfileMain = ({navigation}) => {
                   });
                 }}>
                 <Image
-                  transition={false}
                   defaultSource={{uri: el.item.poster}}
                   source={{uri: el.item.poster}}
                   style={{
