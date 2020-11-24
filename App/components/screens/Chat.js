@@ -24,7 +24,7 @@ import {
   createDrawerNavigator,
   useIsDrawerOpen,
 } from '@react-navigation/drawer';
-import {NavigationContainer} from '@react-navigation/native';
+import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import {createStackNavigator} from '@react-navigation/stack';
 //import {firebase} from 'App/firebase/config';
 
@@ -398,13 +398,21 @@ const Openable = ({data, moveFunc, bought, messages, openId, route}) => {
   );
 };
 
-const Stack = createStackNavigator();
+const Stack = createMaterialTopTabNavigator();
+//const Stack = createStackNavigator();
 const MyStack = ({route}) => {
   return (
     <Stack.Navigator
       screenOptions={{
         headerShown: false,
-        gestureEnabled: false,
+        gestureEnabled: true,
+      }}
+      tabBarOptions={{
+        showLabel: false,
+        showIcon: false,
+        indicatorStyle: {opacity: 0},
+        tabStyle: {height: 0, margin: 0, padding: 0},
+        indicatorContainerStyle: {opacity: 0},
       }}>
       <Stack.Screen
         name="Chat"
@@ -582,7 +590,8 @@ const Chat = ({navigation, route}) => {
   return (
     <Drawer.Navigator
       minSwipeDistance={30}
-      edgeWidth={200}
+      edgeWidth={130}
+      openByDefault={true}
       drawerContent={(props) => {
         return (
           <DrawerContentComponent
