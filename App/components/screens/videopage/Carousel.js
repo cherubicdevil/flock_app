@@ -94,11 +94,16 @@ const renderClose = (navigation, dispatch, array, lastVisible) => {
           type: 'sendCarouselIndex',
           payload: -1,
         });
-        navigation.navigate('VideoMasonry', {
-          videoData: array,
-          lastVisible: lastVisible,
-          hello: 'hello',
-        });
+        //let navIndex = navigation.dangerouslyGetParent().state.index;
+        if (navigation.canGoBack()) {
+          navigation.goBack();
+        } else {
+          navigation.navigate('VideoMasonry', {
+            videoData: array,
+            lastVisible: lastVisible,
+            hello: 'hello',
+          });
+        }
       }}>
       <Image
         style={{
