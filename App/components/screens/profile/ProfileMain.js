@@ -84,7 +84,6 @@ const ProfileMain = ({navigation}) => {
     var data = selector.userInfo.likedVideos;
     return (
       <>
-        <Text>Hello World</Text>
         <FlatList
           //contentContainerStyle={{flexDirection: 'row', flexWrap: 'wrap'}}
           numColumns={3}
@@ -115,7 +114,9 @@ const ProfileMain = ({navigation}) => {
                   source={{uri: el.item.poster}}
                   style={{
                     //backgroundColor: constants.LIGHTGREY,
-                    borderRadius: 10,
+                    borderRadius: 200,
+                    borderWidth: 3,
+                    borderColor: 'rgba(10,10,10,.2)',
                     margin: 5,
                     width: Dimensions.get('window').width / 3 - 10,
                     height: 200,
