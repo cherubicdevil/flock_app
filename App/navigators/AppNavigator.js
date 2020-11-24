@@ -8,7 +8,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Carousel from 'App/components/screens/videopage/Carousel';
 import Home from 'App/components/screens/home/Home';
 import CamNavigator from './CamNavigator';
-import Chat from 'App/components/screens/Chat';
+import Chat from 'App/components/screens/chat/Chat';
 import Egg from 'App/components/screens/Egg';
 
 import Profile from 'App/components/screens/profile/Profile';

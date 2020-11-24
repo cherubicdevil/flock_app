@@ -215,6 +215,14 @@ const getIndexOfData = (array, data) => {
   }
   return -1;
 };
+
+const formatter = new Intl.NumberFormat('en-US', {
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2,
+});
+const formatMoney = (price, num) => {
+  return formatter.format(price / num);
+};
 export {
   fetchStreamableSource,
   fetchAlbums,
@@ -226,4 +234,5 @@ export {
   fetchUserData,
   uploadUserInfo,
   getIndexOfData,
+  formatMoney,
 };
