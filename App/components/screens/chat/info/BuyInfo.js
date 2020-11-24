@@ -27,6 +27,7 @@ import {
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import {createStackNavigator} from '@react-navigation/stack';
 import {formatMoney} from 'App/utils';
+import {useDispatch} from 'react-redux';
 
 const systemMessages = [];
 const user = {displayName: 'Qrowsaki'};
@@ -92,6 +93,7 @@ const sendSystemMessage = (message) => {
 };
 
 const Openable = ({data, moveFunc, bought, messages, openId, route}) => {
+  const dispatch = useDispatch();
   const [isCollapsed, setIsCollapsed] = useState(() => {
     console.log(openId, route.params.openId);
     return openId !== route.params.openId;
@@ -119,7 +121,7 @@ const Openable = ({data, moveFunc, bought, messages, openId, route}) => {
           onPress={() => {
             buyers.push(user.displayName);
             setIsCollapsed(true);
-            sendSystemMessage({
+            const message = {
               _id: 1,
               text: `${user.displayName} joined the purchase for ${
                 data.item.title
@@ -131,7 +133,9 @@ const Openable = ({data, moveFunc, bought, messages, openId, route}) => {
               createdAt: new Date(),
               system: true,
               // Any additional custom parameters are passed through
-            });
+            };
+            sendSystemMessage(message);
+            dispatch({type: 'updateSystemMessages', payload: message});
 
             //setDummyState(!dummyState);
           }}

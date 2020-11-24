@@ -35,7 +35,7 @@ const ChatDrawer = ({navigation, route}) => {
     <Drawer.Navigator
       minSwipeDistance={30}
       edgeWidth={130}
-      openByDefault={true}
+      openByDefault={false}
       drawerContent={(props) => {
         return (
           <DrawerContentComponent

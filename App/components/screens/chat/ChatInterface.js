@@ -26,6 +26,7 @@ import {
 } from '@react-navigation/drawer';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import {createStackNavigator} from '@react-navigation/stack';
+import {useSelector, useDispatch} from 'react-redux';
 
 var eventify = function (arr, callback) {
   arr.push = function (e) {
@@ -34,13 +35,19 @@ var eventify = function (arr, callback) {
   };
 };
 
+const updateCache = (id, messages) => {
+  data[id].messages = messages;
+};
+
 const systemMessages = [];
 
 function ChatInterface({route, navigation}) {
+  const select = useSelector((state) => state);
   const socket = useRef(null);
   const [recvMessages, setRecvMessages] = useState(route.params.data.messages);
   //const [recvMessages, setRecvMessages] = useState([testSystemMessage]);
   const [dummyState, setDummyState] = useState(false);
+  const dispatch = useDispatch();
   //firebase.firestore().collection("posts").get();
   useEffect(function () {
     //firebase.firestore().collection("posts").get();
@@ -53,7 +60,14 @@ function ChatInterface({route, navigation}) {
     //   console.log(message);
     //   setRecvMessages((prevState) => GiftedChat.append(prevState, message));
     // });
+    dispatch({type: 'emptySystemMessages'});
   }, []);
+
+  useEffect(() => {
+    for (const message of select.chat.systemMessages) {
+      setRecvMessages((prevState) => GiftedChat.append(prevState, message));
+    }
+  }, [select.chat.systemMessages]);
 
   // const setRecvMessages = (messages) => {
   //   recvMessages = messages;
@@ -136,4 +150,42 @@ function ChatInterface({route, navigation}) {
   );
 }
 
+const data = {
+  0: {
+    flock: 'squad up',
+    id: '0',
+    buys: [
+      {
+        title: 'Game boy',
+        url: null,
+        price: '24.99',
+        buyers: ['xxxHacker', 'jasonny'],
+      },
+      {
+        title: 'Nintendo Switch',
+        url: null,
+        price: '300.99',
+        buyers: [
+          'xxxHacker',
+          'jasonny',
+          'danielpark',
+          'Qrowsaki',
+          'Me',
+          'Hello',
+        ],
+      },
+    ],
+    boughts: [],
+    friends: ['xxxHacker', 'stupidbro', 'jasonny', 'danielpark', 'Qrowsaki'],
+    messages: [],
+  },
+  1: {
+    flock: 'church friends',
+    id: '1',
+    buys: [],
+    boughts: [],
+    friends: ['Qrowsaki'],
+    messages: [],
+  },
+};
 export default ChatInterface;
