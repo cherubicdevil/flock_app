@@ -63,6 +63,7 @@
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0",
     "rn-fetch-blob": "^0.12.0",
+    "socket.io-client": "^3.0.3",
     "stream": "^0.0.2",
     "three": "^0.122.0",
     "tipsi-stripe": "^7.5.3",

@@ -14,7 +14,7 @@ import {
   Modal,
   TouchableWithoutFeedback,
 } from 'react-native';
-// import io from "socket.io-client";
+import io from 'socket.io-client';
 import NavBar from 'App/components/common/NavBar';
 import {GiftedChat} from 'react-native-gifted-chat';
 import {
@@ -55,11 +55,12 @@ function ChatInterface({route, navigation}) {
       console.log('adding');
       setRecvMessages((prevState) => GiftedChat.append(prevState, message));
     });
-    // socket.current = io('http://10.0.0.228:3001');
-    // socket.current.on('message', (message) => {
-    //   console.log(message);
-    //   setRecvMessages((prevState) => GiftedChat.append(prevState, message));
-    // });
+    socket.current = io('http://10.0.0.228:3001');
+    console.log('WHY IS THIS RUNNING AGAIN');
+    socket.current.on('message', (message) => {
+      console.log(message);
+      setRecvMessages((prevState) => GiftedChat.append(prevState, message));
+    });
     dispatch({type: 'emptySystemMessages'});
   }, []);
 
@@ -74,7 +75,7 @@ function ChatInterface({route, navigation}) {
   //   setDummyState(!dummyState);
   // };
   const onSend = (messages) => {
-    //socket.current.emit('message', messages[0].text);
+    socket.current.emit('message', messages[0].text);
     console.log(route.params.data);
     updateCache(route.params.data.id, recvMessages);
     setRecvMessages((prevState) => GiftedChat.append(prevState, messages));
