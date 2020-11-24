@@ -71,7 +71,7 @@ const Info = ({route, navigation}) => {
                   //marginTop: 10,
                   fontWeight: 'bold',
                 }}>
-                In This Chat
+                {route.params.data.flock}
               </Text>
               <Text>{route.params.friends.length} Friends</Text>
             </View>
