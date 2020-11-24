@@ -28,7 +28,7 @@ export const constants = {
   ORANGE: '#ff7009',
   GREY: 'rgb(229,229,234)',
   ICONGREY: 'rgb(99,99,102)',
-  PURPLEORANGE: '#b72c51',
+  PURPLEORANGE: '#b72c51', // 183,44,81
   LIGHTGREY: 'rgb(99,99,102)',
   PURPLE: '#b72c51',
   RED: '#f05054',

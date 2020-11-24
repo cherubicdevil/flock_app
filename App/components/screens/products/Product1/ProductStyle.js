@@ -1,5 +1,6 @@
 import {Dimensions} from 'react-native';
 import {Colors} from './constants';
+import {constants} from 'App/constants';
 
 export default {
   cardContainer: {
@@ -13,25 +14,35 @@ export default {
     position: 'relative',
   },
   coverImage: {
-    height: Dimensions.get('window').width * (3 / 4),
+    height: Dimensions.get('window').height * (1 / 5),
     width: Dimensions.get('window').width,
+    resizeMode: 'contain',
+    backgroundColor: constants.PURPLE,
+    backgroundColor: 'black',
+    overflow: 'hidden',
   },
   headerContainer: {
     alignItems: 'center',
-    backgroundColor: '#FFF',
   },
   scroll: {
-    backgroundColor: '#FFF',
+    backgroundColor: constants.PURPLE,
     flex: 1,
     marginBottom: 55,
   },
   productRow: {
-    margin: 25,
+    marginTop: 15,
+    marginLeft: 15,
+    marginRight: 15,
+    backgroundColor: 'rgba(255,255,255,.8)',
+    borderRadius: 10,
+    padding: 20,
+    zIndex: 200,
   },
   mainViewStyle: {
     flex: 1,
     flexDirection: 'column',
     flexGrow: 1,
+    backgroundColor: constants.PURPLE,
   },
   coverMetaContainer: {
     alignItems: 'flex-end',
@@ -54,7 +65,11 @@ export default {
     zIndex: 100,
   },
   footer: {
+    shadowOffset: {height: -5},
+    shadowOpacity: 0.05,
+
     alignItems: 'center',
+    zIndex: 400,
     backgroundColor: '#ff4733',
     //backgroundColor: '#e36449',
     bottom: 0,
@@ -62,7 +77,7 @@ export default {
     flexDirection: 'row',
     height: 65,
     left: 0,
-    //position: 'absolute',
+    position: 'absolute',
     right: 0,
   },
   buttonCluck: {
@@ -97,6 +112,7 @@ export default {
     color: 'white',
     fontSize: 18,
     fontWeight: 'bold',
+    fontFamily: constants.FONT,
   },
   priceText: {
     color: Colors.black,

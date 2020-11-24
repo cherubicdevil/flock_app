@@ -7,7 +7,10 @@ import {
   Image,
   TouchableOpacity,
   View,
+  SafeAreaView,
 } from 'react-native';
+import {constants} from 'App/constants';
+import LinearGradient from 'react-native-linear-gradient';
 //import Flockit from './Flockit';
 import PropTypes from 'prop-types';
 
@@ -125,15 +128,19 @@ class Product extends Component {
     return (
       <View style={styles.headerContainer}>
         <View style={styles.coverContainer}>
-          <ImageBackground
-            source={require('App/Assets/Images/OrangePurpleGradient.png')}
-            style={styles.coverImage}>
+          <View style={styles.coverImage}>
             <Image
-              style={{width: '90%', height: '90%', alignSelf: 'center'}}
+              style={{
+                flex: 1,
+                width: '100%',
+                //height: '100%',
+                //height: 200,
+                alignSelf: 'center',
+              }}
               source={{uri: this.props.route.params.album.image}}
             />
             <PhotoButton />
-          </ImageBackground>
+          </View>
         </View>
       </View>
     );
@@ -141,36 +148,74 @@ class Product extends Component {
 
   render() {
     return (
-      <View style={styles.mainViewStyle}>
+      <SafeAreaView style={styles.mainViewStyle}>
+        <LinearGradient
+          colors={[constants.PURPLE, 'rgb(40,60,81)']}
+          style={{
+            width: '100%',
+            zIndex: 40,
+            position: 'absolute',
+            bottom: 0,
+            height: '50%',
+            width: '100%',
+          }}>
+          <Image
+            style={{
+              height: '100%',
+              width: '100%',
+              //tintColor: 'rgb(180,44,81)',
+              tintColor: 'rgb(180, 44, 81)',
+              resizeMode: 'repeat',
+              zIndex: 50,
+            }}
+            source={require('App/Assets/Images/gray-floral.png')}
+          />
+        </LinearGradient>
+        <View style={styles.footer}>
+          <Flockit style={{flex: 1}} />
+          <View style={styles.borderCenter} />
+          <TouchableOpacity
+            style={styles.buttonFooter}
+            onPress={() => {
+              const title = this.props.route.params.album.title;
+              const price = this.props.route.params.album.price;
+              this.props.navigation.navigate('PayTest', {
+                title,
+                price,
+                useFlockPrice,
+                flockPrice,
+              });
+              // Linking.openURL(
+              //   'https://shopwithflock.com/redirect/?url=' +
+              //     this.props.navigation.state.params.album.url,
+              // )
+            }}>
+            <Text style={styles.textFooter}>BUY IT NOW</Text>
+          </TouchableOpacity>
+        </View>
         <ScrollView style={styles.scroll}>
           <View style={[styles.container]}>
             <View style={styles.cardContainer}>
               {this.renderContactHeader()}
             </View>
           </View>
-          <View style={styles.footer}>
-            <Flockit style={{flex: 1}} />
-            <View style={styles.borderCenter} />
-            <TouchableOpacity
-              style={styles.buttonFooter}
-              onPress={() => {
-                const title = this.props.route.params.album.title;
-                const price = this.props.route.params.album.price;
-                this.props.navigation.navigate('PayTest', {
-                  title,
-                  price,
-                  useFlockPrice,
-                  flockPrice,
-                });
-                // Linking.openURL(
-                //   'https://shopwithflock.com/redirect/?url=' +
-                //     this.props.navigation.state.params.album.url,
-                // )
-              }}>
-              <Text style={styles.textFooter}>BUY IT NOW</Text>
-            </TouchableOpacity>
+          <View
+            style={{
+              flex: 1,
+              height: '100%',
+              //borderWidth: 1,
+              //borderColor: 'rgba(0,0,0,0.2)',
+
+              marginRight: 5,
+              marginLeft: 5,
+              //backgroundColor: 'white',
+              borderRadius: 10,
+            }}>
+            <View style={styles.productRow}>{this.renderDescription()}</View>
+            <View style={styles.productRow}>
+              <Text>Variants</Text>
+            </View>
           </View>
-          <View style={styles.productRow}>{this.renderDescription()}</View>
           {/* <View style={styles.productRow}>{this.renderNavigator()}</View> */}
           {/*   <View style={styles.productRow}>{this.renderDetail()}</View> */}
         </ScrollView>
@@ -183,7 +228,7 @@ class Product extends Component {
             <Text style={styles.textFooter}>Cluck</Text>
           </TouchableOpacity>
         </View>
-      </View>
+      </SafeAreaView>
     );
   }
 }

@@ -86,6 +86,7 @@ const AppNavigator5 = () => {
           name="Product"
           component={Product}
           initialParams={{vidVisible: false}}
+          options={{tabBarVisible: false}}
         />
         <Tab.Screen
           name="PayTest"

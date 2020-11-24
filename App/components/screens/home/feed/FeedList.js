@@ -74,7 +74,7 @@ class FeedList extends React.Component {
     return (
       <View>
         <LinearGradient
-          colors={[constants.LIGHTGREY, 'transparent']}
+          colors={[constants.LIGHTGREY, 'rgba(0,0,0,0)']}
           style={{
             height: 70,
             width: '100%',
