@@ -205,6 +205,16 @@ const uploadUserInfo = (info) => {
   firebase.firestore().collection('users').doc(user).set(info);
 };
 
+const getIndexOfData = (array, data) => {
+  var counter = 0;
+  for (const el of array) {
+    if (el.title === data.title) {
+      return counter;
+    }
+    counter += 1;
+  }
+  return -1;
+};
 export {
   fetchStreamableSource,
   fetchAlbums,
@@ -215,4 +225,5 @@ export {
   springUp,
   fetchUserData,
   uploadUserInfo,
+  getIndexOfData,
 };

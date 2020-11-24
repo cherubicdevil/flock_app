@@ -1,4 +1,4 @@
-import {uploadUserInfo} from '../../utils';
+import {uploadUserInfo, getIndexOfData} from '../../utils';
 
 export default function (state = {likedVideos: []}, action) {
   switch (action.type) {
@@ -19,9 +19,11 @@ export default function (state = {likedVideos: []}, action) {
       // Possible FLOCK_BUG should there be {...state} here?
       // check if berry state is retained after liking a video
       //const index = state.likedVideos.indexOf(action.payload);
-      const isIn = state.likedVideos.some(
-        (item) => item.title === action.payload.title,
-      );
+      var index = -1;
+      var isIn = false;
+      var counter = 0;
+      index = getIndexOfData(state.likedVideos, action.payload);
+      isIn = index !== -1;
       if (isIn) {
         state.likedVideos.splice(index, 1);
         uploadUserInfo(state);

@@ -21,7 +21,7 @@ import {constants} from 'App/constants';
 //import Input from 'App/components/common/Input';
 import {firebase} from 'App/firebase/config';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
-import {fetchStreamableSource} from '../../../utils';
+import {getIndexOfData} from '../../../utils';
 //import Base64 from 'base-64';
 
 // global.atob = Base64.encode;
@@ -106,7 +106,7 @@ const ProfileMain = ({navigation}) => {
                 onPress={() => {
                   console.log(data);
                   navigation.navigate('Carousel', {
-                    scrollIndex: 0,
+                    scrollIndex: getIndexOfData(data, el.item),
                     array: data,
                   });
                 }}>
