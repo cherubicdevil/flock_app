@@ -34,7 +34,14 @@ import {
 } from 'react-native';
 import {Card, CardSection, Button} from 'App/components/common';
 
-const VideoDescription = ({album, navigation, user, description, style}) => {
+const VideoDescription = ({
+  album,
+  navigation,
+  user,
+  description,
+  style,
+  video,
+}) => {
   var url, price, title, image;
   if (album) {
     url = album.url;
@@ -115,7 +122,7 @@ const VideoDescription = ({album, navigation, user, description, style}) => {
       ]}
       onPress={() => {
         if (navigation) {
-          navigation.navigate('Product', {album});
+          navigation.navigate('Product', {album, video: {video}});
         }
       }}>
       <View>

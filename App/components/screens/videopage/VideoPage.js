@@ -114,6 +114,7 @@ const CircleBorderProfile = ({photoUrl}) => {
 var renderProduct = (navigation, data) => {
   return (
     <VideoDescription
+      video={data.video}
       album={data.product}
       user={data.username}
       description={data.title}

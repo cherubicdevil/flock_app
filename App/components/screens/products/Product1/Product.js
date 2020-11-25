@@ -8,12 +8,15 @@ import {
   TouchableOpacity,
   View,
   SafeAreaView,
+  Button,
+  Linking,
 } from 'react-native';
+import {WebView} from 'react-native-webview';
 import {constants} from 'App/constants';
 import LinearGradient from 'react-native-linear-gradient';
 //import Flockit from './Flockit';
 import PropTypes from 'prop-types';
-
+import Video from 'react-native-video';
 import productData from './product.json';
 
 import PhotoButton from './PhotoButton';
@@ -106,6 +109,16 @@ class Product extends Component {
         </Text>
         {/*<Text style={styles.descriptionText}>50 flockers have bought</Text>*/}
         {/*<Text style={styles.descriptionText}>Recommended by username</Text>*/}
+        <Button
+          title="More details"
+          style={{position: 'absolute', bottom: 20, right: 10}}
+          onPress={() => {
+            Linking.openURL(
+              'https://shopwithflock.com/redirect/?url=' +
+                this.props.route.params.album.url,
+            );
+          }}
+        />
       </View>
     );
   };
@@ -131,8 +144,8 @@ class Product extends Component {
           <View style={styles.coverImage}>
             <Image
               style={{
-                flex: 1,
                 width: '100%',
+                aspectRatio: 3 / 2,
                 //height: '100%',
                 //height: 200,
                 alignSelf: 'center',
@@ -148,32 +161,37 @@ class Product extends Component {
 
   render() {
     return (
-      <SafeAreaView style={styles.mainViewStyle}>
-        <LinearGradient
-          colors={[constants.PURPLE, 'rgb(40,60,81)']}
+      <View style={styles.mainViewStyle}>
+        {/* <LinearGradient
+          colors={['rgba(0,0,0,0)', 'rgba(40,60,81, 0.4)']}
           style={{
             width: '100%',
             zIndex: 40,
             position: 'absolute',
             bottom: 0,
-            height: '50%',
+            height: '30%',
             width: '100%',
-          }}>
-          <Image
+          }}> */}
+        {/* <Image
             style={{
               height: '100%',
               width: '100%',
               //tintColor: 'rgb(180,44,81)',
-              tintColor: 'rgb(180, 44, 81)',
+              tintColor: constants.RED,
               resizeMode: 'repeat',
               zIndex: 50,
             }}
             source={require('App/Assets/Images/gray-floral.png')}
-          />
-        </LinearGradient>
+          /> */}
+        {/* </LinearGradient> */}
         <View style={styles.footer}>
-          <Flockit style={{flex: 1}} />
-          <View style={styles.borderCenter} />
+          <View style={styles.buttonFooter}>
+            {/* <Flockit style={{flex: 1}} /> */}
+            <Text style={styles.textFooter}>Flock Save</Text>
+          </View>
+          <View style={styles.buttonFooter}>
+            <Text style={styles.textFooter}>Flock Buy</Text>
+          </View>
           <TouchableOpacity
             style={styles.buttonFooter}
             onPress={() => {
@@ -190,7 +208,7 @@ class Product extends Component {
               //     this.props.navigation.state.params.album.url,
               // )
             }}>
-            <Text style={styles.textFooter}>BUY IT NOW</Text>
+            <Text style={styles.textFooter}>Buy It Now</Text>
           </TouchableOpacity>
         </View>
         <ScrollView style={styles.scroll}>
@@ -213,13 +231,14 @@ class Product extends Component {
             }}>
             <View style={styles.productRow}>{this.renderDescription()}</View>
             <View style={styles.productRow}>
-              <Text>Variants</Text>
+              <Text style={{fontFamily: constants.FONTBOLD}}>Variants</Text>
+              <Text>Not applicable</Text>
             </View>
           </View>
           {/* <View style={styles.productRow}>{this.renderNavigator()}</View> */}
           {/*   <View style={styles.productRow}>{this.renderDetail()}</View> */}
         </ScrollView>
-        <View style={styles.cluckfooter}>
+        {/* <View style={styles.cluckfooter}>
           <TouchableOpacity style={styles.buttonCluck}>
             <Image
               style={styles.circleProfile}
@@ -227,8 +246,22 @@ class Product extends Component {
             />
             <Text style={styles.textFooter}>Cluck</Text>
           </TouchableOpacity>
-        </View>
-      </SafeAreaView>
+        </View> */}
+        <Video
+          repeat={true}
+          muted={true}
+          source={{
+            uri: this.props.route.params.video.video,
+          }}
+          style={{
+            height: 150,
+            width: 150,
+            position: 'absolute',
+            left: 10,
+            top: 100,
+          }}
+        />
+      </View>
     );
   }
 }
