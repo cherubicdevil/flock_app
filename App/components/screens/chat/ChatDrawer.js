@@ -1,6 +1,7 @@
 import React, {useEffect, useState, useRef} from 'react';
 import {constants} from 'App/constants';
 import Collapsible from 'react-native-collapsible';
+import {useSelector} from 'react-redux';
 import {
   Button,
   Image,
@@ -27,10 +28,65 @@ import {
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import {createStackNavigator} from '@react-navigation/stack';
 import ChatGroup from './ChatGroup';
+import {getChatsFromId} from 'App/utils';
 
 const Drawer = createDrawerNavigator();
 
 const ChatDrawer = ({navigation, route}) => {
+  const [dummyState, setDummyState] = useState(false);
+  const [data, setData] = useState([]);
+  useEffect(() => {
+    getChatsFromId().then((dat) => {
+      setData(dat);
+    });
+  }, []);
+  const select = useSelector((state) => state);
+  // const data = select.userInfo.chatGroups;
+  // data['self'] = {
+  //   flock: 'Yourself',
+  //   friends: [],
+  //   id: 'self',
+  //   buys: [],
+  //   messages: [],
+  // };
+  // const data = {
+  //   0: {
+  //     flock: 'squad up',
+  //     id: '0',
+  //     buys: [
+  //       {
+  //         title: 'Game boy',
+  //         url: null,
+  //         price: '24.99',
+  //         buyers: ['xxxHacker', 'jasonny'],
+  //       },
+  //       {
+  //         title: 'Nintendo Switch',
+  //         url: null,
+  //         price: '300.99',
+  //         buyers: [
+  //           'xxxHacker',
+  //           'jasonny',
+  //           'danielpark',
+  //           'Qrowsaki',
+  //           'Me',
+  //           'Hello',
+  //         ],
+  //       },
+  //     ],
+  //     boughts: [],
+  //     friends: ['xxxHacker', 'stupidbro', 'jasonny', 'danielpark', 'Qrowsaki'],
+  //     messages: [],
+  //   },
+  //   1: {
+  //     flock: 'church friends',
+  //     id: '1',
+  //     buys: [],
+  //     boughts: [],
+  //     friends: ['Qrowsaki'],
+  //     messages: [],
+  //   },
+  // };
   return (
     <Drawer.Navigator
       minSwipeDistance={30}
@@ -47,6 +103,20 @@ const ChatDrawer = ({navigation, route}) => {
         );
       }}>
       {renderDrawers(data)}
+      <Drawer.Screen
+        key={'Yourself 21345'}
+        name={'Yourself'}
+        component={ChatGroup}
+        initialParams={{
+          data: {
+            flock: 'Yourself',
+            friends: [],
+            id: 'self',
+            buys: [],
+            messages: [],
+          },
+        }}
+      />
     </Drawer.Navigator>
   );
 };
@@ -194,45 +264,6 @@ const MyDrawerItemList = ({descriptors, state, navigation}) => {
       })}
     </View>
   );
-};
-
-const data = {
-  0: {
-    flock: 'squad up',
-    id: '0',
-    buys: [
-      {
-        title: 'Game boy',
-        url: null,
-        price: '24.99',
-        buyers: ['xxxHacker', 'jasonny'],
-      },
-      {
-        title: 'Nintendo Switch',
-        url: null,
-        price: '300.99',
-        buyers: [
-          'xxxHacker',
-          'jasonny',
-          'danielpark',
-          'Qrowsaki',
-          'Me',
-          'Hello',
-        ],
-      },
-    ],
-    boughts: [],
-    friends: ['xxxHacker', 'stupidbro', 'jasonny', 'danielpark', 'Qrowsaki'],
-    messages: [],
-  },
-  1: {
-    flock: 'church friends',
-    id: '1',
-    buys: [],
-    boughts: [],
-    friends: ['Qrowsaki'],
-    messages: [],
-  },
 };
 
 export default ChatDrawer;

@@ -32,6 +32,8 @@ export default function (state = {likedVideos: []}, action) {
       return state;
     case 'IMPORT_USER_INFO':
       return action.payload;
+    case 'IMPORT_CHAT_ID':
+      return {...state, chatGroups: action.payload};
     default:
       return state;
   }

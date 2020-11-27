@@ -55,7 +55,8 @@ function ChatInterface({route, navigation}) {
       console.log('adding');
       setRecvMessages((prevState) => GiftedChat.append(prevState, message));
     });
-    socket.current = io('http://10.0.0.228:3001');
+    socket.current = io('https://enigmatic-bastion-86695.herokuapp.com/');
+    //socket.current = io('http://10.0.0.228:3001');
     console.log('WHY IS THIS RUNNING AGAIN');
     socket.current.on('message', (message) => {
       console.log(message);
@@ -75,6 +76,10 @@ function ChatInterface({route, navigation}) {
   //   setDummyState(!dummyState);
   // };
   const onSend = (messages) => {
+    if (route.params.data.id === 'self') {
+      setRecvMessages((prevState) => GiftedChat.append(prevState, messages));
+      return;
+    }
     socket.current.emit('message', messages[0].text);
     console.log(route.params.data);
     updateCache(route.params.data.id, recvMessages);

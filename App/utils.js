@@ -223,6 +223,27 @@ const formatter = new Intl.NumberFormat('en-US', {
 const formatMoney = (price, num) => {
   return formatter.format(price / num);
 };
+
+const getChatsFromId = async () => {
+  const db = firebase.firestore();
+  const user = firebase.auth().currentUser;
+  const users = await db.collection('users');
+  const userInfo = await users.doc(user.uid);
+  const doc = await userInfo.get();
+  const chatIds = doc.data().chatIds;
+
+  const chatGroups = db.collection('chatGroups');
+  const ar = [];
+  console.log(chatIds);
+  for (const chatGroup of chatIds) {
+    //console.log(chatGroup);
+    const chatData = (await (await chatGroups.doc(chatGroup)).get()).data();
+    ar.push(chatData);
+  }
+  return new Promise((resolve) => {
+    resolve(ar);
+  });
+};
 export {
   fetchStreamableSource,
   fetchAlbums,
@@ -235,4 +256,5 @@ export {
   uploadUserInfo,
   getIndexOfData,
   formatMoney,
+  getChatsFromId,
 };

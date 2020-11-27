@@ -28,49 +28,11 @@ import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs
 import {createStackNavigator} from '@react-navigation/stack';
 
 import ChatDrawer from './ChatDrawer';
-//import {firebase} from 'App/firebase/config';
+import {firebase} from 'App/firebase/config';
 
 const systemMessages = [];
 
 const user = {displayName: 'Qrowsaki'};
-const data = {
-  0: {
-    flock: 'squad up',
-    id: '0',
-    buys: [
-      {
-        title: 'Game boy',
-        url: null,
-        price: '24.99',
-        buyers: ['xxxHacker', 'jasonny'],
-      },
-      {
-        title: 'Nintendo Switch',
-        url: null,
-        price: '300.99',
-        buyers: [
-          'xxxHacker',
-          'jasonny',
-          'danielpark',
-          'Qrowsaki',
-          'Me',
-          'Hello',
-        ],
-      },
-    ],
-    boughts: [],
-    friends: ['xxxHacker', 'stupidbro', 'jasonny', 'danielpark', 'Qrowsaki'],
-    messages: [],
-  },
-  1: {
-    flock: 'church friends',
-    id: '1',
-    buys: [],
-    boughts: [],
-    friends: ['Qrowsaki'],
-    messages: [],
-  },
-};
 
 const updateCache = (id, messages) => {
   data[id].messages = messages;

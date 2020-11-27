@@ -1,5 +1,12 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, Modal, TouchableOpacity, Animated} from 'react-native';
+import {
+  View,
+  Text,
+  Modal,
+  TouchableOpacity,
+  Animated,
+  Dimensions,
+} from 'react-native';
 import NavButton from './NavButton';
 import {constants} from 'App/constants';
 import OptionsModal from 'App/navigators/OptionsModal';
@@ -103,7 +110,7 @@ const NavBar = ({style, route, navigation}) => {
         bottom: constants.NAVBARHEIGHT / 4,
         height: 90,
         opacity: fade,
-        width: '150%',
+        width: Dimensions.get('window').width * 0.9,
       }}>
       <OptionsModal
         text1="I want to save..."

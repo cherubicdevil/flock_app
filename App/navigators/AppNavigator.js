@@ -34,7 +34,7 @@ const AppNavigator5 = () => {
         initialRouteName="Carousel"
         screenOptions={{
           headerShown: false,
-          animationEnabled: false,
+          //animationEnabled: false,
         }}>
         <Tab.Screen
           name="Carousel"
@@ -80,6 +80,7 @@ const AppNavigator5 = () => {
         <Tab.Screen
           name="Products"
           component={Products}
+          options={{animationEnabled: true, gestureEnabled: true}}
           initialParams={{vidVisible: false}}
         />
         <Tab.Screen

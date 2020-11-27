@@ -43,6 +43,11 @@ class Myform extends Component {
         .then((user) => {
           console.log(user);
           user.user.updateProfile({displayName: 'flocker_' + user.user.uid});
+          firebase
+            .firestore()
+            .collection('users')
+            .doc(user.user.uid)
+            .set({likedVideos: [], chatGroups: {}});
         })
         .catch(function (error) {
           // Handle Errors here.
