@@ -36,7 +36,7 @@ var eventify = function (arr, callback) {
 };
 
 const updateCache = (id, messages) => {
-  data[id].messages = messages;
+  //data[id].messages = messages;
 };
 
 const systemMessages = [];
@@ -55,9 +55,10 @@ function ChatInterface({route, navigation}) {
       console.log('adding');
       setRecvMessages((prevState) => GiftedChat.append(prevState, message));
     });
-    socket.current = io('https://enigmatic-bastion-86695.herokuapp.com/');
-    //socket.current = io('http://10.0.0.228:3001');
+    //socket.current = io('https://enigmatic-bastion-86695.herokuapp.com/');
+    socket.current = io('http://10.0.0.228:5000');
     console.log('WHY IS THIS RUNNING AGAIN');
+    socket.current.emit('join', route.params.data.id);
     socket.current.on('message', (message) => {
       console.log(message);
       setRecvMessages((prevState) => GiftedChat.append(prevState, message));
@@ -80,7 +81,10 @@ function ChatInterface({route, navigation}) {
       setRecvMessages((prevState) => GiftedChat.append(prevState, messages));
       return;
     }
-    socket.current.emit('message', messages[0].text);
+    socket.current.emit('message', {
+      text: messages[0].text,
+      id: route.params.data.id,
+    });
     console.log(route.params.data);
     updateCache(route.params.data.id, recvMessages);
     setRecvMessages((prevState) => GiftedChat.append(prevState, messages));
