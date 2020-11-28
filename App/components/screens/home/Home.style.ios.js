@@ -35,7 +35,7 @@ const styles = {
     flexDirection: 'row',
     paddingTop: 35,
     marginTop: 0,
-    marginBottom: 5,
+    //marginBottom: 5,
     borderRadius: 3,
     backgroundColor: '#fff',
   },
@@ -54,10 +54,11 @@ const styles = {
   textBoxWrapper: {
     flexDirection: 'row',
     margin: 2.2,
-    marginLeft: 4.3,
-    marginRight: 4.3,
+
     backgroundColor: constants.GREY,
-    width: '98%',
+    //width: '98%',
+    flex: 1,
+    height: '90%',
     borderRadius: 25,
     paddingLeft: 15,
     paddingRight: 15,

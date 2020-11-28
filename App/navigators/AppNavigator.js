@@ -45,7 +45,8 @@ const AppNavigator5 = () => {
             cap: 'play',
             image: require('App/Assets/Images/Play.png'),
           }}
-          initialParams={{vidVisible: true}}
+          initialParams={{vidVisible: true, scrollIndex: 0}}
+          // FLOCK_BUG when click carousel nav bar, doesn't play automatically
         />
         <Tab.Screen
           name="VideoMasonry"

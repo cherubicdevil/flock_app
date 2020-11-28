@@ -110,7 +110,7 @@ const NavBar = ({style, route, navigation}) => {
         bottom: constants.NAVBARHEIGHT / 4,
         height: 90,
         opacity: fade,
-        width: Dimensions.get('window').width * 0.9,
+        width: Dimensions.get('window').width,
       }}>
       <OptionsModal
         text1="I want to save..."

@@ -36,6 +36,12 @@ const FeedItem = ({videoAr, navigation, data, title}) => {
 
   return (
     <InViewPort
+      style={{
+        shadowColor: '#000',
+        shadowOffset: {width: 0, height: 1},
+        shadowOpacity: 0.1,
+        shadowRadius: 2,
+      }}
       onChange={(isVisible) => {
         setIsInView(isVisible);
       }}>

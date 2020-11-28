@@ -196,14 +196,13 @@ const DrawerContentComponent = (props) => {
                   textAlign: 'center',
                   marginTop: 20,
                   fontFamily: constants.FONT_BOLD,
-                  fontSize: 25,
+                  fontSize: 17,
                 }}>
                 Find a Flock
               </Text>
             </View>
             <ScrollView
               style={{
-                padding: 5,
                 //margin: 25,
                 borderWidth: 0.5,
                 flex: 1,
@@ -226,17 +225,21 @@ const DrawerContentComponent = (props) => {
                   <View
                     style={{
                       height: 50,
-                      borderRadius: 15,
+                      borderRadius: 5,
                       //width: '100%',
-                      marginTop: 7,
-                      marginBottom: 7,
-                      marginLeft: 5,
-                      marginRight: 5,
-                      backgroundColor: 'white',
-                      shadowColor: '#000',
-                      shadowOffset: {width: 0, height: 2},
-                      shadowOpacity: 0.1,
-                      shadowRadius: 2,
+                      // marginTop: 7,
+                      // marginBottom: 7,
+                      // marginLeft: 15,
+                      // marginRight: 15,
+                      paddingLeft: 15,
+                      paddingRight: 5,
+                      //backgroundColor: 'white',
+                      // shadowColor: '#000',
+                      // shadowOffset: {width: 0, height: 1},
+                      // shadowOpacity: 0.1,
+                      // shadowRadius: 2,
+                      borderBottomWidth: 0.5,
+                      borderBottomColor: '#999',
                     }}>
                     <View
                       style={{
@@ -263,14 +266,19 @@ const DrawerContentComponent = (props) => {
                       <View
                         style={{
                           alignSelf: 'flex-end',
-                          backgroundColor: constants.BRIGHT_BLUE,
+                          //backgroundColor: constants.BRIGHT_BLUE,
+                          borderWidth: 1,
+                          borderColor: constants.BRIGHT_BLUE,
                           padding: 5,
-                          borderRadius: 10,
+                          paddingLeft: 10,
+                          paddingRight: 10,
+                          marginLeft: 10,
+                          borderRadius: 5,
                         }}>
                         <Text
                           style={{
                             fontFamily: constants.FONT_BOLD,
-                            color: 'white',
+                            color: constants.BRIGHT_BLUE,
                           }}>
                           Join
                         </Text>
@@ -323,7 +331,6 @@ const DrawerContentComponent = (props) => {
                 fontSize: 17,
                 //color: constants.OFF_BLACK,
                 color: 'white',
-                fontSize: 15,
                 fontWeight: '500',
               }}
               style={{flex: 1}}
