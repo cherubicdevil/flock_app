@@ -294,6 +294,7 @@ const DrawerContentComponent = (props) => {
             fontSize: 20,
             fontFamily: constants.FONT,
             paddingLeft: 10,
+            color: 'white',
             fontWeight: '800',
           }}
           style={{
@@ -320,7 +321,8 @@ const DrawerContentComponent = (props) => {
               labelStyle={{
                 fontFamily: constants.FONT,
                 fontSize: 17,
-                color: constants.OFF_BLACK,
+                //color: constants.OFF_BLACK,
+                color: 'white',
                 fontSize: 15,
                 fontWeight: '500',
               }}
@@ -387,9 +389,10 @@ const MyDrawerItemList = ({descriptors, state, navigation}) => {
               <Text
                 style={{
                   fontFamily: constants.FONT,
-                  color: isFocused ? 'black' : constants.OFF_BLACK,
+                  //color: isFocused ? 'black' : constants.OFF_BLACK,
+                  color: 'white',
 
-                  fontWeight: '500',
+                  //fontWeight: '500',
                 }}>
                 {route.name}
               </Text>
