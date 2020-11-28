@@ -151,7 +151,7 @@ const DrawerContentComponent = (props) => {
       }}
     /> */}
       <Modal
-        animationType="slide"
+        animationType="fade"
         transparent={true}
         style={{marginLeft: 20, marginRight: 20, padding: 50}}
         visible={modalVisible}>
@@ -168,7 +168,7 @@ const DrawerContentComponent = (props) => {
               width: '100%',
               height: '100%',
               zIndex: 2,
-              backgroundColor: 'pink',
+              backgroundColor: 'black',
               position: 'absolute',
               opacity: 0.4,
             }}
@@ -179,19 +179,59 @@ const DrawerContentComponent = (props) => {
           <View
             style={{
               zIndex: 40,
-              marginTop: -100,
-              backgroundColor: 'white',
+              marginTop: -300,
+              borderRadius: 10,
+              backgroundColor: constants.GREY,
               width: 300,
               marginLeft: 40,
               marginRight: 40,
+              overflow: 'hidden',
               height: 400,
             }}>
-            <Button
-              title="click me"
-              onPress={() => {
-                setModalVisible(false);
-              }}
-            />
+            <View style={{backgroundColor: constants.RED}}>
+              <Text
+                style={{
+                  marginBottom: 15,
+                  color: 'white',
+                  textAlign: 'center',
+                  marginTop: 20,
+                  fontFamily: constants.FONT_BOLD,
+                  fontSize: 25,
+                }}>
+                Find a Flock
+              </Text>
+            </View>
+            <ScrollView
+              style={{
+                padding: 5,
+                //margin: 25,
+                borderWidth: 0.5,
+                flex: 1,
+                borderColor: 'grey',
+                borderOpacity: 0.1,
+                backgroundColor: constants.GREY,
+              }}>
+              {['d', 'd', 'd', 'd', 'd'].map((el) => {
+                return (
+                  <View
+                    style={{
+                      height: 50,
+                      borderRadius: 15,
+                      //width: '100%',
+                      marginTop: 7,
+                      marginBottom: 7,
+                      marginLeft: 5,
+                      marginRight: 5,
+                      backgroundColor: 'white',
+                      shadowColor: '#000',
+                      shadowOffset: {width: 0, height: 2},
+                      shadowOpacity: 0.1,
+                      shadowRadius: 2,
+                    }}
+                  />
+                );
+              })}
+            </ScrollView>
           </View>
         </View>
       </Modal>
