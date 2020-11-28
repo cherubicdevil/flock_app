@@ -51,4 +51,6 @@ export const constants = {
   LIGHT_BLUE: 'rgba(70, 100, 200,0.5)',
   BIRDS: require('App/Assets/Images/birds.png'),
   COMMENT_COLOR: 'rgb(255, 245, 240)',
+  BLUE: '#2c82c9',
+  BRIGHT_BLUE: '#22a7f0',
 };

@@ -211,7 +211,17 @@ const DrawerContentComponent = (props) => {
                 borderOpacity: 0.1,
                 backgroundColor: constants.GREY,
               }}>
-              {['d', 'd', 'd', 'd', 'd'].map((el) => {
+              {[
+                {
+                  name: 'Nike Shoes',
+                  description: 'Come here to buy Nike shoes with us!',
+                  population: 145,
+                },
+                'd',
+                'd',
+                'd',
+                'd',
+              ].map((el) => {
                 return (
                   <View
                     style={{
@@ -227,8 +237,46 @@ const DrawerContentComponent = (props) => {
                       shadowOffset: {width: 0, height: 2},
                       shadowOpacity: 0.1,
                       shadowRadius: 2,
-                    }}
-                  />
+                    }}>
+                    <View
+                      style={{
+                        margin: 10,
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                      }}>
+                      <Text
+                        style={{
+                          fontSize: 17,
+                          fontFamily: constants.FONT,
+                        }}>
+                        {el.name}
+                      </Text>
+                      <Text
+                        style={{
+                          fontSize: 14,
+                          marginLeft: 5,
+                          marginTop: 2,
+                          fontFamily: constants.FONT,
+                        }}>
+                        {el.population} members
+                      </Text>
+                      <View
+                        style={{
+                          alignSelf: 'flex-end',
+                          backgroundColor: constants.BRIGHT_BLUE,
+                          padding: 5,
+                          borderRadius: 10,
+                        }}>
+                        <Text
+                          style={{
+                            fontFamily: constants.FONT_BOLD,
+                            color: 'white',
+                          }}>
+                          Join
+                        </Text>
+                      </View>
+                    </View>
+                  </View>
                 );
               })}
             </ScrollView>
