@@ -13,6 +13,7 @@ import {
   ScrollView,
   View,
   Modal,
+  Dimensions,
   TouchableWithoutFeedback,
 } from 'react-native';
 // import io from "socket.io-client";
@@ -33,7 +34,6 @@ import {getChatsFromId} from 'App/utils';
 const Drawer = createDrawerNavigator();
 
 const ChatDrawer = ({navigation, route}) => {
-  const [dummyState, setDummyState] = useState(false);
   const [data, setData] = useState([]);
   useEffect(() => {
     getChatsFromId().then((dat) => {
@@ -135,6 +135,7 @@ const renderDrawers = (data) => {
 };
 
 const DrawerContentComponent = (props) => {
+  const [modalVisible, setModalVisible] = useState(false);
   const wasDrawerOpen = useIsDrawerOpen();
   const [dummyState, setDummyState] = useState(false);
   return (
@@ -149,6 +150,51 @@ const DrawerContentComponent = (props) => {
         backgroundColor: 'black',
       }}
     /> */}
+      <Modal
+        animationType="slide"
+        transparent={true}
+        style={{marginLeft: 20, marginRight: 20, padding: 50}}
+        visible={modalVisible}>
+        <View
+          style={{
+            flex: 1,
+            zIndex: 50,
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
+          <TouchableOpacity
+            style={{
+              width: '100%',
+              height: '100%',
+              zIndex: 2,
+              backgroundColor: 'pink',
+              position: 'absolute',
+              opacity: 0.4,
+            }}
+            onPress={() => {
+              setModalVisible(false);
+            }}
+          />
+          <View
+            style={{
+              zIndex: 40,
+              marginTop: -100,
+              backgroundColor: 'white',
+              width: 300,
+              marginLeft: 40,
+              marginRight: 40,
+              height: 400,
+            }}>
+            <Button
+              title="click me"
+              onPress={() => {
+                setModalVisible(false);
+              }}
+            />
+          </View>
+        </View>
+      </Modal>
       {!wasDrawerOpen ? null : (
         <NavBar navigation={props.navigation} route={props.route} />
       )}
@@ -196,6 +242,7 @@ const DrawerContentComponent = (props) => {
               <TouchableOpacity
                 onPress={() => {
                   console.log('adding');
+                  setModalVisible(true);
                   // data[2] = {flock: 'Test'};
                   // setDummyState(!dummyState);
                   //console.log(data);
