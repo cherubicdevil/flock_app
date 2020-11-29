@@ -39,7 +39,7 @@
 */
 
 import {constants} from 'App/constants';
-import {firebase} from 'App/firebase/config';
+import {firebase, db} from 'App/firebase/config';
 import ImagePicker from 'react-native-image-picker';
 import {Animated} from 'react-native';
 import {createThumbnail} from 'react-native-create-thumbnail';
@@ -244,6 +244,26 @@ const getChatsFromId = async () => {
     resolve(ar);
   });
 };
+
+const fetchGlobalFlocks = async () => {
+  return new Promise((resolve) => {
+    db.collection('flocks')
+      .get()
+      .then((querySnapshot) => {
+        var counter = 0;
+        const n = querySnapshot.size;
+        const ar = [];
+        querySnapshot.forEach((doc) => {
+          const entity = doc.data();
+          ar.push(entity);
+          counter = counter + 1;
+          if (counter === n) {
+            resolve(ar);
+          }
+        });
+      });
+  });
+};
 export {
   fetchStreamableSource,
   fetchAlbums,
@@ -257,4 +277,5 @@ export {
   getIndexOfData,
   formatMoney,
   getChatsFromId,
+  fetchGlobalFlocks,
 };

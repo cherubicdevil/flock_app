@@ -2,6 +2,7 @@ import React, {useEffect, useState, useRef} from 'react';
 import {constants} from 'App/constants';
 import Collapsible from 'react-native-collapsible';
 import {useSelector} from 'react-redux';
+import FlockJoinItem from './FlockJoinItem';
 import {
   Button,
   Image,
@@ -30,6 +31,7 @@ import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs
 import {createStackNavigator} from '@react-navigation/stack';
 import ChatGroup from './ChatGroup';
 import {getChatsFromId} from 'App/utils';
+import {fetchGlobalFlocks} from '../../../utils';
 
 const Drawer = createDrawerNavigator();
 
@@ -136,8 +138,15 @@ const renderDrawers = (data) => {
 
 const DrawerContentComponent = (props) => {
   const [modalVisible, setModalVisible] = useState(false);
+  const [recommendedFlocks, setRecommendedFlocks] = useState([]);
   const wasDrawerOpen = useIsDrawerOpen();
   const [dummyState, setDummyState] = useState(false);
+
+  useEffect(() => {
+    fetchGlobalFlocks().then((result) => {
+      setRecommendedFlocks(result);
+    });
+  }, []);
   return (
     <>
       {/* <View
@@ -210,82 +219,8 @@ const DrawerContentComponent = (props) => {
                 borderOpacity: 0.1,
                 backgroundColor: constants.GREY,
               }}>
-              {[
-                {
-                  name: 'Nike Shoes',
-                  description: 'Come here to buy Nike shoes with us!',
-                  population: 145,
-                },
-                'd',
-                'd',
-                'd',
-                'd',
-              ].map((el) => {
-                return (
-                  <View
-                    style={{
-                      height: 50,
-                      borderRadius: 5,
-                      //width: '100%',
-                      // marginTop: 7,
-                      // marginBottom: 7,
-                      // marginLeft: 15,
-                      // marginRight: 15,
-                      paddingLeft: 15,
-                      paddingRight: 5,
-                      //backgroundColor: 'white',
-                      // shadowColor: '#000',
-                      // shadowOffset: {width: 0, height: 1},
-                      // shadowOpacity: 0.1,
-                      // shadowRadius: 2,
-                      borderBottomWidth: 0.5,
-                      borderBottomColor: '#999',
-                    }}>
-                    <View
-                      style={{
-                        margin: 10,
-                        flexDirection: 'row',
-                        justifyContent: 'space-between',
-                      }}>
-                      <Text
-                        style={{
-                          fontSize: 17,
-                          fontFamily: constants.FONT,
-                        }}>
-                        {el.name}
-                      </Text>
-                      <Text
-                        style={{
-                          fontSize: 14,
-                          marginLeft: 5,
-                          marginTop: 2,
-                          fontFamily: constants.FONT,
-                        }}>
-                        {el.population} members
-                      </Text>
-                      <View
-                        style={{
-                          alignSelf: 'flex-end',
-                          //backgroundColor: constants.BRIGHT_BLUE,
-                          borderWidth: 1,
-                          borderColor: constants.BRIGHT_BLUE,
-                          padding: 5,
-                          paddingLeft: 10,
-                          paddingRight: 10,
-                          marginLeft: 10,
-                          borderRadius: 5,
-                        }}>
-                        <Text
-                          style={{
-                            fontFamily: constants.FONT_BOLD,
-                            color: constants.BRIGHT_BLUE,
-                          }}>
-                          Join
-                        </Text>
-                      </View>
-                    </View>
-                  </View>
-                );
+              {recommendedFlocks.map((el) => {
+                return <FlockJoinItem data={el} />;
               })}
             </ScrollView>
           </View>
