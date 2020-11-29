@@ -24,7 +24,7 @@
  */
 
 import React from 'react';
-import {ScrollView, View} from 'react-native';
+import {Dimensions, ScrollView, View} from 'react-native';
 import FeedItem from './FeedItem';
 import HalfProduct from './HalfProduct';
 import {constants} from 'App/constants';
@@ -83,6 +83,17 @@ class FeedList extends React.Component {
             zIndex: 40,
           }}></LinearGradient>
         <ScrollView
+          style={{
+            paddingLeft: 15,
+            paddingRight: 15,
+
+            // marginLeft: 10,
+            // marginRight: 10,
+          }}
+          contentContainerStyle={{
+            justifyContent: 'space-around',
+            flexDirection: 'row',
+          }}
           onScrollEndDrag={(event) => {
             if (
               event.nativeEvent.contentOffset.y + 400 >
@@ -115,7 +126,7 @@ class FeedList extends React.Component {
 }
 
 const styles = {
-  columnStyle: {flex: 1, backgroundColor: constants.GREY},
+  columnStyle: {flex: 1, alignItems: 'center', backgroundColor: constants.GREY},
 };
 
 export default FeedList;

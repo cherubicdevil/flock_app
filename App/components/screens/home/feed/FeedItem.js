@@ -30,7 +30,7 @@ import Berry from './Berry';
 import Media from './Media';
 
 const FeedItem = ({videoAr, navigation, data, title}) => {
-  const width = Dimensions.get('window').width / 2 - 10;
+  const width = Dimensions.get('window').width / 2 - 30;
 
   const [isInView, setIsInView] = useState(false);
 
@@ -49,7 +49,6 @@ const FeedItem = ({videoAr, navigation, data, title}) => {
         style={{
           borderRadius: 15,
           overflow: 'hidden',
-          marginLeft: 5,
           width: width,
         }}>
         <Berry />
