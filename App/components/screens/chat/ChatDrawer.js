@@ -1,7 +1,7 @@
 import React, {useEffect, useState, useRef} from 'react';
 import {constants} from 'App/constants';
 import Collapsible from 'react-native-collapsible';
-import {useSelector} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 import FlockJoinItem from './FlockJoinItem';
 import {
   Button,
@@ -36,13 +36,18 @@ import {fetchGlobalFlocks} from '../../../utils';
 const Drawer = createDrawerNavigator();
 
 const ChatDrawer = ({navigation, route}) => {
+  const select = useSelector((state) => state);
+  console.log(select.userInfo.chatIds);
+  const dispatch = useDispatch();
   const [data, setData] = useState([]);
   useEffect(() => {
     getChatsFromId().then((dat) => {
       setData(dat);
+      dispatch({type: 'UPDATE_DATA', payload: ["chatGroups", null, null, dat]});
     });
+
   }, []);
-  const select = useSelector((state) => state);
+
   // const data = select.userInfo.chatGroups;
   // data['self'] = {
   //   flock: 'Yourself',
@@ -104,7 +109,7 @@ const ChatDrawer = ({navigation, route}) => {
           />
         );
       }}>
-      {renderDrawers(data)}
+      {renderDrawers(select.userInfo.chatGroups || [])}
       <Drawer.Screen
         key={'Yourself 21345'}
         name={'Yourself'}
@@ -124,11 +129,13 @@ const ChatDrawer = ({navigation, route}) => {
 };
 
 const renderDrawers = (data) => {
+  console.log("data", data);
   return Object.entries(data).map(([, item]) => {
+    console.log(item.flock);
     return (
       <Drawer.Screen
         key={Math.random()}
-        name={item.flock}
+        name={item.flock || item.name}
         component={ChatGroup}
         initialParams={{data: item}}
       />

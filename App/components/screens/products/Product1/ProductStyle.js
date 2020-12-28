@@ -16,8 +16,9 @@ export default {
   coverImage: {
     //height: Dimensions.get('window').height * (1 / 2),
     width: '100%',
-    //resizeMode: 'cover',
-    backgroundColor: 'transparent',
+    height: 450,
+    resizeMode: 'contain',
+    backgroundColor: 'white',
     overflow: 'hidden',
   },
   headerContainer: {

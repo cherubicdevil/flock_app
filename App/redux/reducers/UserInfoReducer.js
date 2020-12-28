@@ -34,6 +34,21 @@ export default function (state = {likedVideos: []}, action) {
       return action.payload;
     case 'IMPORT_CHAT_ID':
       return {...state, chatGroups: action.payload};
+    case 'UPDATE_DATA':
+      const [membertype, actiontype, arraytype, data] = action.payload;
+      const res = {...state};
+      if (arraytype === "array") {
+        if (actiontype === "add") {
+            res[membertype] = [...res[membertype], data];
+        } else {
+            const index = res[membertype].indexOf(data);
+            if (index !== -1) res[membertype].splice(index,1);
+        }
+      } else {
+        res[membertype] = data;
+        // assumed to always be add if not array
+      }
+      return res;
     default:
       return state;
   }

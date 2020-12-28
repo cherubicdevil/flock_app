@@ -1,4 +1,4 @@
-import React, {Component, useState} from 'react';
+import React, {Component, useState, useEffect} from 'react';
 import {
   ImageBackground,
   ScrollView,
@@ -89,36 +89,36 @@ class Product extends Component {
 
   renderDetail = () => {
     return (
-      <View>
-        <Text style={styles.detailText}>Details</Text>
-        <Text style={styles.subDetailText}>
-          Product details her blah blah blah blah blah
+      
+      <TouchableOpacity style={{flexDirection:'row', justifyContent:'space-between'}} onPress={() => {
+        Linking.openURL(
+          'https://shopwithflock.com/redirect/?url=' +
+            this.props.route.params.album.url,
+        );
+      }}>
+        <Text style={{fontFamily: constants.FONTBOLD, fontSize: 14, color: 'black'}}>
+          Product information, description, and details
         </Text>
-      </View>
+        <Text>{'>'}</Text>
+      </TouchableOpacity>
     );
   };
 
   renderDescription = () => {
     return (
       <View>
-        <Text style={styles.priceText}>
+        <Text style={{fontSize: 14, fontWeight: 'bold', marginBottom: 5,}}>
           {this.props.route.params.album.title}
         </Text>
-        <Text style={styles.priceText}>
+        <View style={{flexDirection:'row', justifyContent: 'space-between'}}>
+        <Text style={{alignSelf: 'center', fontFamily: constants.FONTBOLD, color: constants.ORANGE, size: 16}}>
           ${this.props.route.params.album.price}
         </Text>
         {/*<Text style={styles.descriptionText}>50 flockers have bought</Text>*/}
         {/*<Text style={styles.descriptionText}>Recommended by username</Text>*/}
-        <Button
-          title="More details"
-          style={{position: 'absolute', bottom: 20, right: 10}}
-          onPress={() => {
-            Linking.openURL(
-              'https://shopwithflock.com/redirect/?url=' +
-                this.props.route.params.album.url,
-            );
-          }}
-        />
+        <TouchableOpacity style={{borderRadius: 30, backgroundColor: constants.ORANGE, color: 'white', justifyContent: 'center', alignItems:'center', paddingBottom: 5, paddingTop: 3,paddingLeft: 15, paddingRight: 15,}}><Text style={{color: 'white', fontSize: 15, fontFamily: constants.FONTBOLD}}>{"as low as $" + Math.round(this.props.route.params.album.price / 7) + " if you shop with flock"}</Text></TouchableOpacity>
+
+        </View>
       </View>
     );
   };
@@ -142,17 +142,32 @@ class Product extends Component {
       <View style={styles.headerContainer}>
         <View style={styles.coverContainer}>
           <View style={styles.coverImage}>
+            <TouchableOpacity style={{zIndex: 50, height: 30, width: 50, backgroundColor: 'black',position: 'absolute', top: 40, left: 30}} onPress={this.props.navigation.goBack}></TouchableOpacity>
             <Image
               style={{
                 width: '100%',
-                aspectRatio: 3 / 2,
-                //height: '100%',
+                resizeMode: 'contain',
+                aspectRatio: 1,
+                height: '100%',
                 //height: 200,
                 alignSelf: 'center',
               }}
               source={{uri: this.props.route.params.album.image}}
             />
-            <PhotoButton />
+            <Video
+          repeat={true}
+          muted={true}
+          source={{
+            uri: this.props.route.params.video.video,
+          }}
+          style={{
+            height: 150,
+            width: 150,
+            position: 'absolute',
+            bottom: -33,
+            right: -15,
+          }}
+        />
           </View>
         </View>
       </View>
@@ -184,39 +199,9 @@ class Product extends Component {
             source={require('App/Assets/Images/gray-floral.png')}
           /> */}
         {/* </LinearGradient> */}
-        <View style={styles.footer}>
-          <View style={styles.buttonFooter}>
-            {/* <Flockit style={{flex: 1}} /> */}
-            <Text style={styles.textFooter}>Flock Save</Text>
-          </View>
-          <View style={styles.buttonFooter}>
-            <Text style={styles.textFooter}>Flock Buy</Text>
-          </View>
-          <TouchableOpacity
-            style={styles.buttonFooter}
-            onPress={() => {
-              const title = this.props.route.params.album.title;
-              const price = this.props.route.params.album.price;
-              this.props.navigation.navigate('PayTest', {
-                title,
-                price,
-                useFlockPrice,
-                flockPrice,
-              });
-              // Linking.openURL(
-              //   'https://shopwithflock.com/redirect/?url=' +
-              //     this.props.navigation.state.params.album.url,
-              // )
-            }}>
-            <Text style={styles.textFooter}>Buy It Now</Text>
-          </TouchableOpacity>
-        </View>
-        <ScrollView style={styles.scroll}>
-          <View style={[styles.container]}>
-            <View style={styles.cardContainer}>
+
+        <View style={styles.scroll}>
               {this.renderContactHeader()}
-            </View>
-          </View>
           <View
             style={{
               flex: 1,
@@ -230,14 +215,43 @@ class Product extends Component {
               borderRadius: 10,
             }}>
             <View style={styles.productRow}>{this.renderDescription()}</View>
-            <View style={styles.productRow}>
-              <Text style={{fontFamily: constants.FONTBOLD}}>Variants</Text>
-              <Text>Not applicable</Text>
+            <View style={[styles.productRow, {padding:0, paddingBottom: 10}]}>
+              <Text style={{marginTop: 10,paddingLeft: 20}}>Over 36 have flock'ed. 9 are currently flock'ing.</Text>
+              <View style={{flexDirection: 'row', justifyContent: 'space-between', paddingTop: 10, borderTopWidth:2, borderColor: constants.GREY, paddingLeft: 20, paddingBottom:3}}>
+              <View style={{flex: 1}}>
+              <Text style={{fontWeight: 'bold', fontSize:15,}}>@cherubicdevil</Text>
+              <Text>and 2 others</Text>
+              </View>
+              <View style={{flex: 1.5, flexDirection:'row', justifyContent: 'space-between'}}>
+              <View style={{flex:1, marginRight: 15}}>
+              <Countdown dateObj = {Math.round(Date.now() / 1000)} />
+              </View>
+              <View style={{borderRadius: 30, backgroundColor: constants.ORANGE, justifyContent:'center', paddingLeft: 10, paddingRight: 10, marginRight: 5}}>
+              <Text style={{color: 'white', fontFamily: constants.FONT, fontWeight: 'bold', fontSize: 13}}>$1395 or less</Text>
+              </View>
+              </View>
+              </View>
+              <View style={{flexDirection: 'row', justifyContent: 'space-between',paddingTop: 10, borderTopWidth:2, borderColor: constants.GREY, paddingLeft: 20}}>
+              <View style={{flex: 1}}>
+              <Text style={{fontWeight: 'bold'}}>@kevjumba</Text>
+              <Text>and 2 others</Text>
+              </View>
+              <View style={{flex: 1.5, flexDirection:'row', justifyContent: 'space-between'}}>
+              <View style={{flex:1, marginRight: 15}}>
+              <Countdown dateObj = {Math.round(Date.now() / 1000)} />
+              </View>
+              <View style={{borderRadius: 30, backgroundColor: constants.ORANGE, justifyContent:'center', paddingLeft: 10, paddingRight: 10, marginRight: 5}}>
+              <Text style={{color: 'white', fontFamily: constants.FONT, fontWeight: 'bold', fontSize: 13}}>$2679 or less</Text>
+              </View>
+              </View>
+              </View>
             </View>
+            <View style={styles.productRow}>{this.renderDetail()}</View>
           </View>
           {/* <View style={styles.productRow}>{this.renderNavigator()}</View> */}
           {/*   <View style={styles.productRow}>{this.renderDetail()}</View> */}
-        </ScrollView>
+          <View style={{flexDirection: 'row', height: 40, marginBottom: 40, marginRight: 20, marginLeft:20, justifyContent: 'space-between', alignItems: 'center'}}><Text>34</Text><Image source={constants.PLACEHOLDER_IMAGE } style={{marginLeft: 20, width: 35, aspectRatio:1}}/><View style={{borderRadius: 30, flex: 1, flexDirection: 'row', backgroundColor: constants.ORANGE, marginLeft: 10, height: 50, alignItems: 'center'}}><View style={{flex: 1, height: '100%', borderRightWidth: 1, borderColor: 'white', justifyContent:'center'}}><Text style={{textAlign: 'center', color: 'white', fontWeight: 'bold',  fontSize: 13}}>Buy Now ${this.props.route.params.album.price}</Text></View><View style={{flex:1, height: '100%', borderLeftWidth: 1, borderColor: 'white', justifyContent: 'center'}}><Text style={{textAlign: 'center', color: 'white', fontWeight: 'bold', fontSize: 13}}>Start Your Own Flock</Text></View></View></View>
+        </View>
         {/* <View style={styles.cluckfooter}>
           <TouchableOpacity style={styles.buttonCluck}>
             <Image
@@ -247,23 +261,29 @@ class Product extends Component {
             <Text style={styles.textFooter}>Cluck</Text>
           </TouchableOpacity>
         </View> */}
-        <Video
-          repeat={true}
-          muted={true}
-          source={{
-            uri: this.props.route.params.video.video,
-          }}
-          style={{
-            height: 150,
-            width: 150,
-            position: 'absolute',
-            left: 10,
-            top: 100,
-          }}
-        />
+
       </View>
     );
   }
+}
+
+const Countdown = ({dateObj}) => {
+  const [now, setNow] = useState(Math.round(Date.now()/1000));
+  var diff = dateObj - now + 3600*24*7;
+  useEffect(()=> {
+    setInterval(()=> setNow(Math.round(Date.now()/1000)), 1000);
+  }, []);
+
+  const days = Math.round(diff / (3600*24));
+  var remainder = diff % (3600*24);
+  const hours = Math.floor(remainder / 3600);
+  remainder %= (3600);
+  const minutes = Math.floor(remainder / 60);
+  remainder %= 60;
+  const seconds = Math.floor(remainder);
+
+  return <><View style={{flexDirection: 'row', justifyContent:'space-between'}}><View style={{ flex: 1, alignSelf: 'stretch' }}><Text style={{textAlign:'center'}}>0{days}</Text></View><Text>:</Text><View style={{ flex: 1, alignSelf: 'stretch' }}><Text style={{textAlign: 'center'}}>{hours}</Text></View><Text>:</Text><Text style={{ flex: 1, alignSelf: 'stretch', textAlign: 'center' }}>{minutes}</Text><Text>:</Text><Text style={{ flex: 1, alignSelf: 'stretch', textAlign: 'center'}}>{seconds}</Text></View>
+  <View style={{flexDirection: 'row', justifyContent:'space-between', fontSize: 10}}><Text style={{fontSize:10, alignSelf: 'stretch'}}>days</Text><Text style={{fontSize:10, alignSelf: 'stretch'}}>hrs</Text><Text style={{fontSize:10, alignSelf: 'stretch'}}>min</Text><Text style={{fontSize:10, alignSelf: 'stretch'}}>left</Text></View></>
 }
 
 export default Product;

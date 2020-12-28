@@ -2,9 +2,12 @@ import React, {useState} from 'react';
 import {View, Text, TouchableWithoutFeedback, Image} from 'react-native';
 import Collapsible from 'react-native-collapsible';
 import {constants} from 'App/constants';
+import {firebase} from 'App/firebase/config';
 import {TouchableOpacity} from 'react-native-gesture-handler';
+import {useDispatch} from 'react-redux';
 
 const FlockJoinItem = ({data}) => {
+  const dispatch = useDispatch();
   const [collapsed, setCollapsed] = useState(true);
   return (
     <View
@@ -26,35 +29,49 @@ const FlockJoinItem = ({data}) => {
         borderBottomWidth: 0.5,
         borderBottomColor: '#999',
       }}>
-      <TouchableWithoutFeedback
-        onPress={() => {
-          setCollapsed(!collapsed);
+      <View
+        style={{
+          height: 30,
+          flex: 1,
+          flexDirection: 'row',
+          justifyContent: 'space-between',
         }}>
-        <View
-          style={{
-            height: 30,
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-          }}>
-          <Text
-            style={{
-              fontSize: 17,
-              fontFamily: constants.FONT,
+        <View style={{flex: 1}}>
+          <TouchableWithoutFeedback
+            style={{flex: 1}}
+            onPress={() => {
+              setCollapsed(!collapsed);
             }}>
-            {data.name}
-          </Text>
-          <Text
-            style={{
-              fontSize: 14,
-              marginLeft: 5,
-              marginTop: 2,
-              fontFamily: constants.FONT,
-            }}>
-            {data.members.length} members
-          </Text>
+            <View style={{flexDirection: 'row'}}>
+              <Text
+                style={{
+                  fontSize: 17,
+                  fontFamily: constants.FONT,
+                }}>
+                {data.name}
+              </Text>
+              <Text
+                style={{
+                  fontSize: 14,
+                  marginLeft: 5,
+                  marginTop: 2,
+                  fontFamily: constants.FONT,
+                }}>
+                {data.members.length} members
+              </Text>
+            </View>
+          </TouchableWithoutFeedback>
+        </View>
+        <View>
           <TouchableOpacity
             onPress={() => {
               console.log('press join');
+              const db = firebase.firestore();
+              const docId = db.collection('users').doc(firebase.auth().currentUser.uid).update({
+                chatIds: firebase.firestore.FieldValue.arrayUnion(data.id)
+              });
+             dispatch({type: "UPDATE_DATA", payload: ["chatIds", "add", "array", data.id]});
+             dispatch({type: "UPDATE_DATA", payload: ["chatGroups", "add", "array", data]});
             }}
             style={{
               alignSelf: 'flex-end',
@@ -76,7 +93,8 @@ const FlockJoinItem = ({data}) => {
             </Text>
           </TouchableOpacity>
         </View>
-      </TouchableWithoutFeedback>
+      </View>
+
       <Collapsible collapsed={collapsed}>
         <View style={{width: '80%'}}>
           <Text style={{fontFamily: constants.FONT}}>{data.description}</Text>

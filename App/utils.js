@@ -36,6 +36,8 @@
         used in feedlist to merge video and product arrays
 *-- onGLContextCreate (unused) and create3dEgg (unused) and render3dEgg(unused)
         used to create a 3d egg for Egg.js
+
+*-- updateCache( data member --like groupChats --, 'add' 'delete', data)
 */
 
 import {constants} from 'App/constants';
@@ -43,6 +45,7 @@ import {firebase, db} from 'App/firebase/config';
 import ImagePicker from 'react-native-image-picker';
 import {Animated} from 'react-native';
 import {createThumbnail} from 'react-native-create-thumbnail';
+import {useDispatch} from 'react-redux';
 
 const fetchStreamableSource = async (src) => {
   if (src === null || src === undefined) {
@@ -234,7 +237,6 @@ const getChatsFromId = async () => {
 
   const chatGroups = db.collection('chatGroups');
   const ar = [];
-  console.log(chatIds);
   for (const chatGroup of chatIds) {
     //console.log(chatGroup);
     const chatData = (await (await chatGroups.doc(chatGroup)).get()).data();
@@ -264,6 +266,10 @@ const fetchGlobalFlocks = async () => {
       });
   });
 };
+
+const updateCache = (member, actiontype, data) => {
+  
+}
 export {
   fetchStreamableSource,
   fetchAlbums,
