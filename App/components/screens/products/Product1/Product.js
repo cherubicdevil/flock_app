@@ -225,28 +225,28 @@ class Product extends Component {
               <Text style={{marginTop: 10,paddingLeft: 20}}>Over 36 have flock'ed. 9 are currently flock'ing.</Text>
               <View style={{flexDirection: 'row', justifyContent: 'space-between', paddingTop: 10, borderTopWidth:2, borderColor: constants.GREY, paddingLeft: 20, paddingBottom:3}}>
               <View style={{flex: 1}}>
-              <Text style={{fontWeight: 'bold', fontSize:15,}}>@cherubicdevil</Text>
+              <Text numberOfLines = {1} style={{fontWeight: 'bold', fontSize:15,width: 80, height: 20, }}>@cherubicdevil</Text>
               <Text>and 2 others</Text>
               </View>
-              <View style={{flex: 1.5, flexDirection:'row', justifyContent: 'space-between'}}>
+              <View style={{flex: 1.75, flexDirection:'row', justifyContent: 'space-between'}}>
               <View style={{flex:1, marginRight: 15}}>
               <Countdown dateObj = {Math.round(Date.now() / 1000)} />
               </View>
-              <View style={{borderRadius: 30, backgroundColor: constants.ORANGE, justifyContent:'center', paddingLeft: 10, paddingRight: 10, marginRight: 5}}>
+              <View style={{borderRadius: 30, backgroundColor: constants.ORANGE, justifyContent:'center', paddingLeft: 10, paddingRight: 10, marginRight: 20}}>
               <Text style={{color: 'white', fontFamily: constants.FONT, fontWeight: 'bold', fontSize: 13}}>$1395 or less</Text>
               </View>
               </View>
               </View>
               <View style={{flexDirection: 'row', justifyContent: 'space-between',paddingTop: 10, borderTopWidth:2, borderColor: constants.GREY, paddingLeft: 20}}>
               <View style={{flex: 1}}>
-              <Text style={{fontWeight: 'bold'}}>@kevjumba</Text>
+              <Text numberOfLines = {1} style={{width: 80, fontWeight: 'bold'}}>@kevjumba</Text>
               <Text>and 2 others</Text>
               </View>
-              <View style={{flex: 1.5, flexDirection:'row', justifyContent: 'space-between'}}>
+              <View style={{flex: 1.75, flexDirection:'row', justifyContent: 'space-between'}}>
               <View style={{flex:1, marginRight: 15}}>
               <Countdown dateObj = {Math.round(Date.now() / 1000)} />
               </View>
-              <View style={{borderRadius: 30, backgroundColor: constants.ORANGE, justifyContent:'center', paddingLeft: 10, paddingRight: 10, marginRight: 5}}>
+              <View style={{borderRadius: 30, backgroundColor: constants.ORANGE, justifyContent:'center', paddingLeft: 10, paddingRight: 10, marginRight: 20}}>
               <Text style={{color: 'white', fontFamily: constants.FONT, fontWeight: 'bold', fontSize: 13}}>$2679 or less</Text>
               </View>
               </View>
@@ -256,15 +256,15 @@ class Product extends Component {
           </View>
           {/* <View style={styles.productRow}>{this.renderNavigator()}</View> */}
           {/*   <View style={styles.productRow}>{this.renderDetail()}</View> */}
-          <View style={{flexDirection: 'row', height: 40, marginBottom: 40, marginRight: 20, marginLeft:20, justifyContent: 'space-between', alignItems: 'center', }}>
-            <View style={{justifyContent: 'center', alignItems: 'center'}}><Image source = {require('App/Assets/Images/heart.png')} style={{width: 35, height: 35,  shadowOpacity: 0.2, shadowOffset: {height:1 , width: 0}}} />
-            <Text style={{position: 'absolute', top: 10,fontSize: 12}}>34</Text>
+          <View style={{flexDirection: 'row', height: 40, marginBottom: 40, marginRight: 10, marginLeft:20, justifyContent: 'space-between', alignItems: 'center', }}>
+            <View style={{justifyContent: 'center', alignItems: 'center'}}><Image source = {require('App/Assets/Images/heart.png')} style={{width: 25, height: 25,  shadowOpacity: 0.2, shadowOffset: {height:1 , width: 0}}} />
+            <Text style={{position: 'absolute', top: 5,fontSize: 12}}>34</Text>
             </View>
             
-            <Image source={constants.PLACEHOLDER_IMAGE } style={{marginLeft: 20, width: 35, aspectRatio:1}}/>
-            <Image source={require('App/Assets/Images/Share_Icon_White.png') } style={{shadowOpacity: 0.4, shadowOffset:{height:2, width:0}, marginLeft: 20, width: 35, aspectRatio:1}}/>
+            <Image source={constants.PLACEHOLDER_IMAGE } style={{width: 30, aspectRatio:1}}/>
+            <Image source={require('App/Assets/Images/Share_Icon_White.png') } style={{shadowOpacity: 0.4, shadowOffset:{height:2, width:0},  width: 30, aspectRatio:1}}/>
           
-          <View style={{shadowOpacity: 1, shadowColor: '#555', shadowOffset: {height: 2, width: 0}, borderRadius: 30, flex: 1, flexDirection: 'row', backgroundColor: constants.ORANGE, marginLeft: 10, height: 50, alignItems: 'center'}}>
+          <View style={{shadowOpacity: 1, shadowColor: '#555', shadowOffset: {height: 2, width: 0}, borderRadius: 30, flex: 1, flexDirection: 'row', backgroundColor: constants.ORANGE, marginLeft: 10, height: 50, alignItems: 'center', marginRight: 10,}}>
           <LinearGradient
           colors={[constants.YELLOW, constants.LIGHTORANGE]}
           start={{ x: 0, y: 1 }} end={{ x: 1, y: 1 }}
@@ -327,7 +327,7 @@ const Countdown = ({dateObj}) => {
   remainder %= 60;
   const seconds = Math.floor(remainder);
 
-  return <><View style={{flexDirection: 'row', justifyContent:'space-between'}}><View style={{ flex: 1, alignSelf: 'stretch' }}><Text style={{textAlign:'center'}}>0{days}</Text></View><Text>:</Text><View style={{ flex: 1, alignSelf: 'stretch' }}><Text style={{textAlign: 'center'}}>{hours}</Text></View><Text>:</Text><Text style={{ flex: 1, alignSelf: 'stretch', textAlign: 'center' }}>{minutes}</Text><Text>:</Text><Text style={{ flex: 1, alignSelf: 'stretch', textAlign: 'center'}}>{seconds}</Text></View>
+  return <><View style={{flexDirection: 'row', justifyContent:'space-between'}}><View style={{ flex: 1, alignSelf: 'stretch' }}><Text style={{textAlign:'center'}}>{days<10?0:''}{days}</Text></View><Text>:</Text><View style={{ flex: 1, alignSelf: 'stretch' }}><Text style={{textAlign: 'center'}}>{hours<10?0:''}{hours}</Text></View><Text>:</Text><Text style={{ flex: 1, alignSelf: 'stretch', textAlign: 'center' }}>{minutes<10?0:''}{minutes}</Text><Text>:</Text><Text style={{ flex: 1, alignSelf: 'stretch', textAlign: 'center'}}>{seconds<10?0:''}{seconds}</Text></View>
   <View style={{flexDirection: 'row', justifyContent:'space-between', fontSize: 10}}><Text style={{fontSize:10, alignSelf: 'stretch'}}>days</Text><Text style={{fontSize:10, alignSelf: 'stretch'}}>hrs</Text><Text style={{fontSize:10, alignSelf: 'stretch'}}>min</Text><Text style={{fontSize:10, alignSelf: 'stretch'}}>left</Text></View></>
 }
 
