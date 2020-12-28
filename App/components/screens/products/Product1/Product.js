@@ -116,8 +116,14 @@ class Product extends Component {
         </Text>
         {/*<Text style={styles.descriptionText}>50 flockers have bought</Text>*/}
         {/*<Text style={styles.descriptionText}>Recommended by username</Text>*/}
-        <TouchableOpacity style={{borderRadius: 30, backgroundColor: constants.ORANGE, color: 'white', justifyContent: 'center', alignItems:'center', paddingBottom: 5, paddingTop: 3,paddingLeft: 15, paddingRight: 15,}}><Text style={{color: 'white', fontSize: 15, fontFamily: constants.FONTBOLD}}>{"as low as $" + Math.round(this.props.route.params.album.price / 7) + " if you shop with flock"}</Text></TouchableOpacity>
-
+        <LinearGradient
+          colors={[constants.YELLOW, constants.ORANGE]}
+          start={{ x: 0, y: 1 }} end={{ x: 1, y: 1 }}
+          style={{
+            borderRadius: 30,
+            zIndex: 40,
+          }}><TouchableOpacity style={{borderRadius: 30, color: 'white', justifyContent: 'center', alignItems:'center', paddingBottom: 5, paddingTop: 3,paddingLeft: 10, paddingRight: 10}}><Text style={{color: 'white', fontSize: 14, fontFamily: constants.FONTBOLD}}>{"$" + Math.round(this.props.route.params.album.price / 7) + " or less when you split with flockers"}</Text></TouchableOpacity>
+</LinearGradient>
         </View>
       </View>
     );
@@ -250,8 +256,47 @@ class Product extends Component {
           </View>
           {/* <View style={styles.productRow}>{this.renderNavigator()}</View> */}
           {/*   <View style={styles.productRow}>{this.renderDetail()}</View> */}
-          <View style={{flexDirection: 'row', height: 40, marginBottom: 40, marginRight: 20, marginLeft:20, justifyContent: 'space-between', alignItems: 'center'}}><Text>34</Text><Image source={constants.PLACEHOLDER_IMAGE } style={{marginLeft: 20, width: 35, aspectRatio:1}}/><View style={{borderRadius: 30, flex: 1, flexDirection: 'row', backgroundColor: constants.ORANGE, marginLeft: 10, height: 50, alignItems: 'center'}}><View style={{flex: 1, height: '100%', borderRightWidth: 1, borderColor: 'white', justifyContent:'center'}}><Text style={{textAlign: 'center', color: 'white', fontWeight: 'bold',  fontSize: 13}}>Buy Now ${this.props.route.params.album.price}</Text></View><View style={{flex:1, height: '100%', borderLeftWidth: 1, borderColor: 'white', justifyContent: 'center'}}><Text style={{textAlign: 'center', color: 'white', fontWeight: 'bold', fontSize: 13}}>Start Your Own Flock</Text></View></View></View>
+          <View style={{flexDirection: 'row', height: 40, marginBottom: 40, marginRight: 20, marginLeft:20, justifyContent: 'space-between', alignItems: 'center', }}>
+            <View style={{justifyContent: 'center', alignItems: 'center'}}><Image source = {require('App/Assets/Images/heart.png')} style={{width: 35, height: 35,  shadowOpacity: 0.2, shadowOffset: {height:1 , width: 0}}} />
+            <Text style={{position: 'absolute', top: 10,fontSize: 12}}>34</Text>
+            </View>
+            
+            <Image source={constants.PLACEHOLDER_IMAGE } style={{marginLeft: 20, width: 35, aspectRatio:1}}/>
+            <Image source={require('App/Assets/Images/Share_Icon_White.png') } style={{shadowOpacity: 0.4, shadowOffset:{height:2, width:0}, marginLeft: 20, width: 35, aspectRatio:1}}/>
+          
+          <View style={{shadowOpacity: 1, shadowColor: '#555', shadowOffset: {height: 2, width: 0}, borderRadius: 30, flex: 1, flexDirection: 'row', backgroundColor: constants.ORANGE, marginLeft: 10, height: 50, alignItems: 'center'}}>
+          <LinearGradient
+          colors={[constants.YELLOW, constants.LIGHTORANGE]}
+          start={{ x: 0, y: 1 }} end={{ x: 1, y: 1 }}
+          style={{
+            flexDirection: 'row',
+            borderBottomLeftRadius: 30,
+            borderTopLeftRadius: 30,
+            height: '100%',
+            flex: 1,
+          }}>
+            <View style={{flex: 1, height: '100%', justifyContent:'center'}}>
+              <Text style={{textAlign: 'center', color: 'white', fontWeight: 'bold',  fontSize: 13}}>Buy Now ${this.props.route.params.album.price}</Text>
+            </View>
+          </LinearGradient>
+          <LinearGradient
+          colors={['#ff8000', '#ff4d00']}
+          start={{ x: 0, y: 1 }} end={{ x: 1, y: 1 }}
+          style={{
+            flexDirection: 'row',
+            borderBottomRightRadius: 30,
+            borderTopRightRadius: 30,
+            height: '100%',
+            flex: 1,
+          }}>
+          <View style={{flex:1, height: '100%', justifyContent: 'center'}}>
+            <Text style={{textAlign: 'center', color: 'white', fontWeight: 'bold', fontSize: 13}}>Start Your Flock</Text>
+            </View>
+            </LinearGradient>
+            </View></View>
+        
         </View>
+        
         {/* <View style={styles.cluckfooter}>
           <TouchableOpacity style={styles.buttonCluck}>
             <Image

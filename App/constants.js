@@ -25,6 +25,8 @@ import {Dimensions} from 'react-native';
 
 export const constants = {
   NAVBARHEIGHT: 70,
+  LIGHTORANGE: '#ff9100',
+  YELLOW: '#ffb700',
   ORANGE: '#ff7009',
   GREY: 'rgb(229,229,234)',
   ICONGREY: 'rgb(99,99,102)',
