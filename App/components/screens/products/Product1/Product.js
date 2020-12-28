@@ -11,6 +11,7 @@ import {
   Button,
   Linking,
 } from 'react-native';
+import {firebase} from 'App/firebase/config';
 import {WebView} from 'react-native-webview';
 import {constants} from 'App/constants';
 import LinearGradient from 'react-native-linear-gradient';
@@ -86,6 +87,11 @@ class Product extends Component {
   static defaultProps = {
     containerStyle: {},
   };
+
+  componentDidMount () {
+
+
+  }
 
   renderDetail = () => {
     return (
@@ -181,6 +187,7 @@ class Product extends Component {
   };
 
   render() {
+
     return (
       <View style={styles.mainViewStyle}>
         {/* <LinearGradient
@@ -221,50 +228,24 @@ class Product extends Component {
               borderRadius: 10,
             }}>
             <View style={styles.productRow}>{this.renderDescription()}</View>
-            <View style={[styles.productRow, {padding:0, paddingBottom: 10}]}>
-              <Text style={{marginTop: 10,paddingLeft: 20}}>Over 36 have flock'ed. 9 are currently flock'ing.</Text>
-              <View style={{flexDirection: 'row', justifyContent: 'space-between', paddingTop: 10, borderTopWidth:2, borderColor: constants.GREY, paddingLeft: 20, paddingBottom:3}}>
-              <View style={{flex: 1}}>
-              <Text numberOfLines = {1} style={{fontWeight: 'bold', fontSize:15,width: 80, height: 20, }}>@cherubicdevil</Text>
-              <Text>and 2 others</Text>
-              </View>
-              <View style={{flex: 1.75, flexDirection:'row', justifyContent: 'space-between'}}>
-              <View style={{flex:1, marginRight: 15}}>
-              <Countdown dateObj = {Math.round(Date.now() / 1000)} />
-              </View>
-              <View style={{borderRadius: 30, backgroundColor: constants.ORANGE, justifyContent:'center', paddingLeft: 10, paddingRight: 10, marginRight: 20}}>
-              <Text style={{color: 'white', fontFamily: constants.FONT, fontWeight: 'bold', fontSize: 13}}>$1395 or less</Text>
-              </View>
-              </View>
-              </View>
-              <View style={{flexDirection: 'row', justifyContent: 'space-between',paddingTop: 10, borderTopWidth:2, borderColor: constants.GREY, paddingLeft: 20}}>
-              <View style={{flex: 1}}>
-              <Text numberOfLines = {1} style={{width: 80, fontWeight: 'bold'}}>@kevjumba</Text>
-              <Text>and 2 others</Text>
-              </View>
-              <View style={{flex: 1.75, flexDirection:'row', justifyContent: 'space-between'}}>
-              <View style={{flex:1, marginRight: 15}}>
-              <Countdown dateObj = {Math.round(Date.now() / 1000)} />
-              </View>
-              <View style={{borderRadius: 30, backgroundColor: constants.ORANGE, justifyContent:'center', paddingLeft: 10, paddingRight: 10, marginRight: 20}}>
-              <Text style={{color: 'white', fontFamily: constants.FONT, fontWeight: 'bold', fontSize: 13}}>$2679 or less</Text>
-              </View>
-              </View>
-              </View>
-            </View>
+            <FlockList product = {this.props.route.params.album} />
             <View style={styles.productRow}>{this.renderDetail()}</View>
           </View>
           {/* <View style={styles.productRow}>{this.renderNavigator()}</View> */}
           {/*   <View style={styles.productRow}>{this.renderDetail()}</View> */}
-          <View style={{flexDirection: 'row', height: 40, marginBottom: 40, marginRight: 10, marginLeft:20, justifyContent: 'space-between', alignItems: 'center', }}>
+          <View style={{flexDirection: 'row', height: 40, marginBottom: 30, marginRight: 10, marginLeft:20, justifyContent: 'space-between', alignItems: 'center', }}>
+
+            
+            <Image source={constants.PLACEHOLDER_IMAGE } style={{width: 30, aspectRatio:1}}/>
+            
             <View style={{justifyContent: 'center', alignItems: 'center'}}><Image source = {require('App/Assets/Images/heart.png')} style={{width: 25, height: 25,  shadowOpacity: 0.2, shadowOffset: {height:1 , width: 0}}} />
             <Text style={{position: 'absolute', top: 5,fontSize: 12}}>34</Text>
             </View>
             
-            <Image source={constants.PLACEHOLDER_IMAGE } style={{width: 30, aspectRatio:1}}/>
             <Image source={require('App/Assets/Images/Share_Icon_White.png') } style={{shadowOpacity: 0.4, shadowOffset:{height:2, width:0},  width: 30, aspectRatio:1}}/>
           
-          <View style={{shadowOpacity: 1, shadowColor: '#555', shadowOffset: {height: 2, width: 0}, borderRadius: 30, flex: 1, flexDirection: 'row', backgroundColor: constants.ORANGE, marginLeft: 10, height: 50, alignItems: 'center', marginRight: 10,}}>
+          
+          <View style={{shadowOpacity: 1, shadowColor: '#555', shadowOffset: {height: 2, width: 0}, borderRadius: 30, flex: 0.8, flexDirection: 'row', backgroundColor: constants.ORANGE, height: 50, alignItems: 'center', marginRight: 10,}}>
           <LinearGradient
           colors={[constants.YELLOW, constants.LIGHTORANGE]}
           start={{ x: 0, y: 1 }} end={{ x: 1, y: 1 }}
@@ -276,7 +257,10 @@ class Product extends Component {
             flex: 1,
           }}>
             <View style={{flex: 1, height: '100%', justifyContent:'center'}}>
-              <Text style={{textAlign: 'center', color: 'white', fontWeight: 'bold',  fontSize: 13}}>Buy Now ${this.props.route.params.album.price}</Text>
+              <TouchableOpacity onPress={()=>{Linking.openURL(
+          'https://shopwithflock.com/redirect/?url=' +
+            this.props.route.params.album.url,
+        );} }><Text style={{textAlign: 'center', color: 'white', fontWeight: 'bold',  fontSize: 13}}>Buy Now ${this.props.route.params.album.price}</Text></TouchableOpacity>
             </View>
           </LinearGradient>
           <LinearGradient
@@ -290,7 +274,26 @@ class Product extends Component {
             flex: 1,
           }}>
           <View style={{flex:1, height: '100%', justifyContent: 'center'}}>
-            <Text style={{textAlign: 'center', color: 'white', fontWeight: 'bold', fontSize: 13}}>Start Your Flock</Text>
+            <TouchableOpacity onPress= {() => {
+              const user  = firebase.auth().currentUser;
+
+              const data = {
+                name: 'testNew',
+                flock: 'testNew',
+                product: this.props.route.params.album,
+                // FLOCK_BUG use id later, for now use title
+                productTitle: this.props.route.params.album.title,
+                
+                time: Math.round(Date.now() / 1000),
+                members: [{name: user.displayName, uid: user.uid}]
+              };
+              firebase.firestore().collection("chatGroups").doc().set(data);
+
+            }}
+
+              >
+                <Text style={{textAlign: 'center', color: 'white', fontWeight: 'bold', fontSize: 13}}>Start Your Flock</Text>
+            </TouchableOpacity>
             </View>
             </LinearGradient>
             </View></View>
@@ -312,6 +315,8 @@ class Product extends Component {
   }
 }
 
+
+
 const Countdown = ({dateObj}) => {
   const [now, setNow] = useState(Math.round(Date.now()/1000));
   var diff = dateObj - now + 3600*24*7;
@@ -330,5 +335,51 @@ const Countdown = ({dateObj}) => {
   return <><View style={{flexDirection: 'row', justifyContent:'space-between'}}><View style={{ flex: 1, alignSelf: 'stretch' }}><Text style={{textAlign:'center'}}>{days<10?0:''}{days}</Text></View><Text>:</Text><View style={{ flex: 1, alignSelf: 'stretch' }}><Text style={{textAlign: 'center'}}>{hours<10?0:''}{hours}</Text></View><Text>:</Text><Text style={{ flex: 1, alignSelf: 'stretch', textAlign: 'center' }}>{minutes<10?0:''}{minutes}</Text><Text>:</Text><Text style={{ flex: 1, alignSelf: 'stretch', textAlign: 'center'}}>{seconds<10?0:''}{seconds}</Text></View>
   <View style={{flexDirection: 'row', justifyContent:'space-between', fontSize: 10}}><Text style={{fontSize:10, alignSelf: 'stretch'}}>days</Text><Text style={{fontSize:10, alignSelf: 'stretch'}}>hrs</Text><Text style={{fontSize:10, alignSelf: 'stretch'}}>min</Text><Text style={{fontSize:10, alignSelf: 'stretch'}}>left</Text></View></>
 }
+
+const FlockList = ({product}) => {
+  const [ar, setAr] = useState([]);
+  useEffect(()=>{
+    const arr = [];
+    var citiesRef = firebase.firestore().collection("chatGroups");
+    console.log(product.title);
+    // Create a query against the collection.
+    var query = citiesRef.where("productTitle", "==", product.title);
+    query.get()
+    .then(function(querySnapshot) {
+        querySnapshot.forEach(function(doc) {
+          console.log("FOUNDDDDDD");
+          arr.push(doc.data());
+            // doc.data() is never undefined for query doc snapshots
+            console.log(doc.id, " => ", doc.data());
+        });
+        setAr(arr);
+    })
+  }, []);
+  const result = [<Text style={{marginTop: 10,paddingLeft: 20}}>Over 36 have flock'ed. 9 are currently flock'ing.</Text>];
+  for (i = 0; i < 2 && i < ar.length; i++) {
+    result.push(  
+      <View style={{flexDirection: 'row', justifyContent: 'space-between', paddingTop: 10, borderTopWidth:2, borderColor: constants.GREY, paddingLeft: 20, paddingBottom:3}}>
+      <View style={{flex: 1}}>
+    <Text numberOfLines = {1} style={{fontWeight: 'bold', fontSize:15,width: 80, height: 20, }}>@{firebase.auth().currentUser.displayName}</Text>
+      <Text>and {ar[i].members.length-1} others</Text>
+      </View>
+      <View style={{flex: 1.75, flexDirection:'row', justifyContent: 'space-between'}}>
+      <View style={{flex:1, marginRight: 15}}>
+      <Countdown dateObj = {ar[i].time} />
+      </View>
+      <View style={{borderRadius: 30, backgroundColor: constants.ORANGE, justifyContent:'center', paddingLeft: 10, paddingRight: 10, marginRight: 20}}>
+      <Text style={{color: 'white', fontFamily: constants.FONT, fontWeight: 'bold', fontSize: 13}}>${Math.round(ar[i].product.price/(ar[i].members.length + 1))} or less</Text>
+      </View>
+      </View>
+      </View>
+    );
+  }
+  return <View style={[styles.productRow, {padding:0, paddingBottom: 10}]}>{result}</View>;
+
+
+
+}
+
+
 
 export default Product;

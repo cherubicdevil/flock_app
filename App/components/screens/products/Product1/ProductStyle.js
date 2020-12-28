@@ -27,6 +27,7 @@ export default {
   scroll: {
     backgroundColor: 'transparent',
     flex: 1,
+    //justifyContent: 'space-around'
   },
   productRow: {
     marginTop: 15,
