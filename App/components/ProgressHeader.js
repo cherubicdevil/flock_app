@@ -37,14 +37,17 @@ const renderCircle = (localIndex, globalIndex) => {
 };
 const ProgressHeader = ({
   navigation,
-  goBack,
+  goBack = true,
   headerText,
   index,
   nextRoute,
   number,
   canGoNext = true,
+  backRoute,
+  data
 }) => {
   const renderGoBack = () => {
+
     if (goBack) {
       return (
         <TouchableOpacity
@@ -55,7 +58,13 @@ const ProgressHeader = ({
             bottom: 8,
           }}
           onPress={() => {
-            navigation.goBack();
+            if (index === 0) {
+              navigation.goBack();
+              return;
+            }
+            if (goBack) {
+              navigation.navigate(backRoute, {index: index-1, data: data});
+            }
           }}>
           <Image
             source={require('App/Assets/Images/Back_Icon.png')}
@@ -118,7 +127,7 @@ const ProgressHeader = ({
             return;
           }
           if (canGoNext) {
-            navigation.navigate(nextRoute, {index: index+1});
+            navigation.navigate(nextRoute, {index: index+1, data: data});
           }
         }}>
         {/* <ImageBackground

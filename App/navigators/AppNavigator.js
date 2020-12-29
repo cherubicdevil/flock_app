@@ -94,7 +94,7 @@ const AppNavigator5 = () => {
         <Tab.Screen
           name="StartFlock"
           component={StartFlock}
-          initialParams={{vidVisible: false}}
+          initialParams={{data: []}}
           options={{tabBarVisible: false}}
         />
         <Tab.Screen
