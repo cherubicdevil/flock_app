@@ -228,7 +228,7 @@ class Product extends Component {
               borderRadius: 10,
             }}>
             <View style={styles.productRow}>{this.renderDescription()}</View>
-            <FlockList product = {this.props.route.params.album} />
+            <FlockList navigation = {this.props.navigation} product = {this.props.route.params.album} />
             <View style={styles.productRow}>{this.renderDetail()}</View>
           </View>
           {/* <View style={styles.productRow}>{this.renderNavigator()}</View> */}
@@ -288,7 +288,7 @@ class Product extends Component {
               //   members: [{name: user.displayName, uid: user.uid}]
               // };
               // firebase.firestore().collection("chatGroups").doc().set(data);
-              this.props.navigation.navigate('StartFlock', {index: 0});
+              this.props.navigation.navigate('StartFlock', {index: 0, product: this.props.route.params.album});
 
             }}
 
@@ -337,7 +337,7 @@ const Countdown = ({dateObj}) => {
   <View style={{flexDirection: 'row', justifyContent:'space-between', fontSize: 10}}><Text style={{fontSize:10, alignSelf: 'stretch'}}>days</Text><Text style={{fontSize:10, alignSelf: 'stretch'}}>hrs</Text><Text style={{fontSize:10, alignSelf: 'stretch'}}>min</Text><Text style={{fontSize:10, alignSelf: 'stretch'}}>left</Text></View></>
 }
 
-const FlockList = ({product}) => {
+const FlockList = ({product, navigation}) => {
   const [ar, setAr] = useState([]);
   useEffect(()=>{
     const arr = [];
@@ -395,7 +395,7 @@ const FlockList = ({product}) => {
             flex: 1,
           }}>
   <TouchableOpacity onPress= {() => {
-    this.props.navigation.navigate('StartFlock', {index: 0});
+    navigation.navigate('StartFlock', {index: 0, product: product});
 
   }}><Text style={{textAlign: 'center', color: 'white', fontWeight: 'bold', fontSize: 13}}>Start Your Own</Text>
   </TouchableOpacity></View></View></View>)}</View>;

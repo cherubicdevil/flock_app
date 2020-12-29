@@ -1,12 +1,14 @@
 import React from 'react';
-import {View, Text, TextInput} from 'react-native';
+import {View, Text, TextInput, Image} from 'react-native';
 import ProgressHeader from 'App/components/ProgressHeader';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
+import {constants} from 'App/constants';
+import LinearGradient from 'react-native-linear-gradient';
 
 const StartFlock = ({navigation, route}) => {
     const Tab = createMaterialTopTabNavigator();
     console.log('start flock index is', route.params);
-    var ar = [<PageOne />, <PageTwo />, <PageThree />, <PageFour />];
+    var ar = [<PageOne product = {route.params.product}/>, <PageTwo />, <PageThree />, <PageFour />];
     return <View><ProgressHeader
     nextRoute="StartFlock"
     headerText="Start a Flock"
@@ -19,8 +21,13 @@ const StartFlock = ({navigation, route}) => {
   </View>
 }
 
-const PageOne = () => {
-    return <View style={{width:'100%', height: '100%', backgroundColor: 'black'}}><Text>Test 1</Text></View>;
+const PageOne = ({product}) => {
+    return <View style={{width:'100%', backgroundColor: 'white', marginTop: 5, padding: 20}}>
+        <InputText numLines = {2} placeholder = "Size 4? Size 10? Red? Green?" label="List specifications like size and color if applicable."/>
+        <InputText numLines = {4} placeholder = "What do you want others to know about this product? Hype it up so they join your flock and lower your price?" label="Message"/>
+        <ProductPreview product = {product}/>
+
+    </View>;
 }
 
 const PageTwo = () => {
@@ -33,6 +40,31 @@ const PageThree = () => {
 
 const PageFour = () => {
     return <Text>Test 4</Text>
+}
+
+const InputText = ({numLines, data, member, placeholder, label}) => {
+    return <View style={{marginBottom: 10}}><Text style={{fontWeight: 'bold'}}>{label}</Text>
+    <TextInput blurOnSubmit placeholder={placeholder} style={{marginTop: 5, borderColor: "grey", paddingLeft: 15, borderRadius: 10, borderWidth: 1, height: numLines * 25}} multiline numberOfLines = {5} onBlur = {(e)=> {
+        console.log("BLUR", e.nativeEvent.text);
+    }} /></View>
+}
+
+const ProductPreview = ({product}) => {
+    return <View style={{flexDirection: 'row'}}>
+        <Image style={{width: 50, height: null, marginRight: 10}} source={{uri: product.image}} />
+        <View>
+            <Text style={{fontWeight: 'bold'}}>{product.title}</Text>
+            <Text style = {{textDecorationLine: 'line-through', color: 'red', }}>${product.price}</Text>
+            <LinearGradient
+          colors={[constants.YELLOW, constants.ORANGE]}
+          start={{ x: 0, y: 1 }} end={{ x: 1, y: 1 }}
+          style={{
+            borderRadius: 30,
+            zIndex: 40,
+          }}><Text style={{color: 'white', fontSize: 14, fontFamily: constants.FONTBOLD}}>{"$" + Math.floor(product.price / 2) + " or less when you split with flockers"}</Text>
+</LinearGradient>
+        </View>
+    </View>
 }
 
 export default StartFlock;
