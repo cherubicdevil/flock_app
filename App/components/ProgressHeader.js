@@ -10,43 +10,20 @@ import {
 import {constants} from 'App/constants';
 
 const renderCircle = (localIndex, globalIndex) => {
-  if (localIndex <= globalIndex) {
-    return (
-      <ImageBackground
-        source={require('App/Assets/Images/Orange_Gradient_Small.png')}
-        imageStyle={{borderRadius: 55}}
-        style={{
-          marginTop: 15,
-          width: 15,
-          height: 15,
-          //fontSize: 70,
-          color: 'green',
-          justifyContent: 'center',
-        }}>
-        <Text
-          style={{
-            color: 'white',
-            fontSize: 8,
-            textAlign: 'center',
-            //paddingBottom: 2,
-          }}>
-          {localIndex}
-        </Text>
-      </ImageBackground>
-    );
-  } else {
     return (
       <View
         style={{
+          borderWidth: 1,
           marginTop: 15,
           width: 15,
           height: 15,
           borderRadius: 20,
+          borderColor: constants.DARKGREY,
           //fontSize: 70,
-          backgroundColor: constants.DARKGREY,
+          backgroundColor: localIndex <= globalIndex ? constants.ORANGE: constants.GREY,
           justifyContent: 'center',
         }}>
-        <Text
+        {/* <Text
           style={{
             color: 'white',
             fontSize: 8,
@@ -54,10 +31,9 @@ const renderCircle = (localIndex, globalIndex) => {
             //paddingBottom: 2,
           }}>
           {localIndex}
-        </Text>
+        </Text> */}
       </View>
     );
-  }
 };
 const ProgressHeader = ({
   navigation,
@@ -120,12 +96,12 @@ const ProgressHeader = ({
         }}>
         <View
           style={{
-            backgroundColor: constants.DARKGREY,
-            height: 1,
+            backgroundColor: constants.GREY,
+            height: 3,
             width: 150,
             position: 'absolute',
             alignSelf: 'center',
-            bottom: 7,
+            bottom: 6,
           }}
         />
         {result}

@@ -52,7 +52,7 @@ const InputText = ({numLines, data, member, placeholder, label}) => {
 const ProductPreview = ({product}) => {
     return <View style={{flexDirection: 'row'}}>
         <Image style={{width: 50, height: null, marginRight: 10}} source={{uri: product.image}} />
-        <View>
+        <View style={{flex:1}}>
             <Text style={{fontWeight: 'bold'}}>{product.title}</Text>
             <Text style = {{textDecorationLine: 'line-through', color: 'red', }}>${product.price}</Text>
             <LinearGradient
@@ -60,7 +60,10 @@ const ProductPreview = ({product}) => {
           start={{ x: 0, y: 1 }} end={{ x: 1, y: 1 }}
           style={{
             borderRadius: 30,
-            zIndex: 40,
+            //alignItems: 'center',
+            paddingLeft: 10,
+            paddingTop: 10,
+            paddingBottom: 10
           }}><Text style={{color: 'white', fontSize: 14, fontFamily: constants.FONTBOLD}}>{"$" + Math.floor(product.price / 2) + " or less when you split with flockers"}</Text>
 </LinearGradient>
         </View>
