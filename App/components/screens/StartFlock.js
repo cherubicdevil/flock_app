@@ -44,9 +44,10 @@ const PageFour = () => {
     return <Text>Test 4</Text>
 }
 
-const InputText = ({numLines, data, member, placeholder, label}) => {
+const InputText = ({numLines, data, placeholder, label}) => {
+    console.log(data[label]);
     return <View style={{marginBottom: 10}}><Text style={{fontWeight: 'bold'}}>{label}</Text>
-    <TextInput defaultValue={data[label]} blurOnSubmit placeholder={placeholder} style={{marginTop: 5, borderColor: "grey", paddingLeft: 15, borderRadius: 10, borderWidth: 1, height: numLines * 25}} multiline numberOfLines = {5} onBlur = {(e)=> {
+    <TextInput defaultValue={data[label] || ""} blurOnSubmit placeholder={placeholder} style={{marginTop: 5, borderColor: "grey", paddingLeft: 15, borderRadius: 10, borderWidth: 1, height: numLines * 25}} multiline numberOfLines = {5} onBlur = {(e)=> {
         console.log("BLUR", e.nativeEvent.text);
         data[label] = e.nativeEvent.text;
     }} /></View>

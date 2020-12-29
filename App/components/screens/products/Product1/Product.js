@@ -288,7 +288,7 @@ class Product extends Component {
               //   members: [{name: user.displayName, uid: user.uid}]
               // };
               // firebase.firestore().collection("chatGroups").doc().set(data);
-              this.props.navigation.navigate('StartFlock', {index: 0, product: this.props.route.params.album});
+              this.props.navigation.navigate('StartFlock', {index: 0, product: this.props.route.params.album, data:{}});
 
             }}
 
