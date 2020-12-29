@@ -5,28 +5,34 @@ import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs
 
 const StartFlock = ({navigation, route}) => {
     const Tab = createMaterialTopTabNavigator();
-
+    console.log('start flock index is', route.params);
+    var ar = [<PageOne />, <PageTwo />, <PageThree />, <PageFour />];
     return <View><ProgressHeader
-    nextRoute="Home"
+    nextRoute="StartFlock"
     headerText="Start a Flock"
     goBack={true}
     navigation={navigation}
-    index={2}
+    index={route.params.index}
     number={4}
   />
-    <Tab.Navigator>
-    <Tab.Screen name="posts" component={Test1} />
-    <Tab.Screen name="Liked" component={Test2} />
-    </Tab.Navigator>
+    {ar[route.params.index]}
   </View>
 }
 
-const Test1 = () => {
-    return <Text>Test 1</Text>
+const PageOne = () => {
+    return <View style={{width:'100%', height: '100%', backgroundColor: 'black'}}><Text>Test 1</Text></View>;
 }
 
-const Test2 = () => {
-    return <Text>Test 1</Text>
+const PageTwo = () => {
+    return <Text>Test 2</Text>
+}
+
+const PageThree = () => {
+    return <Text>Test 3</Text>
+}
+
+const PageFour = () => {
+    return <Text>Test 4</Text>
 }
 
 export default StartFlock;

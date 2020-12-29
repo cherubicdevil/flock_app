@@ -91,7 +91,7 @@ const ProgressHeader = ({
   };
 
   const result = [];
-  for (i = 1; i <= number; i++) {
+  for (i = 0; i < number; i++) {
     result.push(renderCircle(i, index));
   }
   return (
@@ -137,9 +137,12 @@ const ProgressHeader = ({
           bottom: 5,
         }}
         onPress={() => {
-          console.log('hello');
+          if (index === number - 1) {
+            navigation.goBack();
+            return;
+          }
           if (canGoNext) {
-            navigation.navigate(nextRoute);
+            navigation.navigate(nextRoute, {index: index+1});
           }
         }}>
         {/* <ImageBackground
@@ -161,7 +164,7 @@ const ProgressHeader = ({
               fontFamily: 'Nunito-Bold',
               color: 'white',
             }}>
-            {index === number ? 'finish' : 'next'}
+            {index === number - 1 ? 'close' : 'next'}
           </Text>
           </View>
         {/* </ImageBackground> */}

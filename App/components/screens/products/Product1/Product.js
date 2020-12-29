@@ -288,7 +288,7 @@ class Product extends Component {
               //   members: [{name: user.displayName, uid: user.uid}]
               // };
               // firebase.firestore().collection("chatGroups").doc().set(data);
-              this.props.navigation.navigate('StartFlock');
+              this.props.navigation.navigate('StartFlock', {index: 0});
 
             }}
 
@@ -355,8 +355,8 @@ const FlockList = ({product}) => {
         });
         setAr(arr);
     })
-  }, []);
-  const result = [<Text style={{marginTop: 10,paddingLeft: 20}}>Over 36 have flock'ed. 9 are currently flock'ing.</Text>];
+  }, [product]);
+  const result = [];
   for (i = 0; i < 2 && i < ar.length; i++) {
     result.push(  
       <View style={{flexDirection: 'row', justifyContent: 'space-between', paddingTop: 10, borderTopWidth:2, borderColor: constants.GREY, paddingLeft: 20, paddingBottom:3}}>
@@ -375,7 +375,30 @@ const FlockList = ({product}) => {
       </View>
     );
   }
-  return <View style={[styles.productRow, {padding:0, paddingBottom: 10}]}>{result}</View>;
+  return <View style={[styles.productRow, {padding:0, paddingBottom: 10}]}><Text style={{marginTop: 10,paddingLeft: 20, fontWeight: 'bold'}}>Over 36 have flock'ed. 9 are currently flock'ing.</Text>
+  {result.length > 0?result:(<View style={{height: 60}}>
+    <View style={{borderTopWidth: 1, paddingTop: 15, paddingLeft:20, marginTop: 10, alignItems: 'center', flexDirection: 'row'}}>
+    <Text>No current flocks.</Text>
+    <View
+          style={{
+            flexDirection: 'row',
+            backgroundColor: constants.ORANGE,
+            height: '100%',
+            height: 30,
+            width: 30,
+            justifyContent: 'center',
+            alignItems: 'center',
+            marginRight: 20,
+            marginLeft: 60,
+            alignSelf: 'center',
+            borderRadius: 10,
+            flex: 1,
+          }}>
+  <TouchableOpacity onPress= {() => {
+    this.props.navigation.navigate('StartFlock', {index: 0});
+
+  }}><Text style={{textAlign: 'center', color: 'white', fontWeight: 'bold', fontSize: 13}}>Start Your Own</Text>
+  </TouchableOpacity></View></View></View>)}</View>;
 
 
 

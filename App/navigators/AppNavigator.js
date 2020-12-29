@@ -100,7 +100,7 @@ const AppNavigator5 = () => {
         <Tab.Screen
           name="PayTest"
           component={PayTest}
-          initialParams={{vidVisible: false}}
+          initialParams={{vidVisible: false, index: 1}}
         />
         <Tab.Screen
           name="Payment"
