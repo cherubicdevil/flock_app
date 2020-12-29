@@ -22,6 +22,7 @@ import PayTest from 'App/components/screens/PayTest';
 import ProfileMain from 'App/components/screens/profile/ProfileMain';
 
 import CustomBar from './CustomBar';
+import StartFlock from 'App/components/screens/StartFlock';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -87,6 +88,12 @@ const AppNavigator5 = () => {
         <Tab.Screen
           name="Product"
           component={Product}
+          initialParams={{vidVisible: false}}
+          options={{tabBarVisible: false}}
+        />
+        <Tab.Screen
+          name="StartFlock"
+          component={StartFlock}
           initialParams={{vidVisible: false}}
           options={{tabBarVisible: false}}
         />

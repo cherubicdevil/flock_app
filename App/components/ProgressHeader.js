@@ -19,8 +19,6 @@ const renderCircle = (localIndex, globalIndex) => {
           marginTop: 15,
           width: 15,
           height: 15,
-          marginLeft: 20,
-          marginRight: 20,
           //fontSize: 70,
           color: 'green',
           justifyContent: 'center',
@@ -44,8 +42,6 @@ const renderCircle = (localIndex, globalIndex) => {
           width: 15,
           height: 15,
           borderRadius: 20,
-          marginLeft: 20,
-          marginRight: 20,
           //fontSize: 70,
           backgroundColor: constants.DARKGREY,
           justifyContent: 'center',
@@ -69,6 +65,7 @@ const ProgressHeader = ({
   headerText,
   index,
   nextRoute,
+  number,
   canGoNext = true,
 }) => {
   const renderGoBack = () => {
@@ -86,25 +83,22 @@ const ProgressHeader = ({
           }}>
           <Image
             source={require('App/Assets/Images/Back_Icon.png')}
-            style={{height: 20, width: 20, tintColor: constants.DARKGREY}}
+            style={{height: 30, width: 30, marginBottom: 25, tintColor: constants.DARKGREY}}
           />
-          <Text
-            style={{
-              color: constants.DARKGREY,
-              marginLeft: -5,
-              fontFamily: 'Nunito-Bold',
-            }}>
-            Back
-          </Text>
         </TouchableOpacity>
       );
     }
   };
+
+  const result = [];
+  for (i = 1; i <= number; i++) {
+    result.push(renderCircle(i, index));
+  }
   return (
     <View
       style={{
         //marginBottom: 30,
-        height: 100,
+        height:120,
         paddingTop: 30,
         paddingBottom: 10,
         justifyContent: 'center',
@@ -115,10 +109,12 @@ const ProgressHeader = ({
       <Text style={{fontFamily: 'Nunito-Bold', fontSize: 14, marginTop: 17}}>
         {headerText}
       </Text>
+      <Text style={{marginBottom: 5,fontFamily:constants.FONT}}>%12345</Text>
 
       <View
         style={{
-          marginTop: -5,
+          marginTop: -14,
+          width: 150,
           flexDirection: 'row',
           justifyContent: 'space-between',
         }}>
@@ -126,18 +122,13 @@ const ProgressHeader = ({
           style={{
             backgroundColor: constants.DARKGREY,
             height: 1,
-            marginLeft: 30,
-            width: 100,
+            width: 150,
             position: 'absolute',
             alignSelf: 'center',
-            bottom: 8,
+            bottom: 7,
           }}
         />
-        {renderCircle(1, index)}
-
-        {renderCircle(2, index)}
-
-        {renderCircle(3, index)}
+        {result}
       </View>
       <TouchableOpacity
         style={{
@@ -151,7 +142,7 @@ const ProgressHeader = ({
             navigation.navigate(nextRoute);
           }
         }}>
-        <ImageBackground
+        {/* <ImageBackground
           style={{width: 50, height: 25}}
           imageStyle={{
             paddingTop: 4,
@@ -162,17 +153,18 @@ const ProgressHeader = ({
             backgroundColor: constants.PURPLE,
             opacity: canGoNext ? 1 : 0.2,
           }}
-          source={require('App/Assets/Images/Orange_Gradient_Small.png')}>
+          source={require('App/Assets/Images/Orange_Gradient_Small.png')}> */}
+          <View style={{marginBottom: 25, justifyContent: 'center', padding: 10, height: 40, backgroundColor: constants.ORANGE, width: 60, borderRadius: 30, opacity: canGoNext ? 1 : 0.2,}}>
           <Text
             style={{
               textAlign: 'center',
               fontFamily: 'Nunito-Bold',
               color: 'white',
-              paddingTop: 2,
             }}>
-            {index === 3 ? 'Finish' : 'Next'}
+            {index === number ? 'finish' : 'next'}
           </Text>
-        </ImageBackground>
+          </View>
+        {/* </ImageBackground> */}
       </TouchableOpacity>
       {renderGoBack()}
     </View>
