@@ -1,14 +1,16 @@
-import React from 'react';
-import {View, ScrollView, Text, TextInput, Image} from 'react-native';
+import React, {useState} from 'react';
+import {View, ScrollView, Text, Switch, TextInput, Image} from 'react-native';
 import ProgressHeader from 'App/components/ProgressHeader';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import {constants} from 'App/constants';
 import LinearGradient from 'react-native-linear-gradient';
+import {ShareDialog, LoginButton, AccessToken} from 'react-native-fbsdk';
 
 const StartFlock = ({navigation, route}) => {
+
     const Tab = createMaterialTopTabNavigator();
     console.log('start flock index is', route.params);
-    var ar = [<PageOne product = {route.params.product} data = {route.params.data} />, <PageTwo product = {route.params.product} data = {route.params.data} />, <PageThree />, <PageFour />];
+    var ar = [<PageOne product = {route.params.product} data = {route.params.data} />, <PageTwo product = {route.params.product} data = {route.params.data} />, <PageThree product = {route.params.product} data = {route.params.data} />, <PageFour product = {route.params.product} data = {route.params.data} />];
     return <ScrollView scrollEnabled={false} keyboardShouldPersistTaps="never"><ProgressHeader
     nextRoute="StartFlock"
     backRoute="StartFlock"
@@ -27,7 +29,7 @@ const PageOne = ({product, data}) => {
     return <View style={{width:'100%', backgroundColor: 'white', marginTop: 5, padding: 20}}>
         <InputText data = {data} numLines = {2} placeholder = "Size 4? Size 10? Red? Green?" label="List specifications like size and color if applicable."/>
         <InputText data = {data} numLines = {4} placeholder = "What do you want others to know about this product? Hype it up so they join your flock and lower your price!" label="Message" defaultValue = "Hey! What do you think of this? Want to flock it with me? Together we split the cost and share the item."/>
-        <ProductPreview product = {product}/>
+        <ProductPreview product = {product} toggle={true} egg={true} />
 
     </View>;
 }
@@ -48,8 +50,20 @@ const PageTwo = ({product, data}) => {
     </View>
 }
 
-const PageThree = () => {
-    return <Text>Test 3</Text>
+const PageThree = ({product, data}) => {
+    return <><View style={[styles.container, {marginBottom: -2,}]}>
+        <Text style={{fontWeight:'bold'}}>Want to pay less? Get more people to join, and earn eggs when you share!</Text>
+    </View>
+    <ShareRow label="Tag a flocker"  product = {product} data={data} toggle={false} egg={false} />
+    <ShareRow label="Share on Facebook" product = {product} data={data} toggle={true} egg={true} />
+    <ShareRow label="Share on Instagram" product = {product} data={data} toggle={true} egg={true} />
+    <ShareRow label="Share on Snapchat" product = {product} data={data} toggle={true} egg={true} />
+    <ShareRow label="Share on Tiktok" product = {product} data={data} toggle={true} egg={true} />
+    <ShareRow label="Share on Twitter" product = {product} data={data} toggle={true} egg={true} />
+    <ShareRow label="Share on Whatsapp" product = {product} data={data} toggle={true} egg={true} />
+    <ShareRow label="Text" product = {product} data={data} toggle={false} egg={true} />
+    <ShareRow label="Email" product = {product} data={data} toggle={false} egg={true} />
+    </>
 }
 
 const PageFour = () => {
@@ -84,6 +98,50 @@ const ProductPreview = ({product}) => {
 </LinearGradient>
         </View>
     </View>
+}
+
+const ShareRow = ({toggle, label, egg, product, data}) => { 
+  console.log("IMAGE", product);
+    const toggleFunc = () => {
+        setToggle(!tog);
+        const shareLinkContent = {
+            contentType: 'link',
+             contentUrl: "https://facebook.com",
+     contentDescription: 'Facebook sharing is easy!',
+    };
+
+    const sharePhotoContent = {
+      contentType :'photo',
+      photos: [{ imageUrl:  product.image}],
+    };
+    //console.log("ShareDialog", FB);
+    ShareDialog.canShow(shareLinkContent).then((canShow)=>{
+        console.log("canShow?", canShow);
+        ShareDialog.show(shareLinkContent);
+        //ShareDialog.show(sharePhotoContent);
+        
+    }).then(
+        function(result) {
+          if (result.isCancelled) {
+            console.log('Share cancelled');
+          } else {
+            console.log('Share success with postId: '
+              + result.postId);
+          }
+        },
+        function(error) {
+          console.log('Share fail with error: ' + error);
+        }
+      );;
+
+    }
+    const [tog, setToggle] = useState(false);
+    var shareAction = toggle?<Switch value={tog}
+    onValueChange={toggleFunc}
+    trackColor={{ false: constants.DARKGREY, true: constants.ORANGE }}
+    style={{ transform: [{ scaleX: .8 }, { scaleY: .8 }] }} />:<Image source={require('App/Assets/Images/Front_Icon.png')} style={{width:20, height: 20, tintColor: constants.DARKGREY}} />;
+var shareContainer = <View style={{alignItems: 'center', flexDirection: 'row'}}>{egg?<Image style={{width: 25, height: 25}} source={constants.PLACEHOLDER_IMAGE} />:<View />}{shareAction}</View>;
+    return <View style={{alignItems: 'center', backgroundColor: 'white', flexDirection: 'row', justifyContent: 'space-between', marginTop: 2, paddingLeft: 20, paddingRight: 20, height: 40}}><Text style={{fontWeight: 'bold'}}>{label}</Text>{shareContainer}</View>
 }
 
 const styles = {

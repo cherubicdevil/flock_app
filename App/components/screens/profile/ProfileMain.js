@@ -14,6 +14,7 @@ import {
   ImageBackground,
   Dimensions,
 } from 'react-native';
+
 import ImagePicker from 'react-native-image-picker';
 import Video from 'react-native-video';
 import {useSelector} from 'react-redux';
@@ -150,6 +151,7 @@ const ProfileMain = ({navigation}) => {
         <Button
           title="logout"
           onPress={() => {
+            firebase.auth().signOut();
             console.log('logout');
           }}
         />
@@ -178,6 +180,7 @@ const ProfileMain = ({navigation}) => {
             }}>
             Profile
           </Text>
+          
           <View style={{flexDirection: 'row'}}>
             <ProfilePicture />
             <View style={{flex: 1, marginLeft: 10}}>

@@ -33,6 +33,7 @@ const AppNavigator5 = () => {
       <Tab.Navigator
         tabBar={(props) => <CustomBar {...props} />}
         initialRouteName="Carousel"
+        //initialRouteName="ProfileMain"
         screenOptions={{
           headerShown: false,
           //animationEnabled: false,

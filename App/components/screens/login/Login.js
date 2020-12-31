@@ -12,6 +12,7 @@ import {
   KeyboardAvoidingView,
   StyleSheet,
 } from 'react-native';
+import LottieView from 'lottie-react-native';
 import Myform from './Myform';
 import Social from './Social';
 export default class Login extends Component {
@@ -44,6 +45,7 @@ export default class Login extends Component {
             </TouchableOpacity>
           </View>
         </View>
+        {/* <LottieView speed = { 2} source={require('App/Assets/coins.json')} autoPlay loop /> */}
       </ImageBackground>
     );
   }

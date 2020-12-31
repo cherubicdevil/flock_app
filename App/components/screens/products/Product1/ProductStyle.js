@@ -42,7 +42,7 @@ export default {
     flex: 1,
     flexDirection: 'column',
     flexGrow: 1,
-    backgroundColor: constants.GREY,
+    //backgroundColor: constants.GREY,
   },
   coverMetaContainer: {
     alignItems: 'flex-end',

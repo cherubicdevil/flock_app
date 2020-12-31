@@ -189,7 +189,8 @@ class Product extends Component {
   render() {
 
     return (
-      <View style={styles.mainViewStyle}>
+      <>
+      <ScrollView style={styles.mainViewStyle}>
         {/* <LinearGradient
           colors={['rgba(0,0,0,0)', 'rgba(40,60,81, 0.4)']}
           style={{
@@ -233,71 +234,7 @@ class Product extends Component {
           </View>
           {/* <View style={styles.productRow}>{this.renderNavigator()}</View> */}
           {/*   <View style={styles.productRow}>{this.renderDetail()}</View> */}
-          <View style={{flexDirection: 'row', height: 40, marginBottom: 30, marginRight: 10, marginLeft:20, justifyContent: 'space-between', alignItems: 'center', }}>
 
-            
-            <Image source={constants.PLACEHOLDER_IMAGE } style={{width: 30, aspectRatio:1}}/>
-            
-            <View style={{justifyContent: 'center', alignItems: 'center'}}><Image source = {require('App/Assets/Images/heart.png')} style={{width: 25, height: 25,  shadowOpacity: 0.2, shadowOffset: {height:1 , width: 0}}} />
-            <Text style={{position: 'absolute', top: 5,fontSize: 12}}>34</Text>
-            </View>
-            
-            <Image source={require('App/Assets/Images/Share_Icon_White.png') } style={{shadowOpacity: 0.4, shadowOffset:{height:2, width:0},  width: 30, aspectRatio:1}}/>
-          
-          
-          <View style={{shadowOpacity: 1, shadowColor: '#555', shadowOffset: {height: 2, width: 0}, borderRadius: 30, flex: 0.8, flexDirection: 'row', backgroundColor: constants.ORANGE, height: 50, alignItems: 'center', marginRight: 10,}}>
-          <LinearGradient
-          colors={[constants.YELLOW, constants.LIGHTORANGE]}
-          start={{ x: 0, y: 1 }} end={{ x: 1, y: 1 }}
-          style={{
-            flexDirection: 'row',
-            borderBottomLeftRadius: 30,
-            borderTopLeftRadius: 30,
-            height: '100%',
-            flex: 1,
-          }}>
-            <View style={{flex: 1, height: '100%', justifyContent:'center'}}>
-              <TouchableOpacity onPress={()=>{Linking.openURL(
-          'https://shopwithflock.com/redirect/?url=' +
-            this.props.route.params.album.url,
-        );} }><Text style={{textAlign: 'center', color: 'white', fontWeight: 'bold',  fontSize: 13}}>Buy Now ${this.props.route.params.album.price}</Text></TouchableOpacity>
-            </View>
-          </LinearGradient>
-          <LinearGradient
-          colors={['#ff8000', '#ff4d00']}
-          start={{ x: 0, y: 1 }} end={{ x: 1, y: 1 }}
-          style={{
-            flexDirection: 'row',
-            borderBottomRightRadius: 30,
-            borderTopRightRadius: 30,
-            height: '100%',
-            flex: 1,
-          }}>
-          <View style={{flex:1, height: '100%', justifyContent: 'center'}}>
-            <TouchableOpacity onPress= {() => {
-              // const user  = firebase.auth().currentUser;
-
-              // const data = {
-              //   name: 'testNew',
-              //   flock: 'testNew',
-              //   product: this.props.route.params.album,
-              //   // FLOCK_BUG use id later, for now use title
-              //   productTitle: this.props.route.params.album.title,
-                
-              //   time: Math.round(Date.now() / 1000),
-              //   members: [{name: user.displayName, uid: user.uid}]
-              // };
-              // firebase.firestore().collection("chatGroups").doc().set(data);
-              this.props.navigation.navigate('StartFlock', {index: 0, product: this.props.route.params.album, data:{}});
-
-            }}
-
-              >
-                <Text style={{textAlign: 'center', color: 'white', fontWeight: 'bold', fontSize: 13}}>Start Your Flock</Text>
-            </TouchableOpacity>
-            </View>
-            </LinearGradient>
-            </View></View>
         
         </View>
         
@@ -311,7 +248,73 @@ class Product extends Component {
           </TouchableOpacity>
         </View> */}
 
-      </View>
+      </ScrollView>
+                <View style={{flexDirection: 'row', height: 40, marginBottom: 30, marginRight: 10, marginLeft:20, justifyContent: 'space-between', alignItems: 'center', }}>
+
+            
+                <Image source={constants.PLACEHOLDER_IMAGE } style={{width: 30, aspectRatio:1}}/>
+                
+                <View style={{justifyContent: 'center', alignItems: 'center'}}><Image source = {require('App/Assets/Images/heart.png')} style={{width: 25, height: 25,  shadowOpacity: 0.2, shadowOffset: {height:1 , width: 0}}} />
+                <Text style={{position: 'absolute', top: 5,fontSize: 12}}>34</Text>
+                </View>
+                
+                <Image source={require('App/Assets/Images/Share_Icon_White.png') } style={{shadowOpacity: 0.4, shadowOffset:{height:2, width:0},  width: 30, aspectRatio:1}}/>
+              
+              
+              <View style={{shadowOpacity: 1, shadowColor: '#555', shadowOffset: {height: 2, width: 0}, borderRadius: 30, flex: 0.8, flexDirection: 'row', backgroundColor: constants.ORANGE, height: 50, alignItems: 'center', marginRight: 10,}}>
+              <LinearGradient
+              colors={[constants.YELLOW, constants.LIGHTORANGE]}
+              start={{ x: 0, y: 1 }} end={{ x: 1, y: 1 }}
+              style={{
+                flexDirection: 'row',
+                borderBottomLeftRadius: 30,
+                borderTopLeftRadius: 30,
+                height: '100%',
+                flex: 1,
+              }}>
+                <View style={{flex: 1, height: '100%', justifyContent:'center'}}>
+                  <TouchableOpacity onPress={()=>{Linking.openURL(
+              'https://shopwithflock.com/redirect/?url=' +
+                this.props.route.params.album.url,
+            );} }><Text style={{textAlign: 'center', color: 'white', fontWeight: 'bold',  fontSize: 13}}>Buy Now ${this.props.route.params.album.price}</Text></TouchableOpacity>
+                </View>
+              </LinearGradient>
+              <LinearGradient
+              colors={['#ff8000', '#ff4d00']}
+              start={{ x: 0, y: 1 }} end={{ x: 1, y: 1 }}
+              style={{
+                flexDirection: 'row',
+                borderBottomRightRadius: 30,
+                borderTopRightRadius: 30,
+                height: '100%',
+                flex: 1,
+              }}>
+              <View style={{flex:1, height: '100%', justifyContent: 'center'}}>
+                <TouchableOpacity style={{height: "100%", justifyContent: 'center'}} onPress= {() => {
+                  // const user  = firebase.auth().currentUser;
+    
+                  // const data = {
+                  //   name: 'testNew',
+                  //   flock: 'testNew',
+                  //   product: this.props.route.params.album,
+                  //   // FLOCK_BUG use id later, for now use title
+                  //   productTitle: this.props.route.params.album.title,
+                    
+                  //   time: Math.round(Date.now() / 1000),
+                  //   members: [{name: user.displayName, uid: user.uid}]
+                  // };
+                  // firebase.firestore().collection("chatGroups").doc().set(data);
+                  this.props.navigation.navigate('StartFlock', {index: 0, product: this.props.route.params.album, data:{}});
+    
+                }}
+    
+                  >
+                    <Text style={{textAlign: 'center', color: 'white', fontWeight: 'bold', fontSize: 13}}>Start Your Flock</Text>
+                </TouchableOpacity>
+                </View>
+                </LinearGradient>
+                </View>
+                </View></>
     );
   }
 }

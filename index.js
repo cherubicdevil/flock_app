@@ -36,4 +36,4 @@ import {name as appName} from './app.json';
 // 	}
 // }
 AppRegistry.registerComponent(appName, () => App);
-AppRegistry.registerComponent('share', () => Share);
+//AppRegistry.registerComponent('share', () => Share);
