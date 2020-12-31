@@ -43,9 +43,12 @@
 import {constants} from 'App/constants';
 import {firebase, db} from 'App/firebase/config';
 import ImagePicker from 'react-native-image-picker';
-import {Animated} from 'react-native';
+import {Animated, Share, Linking} from 'react-native';
 import {createThumbnail} from 'react-native-create-thumbnail';
 import {useDispatch} from 'react-redux';
+import {ShareDialog, LoginButton, AccessToken} from 'react-native-fbsdk';
+import { AppInstalledChecker, CheckPackageInstallation } from 'react-native-check-app-install';
+import CameraRoll from '@react-native-community/cameraroll';
 
 const fetchStreamableSource = async (src) => {
   if (src === null || src === undefined) {
@@ -270,6 +273,92 @@ const fetchGlobalFlocks = async () => {
 const updateCache = (member, actiontype, data) => {
   
 }
+
+const shareActions = {"facebook": function(content) {
+  const {product: product, data: data} = content;
+  const shareLinkContent = {
+    contentType: 'link',
+     contentUrl: "https://facebook.com",
+contentDescription: 'Facebook sharing is easy!',
+};
+
+const sharePhotoContent = {
+contentType :'photo',
+photos: [{ imageUrl:  product.image}],
+};
+//console.log("ShareDialog", FB);
+ShareDialog.canShow(shareLinkContent).then((canShow)=>{
+console.log("canShow?", canShow);
+ShareDialog.show(shareLinkContent);
+//ShareDialog.show(sharePhotoContent);
+
+}).then(
+function(result) {
+  if (result.isCancelled) {
+    console.log('Share cancelled');
+  } else {
+    console.log('Share success with postId: '
+      + result.postId);
+  }
+},
+function(error) {
+  console.log('Share fail with error: ' + error);
+}
+);;
+
+AppInstalledChecker
+.checkURLScheme('whatsapp') // omit the :// suffix
+.then((isInstalled) => {
+  // isInstalled is true if the app is installed or false if not
+  console.log(isInstalled, "is installed");
+})
+},
+"twitter": function (content) {
+  Share.share({
+    message: 'hello world',
+    title: 'Flock Content',
+    url: 'https://twitter.com',
+  });
+  
+},
+"snapchat": function (content) {
+  Share.share({
+    message: 'hello world',
+    title: 'Flock Content',
+    url: 'https://twitter.com',
+  });
+},
+"instagram": function (content) {
+  console.log(content.data);
+  const img = content.data.imgRef.current;
+
+  img.capture().then(uri => {
+    console.log("do something with ", uri);
+    let instagramURL = `instagram://library?LocalIdentifier=`+uri;
+    console.log(uri);
+    CameraRoll.save(uri).then(()=> {
+      Linking.openURL(instagramURL);
+    });
+    
+  });
+
+},
+"whatsapp": function (content) {
+  Share.share({
+    message: 'hello world',
+    title: 'Flock Content',
+    url: 'https://twitter.com',
+  });
+},
+"tiktok": function (content) {
+  Share.share({
+    message: 'hello world',
+    title: 'Flock Content',
+    url: 'https://twitter.com',
+  });
+}
+};
+
 export {
   fetchStreamableSource,
   fetchAlbums,
@@ -284,4 +373,5 @@ export {
   formatMoney,
   getChatsFromId,
   fetchGlobalFlocks,
+  shareActions
 };

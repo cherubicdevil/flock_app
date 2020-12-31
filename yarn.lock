@@ -8092,6 +8092,11 @@ react-native-bubble-input@^1.0.1:
   resolved "https://registry.yarnpkg.com/react-native-bubble-input/-/react-native-bubble-input-1.0.1.tgz#066fa549c95bc2807c0acdb2abe0df53acdf5dc0"
   integrity sha512-lXcUClDOZwd9Lh2wrXzvQm4iu2U9yEgP0qfALqX2BKCh5SXC30T76HCOGDPVSWLn3+WgCdXpNGoBiXSeZiEfSw==
 
+react-native-check-app-install@^0.0.5:
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/react-native-check-app-install/-/react-native-check-app-install-0.0.5.tgz#1cd5bff09a7d294af7acc88da627984654cb1b9c"
+  integrity sha512-nKUf0HcLbRGlOgSun4w2ftKZsabcwwff4GK//WwdoxG5wstqhWK1231+SKapjJY4GjoM2pI2Xv6ClTQV6e5cog==
+
 react-native-collapsible@^1.5.3:
   version "1.5.3"
   resolved "https://registry.yarnpkg.com/react-native-collapsible/-/react-native-collapsible-1.5.3.tgz#d6bc7274ae8f40f7688cca23ededa263e6c81c63"
@@ -8360,6 +8365,11 @@ react-native-video@^5.1.0-alpha8:
     keymirror "^0.1.1"
     prop-types "^15.7.2"
     shaka-player "^2.5.9"
+
+react-native-view-shot@^3.1.2:
+  version "3.1.2"
+  resolved "https://registry.yarnpkg.com/react-native-view-shot/-/react-native-view-shot-3.1.2.tgz#8c8e84c67a4bc8b603e697dbbd59dbc9b4f84825"
+  integrity sha512-9u9fPtp6a52UMoZ/UCPrCjKZk8tnkI9To0Eh6yYnLKFEGkRZ7Chm6DqwDJbYJHeZrheCCopaD5oEOnRqhF4L2Q==
 
 react-native-webview@^10.9.2:
   version "10.10.2"

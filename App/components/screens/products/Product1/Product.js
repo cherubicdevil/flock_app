@@ -117,7 +117,7 @@ class Product extends Component {
           {this.props.route.params.album.title}
         </Text>
         <View style={{flexDirection:'row', justifyContent: 'space-between'}}>
-        <Text style={{alignSelf: 'center', fontFamily: constants.FONTBOLD, color: constants.ORANGE, size: 16}}>
+        <Text style={{alignSelf: 'center', fontFamily: constants.FONTBOLD, color: constants.ORANGE, fontSize: 16}}>
           ${this.props.route.params.album.price}
         </Text>
         {/*<Text style={styles.descriptionText}>50 flockers have bought</Text>*/}

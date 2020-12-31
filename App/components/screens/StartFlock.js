@@ -1,10 +1,11 @@
-import React, {useState} from 'react';
-import {View, ScrollView, Text, Switch, TextInput, Image} from 'react-native';
+import React, {useState, useRef} from 'react';
+import {View, ScrollView, Text, Switch, TextInput, Image,} from 'react-native';
 import ProgressHeader from 'App/components/ProgressHeader';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import {constants} from 'App/constants';
 import LinearGradient from 'react-native-linear-gradient';
-import {ShareDialog, LoginButton, AccessToken} from 'react-native-fbsdk';
+import {shareActions} from 'App/utils';
+import ViewShot from 'react-native-view-shot';
 
 const StartFlock = ({navigation, route}) => {
 
@@ -51,18 +52,25 @@ const PageTwo = ({product, data}) => {
 }
 
 const PageThree = ({product, data}) => {
+    const img = useRef();
+
+    data['imgRef'] = img;
     return <><View style={[styles.container, {marginBottom: -2,}]}>
         <Text style={{fontWeight:'bold'}}>Want to pay less? Get more people to join, and earn eggs when you share!</Text>
     </View>
     <ShareRow label="Tag a flocker"  product = {product} data={data} toggle={false} egg={false} />
-    <ShareRow label="Share on Facebook" product = {product} data={data} toggle={true} egg={true} />
-    <ShareRow label="Share on Instagram" product = {product} data={data} toggle={true} egg={true} />
-    <ShareRow label="Share on Snapchat" product = {product} data={data} toggle={true} egg={true} />
-    <ShareRow label="Share on Tiktok" product = {product} data={data} toggle={true} egg={true} />
-    <ShareRow label="Share on Twitter" product = {product} data={data} toggle={true} egg={true} />
-    <ShareRow label="Share on Whatsapp" product = {product} data={data} toggle={true} egg={true} />
-    <ShareRow label="Text" product = {product} data={data} toggle={false} egg={true} />
-    <ShareRow label="Email" product = {product} data={data} toggle={false} egg={true} />
+    <ShareRow label="Share on Facebook" app="facebook" product = {product} data={data} toggle={true} egg={true} />
+    <ShareRow label="Share on Instagram" app="instagram" product = {product} data={data} toggle={true} egg={true} />
+    <ShareRow label="Share on Snapchat" app="snapchat" product = {product} data={data} toggle={true} egg={true} />
+    <ShareRow label="Share on Tiktok" app="tiktok" product = {product} data={data} toggle={true} egg={true} />
+    <ShareRow label="Share on Twitter" app="twitter" product = {product} data={data} toggle={true} egg={true} />
+    <ShareRow label="Share on Whatsapp" app="whatsapp" product = {product} data={data} toggle={true} egg={true} />
+    <ShareRow label="Text" app="text" product = {product} data={data} toggle={false} egg={true} />
+    <ShareRow label="Email" app="email" product = {product} data={data} toggle={false} egg={true} />
+
+    <ViewShot ref={img} options={{ format: "jpg", quality: 0.9 }}>
+        <Image style = {{height: 250,}} source = {{uri: product.image}} />
+      </ViewShot>
     </>
 }
 
@@ -100,39 +108,12 @@ const ProductPreview = ({product}) => {
     </View>
 }
 
-const ShareRow = ({toggle, label, egg, product, data}) => { 
+const ShareRow = ({toggle, label, app, egg, product, data}) => { 
   console.log("IMAGE", product);
     const toggleFunc = () => {
         setToggle(!tog);
-        const shareLinkContent = {
-            contentType: 'link',
-             contentUrl: "https://facebook.com",
-     contentDescription: 'Facebook sharing is easy!',
-    };
-
-    const sharePhotoContent = {
-      contentType :'photo',
-      photos: [{ imageUrl:  product.image}],
-    };
-    //console.log("ShareDialog", FB);
-    ShareDialog.canShow(shareLinkContent).then((canShow)=>{
-        console.log("canShow?", canShow);
-        ShareDialog.show(shareLinkContent);
-        //ShareDialog.show(sharePhotoContent);
-        
-    }).then(
-        function(result) {
-          if (result.isCancelled) {
-            console.log('Share cancelled');
-          } else {
-            console.log('Share success with postId: '
-              + result.postId);
-          }
-        },
-        function(error) {
-          console.log('Share fail with error: ' + error);
-        }
-      );;
+        const content = {product: product, data: data};
+      shareActions[app](content);
 
     }
     const [tog, setToggle] = useState(false);
