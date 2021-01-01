@@ -44,7 +44,12 @@ const ProgressHeader = ({
   number,
   canGoNext = true,
   backRoute,
-  data
+  data,
+  nextText="next",
+  closeText="close",
+  closeFunc = ()=>{
+    navigation.goBack();
+  }
 }) => {
   const renderGoBack = () => {
 
@@ -123,7 +128,8 @@ const ProgressHeader = ({
         }}
         onPress={() => {
           if (index === number - 1) {
-            navigation.goBack();
+            closeFunc();
+            //navigation.goBack();
             return;
           }
           if (canGoNext) {
@@ -149,7 +155,7 @@ const ProgressHeader = ({
               fontFamily: 'Nunito-Bold',
               color: 'white',
             }}>
-            {index === number - 1 ? 'close' : 'next'}
+            {index === number - 1 ? closeText : nextText}
           </Text>
           </View>
         {/* </ImageBackground> */}

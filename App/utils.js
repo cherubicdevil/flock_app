@@ -252,7 +252,7 @@ const getChatsFromId = async () => {
 
 const fetchGlobalFlocks = async () => {
   return new Promise((resolve) => {
-    db.collection('flocks')
+    db.collection('chatGroups')
       .get()
       .then((querySnapshot) => {
         var counter = 0;
@@ -274,7 +274,7 @@ const updateCache = (member, actiontype, data) => {
   
 }
 
-const shareActions = {"facebook": function(content) {
+const shareActions = {"facebook": function(content, failure) {
   const {product: product, data: data} = content;
   const shareLinkContent = {
     contentType: 'link',
@@ -289,22 +289,24 @@ photos: [{ imageUrl:  product.image}],
 //console.log("ShareDialog", FB);
 ShareDialog.canShow(shareLinkContent).then((canShow)=>{
 console.log("canShow?", canShow);
-ShareDialog.show(shareLinkContent);
+ShareDialog.show(shareLinkContent).then(
+  function(result) {
+    console.log(result);
+    if (result.isCancelled) {
+      console.log('Share cancelled');
+      failure();
+    } else {
+      console.log('Share success with postId: '
+        + result.postId);
+    }
+  },
+  function(error) {
+    console.log('Share fail with error: ' + error);
+  }
+  );
 //ShareDialog.show(sharePhotoContent);
 
-}).then(
-function(result) {
-  if (result.isCancelled) {
-    console.log('Share cancelled');
-  } else {
-    console.log('Share success with postId: '
-      + result.postId);
-  }
-},
-function(error) {
-  console.log('Share fail with error: ' + error);
-}
-);;
+});
 
 AppInstalledChecker
 .checkURLScheme('whatsapp') // omit the :// suffix
@@ -313,19 +315,35 @@ AppInstalledChecker
   console.log(isInstalled, "is installed");
 })
 },
-"twitter": function (content) {
+"twitter": function (content, failure) {
   Share.share({
     message: 'hello world',
     title: 'Flock Content',
     url: 'https://twitter.com',
+  }).then((result)=> {
+    if (result.action === Share.dismissedAction) {
+      failure();
+      console.log('cancelled for real');
+    } else if (result.action === Share.sharedAction) {
+
+    }
+    console.log('cancelled');
   });
   
 },
-"snapchat": function (content) {
+"snapchat": function (content, failure) {
   Share.share({
     message: 'hello world',
     title: 'Flock Content',
     url: 'https://twitter.com',
+  }).then((result)=> {
+    if (result.action === Share.dismissedAction) {
+      failure();
+      console.log('cancelled for real');
+    } else if (result.action === Share.sharedAction) {
+
+    }
+    console.log('cancelled');
   });
 },
 "instagram": function (content) {
@@ -343,18 +361,34 @@ AppInstalledChecker
   });
 
 },
-"whatsapp": function (content) {
+"whatsapp": function (content, failure) {
   Share.share({
     message: 'hello world',
     title: 'Flock Content',
     url: 'https://twitter.com',
+  }).then((result)=> {
+    if (result.action === Share.dismissedAction) {
+      failure();
+      console.log('cancelled for real');
+    } else if (result.action === Share.sharedAction) {
+
+    }
+    console.log('cancelled');
   });
 },
-"tiktok": function (content) {
+"tiktok": function (content, failure) {
   Share.share({
     message: 'hello world',
     title: 'Flock Content',
     url: 'https://twitter.com',
+  }).then((result)=> {
+    if (result.action === Share.dismissedAction) {
+      failure();
+      console.log('cancelled for real');
+    } else if (result.action === Share.sharedAction) {
+
+    }
+    console.log('cancelled');
   });
 }
 };

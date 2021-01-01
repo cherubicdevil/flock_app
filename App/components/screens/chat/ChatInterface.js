@@ -14,6 +14,7 @@ import {
   Modal,
   TouchableWithoutFeedback,
 } from 'react-native';
+import {firebase, db} from 'App/firebase/config';
 import io from 'socket.io-client';
 import NavBar from 'App/components/common/NavBar';
 import {GiftedChat} from 'react-native-gifted-chat';
@@ -92,6 +93,7 @@ function ChatInterface({route, navigation}) {
 
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
+
       <View
         style={{
           position: 'absolute',
@@ -108,6 +110,16 @@ function ChatInterface({route, navigation}) {
           paddingLeft: 20,
           paddingBottom: 20,
         }}>
+                <Button style={{zIndex:100, position: 'absolute', top: 200,}} title="leave" onPress={() =>{
+        console.log('left');
+        // FLOCK_BUG this code is repeated a lot throughout codebase
+                db.collection('users').doc(firebase.auth().currentUser.uid).update({
+                  chatIds: firebase.firestore.FieldValue.arrayRemove(route.params.data.id)
+                });
+              dispatch({type: "UPDATE_DATA", payload: ["chatIds", "remove", "array", route.params.data.id]});
+              dispatch({type: "UPDATE_DATA", payload: ["chatGroups", "remove", "array", route.params.data]});
+              navigation.navigate('Carousel');
+      }} />
         <Text style={{fontSize: 20}}>{route.params.data.flock}</Text>
         <Button
           title="

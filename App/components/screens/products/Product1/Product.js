@@ -291,19 +291,7 @@ class Product extends Component {
               }}>
               <View style={{flex:1, height: '100%', justifyContent: 'center'}}>
                 <TouchableOpacity style={{height: "100%", justifyContent: 'center'}} onPress= {() => {
-                  // const user  = firebase.auth().currentUser;
-    
-                  // const data = {
-                  //   name: 'testNew',
-                  //   flock: 'testNew',
-                  //   product: this.props.route.params.album,
-                  //   // FLOCK_BUG use id later, for now use title
-                  //   productTitle: this.props.route.params.album.title,
-                    
-                  //   time: Math.round(Date.now() / 1000),
-                  //   members: [{name: user.displayName, uid: user.uid}]
-                  // };
-                  // firebase.firestore().collection("chatGroups").doc().set(data);
+
                   this.props.navigation.navigate('StartFlock', {index: 0, product: this.props.route.params.album, data:{}});
     
                 }}

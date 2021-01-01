@@ -5,7 +5,10 @@ import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs
 import {constants} from 'App/constants';
 import LinearGradient from 'react-native-linear-gradient';
 import {shareActions} from 'App/utils';
+import {useDispatch} from 'react-redux';
 import ViewShot from 'react-native-view-shot';
+import Animation from 'lottie-react-native';
+import {firebase, db} from 'App/firebase/config';
 
 const StartFlock = ({navigation, route}) => {
 
@@ -19,8 +22,33 @@ const StartFlock = ({navigation, route}) => {
     goBack={true}
     navigation={navigation}
     index={route.params.index}
-    number={4}
+    number={3}
     data={route.params.data}
+    closeText="done"
+    closeFunc={()=> {
+        const user  = firebase.auth().currentUser;
+    
+        const data = {
+          name: 'testNew',
+          flock: 'testNew',
+          product: route.params.product,
+          // FLOCK_BUG use id later, for now use title
+          productTitle: route.params.product.title,
+          
+          time: Math.round(Date.now() / 1000),
+          members: [{name: user.displayName, uid: user.uid}]
+        };
+        firebase.firestore().collection("chatGroups").add(data).then((docRef)=>{
+            db.collection('users').doc(firebase.auth().currentUser.uid).update({
+                chatIds: firebase.firestore.FieldValue.arrayUnion(docRef.id)
+              });
+            dispatch({type: "UPDATE_DATA", payload: ["chatIds", "add", "array", docRef.id]});
+            dispatch({type: "UPDATE_DATA", payload: ["chatGroups", "add", "array", data]});
+        });
+        //navigation.navigate("Carousel");
+
+        navigation.goBack();
+    }}
   />
     {ar[route.params.index]}
   </ScrollView>
@@ -62,11 +90,11 @@ const PageThree = ({product, data}) => {
     <ShareRow label="Share on Facebook" app="facebook" product = {product} data={data} toggle={true} egg={true} />
     <ShareRow label="Share on Instagram" app="instagram" product = {product} data={data} toggle={true} egg={true} />
     <ShareRow label="Share on Snapchat" app="snapchat" product = {product} data={data} toggle={true} egg={true} />
-    <ShareRow label="Share on Tiktok" app="tiktok" product = {product} data={data} toggle={true} egg={true} />
+    {/* <ShareRow label="Share on Tiktok" app="tiktok" product = {product} data={data} toggle={true} egg={true} /> */}
     <ShareRow label="Share on Twitter" app="twitter" product = {product} data={data} toggle={true} egg={true} />
     <ShareRow label="Share on Whatsapp" app="whatsapp" product = {product} data={data} toggle={true} egg={true} />
-    <ShareRow label="Text" app="text" product = {product} data={data} toggle={false} egg={true} />
-    <ShareRow label="Email" app="email" product = {product} data={data} toggle={false} egg={true} />
+    {/* <ShareRow label="Text" app="text" product = {product} data={data} toggle={false} egg={true} /> */}
+    {/* <ShareRow label="Email" app="email" product = {product} data={data} toggle={false} egg={true} /> */}
 
     <ViewShot ref={img} options={{ format: "jpg", quality: 0.9 }}>
         <Image style = {{height: 250,}} source = {{uri: product.image}} />
@@ -109,11 +137,16 @@ const ProductPreview = ({product}) => {
 }
 
 const ShareRow = ({toggle, label, app, egg, product, data}) => { 
+    const animation = useRef();
+    const onFailure = () => {
+        setToggle(false);
+    }
   console.log("IMAGE", product);
     const toggleFunc = () => {
         setToggle(!tog);
+        //animation.play();
         const content = {product: product, data: data};
-      shareActions[app](content);
+      shareActions[app](content, onFailure);
 
     }
     const [tog, setToggle] = useState(false);
@@ -122,7 +155,19 @@ const ShareRow = ({toggle, label, app, egg, product, data}) => {
     trackColor={{ false: constants.DARKGREY, true: constants.ORANGE }}
     style={{ transform: [{ scaleX: .8 }, { scaleY: .8 }] }} />:<Image source={require('App/Assets/Images/Front_Icon.png')} style={{width:20, height: 20, tintColor: constants.DARKGREY}} />;
 var shareContainer = <View style={{alignItems: 'center', flexDirection: 'row'}}>{egg?<Image style={{width: 25, height: 25}} source={constants.PLACEHOLDER_IMAGE} />:<View />}{shareAction}</View>;
-    return <View style={{alignItems: 'center', backgroundColor: 'white', flexDirection: 'row', justifyContent: 'space-between', marginTop: 2, paddingLeft: 20, paddingRight: 20, height: 40}}><Text style={{fontWeight: 'bold'}}>{label}</Text>{shareContainer}</View>
+    return <>
+    {/* <LottieView style={{backgroundColor:'black'}} speed = { 1.5} source={require('App/Assets/coins.json')} autoPlay loop /> */}
+    
+    <View style={{alignItems: 'center', backgroundColor: 'white', flexDirection: 'row', justifyContent: 'space-between', marginTop: 2, paddingLeft: 20, paddingRight: 20, height: 40}}>
+        <Text style={{fontWeight: 'bold'}}>
+            {label}
+        </Text>
+        
+        {shareContainer}
+        {/* <Animation ref={animation} style= {{position: 'absolute', right: 20, width: 50, height: 50, }}source={require('App/Assets/coins.json')} /> */}
+        </View>
+        
+        </>
 }
 
 const styles = {

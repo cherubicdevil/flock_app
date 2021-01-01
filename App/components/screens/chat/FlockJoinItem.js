@@ -57,7 +57,7 @@ const FlockJoinItem = ({data}) => {
                   marginTop: 2,
                   fontFamily: constants.FONT,
                 }}>
-                {data.members.length} members
+                {/* {data.members.length} members */}
               </Text>
             </View>
           </TouchableWithoutFeedback>
@@ -100,14 +100,14 @@ const FlockJoinItem = ({data}) => {
           <Text style={{fontFamily: constants.FONT}}>{data.description}</Text>
           <View style={{backgroundColor: '#ccc', padding: 5}}>
             <Text>Recent Flock Buys</Text>
-            <View
+            {/* <View
               style={{flexDirection: 'row', backgroundColor: constants.GREY}}>
               <Image
                 source={{uri: data.purchases[0].image}}
                 style={{resizeMode: 'contain', height: 75, width: 75}}
               />
               <Text>{data.purchases[0].title}</Text>
-            </View>
+            </View> */}
           </View>
         </View>
       </Collapsible>

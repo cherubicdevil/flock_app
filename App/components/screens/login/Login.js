@@ -45,7 +45,7 @@ export default class Login extends Component {
             </TouchableOpacity>
           </View>
         </View>
-        {/* <LottieView speed = { 2} source={require('App/Assets/coins.json')} autoPlay loop /> */}
+        
       </ImageBackground>
     );
   }
