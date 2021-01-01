@@ -28,6 +28,7 @@ import {
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import {createStackNavigator} from '@react-navigation/stack';
 import {useSelector, useDispatch} from 'react-redux';
+import LinearGradient from 'react-native-linear-gradient';
 
 var eventify = function (arr, callback) {
   arr.push = function (e) {
@@ -91,6 +92,7 @@ function ChatInterface({route, navigation}) {
     setRecvMessages((prevState) => GiftedChat.append(prevState, messages));
   };
 
+  console.log(route.params.data);
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
 
@@ -109,6 +111,9 @@ function ChatInterface({route, navigation}) {
           top: 0,
           paddingLeft: 20,
           paddingBottom: 20,
+          backgroundColor: constants.TRANSLUCENT,
+          borderBottomLeftRadius: 15,
+          borderBottomRightRadius: 15,
         }}>
                 <Button style={{zIndex:100, position: 'absolute', top: 200,}} title="leave" onPress={() =>{
         console.log('left');
@@ -129,7 +134,40 @@ function ChatInterface({route, navigation}) {
           }}
         />
       </View>
+      <View style={{ position: 'absolute', zIndex: 200, top: 100, width: '100%', borderRadius: 0, borderBottomRightRadius: 30, borderBottomLeftRadius: 30}}>
+      <View style={{shadowColor: "#ff7009", shadowOffset: {height: 10, width: 0}, shadowOpacity: 0.39, elevation: 13, shadowRadius: 28.30, borderBottomLeftRadius: 30, borderBottomRightRadius: 30}}>
+      <LinearGradient
+          colors={[constants.ORANGE, constants.PEACH]}
+          start={{ x: 0, y: 0 }} end={{ x: 0, y: 1 }}
+          style={{
+            borderBottomLeftRadius: 30,
+            borderBottomRightRadius: 30,
+            padding: 10,
+            shadowColor: "#ff7009", shadowOffset: {height: 10, width: 0}, shadowOpacity: 0.39, elevation: 13, shadowRadius: 28.30,
+            //alignItems: 'center',
+            flex: 1,
+          }}>
+            <View style={{width: '80%', alignSelf: 'center'}}>
+            <Text style={{color:'white', marginBottom: 10, fontWeight: 'bold'}}>Current flock price: ${route.params.data?.product?.price || ""}</Text>
+            {/* <Text style={{color:'white', marginBottom: 10, fontWeight: 'bold'}}>Total price: ${route.params.data?.product?.price || ""}</Text> */}
+            <Text style={{color:'white', marginBottom: 10, fontWeight: 'bold'}}>You can have it now if all flockers increase maximum to $150.</Text>
+            <Text style={{color:'white', marginBottom: 10, fontWeight: 'bold'}}>Your maximum: </Text>
+            <Text style={{color:'white', marginBottom: 10, fontWeight: 'bold'}}>Want to pay less? Get more people to join!</Text>
+            </View>
+            <View style={{padding: 20, marginBottom: 15, paddingLeft: 30, borderRadius: 50, shadowRadius: 2.62, backgroundColor: 'white', shadowOpacity: 0.23, shadowOffset:{height: 2,width:0}, elevation: 1}}>
+            <Image style={{width: 50, height: 50}} source={{uri: route.params.data.product.image}} />
+            </View>
+          </LinearGradient>
+        </View>
+      <View style={{marginTop: 20, flexDirection: 'row'}}>
+        <Image style = {{width: 40, height: 40}} source ={constants.PLACEHOLDER_IMAGE } />
+        <View style={{borderRadius: 30, flex: 1, backgroundColor: constants.GREYBLUE, padding: 20, marginRight: 20}}><Text>Description Hello world</Text></View>
+      </View>
+      </View>
+      
+      <View style={{backgroundColor: constants.PINK_BACKGROUND, flex: 1}}>
       <GiftedChat
+      
         renderSystemMessage={(props) => {
           //console.log("SYSTEM MESSAGE PROPS", props);
           return (
@@ -167,7 +205,7 @@ function ChatInterface({route, navigation}) {
         messages={recvMessages}
         onSend={onSend}
         user={{_id: 1}}
-      />
+      /></View>
     </SafeAreaView>
   );
 }

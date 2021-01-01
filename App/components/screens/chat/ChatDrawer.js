@@ -110,7 +110,7 @@ const ChatDrawer = ({navigation, route}) => {
         );
       }}>
       {renderDrawers(select.userInfo.chatGroups || [])}
-      <Drawer.Screen
+      {/* <Drawer.Screen
         key={'Yourself 21345'}
         name={'Yourself'}
         component={ChatGroup}
@@ -123,7 +123,7 @@ const ChatDrawer = ({navigation, route}) => {
             messages: [],
           },
         }}
-      />
+      /> */}
     </Drawer.Navigator>
   );
 };

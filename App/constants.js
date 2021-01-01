@@ -55,4 +55,8 @@ export const constants = {
   COMMENT_COLOR: 'rgb(255, 245, 240)',
   BLUE: '#2c82c9',
   BRIGHT_BLUE: '#22a7f0',
+  PINK_BACKGROUND: 'rgba(223, 210, 220,0.5)',
+  TRANSLUCENT: '#f2f2f7',
+  PEACH: '#ff9966',
+  GREYBLUE: '#8291b0'
 };

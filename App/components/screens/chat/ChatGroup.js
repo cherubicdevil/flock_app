@@ -50,14 +50,14 @@ const ChatGroup = ({route}) => {
         component={ChatInterface}
         initialParams={{data: route.params.data}}
       />
-      <Stack.Screen
+      {/* <Stack.Screen
         name="Info"
         component={Info}
         initialParams={{
           friends: route.params.data.friends,
           data: route.params.data,
         }}
-      />
+      /> */}
     </Stack.Navigator>
   );
 };
