@@ -105,57 +105,7 @@ function ChatInterface({route, navigation}) {
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
       
-      <View
-        style={{
-          position: 'absolute',
-          zIndex: 90,
-
-          borderBottomColor: '#efefef',
-          borderBottomWidth: 1,
-          height: 100,
-          width: '100%',
-          top: 0,
-
-          //backgroundColor: constants.TRANSLUCENT,
-          // borderBottomLeftRadius: 15,
-          // borderBottomRightRadius: 15,
-        }}>
-          <LinearGradient
-          colors={[constants.TRANSLUCENT, 'white']}
-          start={{ x: 0, y: 0 }} end={{ x: 0, y: 1 }}
-          style={{
-            flex: 1,
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'flex-end',
-            paddingLeft: 20,
-            paddingBottom: 20,
-            paddingTop: 50,
-            // borderBottomRightRadius:20,
-            // borderBottomLeftRadius: 20,
-            //shadowColor: "#ff7009", shadowOffset: {height: 10, width: 0}, shadowOpacity: 0.39, elevation: 13, shadowRadius: 28.30,
-            //alignItems: 'center',
-          }}>
-          
-                <TouchableOpacity onPress={()=>{ navigation.goBack()}}><Image style={{width: 35, height: 35}} source = {require('App/Assets/Images/Back_Icon.png')} />
-                </TouchableOpacity>
-                
-        <View>
-        <Text style={{fontSize: 14}}>{route.params.data.flock}</Text>
-        <Countdown dateObj={route.params.data.time} />
-        </View>
-        <Button
-          title="
-            ⓘ"
-          onPress={() => {
-            navigation.navigate('Info', {
-              friends: [],
-              data: route.params.data,
-            });
-          }}
-        />
-        </LinearGradient>
-      </View>
+<HeaderView navigation={navigation} route={route} />
       <View style={{ position: 'absolute', zIndex: 200, top: 100, width: '100%', borderRadius: 0, borderBottomRightRadius: 30, borderBottomLeftRadius: 30}}>
       <View style={{shadowColor: "#ff7009", shadowOffset: {height: 0, width: 0}, shadowOpacity: 0.42, elevation: 13, shadowRadius: 28.30, borderBottomLeftRadius: 30, borderBottomRightRadius: 30}}>
       <LinearGradient
@@ -235,6 +185,100 @@ function ChatInterface({route, navigation}) {
     </SafeAreaView>
   );
 }
+
+const HeaderView = ({navigation, route}) => {
+  const [collapsed, setCollapsed] = useState(true);
+  return <View
+  style={{
+    position: 'absolute',
+    zIndex: 90,
+
+    borderBottomColor: '#efefef',
+    borderBottomWidth: 1,
+    height: 100,
+    width: '100%',
+    top: 0,
+
+    //backgroundColor: constants.TRANSLUCENT,
+    // borderBottomLeftRadius: 15,
+    // borderBottomRightRadius: 15,
+  }}>
+    <LinearGradient
+    colors={[constants.TRANSLUCENT, 'white']}
+    start={{ x: 0, y: 0 }} end={{ x: 0, y: 1 }}
+    style={{
+      flex: 1,
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'flex-end',
+      paddingLeft: 20,
+      paddingBottom: 20,
+      // borderBottomRightRadius:20,
+      // borderBottomLeftRadius: 20,
+      //shadowColor: "#ff7009", shadowOffset: {height: 10, width: 0}, shadowOpacity: 0.39, elevation: 13, shadowRadius: 28.30,
+      //alignItems: 'center',
+    }}>
+    
+          <TouchableOpacity onPress={()=>{ navigation.goBack()}}><Image style={{width: 35, height: 35}} source = {require('App/Assets/Images/Back_Icon.png')} />
+          </TouchableOpacity>
+          
+          <TouchableOpacity onPress={()=>{ setCollapsed(!collapsed); }}>
+  <View>
+    
+  <Text style={{fontSize: 14}}>{route.params.data.flock}</Text>
+  <Countdown dateObj={route.params.data.time} />
+  <Collapsible collapsed={collapsed}>
+    <ScrollView horizontal >
+  {route.params.data.members.map((item)=>{
+    const buyer = item.name;
+    const user = firebase.auth().currentUser;
+  return <View>
+  <Image
+    key={Math.random()}
+    style={{
+      height: buyer === user.displayName ? 50 : 46,
+      marginRight: 10,
+      marginTop: 10,
+      width: buyer === user.displayName ? 50 : 46,
+      borderWidth: 3,
+      borderColor:
+        buyer === user.displayName ? '#3cf' : 'transparent',
+      borderRadius: 50,
+    }}
+    source={{uri: 'https://placeimg.com/140/140/any'}}
+  />
+  <Text
+    numberOfLines={1}
+    style={{
+      fontWeight:
+        buyer === user.displayName ? 'bold' : 'normal',
+      color: buyer === user.displayName ? '#3cf' : 'black',
+      fontSize: 10,
+      width: 48,
+      textAlign: 'center',
+      overflow: 'hidden',
+    }}>
+    {buyer === user.displayName ? 'You' : buyer}
+  </Text>
+</View>;
+  })}
+      </ScrollView>
+      </Collapsible>
+  </View>
+  </TouchableOpacity>
+  <Button
+    title="
+      ⓘ"
+    onPress={() => {
+      navigation.navigate('Info', {
+        friends: [],
+        data: route.params.data,
+      });
+    }}
+  />
+  </LinearGradient>
+</View>
+};
 
 const data = {
   0: {
