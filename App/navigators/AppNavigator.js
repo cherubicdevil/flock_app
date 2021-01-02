@@ -23,6 +23,8 @@ import ProfileMain from 'App/components/screens/profile/ProfileMain';
 
 import CustomBar from './CustomBar';
 import StartFlock from 'App/components/screens/StartFlock';
+import ChatInterface from 'App/components/screens/chat/ChatInterface';
+import Info from 'App/components/screens/chat/info/Info';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -121,6 +123,20 @@ const AppNavigator5 = () => {
             title: 'Chat',
             cap: 'flocks',
             image: require('App/Assets/Images/Group_Chat_Icon.png'),
+          }}
+        />
+        <Tab.Screen
+          name="ChatInterface"
+          component={ChatInterface}
+          options={{
+            tabBarVisible: false,
+          }}
+        />
+        <Tab.Screen
+          name="Info"
+          component={Info}
+          options={{
+            tabBarVisible: false,
           }}
         />
         <Tab.Screen

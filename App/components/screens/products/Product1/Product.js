@@ -348,7 +348,17 @@ const FlockList = ({product, navigation}) => {
     })
   }, [product]);
   const result = [];
-  for (i = 0; i < 2 && i < ar.length; i++) {
+  for (i = 0; i < Math.min(ar.length,2); i++) {
+    console.log("index", i);
+    const dat = ar[i];
+    const tempFunc = ()=>{
+      console.log("check array", ar);
+      //console.log(ar.length, ar[0]);
+      console.log(i);
+      console.log("SENDING DATA", dat);
+      navigation.navigate("ChatInterface", {data: dat});
+    };
+    console.log(result.length);
     result.push(  
       <View style={{flexDirection: 'row', justifyContent: 'space-between', paddingTop: 10, borderTopWidth:2, borderColor: constants.GREY, paddingLeft: 20, paddingBottom:3}}>
       <View style={{flex: 1}}>
@@ -360,9 +370,7 @@ const FlockList = ({product, navigation}) => {
       <Countdown dateObj = {ar[i].time} />
       </View>
       <View style={{borderRadius: 30, backgroundColor: constants.ORANGE, justifyContent:'center', paddingLeft: 10, paddingRight: 10, marginRight: 20}}>
-      <TouchableOpacity onPress={()=>{
-        navigation.navigate("ChatInterface", {data: ar[i]});
-      }}>
+      <TouchableOpacity onPress={tempFunc}>
       <Text style={{color: 'white', fontFamily: constants.FONT, fontWeight: 'bold', fontSize: 13}}>${Math.round(ar[i].product.price/(ar[i].members.length + 1))} or less</Text>
       </TouchableOpacity>
       </View>

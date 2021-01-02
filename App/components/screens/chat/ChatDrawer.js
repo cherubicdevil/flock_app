@@ -94,6 +94,8 @@ const ChatDrawer = ({navigation, route}) => {
   //     messages: [],
   //   },
   // };
+  console.log("CHAT GROUPS,", select.userInfo.chatGroups);
+  console.log(select.userInfo.chatGroups[0].messages);
   return (
     <Drawer.Navigator
       minSwipeDistance={30}
