@@ -64,6 +64,7 @@ const Info = ({route, navigation}) => {
   };
 
   var partOf = false;
+  const user = firebase.auth().currentUser;
   console.log("MEMBERS", route.params.data.members);
   for (const member of route.params.data.members) {
     if (user.uid === member.uid) {

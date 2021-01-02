@@ -29,6 +29,7 @@ import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs
 import {createStackNavigator} from '@react-navigation/stack';
 import {useSelector, useDispatch} from 'react-redux';
 import LinearGradient from 'react-native-linear-gradient';
+import Countdown from 'App/components/Countdown';
 
 var eventify = function (arr, callback) {
   arr.push = function (e) {
@@ -116,8 +117,8 @@ function ChatInterface({route, navigation}) {
           top: 0,
 
           //backgroundColor: constants.TRANSLUCENT,
-          borderBottomLeftRadius: 15,
-          borderBottomRightRadius: 15,
+          // borderBottomLeftRadius: 15,
+          // borderBottomRightRadius: 15,
         }}>
           <LinearGradient
           colors={[constants.TRANSLUCENT, 'white']}
@@ -129,8 +130,9 @@ function ChatInterface({route, navigation}) {
             alignItems: 'flex-end',
             paddingLeft: 20,
             paddingBottom: 20,
-            borderBottomRightRadius:20,
-            borderBottomLeftRadius: 20,
+            paddingTop: 50,
+            // borderBottomRightRadius:20,
+            // borderBottomLeftRadius: 20,
             //shadowColor: "#ff7009", shadowOffset: {height: 10, width: 0}, shadowOpacity: 0.39, elevation: 13, shadowRadius: 28.30,
             //alignItems: 'center',
           }}>
@@ -138,7 +140,10 @@ function ChatInterface({route, navigation}) {
                 <TouchableOpacity onPress={()=>{ navigation.goBack()}}><Image style={{width: 35, height: 35}} source = {require('App/Assets/Images/Back_Icon.png')} />
                 </TouchableOpacity>
                 
-        <Text style={{fontSize: 20}}>{route.params.data.flock}</Text>
+        <View>
+        <Text style={{fontSize: 14}}>{route.params.data.flock}</Text>
+        <Countdown dateObj={route.params.data.time} />
+        </View>
         <Button
           title="
             ⓘ"
