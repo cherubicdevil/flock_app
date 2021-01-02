@@ -142,7 +142,7 @@ const Info = ({route, navigation}) => {
               dispatch({type: "UPDATE_DATA", payload: ["chatIds", "remove", "array", route.params.data.id]});
               dispatch({type: "UPDATE_DATA", payload: ["chatGroups", "remove", "array", route.params.data]});
               navigation.navigate('Carousel');
-      }} />:<></>}
+      }} />:<View style={{position: 'absolute', bottom: 0, width: '100%', height: 100, backgroundColor: 'white'}}><View style={{height: '100%', backgroundColor: constants.PINK_BACKGROUND }}><TouchableOpacity style={{width: '90%', height: 50, backgroundColor: constants.ORANGE, alignSelf: 'center', borderRadius: 30, justifyContent: 'center'}} onPress={()=>{}}><Text style={{color: 'white', alignSelf: 'center', fontWeight: 'bold'}}>JOIN</Text></TouchableOpacity></View></View>}
     </SafeAreaView>
   );
 };
