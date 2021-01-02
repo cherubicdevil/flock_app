@@ -154,7 +154,7 @@ class Product extends Component {
       <View style={styles.headerContainer}>
         <View style={styles.coverContainer}>
           <View style={styles.coverImage}>
-            <TouchableOpacity style={{zIndex: 50, height: 30, width: 50, backgroundColor: 'black',position: 'absolute', top: 40, left: 30}} onPress={this.props.navigation.goBack}></TouchableOpacity>
+            <TouchableOpacity style={{zIndex: 50, height: 30, width: 50,position: 'absolute', top: 40, left: 30}} onPress={this.props.navigation.goBack}><Image style={{width: 35, height: 35, tintColor: constants.LIGHTGREY}} source = {require('App/Assets/Images/Back_Icon.png')} /></TouchableOpacity>
             <Image
               style={{
                 width: '100%',

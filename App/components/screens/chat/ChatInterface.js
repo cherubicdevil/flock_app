@@ -123,7 +123,9 @@ function ChatInterface({route, navigation}) {
           borderBottomLeftRadius: 15,
           borderBottomRightRadius: 15,
         }}>
-                <Button style={{zIndex:100, position: 'absolute', top: 200,}} title="leave" onPress={() =>{
+                <TouchableOpacity onPress={()=>{ navigation.goBack()}}><Image style={{width: 35, height: 35}} source = {require('App/Assets/Images/Back_Icon.png')} />
+                </TouchableOpacity>
+                {partOf?<></>:<Button style={{zIndex:100, position: 'absolute', top: 200,}} title="leave" onPress={() =>{
         console.log('left');
         // FLOCK_BUG this code is repeated a lot throughout codebase
         console.log(route.params.data);
@@ -133,7 +135,7 @@ function ChatInterface({route, navigation}) {
               dispatch({type: "UPDATE_DATA", payload: ["chatIds", "remove", "array", route.params.data.id]});
               dispatch({type: "UPDATE_DATA", payload: ["chatGroups", "remove", "array", route.params.data]});
               navigation.navigate('Carousel');
-      }} />
+      }} />}
         <Text style={{fontSize: 20}}>{route.params.data.flock}</Text>
         <Button
           title="
