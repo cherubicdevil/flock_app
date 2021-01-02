@@ -24,12 +24,15 @@ import {
   createDrawerNavigator,
   useIsDrawerOpen,
 } from '@react-navigation/drawer';
+import {firebase} from 'App/firebase/config';
+import {useDispatch} from 'react-redux';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import {createStackNavigator} from '@react-navigation/stack';
 import BuyInfo from './BuyInfo';
+import {generateUserObject} from 'App/utils';
 
 const systemMessages = [];
-const user = {displayName: 'Qrowsaki'};
+const user = firebase.auth().currentUser;
 
 const Info = ({route, navigation}) => {
   const [bigDummyState, setBigDummyState] = useState(false);
@@ -59,6 +62,16 @@ const Info = ({route, navigation}) => {
       </View>
     ));
   };
+
+  var partOf = false;
+  console.log("MEMBERS", route.params.data.members);
+  for (const member of route.params.data.members) {
+    if (user.uid === member.uid) {
+      partOf = true;
+      break;
+    }
+  }
+  const dispatch = useDispatch();
   return (
     <SafeAreaView style={{flex: 1, marginLeft: 30, marginRight: 20}}>
       <View style={{flex: 1}}>
@@ -108,6 +121,28 @@ const Info = ({route, navigation}) => {
         <ScrollView>{renderFriends(route.params.friends)}</ScrollView>
       </View>
       <BuyInfo route={route} />
+      {partOf?<Button style={{zIndex:100, position: 'absolute', top: 200,}} title="leave" onPress={() =>{
+        console.log('left');
+        // FLOCK_BUG this code is repeated a lot throughout codebase
+        console.log(route.params.data);
+        db.collection('users').doc(firebase.auth().currentUser.uid).update({
+          chatIds: firebase.firestore.FieldValue.arrayRemove(route.params.data.id)
+        });
+        if (route.params.data.members.length === 1) {
+          db.collection(chatGroups).doc(route.params.data.id).delete().then(function() {
+            console.log("Document successfully deleted!");
+        }).catch(function(error) {
+            console.error("Error removing document: ", error);
+        });
+        } else {
+          db.collection(chatGroups).doc(route.params.data.id).update({
+            chatIds: firebase.firestore.FieldValue.arrayRemove(generateUserObject(firebase.auth().currentUser.displayName, firebase.auth().currentUser.uid))
+          });
+        }
+              dispatch({type: "UPDATE_DATA", payload: ["chatIds", "remove", "array", route.params.data.id]});
+              dispatch({type: "UPDATE_DATA", payload: ["chatGroups", "remove", "array", route.params.data]});
+              navigation.navigate('Carousel');
+      }} />:<></>}
     </SafeAreaView>
   );
 };

@@ -393,6 +393,9 @@ AppInstalledChecker
 }
 };
 
+const generateUserObject = (displayName, uid) => {
+  return {displayName: displayName, uid: uid};
+}
 export {
   fetchStreamableSource,
   fetchAlbums,
@@ -407,5 +410,6 @@ export {
   formatMoney,
   getChatsFromId,
   fetchGlobalFlocks,
-  shareActions
+  shareActions,
+  generateUserObject
 };
