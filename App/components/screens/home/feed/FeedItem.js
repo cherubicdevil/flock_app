@@ -33,7 +33,7 @@ const FeedItem = ({videoAr, navigation, data, title}) => {
   const width = Dimensions.get('window').width / 2 - 30;
 
   const [isInView, setIsInView] = useState(false);
-
+  const colortype = 'black';
   return (
     <InViewPort
       style={{
@@ -47,11 +47,13 @@ const FeedItem = ({videoAr, navigation, data, title}) => {
       }}>
       <View
         style={{
-          borderRadius: 15,
+          borderTopWidth: 3,
+          borderColor: colortype,
           overflow: 'hidden',
           width: width,
         }}>
-        <Berry />
+        {/* <Berry /> */}
+        <View style={{overflow: 'hidden', borderBottomLeftRadius: 40, borderBottomRightRadius: 40, borderWidth: 3, borderColor: colortype}}>
         <Media
           isInView={isInView}
           width={width}
@@ -60,6 +62,7 @@ const FeedItem = ({videoAr, navigation, data, title}) => {
           videoAr={videoAr}
           title={title}
         />
+        </View>
         <ProductBlurb data={data} />
         <View style={{height: 10}} />
       </View>

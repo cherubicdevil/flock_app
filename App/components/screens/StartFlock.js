@@ -40,7 +40,7 @@ const StartFlock = ({navigation, route}) => {
           members: [{name: user.displayName, uid: user.uid}]
         };
         firebase.firestore().collection("chatGroups").add(data).then((docRef)=>{
-            //data["id"] = docRef.id;
+            data["id"] = docRef.id;
             db.collection('users').doc(firebase.auth().currentUser.uid).update({
                 chatIds: firebase.firestore.FieldValue.arrayUnion(docRef.id)
               });

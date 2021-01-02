@@ -126,7 +126,7 @@ class FeedList extends React.Component {
 }
 
 const styles = {
-  columnStyle: {flex: 1, alignItems: 'center', backgroundColor: constants.GREY},
+  columnStyle: {flex: 1, alignItems: 'center'},
 };
 
 export default FeedList;

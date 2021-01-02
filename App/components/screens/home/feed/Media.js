@@ -57,7 +57,7 @@ const Media = ({isInView = true, width, navigation, videoAr, data, title}) => {
           array: videoAr,
         });
       }}>
-      <View style={{backgroundColor: '#ddd'}}>
+      <View style={{backgroundColor: '#ddd', marginTop: -10}}>
         <Video
           viewHeight={vh}
           persistHeightFunc={changeViewHeight}

@@ -362,7 +362,7 @@ const FlockList = ({product, navigation}) => {
     result.push(  
       <View style={{flexDirection: 'row', justifyContent: 'space-between', paddingTop: 10, borderTopWidth:2, borderColor: constants.GREY, paddingLeft: 20, paddingBottom:3}}>
       <View style={{flex: 1}}>
-    <Text numberOfLines = {1} style={{fontWeight: 'bold', fontSize:15,width: 80, height: 20, }}>@{firebase.auth().currentUser.displayName}</Text>
+    <Text numberOfLines = {1} style={{fontWeight: 'bold', fontSize:15,width: 80, height: 20, }}>@{ar[i].members[0].name}</Text>
       <Text>and {ar[i].members.length-1} others</Text>
       </View>
       <View style={{flex: 1.75, flexDirection:'row', justifyContent: 'space-between'}}>

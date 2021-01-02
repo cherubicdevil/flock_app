@@ -66,6 +66,8 @@ function ChatInterface({route, navigation}) {
       console.log(message);
       setRecvMessages((prevState) => GiftedChat.append(prevState, message));
     });
+    console.log("MESSAGES");
+    setRecvMessages(route.params.data.messages);
     dispatch({type: 'emptySystemMessages'});
   }, []);
 
@@ -90,6 +92,12 @@ function ChatInterface({route, navigation}) {
     });
     console.log(route.params.data);
     updateCache(route.params.data.id, recvMessages);
+      //data["id"] = docRef.id;
+      console.log("DAT", route.params.data);
+      db.collection('chatGroups').doc(route.params.data.id).update({
+          messages: firebase.firestore.FieldValue.arrayUnion({sender: {name: firebase.auth().currentUser.displayName, uid: firebase.auth().currentUser.uid}, ...messages[0]}),
+        });
+        //console.log("messages format",recvMessages);
     setRecvMessages((prevState) => GiftedChat.append(prevState, messages));
   };
 

@@ -14,7 +14,7 @@ const ProductBlurb = ({data}) => {
       style={{
         width: '100%',
         overflow: 'hidden',
-        backgroundColor: 'rgb(255,255,255)',
+        //backgroundColor: 'rgb(255,255,255)',
         //borderRadius: 15,
         borderBottomLeftRadius: 15,
         borderBottomRightRadius: 15,

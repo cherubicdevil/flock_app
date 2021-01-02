@@ -23,18 +23,30 @@
  */
 
 import React from 'react';
-import {View, Text, TextInput, Image, ImageBackground} from 'react-native';
+import {View, Text, TextInput, Image, ImageBackground, TouchableOpacity} from 'react-native';
 import FeedList from './feed/FeedList';
 import {constants} from 'App/constants';
 import styles from './Home.style.ios';
+import LinearGradient from 'react-native-linear-gradient';
+import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 
 const Home = ({route, navigation, lastVisible = null}) => {
   // {lastVisible} for keep track of firebase paging
+  const Tab = createMaterialTopTabNavigator();
+  const navigator = 
+  <Tab.Navigator>
+  <Tab.Screen name="posts" component={FeedList} initialParams={{videoData: route.params.videoData}} />
+  <Tab.Screen name="Liked" component={T2} />
+</Tab.Navigator>;
+
+{/* <FeedList navigation={navigation} route={route} /> */}
 
   return (
     <View style={styles.wrapperAll}>
-      <View style={styles.sectionOneStyle}>
-        <ImageBackground
+
+      <View style={[styles.sectionOneStyle, {backgroundColor: 'rgba(255,255,255,0.3)'}]}>
+        <View style={{width: '100%', height: '100%'}} />
+        {/* <ImageBackground
           imageStyle={{borderRadius: 25}}
           style={styles.topBox}
           source={require('App/Assets/Images/Orange_Gradient_Small.png')}>
@@ -48,21 +60,28 @@ const Home = ({route, navigation, lastVisible = null}) => {
               style={styles.searchIcon}
             />
           </View>
-        </ImageBackground>
+        </ImageBackground> */}
       </View>
-
+ 
       <View style={styles.sectionThreeStyle}>
-        <View style={styles.loadingBackground}>
+        {/* <View style={styles.loadingBackground}>
           <Image
             style={{width: 60, height: 60}}
             source={require('App/Assets/Images/cute_duck.png')}
           />
           <Text style={{fontFamily: constants.FONT}}>Curating your clucks</Text>
-        </View>
-        <FeedList navigation={navigation} route={route} />
+        </View> */}
+        {navigator}
       </View>
     </View>
   );
 };
+
+const T1 = ({navigation}) => {
+  return <TouchableOpacity onPress={()=>{navigation.navigate("ProfileMain")}}><Text>Hi</Text></TouchableOpacity>
+}
+const T2 = () => {
+  return <Text>Hi2</Text>
+}
 
 export default Home;

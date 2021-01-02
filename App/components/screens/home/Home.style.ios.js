@@ -24,24 +24,22 @@
 import {constants} from 'App/constants';
 
 const styles = {
-  wrapperAll: {flex: 1, backgroundColor: constants.GREY},
+  wrapperAll: {flex: 1, backgroundColor: constants.PINK_BACKGROUND },
   sectionOneStyle: {
     paddingLeft: 5,
     paddingBottom: 4,
     paddingRight: 5,
     width: '100%',
-    flex: 3,
+    flex: 3.5,
 
     flexDirection: 'row',
     paddingTop: 35,
     marginTop: 0,
     //marginBottom: 5,
-    borderRadius: 3,
-    backgroundColor: '#fff',
   },
   topInnerBox: {
     width: '100%',
-    backgroundColor: constants.GREY,
+    backgroundColor: constants.PINK_BACKGROUND,
   },
   topBox: {
     flexDirection: 'row',
