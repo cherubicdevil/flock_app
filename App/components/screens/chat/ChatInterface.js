@@ -103,26 +103,38 @@ function ChatInterface({route, navigation}) {
   }
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
-
+      
       <View
         style={{
           position: 'absolute',
           zIndex: 90,
-          flex: 1,
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          alignItems: 'flex-end',
+
           borderBottomColor: '#efefef',
           borderBottomWidth: 1,
           height: 100,
           width: '100%',
           top: 0,
-          paddingLeft: 20,
-          paddingBottom: 20,
-          backgroundColor: constants.TRANSLUCENT,
+
+          //backgroundColor: constants.TRANSLUCENT,
           borderBottomLeftRadius: 15,
           borderBottomRightRadius: 15,
         }}>
+          <LinearGradient
+          colors={[constants.TRANSLUCENT, 'white']}
+          start={{ x: 0, y: 0 }} end={{ x: 0, y: 1 }}
+          style={{
+            flex: 1,
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'flex-end',
+            paddingLeft: 20,
+            paddingBottom: 20,
+            borderBottomRightRadius:20,
+            borderBottomLeftRadius: 20,
+            //shadowColor: "#ff7009", shadowOffset: {height: 10, width: 0}, shadowOpacity: 0.39, elevation: 13, shadowRadius: 28.30,
+            //alignItems: 'center',
+          }}>
+          
                 <TouchableOpacity onPress={()=>{ navigation.goBack()}}><Image style={{width: 35, height: 35}} source = {require('App/Assets/Images/Back_Icon.png')} />
                 </TouchableOpacity>
                 
@@ -137,17 +149,20 @@ function ChatInterface({route, navigation}) {
             });
           }}
         />
+        </LinearGradient>
       </View>
       <View style={{ position: 'absolute', zIndex: 200, top: 100, width: '100%', borderRadius: 0, borderBottomRightRadius: 30, borderBottomLeftRadius: 30}}>
-      <View style={{shadowColor: "#ff7009", shadowOffset: {height: 10, width: 0}, shadowOpacity: 0.39, elevation: 13, shadowRadius: 28.30, borderBottomLeftRadius: 30, borderBottomRightRadius: 30}}>
+      <View style={{shadowColor: "#ff7009", shadowOffset: {height: 0, width: 0}, shadowOpacity: 0.42, elevation: 13, shadowRadius: 28.30, borderBottomLeftRadius: 30, borderBottomRightRadius: 30}}>
       <LinearGradient
           colors={[constants.ORANGE, constants.PEACH]}
           start={{ x: 0, y: 0 }} end={{ x: 0, y: 1 }}
           style={{
+            borderRadius: 20,
             borderBottomLeftRadius: 30,
             borderBottomRightRadius: 30,
+            
             padding: 10,
-            shadowColor: "#ff7009", shadowOffset: {height: 10, width: 0}, shadowOpacity: 0.39, elevation: 13, shadowRadius: 28.30,
+            shadowColor: "#ff7009", shadowOffset: {height: 10, width: 0}, shadowOpacity: 0.39, elevation: 13, shadowRadius: 8.30,
             //alignItems: 'center',
             flex: 1,
           }}>
@@ -165,7 +180,7 @@ function ChatInterface({route, navigation}) {
         </View>
       <View style={{marginTop: 20, flexDirection: 'row'}}>
         <Image style = {{width: 40, height: 40}} source ={constants.PLACEHOLDER_IMAGE } />
-        <View style={{borderRadius: 30, flex: 1, backgroundColor: constants.GREYBLUE, padding: 20, marginRight: 20}}><Text>Description Hello world</Text></View>
+        <View style={{borderRadius: 30, flex: 1, backgroundColor: constants.GREYBLUE, padding: 20, marginRight: 20, shadowColor: constants.GREYBLUE, shadowOffset: {height: 10, width: 0}, shadowOpacity: 0.82, elevation: 13, shadowRadius: 18.30,}}><Text>Description Hello world</Text></View>
       </View>
       </View>
       
