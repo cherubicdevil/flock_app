@@ -360,7 +360,11 @@ const FlockList = ({product, navigation}) => {
       <Countdown dateObj = {ar[i].time} />
       </View>
       <View style={{borderRadius: 30, backgroundColor: constants.ORANGE, justifyContent:'center', paddingLeft: 10, paddingRight: 10, marginRight: 20}}>
+      <TouchableOpacity onPress={()=>{
+        navigation.navigate("ChatInterface", {data: ar[i]});
+      }}>
       <Text style={{color: 'white', fontFamily: constants.FONT, fontWeight: 'bold', fontSize: 13}}>${Math.round(ar[i].product.price/(ar[i].members.length + 1))} or less</Text>
+      </TouchableOpacity>
       </View>
       </View>
       </View>

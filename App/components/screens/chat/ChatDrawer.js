@@ -110,20 +110,27 @@ const ChatDrawer = ({navigation, route}) => {
         );
       }}>
       {renderDrawers(select.userInfo.chatGroups || [])}
-      {/* <Drawer.Screen
+      <Drawer.Screen
         key={'Yourself 21345'}
         name={'Yourself'}
         component={ChatGroup}
         initialParams={{
           data: {
             flock: 'Yourself',
+            product: {
+              image: null,
+              price: 1,
+              title: 'hello',
+              description: "",
+            },
+            members: [],
             friends: [],
             id: 'self',
             buys: [],
             messages: [],
           },
         }}
-      /> */}
+      />
     </Drawer.Navigator>
   );
 };

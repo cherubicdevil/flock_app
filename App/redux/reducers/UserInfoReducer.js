@@ -39,7 +39,11 @@ export default function (state = {likedVideos: []}, action) {
       const res = {...state};
       if (arraytype === "array") {
         if (actiontype === "add") {
+          if (res[membertype] ===  null || res[membertype] === undefined || res[membertype].length == 0) {
+            res[membertype] = [data];
+          } else {
             res[membertype] = [...res[membertype], data];
+          }
         } else {
             const index = res[membertype].indexOf(data);
             if (index !== -1) res[membertype].splice(index,1);

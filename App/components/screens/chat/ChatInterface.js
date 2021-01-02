@@ -93,6 +93,14 @@ function ChatInterface({route, navigation}) {
   };
 
   console.log(route.params.data);
+  const user = firebase.auth().currentUser;
+  var partOf = false;
+  for (const member of route.params.data.members) {
+    if (user.uid === member.uid) {
+      partOf = true;
+      break;
+    }
+  }
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
 
@@ -118,9 +126,10 @@ function ChatInterface({route, navigation}) {
                 <Button style={{zIndex:100, position: 'absolute', top: 200,}} title="leave" onPress={() =>{
         console.log('left');
         // FLOCK_BUG this code is repeated a lot throughout codebase
-                db.collection('users').doc(firebase.auth().currentUser.uid).update({
-                  chatIds: firebase.firestore.FieldValue.arrayRemove(route.params.data.id)
-                });
+        console.log(route.params.data);
+        db.collection('users').doc(firebase.auth().currentUser.uid).update({
+          chatIds: firebase.firestore.FieldValue.arrayRemove(route.params.data.id)
+        });
               dispatch({type: "UPDATE_DATA", payload: ["chatIds", "remove", "array", route.params.data.id]});
               dispatch({type: "UPDATE_DATA", payload: ["chatGroups", "remove", "array", route.params.data]});
               navigation.navigate('Carousel');
@@ -206,6 +215,8 @@ function ChatInterface({route, navigation}) {
         onSend={onSend}
         user={{_id: 1}}
       /></View>
+      
+      {partOf?<></>:<View style={{position: 'absolute', bottom: 0, width: '100%', height: 100, backgroundColor: 'white'}}><View style={{height: '100%', backgroundColor: constants.PINK_BACKGROUND }}><TouchableOpacity style={{width: '90%', height: 50, backgroundColor: constants.ORANGE, alignSelf: 'center', borderRadius: 30, justifyContent: 'center'}} onPress={()=>{}}><Text style={{color: 'white', alignSelf: 'center', fontWeight: 'bold'}}>JOIN</Text></TouchableOpacity></View></View>}
     </SafeAreaView>
   );
 }

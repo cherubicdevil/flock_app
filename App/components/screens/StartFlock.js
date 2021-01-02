@@ -11,7 +11,7 @@ import Animation from 'lottie-react-native';
 import {firebase, db} from 'App/firebase/config';
 
 const StartFlock = ({navigation, route}) => {
-
+    const dispatch = useDispatch();
     const Tab = createMaterialTopTabNavigator();
     console.log('start flock index is', route.params);
     var ar = [<PageOne product = {route.params.product} data = {route.params.data} />, <PageTwo product = {route.params.product} data = {route.params.data} />, <PageThree product = {route.params.product} data = {route.params.data} />, <PageFour product = {route.params.product} data = {route.params.data} />];
@@ -27,10 +27,10 @@ const StartFlock = ({navigation, route}) => {
     closeText="done"
     closeFunc={()=> {
         const user  = firebase.auth().currentUser;
-    
+        const salt = Math.random(100).toFixed(10);
         const data = {
-          name: 'testNew',
-          flock: 'testNew',
+          name: 'testNew'+salt,
+          flock: 'testNew'+salt,
           product: route.params.product,
           // FLOCK_BUG use id later, for now use title
           productTitle: route.params.product.title,
@@ -39,6 +39,7 @@ const StartFlock = ({navigation, route}) => {
           members: [{name: user.displayName, uid: user.uid}]
         };
         firebase.firestore().collection("chatGroups").add(data).then((docRef)=>{
+            //data["id"] = docRef.id;
             db.collection('users').doc(firebase.auth().currentUser.uid).update({
                 chatIds: firebase.firestore.FieldValue.arrayUnion(docRef.id)
               });
@@ -56,8 +57,8 @@ const StartFlock = ({navigation, route}) => {
 
 const PageOne = ({product, data}) => {
     return <View style={{width:'100%', backgroundColor: 'white', marginTop: 5, padding: 20}}>
-        <InputText data = {data} numLines = {2} placeholder = "Size 4? Size 10? Red? Green?" label="List specifications like size and color if applicable."/>
-        <InputText data = {data} numLines = {4} placeholder = "What do you want others to know about this product? Hype it up so they join your flock and lower your price!" label="Message" defaultValue = "Hey! What do you think of this? Want to flock it with me? Together we split the cost and share the item."/>
+        <InputText data = {data} title = "specifications" numLines = {2} placeholder = "Size 4? Size 10? Red? Green?" label="List specifications like size and color if applicable."/>
+        <InputText data = {data} title = "description" numLines = {4} placeholder = "What do you want others to know about this product? Hype it up so they join your flock and lower your price!" label="Message" defaultValue = "Hey! What do you think of this? Want to flock it with me? Together we split the cost and share the item."/>
         <ProductPreview product = {product} toggle={true} egg={true} />
 
     </View>;
@@ -70,7 +71,7 @@ const PageTwo = ({product, data}) => {
         <Text style={{color:constants.DARKGREY, marginRight: 5, marginTop:1, fontWeight: 'bold'}}>USD</Text>
     <View style={[styles.inputBox,{flex: 1, height: 35, paddingLeft: 5, marginLeft: 1, flexDirection: 'row', alignItems: 'center', borderWidth: 2, borderColor: constants.DARKGREY}]}>
     <Text style={{color: constants.DARKGREY}}>$</Text>
-    <TextInput defaultValue = {(product.price / 2).toFixed(2)} style={[styles.inputBox,{flex: 1, paddingLeft: 0, marginLeft: 3, borderWidth: 0}]} />
+    <BasicInputText data={data} title="maxPrice" defaultValue = {(product.price / 2).toFixed(2)} style={[styles.inputBox,{flex: 1, paddingLeft: 0, marginLeft: 3, borderWidth: 0}]} />
     </View>
     </View>
 
@@ -106,13 +107,23 @@ const PageFour = () => {
     return <Text>Test 4</Text>
 }
 
-const InputText = ({numLines, data, placeholder, label, defaultValue=""}) => {
+const InputText = ({numLines, data, title, placeholder, label, defaultValue=""}) => {
     console.log(data[label]);
+    data[title] = defaultValue;
     return <View style={{marginBottom: 10}}><Text style={{fontWeight: 'bold'}}>{label}</Text>
-    <TextInput defaultValue={data[label] || defaultValue} blurOnSubmit placeholder={placeholder} style={{marginTop: 5, borderColor: "grey", paddingLeft: 15, borderRadius: 10, borderWidth: 1, height: numLines * 25}} multiline numberOfLines = {5} onBlur = {(e)=> {
+    <TextInput defaultValue={data[title] || defaultValue} blurOnSubmit placeholder={placeholder} style={{marginTop: 5, borderColor: "grey", paddingLeft: 15, borderRadius: 10, borderWidth: 1, height: numLines * 25}} multiline numberOfLines = {numLines} onBlur = {(e)=> {
         console.log("BLUR", e.nativeEvent.text);
-        data[label] = e.nativeEvent.text;
+        data[title] = e.nativeEvent.text;
     }} /></View>
+}
+
+const BasicInputText = ({numLines=1, data, placeholder, label, title, defaultValue=""}) => {
+    console.log(data[label]);
+    data[title] = defaultValue;
+    return <TextInput defaultValue={data[title] || defaultValue} blurOnSubmit placeholder={placeholder} onBlur = {(e)=> {
+        console.log("BLUR", e.nativeEvent.text);
+        data[title] = e.nativeEvent.text;
+    }} />;
 }
 
 const ProductPreview = ({product}) => {
