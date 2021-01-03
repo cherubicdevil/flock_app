@@ -22,25 +22,42 @@
  *
  */
 
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, Text, TextInput, Image, ImageBackground, TouchableOpacity} from 'react-native';
 import FeedList from './feed/FeedList';
 import {constants} from 'App/constants';
 import styles from './Home.style.ios';
 import LinearGradient from 'react-native-linear-gradient';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
+import {fetchChatGroups} from 'App/utils';
+
+const Tab = createMaterialTopTabNavigator();
 
 const Home = ({route, navigation, lastVisible = null}) => {
+  const [flockData, setFlockData] = useState([{flock: 'test'}]);
+  console.log('flock DATA', flockData);
+  const [testString, setTestString] = useState("helloworld");
   // {lastVisible} for keep track of firebase paging
-  const Tab = createMaterialTopTabNavigator();
-  const navigator = 
+
+  var navigator = 
   <Tab.Navigator>
   <Tab.Screen name="posts" component={FeedList} initialParams={{videoData: route.params.videoData}} />
-  <Tab.Screen name="Liked" component={T2} />
+  <Tab.Screen name="Liked" component={FeedList} initialParams={{videoData: route.params.flockData, test: testString}} />
 </Tab.Navigator>;
 
 {/* <FeedList navigation={navigation} route={route} /> */}
 
+
+  useEffect(()=>{
+    fetchChatGroups().then((ar) => {
+      setFlockData(ar);
+      setTestString("worldhello");
+      console.log("FLOCKS", ar);
+    });
+    // fetchRentGroups().then((ar) => {
+    //   setRentData(ar);
+    // });
+  }, []);
   return (
     <View style={styles.wrapperAll}>
 

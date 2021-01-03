@@ -9,20 +9,20 @@ import {
 } from 'react-native';
 import {useDispatch} from 'react-redux';
 import VideoPage from './VideoPage';
-import {fetchAlbums} from 'App/utils';
+import {fetchAlbums, fetchChatGroups} from 'App/utils';
 
 const VideoCarousel = ({route, navigation, array, index = 0, data}) => {
   const dispatch = useDispatch();
   const scrollRef = useRef(null);
   const [ar, setAr] = useState([]);
   const [dat, setDat] = useState(data);
+  const [flockData, setFlockData] = useState([]);
   var lastVisible = null;
   if (route?.params?.scrollIndex !== undefined) {
     index = route.params.scrollIndex;
   }
   console.log('index', index);
   useEffect(() => {
-    console.log('ROUTE aRRAY USEEFFECT', route.params.array);
     (async () => {
       if (route?.params?.array === undefined) {
         console.log('FETCHING ARRAY');
@@ -34,6 +34,12 @@ const VideoCarousel = ({route, navigation, array, index = 0, data}) => {
         // possible FLOCK_BUG
         // also, what if array is empty?
         setDat(arr[0]);
+
+        fetchChatGroups().then((ar) => {
+          setFlockData(ar);
+          setTestString("worldhello");
+          console.log("FLOCKS", ar);
+        });
       }
     })();
   }, []);
@@ -62,7 +68,7 @@ const VideoCarousel = ({route, navigation, array, index = 0, data}) => {
         pagingEnabled={true}>
         {renderAlbums(route?.params?.array || ar, route, navigation, index)}
       </ScrollView>
-      {renderClose(navigation, dispatch, ar, lastVisible)}
+      {renderClose(navigation, dispatch, ar, lastVisible, flockData)}
     </View>
   );
 };
@@ -86,7 +92,7 @@ const renderAlbums = (array, route, navigation, currIndex) => {
   }
 };
 
-const renderClose = (navigation, dispatch, array, lastVisible) => {
+const renderClose = (navigation, dispatch, array, lastVisible, flockData) => {
   return (
     <TouchableWithoutFeedback
       onPress={() => {
@@ -102,6 +108,7 @@ const renderClose = (navigation, dispatch, array, lastVisible) => {
             videoData: array,
             lastVisible: lastVisible,
             hello: 'hello',
+            flockData: flockData
           });
         }
       }}>

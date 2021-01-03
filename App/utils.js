@@ -270,6 +270,27 @@ const fetchGlobalFlocks = async () => {
   });
 };
 
+const fetchChatGroups = async () => {
+  return new Promise((resolve) => {
+    db.collection('chatGroups')
+      .limit(10)
+      .get()
+      .then((querySnapshot) => {
+        var counter = 0;
+        const n = querySnapshot.size;
+        const ar = [];
+        querySnapshot.forEach((doc) => {
+          const entity = doc.data();
+          ar.push(entity);
+          counter = counter + 1;
+          if (counter === n) {
+            resolve(ar);
+          }
+        });
+      });
+  });
+};
+
 const updateCache = (member, actiontype, data) => {
   
 }
@@ -400,6 +421,7 @@ export {
   fetchStreamableSource,
   fetchAlbums,
   fetchProducts,
+  fetchChatGroups,
   mergeArrays,
   pickVideo,
   fadeIn,

@@ -36,6 +36,7 @@ class FeedList extends React.Component {
 
   constructor(props) {
     super(props);
+
   }
 
   checkVisible(isVisible) {
@@ -43,8 +44,9 @@ class FeedList extends React.Component {
   }
 
   renderClucks(album) {
+    //console.log("CLUCKS", this.props.route.params.videoData);
     return album.map((al) => {
-      if (al.price) {
+      if (al.flock) {
         return <HalfProduct navigation={this.props.navigation} album={al} />;
       } else {
         return (
@@ -67,10 +69,10 @@ class FeedList extends React.Component {
   }
 
   render() {
+    console.log("FL DATA", this.props.route.params);
     const ar = mergeArrays(this.props.route.params.videoData, []);
     const album1 = ar.slice(0, ar.length / 2);
     const album2 = ar.slice(ar.length / 2, ar.length);
-    console.log(this.props.route.params.videoData[0].title);
     return (
       <View>
         <LinearGradient

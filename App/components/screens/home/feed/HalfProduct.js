@@ -8,9 +8,11 @@ import {
 	TouchableOpacity,
 } from 'react-native';
 import {constants} from 'App/constants';
+import { BaseRouter } from '@react-navigation/native';
 
 const HalfProduct = ({navigation, album}) => {
 	const dwidth = Dimensions.get('window').width / 2;
+	console.log("IM HERE");
 
 	return (
 		<View
@@ -20,12 +22,15 @@ const HalfProduct = ({navigation, album}) => {
 				width: '95%',
 				marginLeft: 5,
 				marginRight: 30,
-				//borderWidth: 1,
+				borderWidth: 1,
 				borderColor: '#fc9',
 				padding: 5,
 				backgroundColor: 'white',
+
+				height: 200,
 			}}>
-			<TouchableOpacity
+				<Text>{album.flock}</Text>
+			{/* <TouchableOpacity
 				onPress={() => {
 					navigation.navigate('Product', {album});
 				}}>
@@ -82,7 +87,7 @@ const HalfProduct = ({navigation, album}) => {
 						</Text>
 					</View>
 				</View>
-			</TouchableOpacity>
+			</TouchableOpacity> */}
 		</View>
 	);
 };
