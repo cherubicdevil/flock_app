@@ -338,12 +338,15 @@ const FlockList = ({product, navigation}) => {
     var query = citiesRef.where("productTitle", "==", product.title);
     var unsubscribe = query
     .onSnapshot(function(querySnapshot) {
-      const ar = [];
+      const arr = [];
       querySnapshot.forEach(function(doc) {
         console.log("FOUNDDDDDD");
+        if (doc.data().completed === false) {
         arr.push(doc.data());
+
           // doc.data() is never undefined for query doc snapshots
           console.log(doc.id, " => ", doc.data());
+        }
       });
       setAr(arr);
     });

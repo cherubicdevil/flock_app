@@ -1,5 +1,6 @@
 import React, {useState, useRef, useEffect, createRef} from 'react';
 import {
+  SafeAreaView,
   View,
   Text,
   StyleSheet,
@@ -8,7 +9,6 @@ import {
   TouchableOpacity,
   Image,
   Platform,
-  SafeAreaView,
   ScrollView,
   FlatList,
   ImageBackground,
@@ -83,6 +83,7 @@ const ProfileMain = ({navigation}) => {
 
   const Test2 = () => {
     var data = selector.userInfo.likedVideos;
+    //var data = selector.userInfo.chatGroups.filter((item)=> item.completed==false );
     return (
       <>
         <FlatList
@@ -100,6 +101,7 @@ const ProfileMain = ({navigation}) => {
             //   setResp(resp);
             //   console.log(resp);
             // });
+
             console.log('POSTER', el.item.poster);
             return (
               <TouchableOpacity
@@ -134,8 +136,8 @@ const ProfileMain = ({navigation}) => {
   useEffect(() => {}, []);
   const Tab = createMaterialTopTabNavigator();
   return (
-    <View style={{flex: 1}}>
-      <View style={{position: 'absolute', right: 10, top: 50, zIndex: 400}}>
+    <SafeAreaView style={{flex: 1, backgroundColor: constants.PINK_BACKGROUND}}>
+      {/* <View style={{position: 'absolute', right: 10, top: 50, zIndex: 400}}>
         <Button
           title="back"
           onPress={() => {
@@ -155,7 +157,8 @@ const ProfileMain = ({navigation}) => {
             console.log('logout');
           }}
         />
-      </View>
+      </View> */}
+      <View style={{backgroundColor: constants.TRANSLUCENT, position: 'absolute', top: 0}}><Text>hello</Text></View>
       <ImageBackground
         source={require('App/Assets/Images/Orange_Gradient_Small.png')}
         style={{
@@ -219,11 +222,11 @@ const ProfileMain = ({navigation}) => {
       </ImageBackground>
       <View style={{flex: 2}}>
         <Tab.Navigator>
-          <Tab.Screen name="posts" component={Test1} />
-          <Tab.Screen name="Liked" component={Test2} />
+          <Tab.Screen name="flocking" component={Test1} />
+          <Tab.Screen name="flocked" component={Test2} />
         </Tab.Navigator>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

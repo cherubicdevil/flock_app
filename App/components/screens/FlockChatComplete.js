@@ -256,7 +256,7 @@ const HeaderView = ({navigation, route}) => {
       //alignItems: 'center',
     }}>
     
-          <TouchableOpacity onPress={()=>{ navigation.goBack()}}><Image style={{width: 35, height: 35}} source = {require('App/Assets/Images/Back_Icon.png')} />
+          <TouchableOpacity onPress={()=>{ navigation.navigate('ProfileMain')}}><Image style={{width: 35, height: 35}} source = {require('App/Assets/Images/Back_Icon.png')} />
           </TouchableOpacity>
           
           <TouchableOpacity onPress={()=>{ setCollapsed(!collapsed); }}>

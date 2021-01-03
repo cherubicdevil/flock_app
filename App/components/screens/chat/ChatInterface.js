@@ -199,12 +199,12 @@ function ChatInterface({route, navigation}) {
           const memberInfo = {name: firebase.auth().currentUser.displayName, uid: firebase.auth().currentUser.uid, max: 50};
           // check if the flock is completed
           // make user enter credit card information
-          // db.collection('users').doc(firebase.auth().currentUser.uid).update({
-          //   chatIds: firebase.firestore.FieldValue.arrayUnion(route.params.data.id)
-          // });
-          // db.collection('chatGroups').doc(route.params.data.id).update({
-          //   members: firebase.firestore.FieldValue.arrayUnion(memberInfo)
-          // });
+          db.collection('users').doc(firebase.auth().currentUser.uid).update({
+            chatIds: firebase.firestore.FieldValue.arrayUnion(route.params.data.id)
+          });
+          db.collection('chatGroups').doc(route.params.data.id).update({
+            members: firebase.firestore.FieldValue.arrayUnion(memberInfo)
+          });
           setPartOf(true);
         dispatch({type: "UPDATE_DATA", payload: ["chatIds", "add", "array", route.params.data.id]});
         dispatch({type: "UPDATE_DATA", payload: ["chatGroups", "add", "array", route.params.data]});
@@ -214,6 +214,9 @@ function ChatInterface({route, navigation}) {
           // condition
           if (true) {
           socket.current.emit('complete', route.params.data.id);
+          db.collection('chatGroups').doc(route.params.data.id).update({
+            completed: true,
+          });
           navigation.navigate('FlockChatComplete', {data: route.params.data})
           }
           if (route.params.data.members.length > 3) {
