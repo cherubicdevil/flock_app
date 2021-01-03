@@ -51,11 +51,11 @@ const Home = ({route, navigation, lastVisible = null}) => {
 
 
   useEffect(()=>{
-    fetchChatGroups().then((ar) => {
-      setFlockData(ar);
-      setTestString("worldhello");
-      console.log("FLOCKS", ar);
-    });
+    // fetchChatGroups().then((ar) => {
+    //   setFlockData(ar);
+    //   setTestString("worldhello");
+    //   console.log("FLOCKS", ar);
+    // });
     // fetchRentGroups().then((ar) => {
     //   setRentData(ar);
     // });

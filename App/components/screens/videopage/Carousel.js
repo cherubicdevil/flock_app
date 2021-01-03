@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import {useDispatch} from 'react-redux';
 import VideoPage from './VideoPage';
-import {fetchAlbums, fetchChatGroups} from 'App/utils';
+import {fetchAlbums, fetchFlockables, fetchRentables} from 'App/utils';
 
 const VideoCarousel = ({route, navigation, array, index = 0, data}) => {
   const dispatch = useDispatch();
@@ -35,7 +35,7 @@ const VideoCarousel = ({route, navigation, array, index = 0, data}) => {
         // also, what if array is empty?
         setDat(arr[0]);
 
-        fetchChatGroups().then((ar) => {
+        fetchFlockables().then((ar) => {
           setFlockData(ar);
           setTestString("worldhello");
           console.log("FLOCKS", ar);

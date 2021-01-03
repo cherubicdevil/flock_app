@@ -32,6 +32,7 @@ const StartFlock = ({navigation, route}) => {
           name: 'testNew'+salt,
           flock: 'testNew'+salt,
           product: route.params.product,
+          completed: false,
           // FLOCK_BUG use id later, for now use title
           productTitle: route.params.product.title,
           messages: [],

@@ -270,10 +270,33 @@ const fetchGlobalFlocks = async () => {
   });
 };
 
-const fetchChatGroups = async () => {
+const fetchFlockables = async () => {
   return new Promise((resolve) => {
     db.collection('chatGroups')
       .limit(10)
+      .where('completed', '==', 'false')
+      .get()
+      .then((querySnapshot) => {
+        var counter = 0;
+        const n = querySnapshot.size;
+        const ar = [];
+        querySnapshot.forEach((doc) => {
+          const entity = doc.data();
+          ar.push(entity);
+          counter = counter + 1;
+          if (counter === n) {
+            resolve(ar);
+          }
+        });
+      });
+  });
+};
+
+const fetchRentables = async () => {
+  return new Promise((resolve) => {
+    db.collection('chatGroups')
+      .limit(10)
+      .where('completed', '==', 'true')
       .get()
       .then((querySnapshot) => {
         var counter = 0;
@@ -421,7 +444,8 @@ export {
   fetchStreamableSource,
   fetchAlbums,
   fetchProducts,
-  fetchChatGroups,
+  fetchFlockables,
+  fetchRentables,
   mergeArrays,
   pickVideo,
   fadeIn,
