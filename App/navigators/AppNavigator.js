@@ -25,6 +25,7 @@ import CustomBar from './CustomBar';
 import StartFlock from 'App/components/screens/StartFlock';
 import ChatInterface from 'App/components/screens/chat/ChatInterface';
 import Info from 'App/components/screens/chat/info/Info';
+import FlockChatComplete from 'App/components/screens/FlockChatComplete';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -128,6 +129,13 @@ const AppNavigator5 = () => {
         <Tab.Screen
           name="ChatInterface"
           component={ChatInterface}
+          options={{
+            tabBarVisible: false,
+          }}
+        />
+        <Tab.Screen
+          name="FlockChatComplete"
+          component={FlockChatComplete}
           options={{
             tabBarVisible: false,
           }}

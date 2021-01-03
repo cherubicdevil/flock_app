@@ -331,21 +331,35 @@ const Countdown = ({dateObj}) => {
 const FlockList = ({product, navigation}) => {
   const [ar, setAr] = useState([]);
   useEffect(()=>{
-    const arr = [];
+
     var citiesRef = firebase.firestore().collection("chatGroups");
     console.log(product.title);
     // Create a query against the collection.
     var query = citiesRef.where("productTitle", "==", product.title);
-    query.get()
-    .then(function(querySnapshot) {
-        querySnapshot.forEach(function(doc) {
-          console.log("FOUNDDDDDD");
-          arr.push(doc.data());
-            // doc.data() is never undefined for query doc snapshots
-            console.log(doc.id, " => ", doc.data());
-        });
-        setAr(arr);
-    })
+    var unsubscribe = query
+    .onSnapshot(function(querySnapshot) {
+      const ar = [];
+      querySnapshot.forEach(function(doc) {
+        console.log("FOUNDDDDDD");
+        arr.push(doc.data());
+          // doc.data() is never undefined for query doc snapshots
+          console.log(doc.id, " => ", doc.data());
+      });
+      setAr(arr);
+    });
+    // query.get()
+    // .then(function(querySnapshot) {
+    //   const arr = [];
+    //     querySnapshot.forEach(function(doc) {
+    //       console.log("FOUNDDDDDD");
+    //       arr.push(doc.data());
+    //         // doc.data() is never undefined for query doc snapshots
+    //         console.log(doc.id, " => ", doc.data());
+    //     });
+    //     setAr(arr);
+    // })
+
+    return () => {unsubscribe()};
   }, [product]);
   const result = [];
   for (i = 0; i < Math.min(ar.length,2); i++) {

@@ -24,7 +24,7 @@ import {
   createDrawerNavigator,
   useIsDrawerOpen,
 } from '@react-navigation/drawer';
-import {firebase} from 'App/firebase/config';
+import {firebase, db} from 'App/firebase/config';
 import {useDispatch} from 'react-redux';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import {createStackNavigator} from '@react-navigation/stack';
@@ -130,13 +130,13 @@ const Info = ({route, navigation}) => {
           chatIds: firebase.firestore.FieldValue.arrayRemove(route.params.data.id)
         });
         if (route.params.data.members.length === 1) {
-          db.collection(chatGroups).doc(route.params.data.id).delete().then(function() {
+          db.collection('chatGroups').doc(route.params.data.id).delete().then(function() {
             console.log("Document successfully deleted!");
         }).catch(function(error) {
             console.error("Error removing document: ", error);
         });
         } else {
-          db.collection(chatGroups).doc(route.params.data.id).update({
+          db.collection('chatGroups').doc(route.params.data.id).update({
             chatIds: firebase.firestore.FieldValue.arrayRemove(generateUserObject(firebase.auth().currentUser.displayName, firebase.auth().currentUser.uid))
           });
         }

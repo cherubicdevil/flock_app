@@ -44,7 +44,7 @@ const updateCache = (id, messages) => {
 
 const systemMessages = [];
 
-function ChatInterface({route, navigation}) {
+function FlockChatComplete({route, navigation}) {
   const select = useSelector((state) => state);
   const socket = useRef(null);
   const [recvMessages, setRecvMessages] = useState(route.params.data.messages);
@@ -68,7 +68,7 @@ function ChatInterface({route, navigation}) {
     });
     socket.current.on('complete', () => {
       console.log('completingggg');
-      navigation.navigate('FlockChatComplete', {data: route.params.data});
+      navigation.navigate('VideoMasonry');
     });
     console.log("MESSAGES");
     setRecvMessages(route.params.data.messages);
@@ -122,7 +122,7 @@ function ChatInterface({route, navigation}) {
       <View style={{ position: 'absolute', zIndex: 200, top: 100, width: '100%', borderRadius: 0, borderBottomRightRadius: 30, borderBottomLeftRadius: 30}}>
       <View style={{shadowColor: "#ff7009", shadowOffset: {height: 0, width: 0}, shadowOpacity: 0.42, elevation: 13, shadowRadius: 28.30, borderBottomLeftRadius: 30, borderBottomRightRadius: 30}}>
       <LinearGradient
-          colors={[constants.ORANGE, constants.PEACH]}
+          colors={[constants.PURPLE, constants.PEACH]}
           start={{ x: 0, y: 0 }} end={{ x: 0, y: 1 }}
           style={{
             borderRadius: 20,
@@ -214,7 +214,6 @@ function ChatInterface({route, navigation}) {
           // condition
           if (true) {
           socket.current.emit('complete', route.params.data.id);
-          navigation.navigate('FlockChatComplete', {data: route.params.data})
           }
           if (route.params.data.members.length > 3) {
             // send to socket complete signal, which three are complete
@@ -304,56 +303,9 @@ const HeaderView = ({navigation, route}) => {
       </Collapsible>
   </View>
   </TouchableOpacity>
-  <Button
-    title="
-      ⓘ"
-    onPress={() => {
-      navigation.navigate('Info', {
-        friends: [],
-        data: route.params.data,
-      });
-    }}
-  />
   </LinearGradient>
 </View>
 };
 
-const data = {
-  0: {
-    flock: 'squad up',
-    id: '0',
-    buys: [
-      {
-        title: 'Game boy',
-        url: null,
-        price: '24.99',
-        buyers: ['xxxHacker', 'jasonny'],
-      },
-      {
-        title: 'Nintendo Switch',
-        url: null,
-        price: '300.99',
-        buyers: [
-          'xxxHacker',
-          'jasonny',
-          'danielpark',
-          'Qrowsaki',
-          'Me',
-          'Hello',
-        ],
-      },
-    ],
-    boughts: [],
-    friends: ['xxxHacker', 'stupidbro', 'jasonny', 'danielpark', 'Qrowsaki'],
-    messages: [],
-  },
-  1: {
-    flock: 'church friends',
-    id: '1',
-    buys: [],
-    boughts: [],
-    friends: ['Qrowsaki'],
-    messages: [],
-  },
-};
-export default ChatInterface;
+
+export default FlockChatComplete;
