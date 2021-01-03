@@ -42,7 +42,9 @@ const Home = ({route, navigation, lastVisible = null}) => {
   var navigator = 
   <Tab.Navigator>
   <Tab.Screen name="posts" component={FeedList} initialParams={{videoData: route.params.videoData}} />
-  <Tab.Screen name="Liked" component={FeedList} initialParams={{videoData: route.params.flockData, test: testString}} />
+  <Tab.Screen name="Flocking" component={FeedList} initialParams={{videoData: route.params.flockData}} />
+  <Tab.Screen name="Popular" component={FeedList} initialParams={{videoData: []}} />
+  <Tab.Screen name="Borrow" component={FeedList} initialParams={{videoData: []}} />
 </Tab.Navigator>;
 
 {/* <FeedList navigation={navigation} route={route} /> */}
