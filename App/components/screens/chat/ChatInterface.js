@@ -103,13 +103,14 @@ function ChatInterface({route, navigation}) {
 
   console.log(route.params.data);
   const user = firebase.auth().currentUser;
-  var partOf = false;
+  var part = false;
   for (const member of route.params.data.members) {
     if (user.uid === member.uid) {
-      partOf = true;
+      part = true;
       break;
     }
   }
+  const [partOf, setPartOf] = useState(part);
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
       
@@ -191,9 +192,19 @@ function ChatInterface({route, navigation}) {
       
       {partOf?<></>:<View style={{position: 'absolute', bottom: 0, width: '100%', height: 100, backgroundColor: 'white'}}><View style={{height: '100%', backgroundColor: constants.PINK_BACKGROUND }}>
         <TouchableOpacity style={{width: '90%', height: 50, backgroundColor: constants.ORANGE, alignSelf: 'center', borderRadius: 30, justifyContent: 'center'}} onPress={()=>{
+          const memberInfo = {name: firebase.auth().currentUser.displayName, uid: firebase.auth().currentUser.uid, max: 50};
           // check if the flock is completed
           // make user enter credit card information
-          // hold transaction
+          // db.collection('users').doc(firebase.auth().currentUser.uid).update({
+          //   chatIds: firebase.firestore.FieldValue.arrayUnion(route.params.data.id)
+          // });
+          // db.collection('chatGroups').doc(route.params.data.id).update({
+          //   members: firebase.firestore.FieldValue.arrayUnion(memberInfo)
+          // });
+          setPartOf(true);
+        dispatch({type: "UPDATE_DATA", payload: ["chatIds", "add", "array", route.params.data.id]});
+        dispatch({type: "UPDATE_DATA", payload: ["chatGroups", "add", "array", route.params.data]});
+          route.params.data.members.push(memberInfo);
       }}><Text style={{color: 'white', alignSelf: 'center', fontWeight: 'bold'}}>JOIN</Text></TouchableOpacity></View></View>}
     </SafeAreaView>
   );
