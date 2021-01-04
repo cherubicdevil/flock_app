@@ -20,15 +20,29 @@ import Video from 'react-native-video';
 import {useSelector} from 'react-redux';
 import {constants} from 'App/constants';
 //import Input from 'App/components/common/Input';
-import {firebase} from 'App/firebase/config';
+import {firebase, db} from 'App/firebase/config';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import {getIndexOfData} from '../../../utils';
 //import Base64 from 'base-64';
 
 // global.atob = Base64.encode;
 
+
+/*
+
+log: im changing the list for flocks and flockings
+for profile to snapshot listeners because they are subject
+to change by other users not current user
+
+However, i am leaving likedVideos as cached because
+the only thing that can change it is current user
+so there is no chance that the data will be out of sync.
+
+
+*/
+
 const userInfo = {
-  username: 'Qrowsaki',
+  username: firebase.auth().currentUser.displayName,
   bio: 'Hi I like pie. I also like pi. I am a user of flock, a flocker.',
   age: '20',
   gender: 'Male',
@@ -63,8 +77,8 @@ const ProfileMain = ({navigation}) => {
   const selector = useSelector((state) => state);
   //const user = firebase.auth().currentUser;
   const Test1 = () => {
-    return (
-      <View
+    console.log("flockData length", flockData.length);
+    const defaultView = <View
         style={{marginTop: 30, alignSelf: 'center', justifyContent: 'center'}}>
         <Image source={constants.PLACEHOLDER_IMAGE} />
         <Text
@@ -77,10 +91,45 @@ const ProfileMain = ({navigation}) => {
           }}>
           You don't have any posted clucks yet!
         </Text>
-      </View>
-    );
+      </View>;
+
+      return (
+        <>
+          <FlatList
+            //contentContainerStyle={{flexDirection: 'row', flexWrap: 'wrap'}}
+            numColumns={3}
+            data={flockData}
+            renderItem={(el) => {
+              return <TouchableOpacity onPress={()=>{navigation.navigate("ChatInterface", {data: el.item})}}><View style={{width: Dimensions.get('window').width/3, height: 150, borderBottomRightRadius: 40, borderBottomLeftRadius: 40, backgroundColor: 'white'}} >
+                <Text>Current Price: ${(el.item.product.price/el.item.members.length).toFixed(2)} </Text>
+              <Text>Your Maximum: ${(el.item.maximums[firebase.auth().currentUser.uid])}</Text></View>
+              </TouchableOpacity>
+            }}
+          />
+        </>
+      );
   };
 
+  const Test3 = () => {
+    console.log("RENTDATA length", rentData.length);
+    console.log(rentData);
+    return (
+      <>
+        <FlatList
+          //contentContainerStyle={{flexDirection: 'row', flexWrap: 'wrap'}}
+          numColumns={3}
+          data={rentData}
+          renderItem={(el) => {
+            return <TouchableOpacity onPress={()=>{navigation.navigate('FlockReserve', {data: el.item})}}><View style={{backgroundColor: 'black', width: Dimensions.get('window').width/3, height: 150, borderBottomRightRadius: 40, borderBottomLeftRadius: 40, backgroundColor: 'white'}} >
+              <Image style={{width: '100%', height: 110}} source={{uri: el.item.product.image}} />
+          <Text>{el.item.members.length} flockers</Text>
+            </View>
+            </TouchableOpacity>
+          }}
+        />
+      </>
+    );
+  }
   const Test2 = () => {
     var data = selector.userInfo.likedVideos;
     //var data = selector.userInfo.chatGroups.filter((item)=> item.completed==false );
@@ -133,11 +182,34 @@ const ProfileMain = ({navigation}) => {
     );
   };
 
-  useEffect(() => {}, []);
+  const [flockData, setFlockData] = useState([]);
+  const [rentData, setRentData] = useState([]);
+  useEffect(() => {
+    var citiesRef = db.collection("chatGroups");
+    // this filter is kind of inefficient; gets the entire table
+    var query = citiesRef.where("members", "array-contains", {name: firebase.auth().currentUser.displayName, uid: firebase.auth().currentUser.uid});
+    var unsubscribe = query
+    .onSnapshot(function(querySnapshot) {
+      const rent = [];
+      const flock = [];
+      querySnapshot.forEach(function(doc) {
+        console.log("FOUNDDDDDD");
+        if (doc.data().completed === false) {
+        flock.push(doc.data());
+        } else {
+          rent.push(doc.data());
+        }
+      });
+      setFlockData(flock);
+      setRentData(rent);
+    });
+
+    return () => {unsubscribe()};
+  }, []);
   const Tab = createMaterialTopTabNavigator();
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: constants.PINK_BACKGROUND}}>
-      {/* <View style={{position: 'absolute', right: 10, top: 50, zIndex: 400}}>
+      <View style={{position: 'absolute', right: 10, top: 50, zIndex: 400}}>
         <Button
           title="back"
           onPress={() => {
@@ -157,7 +229,7 @@ const ProfileMain = ({navigation}) => {
             console.log('logout');
           }}
         />
-      </View> */}
+      </View>
       <View style={{backgroundColor: constants.TRANSLUCENT, position: 'absolute', top: 0}}><Text>hello</Text></View>
       <ImageBackground
         source={require('App/Assets/Images/Orange_Gradient_Small.png')}
@@ -223,7 +295,7 @@ const ProfileMain = ({navigation}) => {
       <View style={{flex: 2}}>
         <Tab.Navigator>
           <Tab.Screen name="flocking" component={Test1} />
-          <Tab.Screen name="flocked" component={Test2} />
+          <Tab.Screen name="flocked" component={Test3} />
         </Tab.Navigator>
       </View>
     </SafeAreaView>

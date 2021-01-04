@@ -202,8 +202,12 @@ function ChatInterface({route, navigation}) {
           db.collection('users').doc(firebase.auth().currentUser.uid).update({
             chatIds: firebase.firestore.FieldValue.arrayUnion(route.params.data.id)
           });
+          const maxi = {};
+          // TODO: change to data maxPrice
+          maxi[firebase.auth().currentUser.uid] = 100;
           db.collection('chatGroups').doc(route.params.data.id).update({
-            members: firebase.firestore.FieldValue.arrayUnion(memberInfo)
+            members: firebase.firestore.FieldValue.arrayUnion(memberInfo),
+            maximums: firebase.firestore.FieldValue.arrayUnion(maxi)
           });
           setPartOf(true);
         dispatch({type: "UPDATE_DATA", payload: ["chatIds", "add", "array", route.params.data.id]});
@@ -216,6 +220,7 @@ function ChatInterface({route, navigation}) {
           socket.current.emit('complete', route.params.data.id);
           db.collection('chatGroups').doc(route.params.data.id).update({
             completed: true,
+
           });
           navigation.navigate('FlockChatComplete', {data: route.params.data})
           }
