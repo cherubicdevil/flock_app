@@ -25,6 +25,7 @@ class App extends React.Component {
         fetchUserData(user).then((user) => {
           this.setState({loggedIn: true, userData: user});
         });
+        
       } else {
         this.setState({loggedIn: false});
       }

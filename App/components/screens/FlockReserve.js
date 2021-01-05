@@ -2,6 +2,7 @@ import React, {useState, useRef} from 'react';
 import {View, Text, SafeAreaView, Image, Modal, Button} from 'react-native';
 import {Calendar} from 'react-native-calendars';
 import moment from 'moment';
+var seedrandom = require('seedrandom');
 
 
 const FlockReserve = ({navigation, route}) => {
