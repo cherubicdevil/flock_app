@@ -16,5 +16,10 @@ if (!firebase.apps.length) {
 }
 
 const db = firebase.firestore();
+const auth = firebase.auth();
+var firebaseUser = auth.currentUser;
+if (firebaseUser === null || firebaseUser === undefined) {
+  firebaseUser = {displayName: 'testing123', uid: '123'};
+}
 
-export {firebase, db};
+export {firebase, db, firebaseUser, auth};

@@ -14,7 +14,7 @@ import {
   Modal,
   TouchableWithoutFeedback,
 } from 'react-native';
-import {firebase, db} from 'App/firebase/config';
+import {firebase, db, firebaseUser} from 'App/firebase/config';
 import io from 'socket.io-client';
 import NavBar from 'App/components/common/NavBar';
 import {GiftedChat} from 'react-native-gifted-chat';
@@ -99,7 +99,8 @@ function ChatInterface({route, navigation}) {
       //data["id"] = docRef.id;
       console.log("DAT", route.params.data);
       db.collection('chatGroups').doc(route.params.data.id).update({
-          messages: firebase.firestore.FieldValue.arrayUnion({sender: {name: firebase.auth().currentUser.displayName, uid: firebase.auth().currentUser.uid}, ...messages[0]}),
+          // messages: firebase.firestore.FieldValue.arrayUnion({sender: {name: firebase.auth().currentUser.displayName, uid: firebase.auth().currentUser.uid}, ...messages[0]}),
+          messages: firebase.firestore.FieldValue.arrayUnion({sender: {name: firebaseUser.displayName, uid: firebaseUser.uid}, ...messages[0]}),
         });
         //console.log("messages format",recvMessages);
     setRecvMessages((prevState) => GiftedChat.append(prevState, messages));
@@ -196,7 +197,8 @@ function ChatInterface({route, navigation}) {
       
       {partOf?<></>:<View style={{position: 'absolute', bottom: 0, width: '100%', height: 100, backgroundColor: 'white'}}><View style={{height: '100%', backgroundColor: constants.PINK_BACKGROUND }}>
         <TouchableOpacity style={{width: '90%', height: 50, backgroundColor: constants.ORANGE, alignSelf: 'center', borderRadius: 30, justifyContent: 'center'}} onPress={()=>{
-          const memberInfo = {name: firebase.auth().currentUser.displayName, uid: firebase.auth().currentUser.uid, max: 50};
+          // const memberInfo = {name: firebase.auth().currentUser.displayName, uid: firebase.auth().currentUser.uid, max: 50};
+          const memberInfo = {name: firebaseUser.displayName, uid: firebaseUser.uid, max: 50};
           // check if the flock is completed
           // make user enter credit card information
           db.collection('users').doc(firebase.auth().currentUser.uid).update({

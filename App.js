@@ -1,7 +1,7 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, Alert} from 'react-native';
 import AnimatedSplash from 'react-native-animated-splash-screen';
-import {firebase} from 'App/firebase/config';
+import {firebase, auth} from 'App/firebase/config';
 import {Provider} from 'react-redux';
 import {createStore} from 'redux';
 
@@ -10,34 +10,53 @@ import AuthNavigator from 'App/navigators/AuthNavigator';
 import reducers from 'App/redux/reducers';
 import {fetchUserData} from './App/utils';
 
-class App extends React.Component {
-  state = {
-    isLoaded: false,
-    loggedIn: null,
-    userData: null,
-  };
+const App = () => {
+  // state = {
+  //   isLoaded: false,
+  //   loggedIn: null,
+  //   userData: null,
+  // };
 
-  componentDidMount() {
-    //firebase.firestore().collection('post').get();
-    this.setState({isLoaded: true});
-    firebase.auth().onAuthStateChanged((user) => {
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(null);
+  const [userData, setUserData] = useState(null);
+
+  // componentDidMount() {
+  //   //firebase.firestore().collection('post').get();
+  //   this.setState({isLoaded: true});
+  //   firebase.auth().onAuthStateChanged((user) => {
+  //     if (user) {
+  //       fetchUserData(user).then((user) => {
+  //         this.setState({loggedIn: true, userData: user});
+  //       });
+        
+  //     } else {
+  //       this.setState({loggedIn: false});
+  //     }
+  //   });
+  // }
+
+  useEffect(()=> {
+    setIsLoaded(true);
+    auth.onAuthStateChanged((user) => {
       if (user) {
         fetchUserData(user).then((user) => {
-          this.setState({loggedIn: true, userData: user});
+          setIsLoggedIn(true);
+          setUserData(user);
         });
         
       } else {
-        this.setState({loggedIn: false});
+        setIsLoggedIn(false);
       }
     });
-  }
+  }, []);
 
-  renderContent() {
-    switch (this.state.loggedIn) {
+  const renderContent = () => {
+    switch (isLoggedIn) {
       case true:
         return (
           <Provider
-            store={createStore(reducers, {userInfo: this.state.userData})}>
+            store={createStore(reducers, {userInfo: userData})}>
             <AppNavigator />
           </Provider>
         );
@@ -53,19 +72,19 @@ class App extends React.Component {
         return <View style={{height: '70%', justifyContent: 'center'}}></View>;
     }
   }
-  render() {
+
     return (
       <AnimatedSplash
         translucent={true}
-        isLoaded={this.state.isLoaded}
+        isLoaded={isLoaded}
         logoImage={require('App/Assets/Images/flockicon3.png')}
         backgroundColor={'#262626'}
         logoHeight={150}
         logoWidth={150}>
-        <View style={{flex: 1}}>{this.renderContent()}</View>
+        <View style={{flex: 1}}>{renderContent()}</View>
       </AnimatedSplash>
     );
   }
-}
+
 
 export default App;

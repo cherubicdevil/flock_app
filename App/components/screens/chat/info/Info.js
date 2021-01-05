@@ -24,7 +24,7 @@ import {
   createDrawerNavigator,
   useIsDrawerOpen,
 } from '@react-navigation/drawer';
-import {firebase, db} from 'App/firebase/config';
+import {firebase, db, firebaseUser} from 'App/firebase/config';
 import {useDispatch} from 'react-redux';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import {createStackNavigator} from '@react-navigation/stack';
@@ -137,7 +137,8 @@ const Info = ({route, navigation}) => {
         });
         } else {
           db.collection('chatGroups').doc(route.params.data.id).update({
-            chatIds: firebase.firestore.FieldValue.arrayRemove(generateUserObject(firebase.auth().currentUser.displayName, firebase.auth().currentUser.uid))
+            chatIds: firebase.firestore.FieldValue.arrayRemove(generateUserObject(firebaseUser.displayName, firebaseUser.uid))
+            // chatIds: firebase.firestore.FieldValue.arrayRemove(generateUserObject(firebase.auth().currentUser.displayName, firebase.auth().currentUser.uid))
           });
         }
               dispatch({type: "UPDATE_DATA", payload: ["chatIds", "remove", "array", route.params.data.id]});
