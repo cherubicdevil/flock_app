@@ -20,15 +20,15 @@ const FlockReserve = ({navigation, route}) => {
       },[]);
 
       const markPeriod = (start, duration=4, options) => {
-          const day = start;
           const marked = {};
         for (var i = 1; i < duration - 1; i++) {
-            marked[moment(day.dateString).add(i, 'days').format('YYYY-MM-DD')] = options;
+            marked[moment(start.dateString).add(i, 'days').format('YYYY-MM-DD')] = options;
         }
-          marked[day.dateString] = {
+          marked[start.dateString] = {
             startingDay: true,...options
           };
-          marked[moment(day.dateString).add(duration-1, 'days').format('YYYY-MM-DD')] = {endingDay: true, ...options};
+          console.log(start);
+          marked[moment(start.dateString).add(duration-1, 'days').format('YYYY-MM-DD')] = {endingDay: true, ...options};
           setMyMarkedDates(marked);
       } 
 
@@ -39,7 +39,7 @@ const FlockReserve = ({navigation, route}) => {
         //     console.log(markedDates);
         //     return;
         // }
-        if (reserved(othersMarkedDates, auth.currentUser.uid, 4)) {
+        if (reserved(othersMarkedDates, auth.currentUser.uid, 4, day.dateString)) {
           return;
         }
         setPicked(true);
@@ -65,17 +65,18 @@ const FlockReserve = ({navigation, route}) => {
     />
     {picked?<Button title="rent" onPress={()=>{
       // db.collection("chatGroups").doc(route.params.data.id).update({[`markedDates.${auth.currentUser.uid}`]: markedDates});
-      db.collection("chatGroups").doc(route.params.data.id).update({'markedDates': markedDates});
+      db.collection("chatGroups").doc(route.params.data.id).update({'markedDates': {...othersMarkedDates, ...myMarkedDates}});
+      setModalOpen(false);
     }} />:<></>}
         <Button title="close" onPress={()=>{setModalOpen(!modalOpen)}} />
         </View></Modal>
         </SafeAreaView>;
 }
 
-const reserved = (markedDates, userId, duration) => {
+const reserved = (markedDates, userId, duration, day) => {
   var truth = false;
   for (var i = 0; i < duration; i++) {
-    const value = markedDates[moment(day.dateString).add(i, 'days').format('YYYY-MM-DD')];
+    const value = markedDates[moment(day).add(i, 'days').format('YYYY-MM-DD')];
     if (value === undefined || value === null) { // if unoccupied
       continue;
     }
