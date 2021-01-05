@@ -20,7 +20,7 @@ import Video from 'react-native-video';
 import {useSelector} from 'react-redux';
 import {constants} from 'App/constants';
 //import Input from 'App/components/common/Input';
-import {firebase, db} from 'App/firebase/config';
+import {firebase, db, auth} from 'App/firebase/config';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import {getIndexOfData} from '../../../utils';
 //import Base64 from 'base-64';
@@ -41,15 +41,9 @@ so there is no chance that the data will be out of sync.
 
 */
 
-const userInfo = {
-  username: firebase.auth().currentUser.displayName,
-  bio: 'Hi I like pie. I also like pi. I am a user of flock, a flocker.',
-  age: '20',
-  gender: 'Male',
-};
+
 
 const ProfilePicture = () => {
-  const user = firebase.auth().currentUser;
 
   const [avatar, setAvatar] = useState({
     //user.photoUrl,
@@ -74,6 +68,12 @@ const ProfilePicture = () => {
   );
 };
 const ProfileMain = ({navigation}) => {
+  const userInfo = {
+    username: auth.currentUser.displayName,
+    bio: 'Hi I like pie. I also like pi. I am a user of flock, a flocker.',
+    age: '20',
+    gender: 'Male',
+  };
   const selector = useSelector((state) => state);
   //const user = firebase.auth().currentUser;
   const Test1 = () => {
