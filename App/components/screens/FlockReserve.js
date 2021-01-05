@@ -1,18 +1,24 @@
-import React, {useState, useRef} from 'react';
+import React, {useState, useRef, useEffect} from 'react';
 import {View, Text, SafeAreaView, Image, Modal, Button} from 'react-native';
 import {Calendar} from 'react-native-calendars';
 import moment from 'moment';
+import {firebase, db, auth} from 'App/firebase/config';
 var seedrandom = require('seedrandom');
 
 
 const FlockReserve = ({navigation, route}) => {
     const [picked, setPicked] = useState(false);
-    const [markedDates, setMarkedDates] = useState({
-        '2021-01-20': {textColor: 'green'},
-        '2021-01-22': {startingDay: true, color: 'green'},
-        '2021-01-23': {selected: true, endingDay: true, color: 'green', textColor: 'gray'},
-        '2021-01-04': {disabled: true, startingDay: true, color: 'green', endingDay: true}
-      });
+    const [othersMarkedDates, setOthersMarkedDates] = useState({});
+    const [myMarkedDates, setMyMarkedDates] = useState({});
+
+      useEffect(()=> {
+        db.collection("chatGroups").doc(route.params.data.id)
+    .onSnapshot(function(doc) {
+        console.log("Current dates: ", doc.data().markedDates);
+        setOthersMarkedDates(doc.data().markedDates);
+    });
+      },[]);
+
       const markPeriod = (start, duration=4, options) => {
           const day = start;
           const marked = {};
@@ -23,38 +29,64 @@ const FlockReserve = ({navigation, route}) => {
             startingDay: true,...options
           };
           marked[moment(day.dateString).add(duration-1, 'days').format('YYYY-MM-DD')] = {endingDay: true, ...options};
-          setMarkedDates(marked);
+          setMyMarkedDates(marked);
       } 
+
+
     const handleDayPress = (day) => {
         // if (markedDates[day.dateString]) {
         //     markPeriod(4, {});
         //     console.log(markedDates);
         //     return;
         // }
+        if (reserved(othersMarkedDates, auth.currentUser.uid, 4)) {
+          return;
+        }
         setPicked(true);
-        markPeriod(start=day, duration=4, options={color: 'green'});
-        console.log(markedDates);
+        markPeriod(start=day, duration=4, options={color: 'green', user: auth.currentUser.uid});
+        console.log(myMarkedDates);
         
       }
-    const cal = useRef();
     const [modalOpen, setModalOpen] = useState(false);
     console.log(route.params);
     return <SafeAreaView>
         <Button title="back" onPress={()=>navigation.goBack()} style={{position: 'absolute', top: '10'}}/>
         <Image style = {{width: '100%', height: '80%', resizeMode: 'contain'}} source = {{uri: route.params.data.product.image}} />
         <Text>{route.params.data.product.title}</Text>
-        <Button title="reserve" onPress={()=>{setModalOpen(!modalOpen)}}/>
+        <Button title="reserve" onPress={()=>{
+          setModalOpen(!modalOpen);
+          }}/>
         <Modal transparent animationType="slide" visible={modalOpen} style={{justifyContent: 'flex-end'}}>
             <View style={{width: '100%', height: '50%', position: 'absolute', bottom: 0, backgroundColor: 'white'}}>
     <Calendar
-      markedDates={markedDates}
+      markedDates={{...othersMarkedDates, ...myMarkedDates}}
       markingType={'period'}
       onDayPress={handleDayPress}
     />
-    {picked?<Button title="rent" />:<></>}
+    {picked?<Button title="rent" onPress={()=>{
+      // db.collection("chatGroups").doc(route.params.data.id).update({[`markedDates.${auth.currentUser.uid}`]: markedDates});
+      db.collection("chatGroups").doc(route.params.data.id).update({'markedDates': markedDates});
+    }} />:<></>}
         <Button title="close" onPress={()=>{setModalOpen(!modalOpen)}} />
         </View></Modal>
         </SafeAreaView>;
+}
+
+const reserved = (markedDates, userId, duration) => {
+  var truth = false;
+  for (var i = 0; i < duration; i++) {
+    const value = markedDates[moment(day.dateString).add(i, 'days').format('YYYY-MM-DD')];
+    if (value === undefined || value === null) { // if unoccupied
+      continue;
+    }
+    if (value.user !== userId) { // if occupied and not occupied by you
+      return true;
+    }
+    if (value.user === userId) { // if occupied previously by you, can't change. if still figuring out, can change.
+    // also, might want to have a reschedule or cancel option if click.
+      return true;
+    }
+  }
 }
 
 export default FlockReserve;
