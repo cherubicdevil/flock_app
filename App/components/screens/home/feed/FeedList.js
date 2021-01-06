@@ -30,7 +30,8 @@ import HalfProduct from './HalfProduct';
 import {constants} from 'App/constants';
 import {fetchAlbums, fetchProducts, mergeArrays} from 'App/utils';
 import LinearGradient from 'react-native-linear-gradient';
-
+import ProductBlurb from 'App/components/screens/home/feed/ProductBlurb';
+const width = Dimensions.get('window').width / 2 - 30;
 class FeedList extends React.Component {
   state = {album1: [], album2: [], myAr: [], visible: true, inInView: false};
 
@@ -42,7 +43,12 @@ class FeedList extends React.Component {
   checkVisible(isVisible) {
     this.setState({isInView: isVisible});
   }
-
+  renderProductBlurb(product) {
+    if (this.props.productBlurb) {
+      return this.props.productBlurb(product);
+    }
+    return <ProductBlurb data={product} />
+  }
   renderClucks(album) {
     //console.log("CLUCKS", this.props.route.params.videoData);
     return album.map((al) => {
@@ -50,6 +56,15 @@ class FeedList extends React.Component {
         return <HalfProduct navigation={this.props.navigation} album={al} />;
       } else {
         return (
+          <>
+                    <View
+        style={{
+          borderTopWidth: 3,
+          borderColor: 'black',
+          overflow: 'hidden',
+          width: width,
+        }}>
+          <View style={{overflow: 'hidden', borderBottomLeftRadius: 40, borderBottomRightRadius: 40, borderWidth: 3, borderColor: 'black'}}>
           <FeedItem
             mute={true}
             repeat={true}
@@ -62,7 +77,10 @@ class FeedList extends React.Component {
             title={al.title}
             type={al.type}
             key={al.title + Math.random()}
-          />
+          /></View>
+          </View>
+          {this.renderProductBlurb(al)}
+          </>
         );
       }
     });
