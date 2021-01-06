@@ -36,7 +36,7 @@ class FeedList extends React.Component {
 
   constructor(props) {
     super(props);
-
+    
   }
 
   checkVisible(isVisible) {
@@ -69,6 +69,7 @@ class FeedList extends React.Component {
   }
 
   render() {
+    console.log('flock data length', this.props.route.params.videoData.length);
     console.log("FL DATA", this.props.route.params);
     const ar = mergeArrays(this.props.route.params.videoData, []);
     const album1 = ar.slice(0, ar.length / 2);

@@ -22,7 +22,7 @@
  *
  */
 
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, createContext, useContext} from 'react';
 import {View, Text, TextInput, Image, ImageBackground, TouchableOpacity} from 'react-native';
 import FeedList from './feed/FeedList';
 import {constants} from 'App/constants';
@@ -30,22 +30,67 @@ import styles from './Home.style.ios';
 import LinearGradient from 'react-native-linear-gradient';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import {fetchChatGroups} from 'App/utils';
+import {firebase, db} from 'App/firebase/config';
+import {CommonActions, NavigationContainer} from '@react-navigation/native';
 
 const Tab = createMaterialTopTabNavigator();
+const KeyContext = createContext();
+const KeyContextProvider = (props) => {
+  const [routeKey, setRouteKey] = useState(null);
+  return (
+    <KeyContext.Provider
+      value={{key: routeKey, setKey: (value) => setRouteKey(value)}}>
+      {props.children}
+    </KeyContext.Provider>
+  );
+};
 
+const DataList = ({navigation, route}) => {
+  const val = route.params?.value || null;
+  const {setKey} = useContext(KeyContext);
+
+  useEffect(() => {
+    setKey(route.key);
+  }, [route, setKey]);
+  var data = route.params.videoData;
+  return <View style={{height: '100%', backgroundColor: 'pink', width: '100%'}}><Text style={{color: 'white'}}>{val}</Text></View>;
+}
+
+const HomeTabSwipe = ({videoData, navigation}) => {
+  const {key} = useContext(KeyContext);
+  React.useEffect(() => {
+    if (key) {
+      setTimeout(() => {
+        navigation.dispatch({
+          ...CommonActions.setParams({value: 'Updated state'}),
+          source: key,
+        });
+      }, 10000);
+    }
+  }, [key]);
+
+
+  var navigator = 
+  <Tab.Navigator>
+  <Tab.Screen name="posts" component={FeedList} initialParams={{videoData: videoData}} />
+  <Tab.Screen name="Flocking" component={DataList} initialParams={{value: 'hello world'}} />
+  <Tab.Screen name="Popular" component={FeedList} initialParams={{videoData: []}} />
+  <Tab.Screen name="Borrow" component={FeedList} initialParams={{videoData: []}} />
+</Tab.Navigator>;
+
+
+return <>{navigator}</>;
+
+
+}
 const Home = ({route, navigation, lastVisible = null}) => {
+
   const [flockData, setFlockData] = useState([{flock: 'test'}]);
+  const [rentData, setRentData] = useState([{flock: 'test'}]);
   console.log('flock DATA', flockData);
   const [testString, setTestString] = useState("helloworld");
   // {lastVisible} for keep track of firebase paging
 
-  var navigator = 
-  <Tab.Navigator>
-  <Tab.Screen name="posts" component={FeedList} initialParams={{videoData: route.params.videoData}} />
-  <Tab.Screen name="Flocking" component={FeedList} initialParams={{videoData: route.params.flockData}} />
-  <Tab.Screen name="Popular" component={FeedList} initialParams={{videoData: []}} />
-  <Tab.Screen name="Borrow" component={FeedList} initialParams={{videoData: []}} />
-</Tab.Navigator>;
 
 {/* <FeedList navigation={navigation} route={route} /> */}
 
@@ -59,6 +104,26 @@ const Home = ({route, navigation, lastVisible = null}) => {
     // fetchRentGroups().then((ar) => {
     //   setRentData(ar);
     // });
+    var citiesRef = db.collection("chatGroups");
+    // this filter is kind of inefficient; gets the entire table
+    var query = citiesRef;
+    var unsubscribe = query
+    .onSnapshot(function(querySnapshot) {
+      const rent = [];
+      const flock = [];
+      querySnapshot.forEach(function(doc) {
+        console.log("FOUNDDDDDD");
+        if (doc.data().completed === false) {
+        flock.push(doc.data());
+        } else {
+          rent.push(doc.data());
+        }
+      });
+      setFlockData(flock);
+      setRentData(rent);
+    });
+
+    return () => {unsubscribe()};
   }, []);
   return (
     <View style={styles.wrapperAll}>
@@ -90,7 +155,9 @@ const Home = ({route, navigation, lastVisible = null}) => {
           />
           <Text style={{fontFamily: constants.FONT}}>Curating your clucks</Text>
         </View> */}
-        {navigator}
+        <KeyContextProvider>
+        <HomeTabSwipe navigation={navigation} videoData={route.params.videoData} />
+        </KeyContextProvider>
       </View>
     </View>
   );
