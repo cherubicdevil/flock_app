@@ -62,7 +62,13 @@ const DataList = ({navigation, route}) => {
   // const boxes = <View style={{backgroundColor: 'white'}}>{data.map(()=>{
   //   <View style={{width: 30, height: 50, backgroundColor: 'red'}} />
   // })}</View>
-  return <View style={{height: '100%', backgroundColor: 'pink', width: '100%'}}><Text style={{color: 'white'}}>{val}</Text><FeedList route={route} feedItem={()=><TouchableOpacity onPress={()=>{navigation.navigate('ProfileMain')}}><View style={{height: 150, backgroundColor: 'black', width: '100%'}} /></TouchableOpacity>} /></View>;
+  return <View style={{height: '100%', backgroundColor: 'pink', width: '100%'}}><Text style={{color: 'white'}}>{val}</Text><FeedList route={route} feedItem={(al)=><TouchableOpacity onPress={()=>{
+    if (route.params.dataType === "flockData") {
+      navigation.navigate('ChatInterface', {data: al});
+    } else if (route.params.dataType === "rentData") {
+    navigation.navigate('FlockReserve', {data:al});
+    }
+  }}><View style={{height: 150, backgroundColor: 'black', width: '100%'}} /></TouchableOpacity>} /></View>;
 }
 
 const HomeTabSwipe = ({videoData, navigation, route}) => {
