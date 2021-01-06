@@ -27,6 +27,7 @@ import ChatInterface from 'App/components/screens/chat/ChatInterface';
 import Info from 'App/components/screens/chat/info/Info';
 import FlockChatComplete from 'App/components/screens/FlockChatComplete';
 import FlockReserve from 'App/components/screens/FlockReserve';
+import Checkout from 'App/components/screens/Checkout';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -144,6 +145,13 @@ const AppNavigator5 = () => {
         <Tab.Screen
           name="FlockReserve"
           component={FlockReserve}
+          options={{
+            tabBarVisible: false,
+          }}
+        />
+          <Tab.Screen
+          name="Checkout"
+          component={Checkout}
           options={{
             tabBarVisible: false,
           }}

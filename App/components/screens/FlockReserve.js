@@ -75,8 +75,14 @@ const FlockReserve = ({navigation, route}) => {
     {picked?<Button title="rent" onPress={()=>{
       // db.collection("chatGroups").doc(route.params.data.id).update({[`markedDates.${auth.currentUser.uid}`]: markedDates});
       console.log('HELLOOOOOO');
-      
-      db.collection("chatGroups").doc(route.params.data.id).update({'markedDates': {...othersMarkedDates, ...myMarkedDates}});
+      const dates = Object.keys(myMarkedDates);
+      const start = dates[0];
+      const end = dates[1];
+      // db.collection("chatGroups").doc(route.params.data.id).update({'markedDates': {...othersMarkedDates, ...myMarkedDates}});
+      navigation.navigate('Checkout', {doneFunc: ()=> {
+        db.collection("chatGroups").doc(route.params.data.id).update({'markedDates': {...othersMarkedDates, ...myMarkedDates}});
+        console.log('payment done!');
+      }, extra: <Text>{start} to {end}</Text>}, );
       setModalOpen(false);
     }} />:<></>}
         <Button title="close" onPress={()=>{setModalOpen(!modalOpen)}} />
