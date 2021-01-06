@@ -141,9 +141,13 @@ function FlockChatComplete({route, navigation}) {
             <Text style={{color:'white', marginBottom: 10, fontWeight: 'bold'}}>Your maximum: </Text>
             <Text style={{color:'white', marginBottom: 10, fontWeight: 'bold'}}>Want to pay less? Get more people to join!</Text>
             </View>
+            <TouchableOpacity onPress={()=>{
+              navigation.navigate("FlockReserve", {data: route.params.data});
+            }}>
             <View style={{padding: 20, marginBottom: 15, paddingLeft: 30, borderRadius: 50, shadowRadius: 2.62, backgroundColor: 'white', shadowOpacity: 0.23, shadowOffset:{height: 2,width:0}, elevation: 1}}>
             <Image style={{width: 50, height: 50}} source={{uri: route.params.data.product.image}} />
             </View>
+            </TouchableOpacity>
           </LinearGradient>
         </View>
       <View style={{marginTop: 20, flexDirection: 'row'}}>
