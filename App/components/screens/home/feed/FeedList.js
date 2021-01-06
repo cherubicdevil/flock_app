@@ -61,7 +61,7 @@ class FeedList extends React.Component {
             source={{uri: al.image || al.video}}
             title={al.title}
             type={al.type}
-            key={al.title + Math.random()}
+            key={al.title}
           />
         );
       }
@@ -71,6 +71,7 @@ class FeedList extends React.Component {
   render() {
     // console.log('flock data length', this.props.route.params.videoData.length);
     // console.log("FL DATA", this.props.route.params);
+    console.log(this.props.route.params.videoData.length);
     const ar = mergeArrays(this.props.route.params.videoData, []);
     const album1 = ar.slice(0, ar.length / 2);
     const album2 = ar.slice(ar.length / 2, ar.length);

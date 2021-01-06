@@ -50,16 +50,12 @@ const DataList = ({navigation, route}) => {
   const {key, setKey} = useContext(KeyContext);
   console.log(route.params[route.params['dataType']]);
   // console.log("DATATYPE", route.params.dataType);
-  console.log("FLOCK DATA", route.params.flockData);
+  console.log(route.params.dataType + " DATA", route.params.flockData);
   route.params.videoData = route.params[route.params.dataType];
   //route.params.videoData = route.params.flockData;
 
   useEffect(() => {
     setKey(route.key);
-    // navigation.dispatch({
-    //   ...CommonActions.setParams({videoData: route.params['flockData']}),
-    //   source: key,
-    // });
   }, [route, setKey, key]);
   var data = route.params.videoData;
   // data.map(()=>{});
@@ -73,6 +69,7 @@ const HomeTabSwipe = ({videoData, navigation, route}) => {
   const [flockData, setFlockData] = useState([{flock: 'test'}]);
   const [rentData, setRentData] = useState([{flock: 'test'}]);
   const {key} = useContext(KeyContext);
+  var unsubscribe;
   React.useEffect(() => {
     if (key) {
       setTimeout(() => {
@@ -85,7 +82,7 @@ const HomeTabSwipe = ({videoData, navigation, route}) => {
       var citiesRef = db.collection("chatGroups");
       // this filter is kind of inefficient; gets the entire table
       var query = citiesRef;
-      var unsubscribe = query
+      unsubscribe = query
       .onSnapshot(function(querySnapshot) {
         const rent = [];
         const flock = [];
@@ -104,12 +101,18 @@ const HomeTabSwipe = ({videoData, navigation, route}) => {
         // setRentData(rent);
       });
   
-      return () => {unsubscribe()};
+      //return () => {unsubscribe()};
     }
 
   }, [key]);
 
-
+  useEffect(()=>{
+    return () => {
+      if (unsubscribe) {
+        unsubscribe();
+      }
+    };
+  },[]);
   var navigator = 
   <Tab.Navigator>
   <Tab.Screen name="posts" component={FeedList} initialParams={{videoData: videoData}} />
