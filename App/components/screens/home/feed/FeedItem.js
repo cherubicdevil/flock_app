@@ -35,25 +35,15 @@ const FeedItem = ({videoAr, navigation, data, title}) => {
   const [isInView, setIsInView] = useState(false);
   const colortype = 'black';
   return (
+
     <InViewPort
       style={{
-        shadowColor: '#000',
-        shadowOffset: {width: 0, height: 1},
-        shadowOpacity: 0.1,
-        shadowRadius: 2,
+
       }}
       onChange={(isVisible) => {
         setIsInView(isVisible);
       }}>
-      <View
-        style={{
-          borderTopWidth: 3,
-          borderColor: colortype,
-          overflow: 'hidden',
-          width: width,
-        }}>
-        {/* <Berry /> */}
-        <View style={{overflow: 'hidden', borderBottomLeftRadius: 40, borderBottomRightRadius: 40, borderWidth: 3, borderColor: colortype}}>
+        
         <Media
           isInView={isInView}
           width={width}
@@ -62,10 +52,7 @@ const FeedItem = ({videoAr, navigation, data, title}) => {
           videoAr={videoAr}
           title={title}
         />
-        </View>
-        <ProductBlurb data={data} />
-        <View style={{height: 10}} />
-      </View>
+      
     </InViewPort>
   );
 };
