@@ -47,11 +47,20 @@ const KeyContextProvider = (props) => {
 
 const DataList = ({navigation, route}) => {
   const val = route.params?.value || null;
-  const {setKey} = useContext(KeyContext);
-  console.log(route.params);
+  const {key, setKey} = useContext(KeyContext);
+  console.log(route.params[route.params['dataType']]);
+  // console.log("DATATYPE", route.params.dataType);
+  console.log("FLOCK DATA", route.params.flockData);
+  route.params.videoData = route.params[route.params.dataType];
+  //route.params.videoData = route.params.flockData;
+
   useEffect(() => {
     setKey(route.key);
-  }, [route, setKey]);
+    // navigation.dispatch({
+    //   ...CommonActions.setParams({videoData: route.params['flockData']}),
+    //   source: key,
+    // });
+  }, [route, setKey, key]);
   var data = route.params.videoData;
   // data.map(()=>{});
   // const boxes = <View style={{backgroundColor: 'white'}}>{data.map(()=>{
@@ -60,7 +69,7 @@ const DataList = ({navigation, route}) => {
   return <View style={{height: '100%', backgroundColor: 'pink', width: '100%'}}><Text style={{color: 'white'}}>{val}</Text><FeedList route={route} /></View>;
 }
 
-const HomeTabSwipe = ({videoData, navigation}) => {
+const HomeTabSwipe = ({videoData, navigation, route}) => {
   const [flockData, setFlockData] = useState([{flock: 'test'}]);
   const [rentData, setRentData] = useState([{flock: 'test'}]);
   const {key} = useContext(KeyContext);
@@ -81,7 +90,6 @@ const HomeTabSwipe = ({videoData, navigation}) => {
         const rent = [];
         const flock = [];
         querySnapshot.forEach(function(doc) {
-          console.log("FOUNDDDDDD");
           if (doc.data().completed === false) {
           flock.push(doc.data());
           } else {
@@ -89,7 +97,7 @@ const HomeTabSwipe = ({videoData, navigation}) => {
           }
         });
         navigation.dispatch({
-          ...CommonActions.setParams({videoData: rent}),
+          ...CommonActions.setParams({videoData: [], rentData: rent, flockData: flock}),
           source: key,
         });
         // setFlockData(flock);
@@ -105,9 +113,9 @@ const HomeTabSwipe = ({videoData, navigation}) => {
   var navigator = 
   <Tab.Navigator>
   <Tab.Screen name="posts" component={FeedList} initialParams={{videoData: videoData}} />
-  <Tab.Screen name="Flocking" component={DataList} initialParams={{value: 'hello world', videoData:[]}} />
+  <Tab.Screen name="Flocking" component={DataList} initialParams={{value: 'hello world', videoData:[], flockData: [], rentData: [], dataType: 'flockData'}} />
   <Tab.Screen name="Popular" component={FeedList} initialParams={{videoData: []}} />
-  <Tab.Screen name="Borrow" component={FeedList} initialParams={{videoData: []}} />
+  <Tab.Screen name="Borrow" component={DataList} initialParams={{value: 'hello world', videoData:[], flockData: [], rentData: [], dataType: 'rentData'}} />
 </Tab.Navigator>;
 
 
@@ -167,18 +175,11 @@ const Home = ({route, navigation, lastVisible = null}) => {
           <Text style={{fontFamily: constants.FONT}}>Curating your clucks</Text>
         </View> */}
         <KeyContextProvider>
-        <HomeTabSwipe navigation={navigation} videoData={route.params.videoData} />
+        <HomeTabSwipe navigation={navigation} route= {route} videoData={route.params.videoData} />
         </KeyContextProvider>
       </View>
     </View>
   );
 };
-
-const T1 = ({navigation}) => {
-  return <TouchableOpacity onPress={()=>{navigation.navigate("ProfileMain")}}><Text>Hi</Text></TouchableOpacity>
-}
-const T2 = () => {
-  return <Text>Hi2</Text>
-}
 
 export default Home;

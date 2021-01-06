@@ -69,8 +69,8 @@ class FeedList extends React.Component {
   }
 
   render() {
-    console.log('flock data length', this.props.route.params.videoData.length);
-    console.log("FL DATA", this.props.route.params);
+    // console.log('flock data length', this.props.route.params.videoData.length);
+    // console.log("FL DATA", this.props.route.params);
     const ar = mergeArrays(this.props.route.params.videoData, []);
     const album1 = ar.slice(0, ar.length / 2);
     const album2 = ar.slice(ar.length / 2, ar.length);
