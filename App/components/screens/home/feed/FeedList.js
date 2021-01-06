@@ -49,10 +49,28 @@ class FeedList extends React.Component {
     }
     return <ProductBlurb data={product} />
   }
+  renderFeedItem(al) {
+    if (this.props.feedItem) {
+      return this.props.feedItem(al);
+    }
+    return <FeedItem
+    mute={true}
+    repeat={true}
+    ar={this.state.myAr}
+    videoAr={this.props.route.params.videoData}
+    index={this.state.myAr.indexOf(al)}
+    navigation={this.props.navigation}
+    data={al}
+    source={{uri: al.image || al.video}}
+    title={al.title}
+    type={al.type}
+    key={al.title}
+  />
+  }
   renderClucks(album) {
     //console.log("CLUCKS", this.props.route.params.videoData);
     return album.map((al) => {
-      if (al.flock) {
+      if (false) {
         return <HalfProduct navigation={this.props.navigation} album={al} />;
       } else {
         return (
@@ -65,19 +83,9 @@ class FeedList extends React.Component {
           width: width,
         }}>
           <View style={{overflow: 'hidden', borderBottomLeftRadius: 40, borderBottomRightRadius: 40, borderWidth: 3, borderColor: 'black'}}>
-          <FeedItem
-            mute={true}
-            repeat={true}
-            ar={this.state.myAr}
-            videoAr={this.props.route.params.videoData}
-            index={this.state.myAr.indexOf(al)}
-            navigation={this.props.navigation}
-            data={al}
-            source={{uri: al.image || al.video}}
-            title={al.title}
-            type={al.type}
-            key={al.title}
-          /></View>
+          
+          {this.renderFeedItem(al)}
+          </View>
           </View>
           {this.renderProductBlurb(al)}
           </>
