@@ -43,7 +43,7 @@ const FlockReserve = ({navigation, route}) => {
           return;
         }
         setPicked(true);
-        markPeriod(start=day, duration=4, options={color: 'green', user: auth.currentUser.uid});
+        markPeriod(start=day, duration=4, options={color: 'blue', user: auth.currentUser.uid});
         console.log(myMarkedDates);
         
       }
@@ -65,6 +65,10 @@ const FlockReserve = ({navigation, route}) => {
     />
     {picked?<Button title="rent" onPress={()=>{
       // db.collection("chatGroups").doc(route.params.data.id).update({[`markedDates.${auth.currentUser.uid}`]: markedDates});
+      console.log('HELLOOOOOO');
+      for (var el in myMarkedDates) {
+        myMarkedDates[el] = {...myMarkedDates[el], color: 'green'}
+      }
       db.collection("chatGroups").doc(route.params.data.id).update({'markedDates': {...othersMarkedDates, ...myMarkedDates}});
       setModalOpen(false);
     }} />:<></>}
