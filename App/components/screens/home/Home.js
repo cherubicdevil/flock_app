@@ -48,15 +48,21 @@ const KeyContextProvider = (props) => {
 const DataList = ({navigation, route}) => {
   const val = route.params?.value || null;
   const {setKey} = useContext(KeyContext);
-
+  console.log(route.params);
   useEffect(() => {
     setKey(route.key);
   }, [route, setKey]);
   var data = route.params.videoData;
-  return <View style={{height: '100%', backgroundColor: 'pink', width: '100%'}}><Text style={{color: 'white'}}>{val}</Text></View>;
+  // data.map(()=>{});
+  // const boxes = <View style={{backgroundColor: 'white'}}>{data.map(()=>{
+  //   <View style={{width: 30, height: 50, backgroundColor: 'red'}} />
+  // })}</View>
+  return <View style={{height: '100%', backgroundColor: 'pink', width: '100%'}}><Text style={{color: 'white'}}>{val}</Text><FeedList route={route} /></View>;
 }
 
 const HomeTabSwipe = ({videoData, navigation}) => {
+  const [flockData, setFlockData] = useState([{flock: 'test'}]);
+  const [rentData, setRentData] = useState([{flock: 'test'}]);
   const {key} = useContext(KeyContext);
   React.useEffect(() => {
     if (key) {
@@ -66,14 +72,40 @@ const HomeTabSwipe = ({videoData, navigation}) => {
           source: key,
         });
       }, 10000);
+
+      var citiesRef = db.collection("chatGroups");
+      // this filter is kind of inefficient; gets the entire table
+      var query = citiesRef;
+      var unsubscribe = query
+      .onSnapshot(function(querySnapshot) {
+        const rent = [];
+        const flock = [];
+        querySnapshot.forEach(function(doc) {
+          console.log("FOUNDDDDDD");
+          if (doc.data().completed === false) {
+          flock.push(doc.data());
+          } else {
+            rent.push(doc.data());
+          }
+        });
+        navigation.dispatch({
+          ...CommonActions.setParams({videoData: rent}),
+          source: key,
+        });
+        // setFlockData(flock);
+        // setRentData(rent);
+      });
+  
+      return () => {unsubscribe()};
     }
+
   }, [key]);
 
 
   var navigator = 
   <Tab.Navigator>
   <Tab.Screen name="posts" component={FeedList} initialParams={{videoData: videoData}} />
-  <Tab.Screen name="Flocking" component={DataList} initialParams={{value: 'hello world'}} />
+  <Tab.Screen name="Flocking" component={DataList} initialParams={{value: 'hello world', videoData:[]}} />
   <Tab.Screen name="Popular" component={FeedList} initialParams={{videoData: []}} />
   <Tab.Screen name="Borrow" component={FeedList} initialParams={{videoData: []}} />
 </Tab.Navigator>;
@@ -85,9 +117,7 @@ return <>{navigator}</>;
 }
 const Home = ({route, navigation, lastVisible = null}) => {
 
-  const [flockData, setFlockData] = useState([{flock: 'test'}]);
-  const [rentData, setRentData] = useState([{flock: 'test'}]);
-  console.log('flock DATA', flockData);
+
   const [testString, setTestString] = useState("helloworld");
   // {lastVisible} for keep track of firebase paging
 
@@ -104,26 +134,7 @@ const Home = ({route, navigation, lastVisible = null}) => {
     // fetchRentGroups().then((ar) => {
     //   setRentData(ar);
     // });
-    var citiesRef = db.collection("chatGroups");
-    // this filter is kind of inefficient; gets the entire table
-    var query = citiesRef;
-    var unsubscribe = query
-    .onSnapshot(function(querySnapshot) {
-      const rent = [];
-      const flock = [];
-      querySnapshot.forEach(function(doc) {
-        console.log("FOUNDDDDDD");
-        if (doc.data().completed === false) {
-        flock.push(doc.data());
-        } else {
-          rent.push(doc.data());
-        }
-      });
-      setFlockData(flock);
-      setRentData(rent);
-    });
 
-    return () => {unsubscribe()};
   }, []);
   return (
     <View style={styles.wrapperAll}>

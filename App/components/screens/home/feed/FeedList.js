@@ -36,7 +36,7 @@ class FeedList extends React.Component {
 
   constructor(props) {
     super(props);
-    
+
   }
 
   checkVisible(isVisible) {
