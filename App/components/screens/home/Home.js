@@ -48,11 +48,7 @@ const KeyContextProvider = (props) => {
 const DataList = ({navigation, route}) => {
   const val = route.params?.value || null;
   const {key, setKey} = useContext(KeyContext);
-  console.log(route.params[route.params['dataType']]);
-  // console.log("DATATYPE", route.params.dataType);
-  console.log(route.params.dataType + " DATA", route.params.flockData);
   route.params.videoData = route.params[route.params.dataType];
-  //route.params.videoData = route.params.flockData;
 
   useEffect(() => {
     setKey(route.key);
@@ -85,27 +81,7 @@ const HomeTabSwipe = ({videoData, navigation, route}) => {
         });
       }, 10000);
 
-      var citiesRef = db.collection("chatGroups");
-      // this filter is kind of inefficient; gets the entire table
-      var query = citiesRef;
-      unsubscribe = query
-      .onSnapshot(function(querySnapshot) {
-        const rent = [];
-        const flock = [];
-        querySnapshot.forEach(function(doc) {
-          if (doc.data().completed === false) {
-          flock.push(doc.data());
-          } else {
-            rent.push(doc.data());
-          }
-        });
-        navigation.dispatch({
-          ...CommonActions.setParams({videoData: [], rentData: rent, flockData: flock}),
-          source: key,
-        });
-        // setFlockData(flock);
-        // setRentData(rent);
-      });
+
   
       //return () => {unsubscribe()};
     }
@@ -113,11 +89,32 @@ const HomeTabSwipe = ({videoData, navigation, route}) => {
   }, [key]);
 
   useEffect(()=>{
-    return () => {
-      if (unsubscribe) {
-        unsubscribe();
-      }
-    };
+    // return () => {
+    //   if (unsubscribe) {
+    //     unsubscribe();
+    //   }
+    // };
+    var citiesRef = db.collection("chatGroups");
+    // this filter is kind of inefficient; gets the entire table
+    var query = citiesRef;
+    unsubscribe = query
+    .onSnapshot(function(querySnapshot) {
+      const rent = [];
+      const flock = [];
+      querySnapshot.forEach(function(doc) {
+        if (doc.data().completed === false) {
+        flock.push(doc.data());
+        } else {
+          rent.push(doc.data());
+        }
+      });
+      navigation.dispatch({
+        ...CommonActions.setParams({videoData: [], rentData: rent, flockData: flock}),
+        source: key,
+      });
+      // setFlockData(flock);
+      // setRentData(rent);
+    });
   },[]);
   var navigator = 
   <Tab.Navigator>
