@@ -48,11 +48,20 @@ const KeyContextProvider = (props) => {
 
 const DataList = ({navigation, route}) => {
   const val = route.params?.value || null;
-  const {key, setKey} = useContext(KeyContext);
+  const {key, setKey, key1, setKey1} = useContext(KeyContext);
+  console.log(route.params[route.params['dataType']]);
+  // console.log("DATATYPE", route.params.dataType);
+  console.log(route.params.dataType + " DATA", route.params.flockData);
   route.params.videoData = route.params[route.params.dataType];
+  //route.params.videoData = route.params.flockData;
 
   useEffect(() => {
-    setKey(route.key);
+    if (route.params.dataType === 'flockData') {
+      setKey(route.key);
+    } else {
+      setKey1(route.key);
+    }
+    
   }, [route, setKey, key]);
   var data = route.params.videoData;
   // data.map(()=>{});
@@ -71,10 +80,10 @@ const DataList = ({navigation, route}) => {
 const HomeTabSwipe = ({videoData, navigation, route}) => {
   const [flockData, setFlockData] = useState([{flock: 'test'}]);
   const [rentData, setRentData] = useState([{flock: 'test'}]);
-  const {key} = useContext(KeyContext);
+  const {key, key1} = useContext(KeyContext);
   var unsubscribe;
   React.useEffect(() => {
-    if (key) {
+    if (key && key1) {
       setTimeout(() => {
         navigation.dispatch({
           ...CommonActions.setParams({value: 'Updated state'}),
@@ -82,40 +91,43 @@ const HomeTabSwipe = ({videoData, navigation, route}) => {
         });
       }, 10000);
 
-
+      var citiesRef = db.collection("chatGroups");
+      // this filter is kind of inefficient; gets the entire table
+      var query = citiesRef;
+      unsubscribe = query
+      .onSnapshot(function(querySnapshot) {
+        const rent = [];
+        const flock = [];
+        querySnapshot.forEach(function(doc) {
+          if (doc.data().completed === false) {
+          flock.push(doc.data());
+          } else {
+            rent.push(doc.data());
+          }
+        });
+        navigation.dispatch({
+          ...CommonActions.setParams({videoData: [], rentData: rent, flockData: flock}),
+          source: key,
+        });
+        navigation.dispatch({
+          ...CommonActions.setParams({videoData: [], rentData: rent, flockData: flock}),
+          source: key1,
+        });
+        // setFlockData(flock);
+        // setRentData(rent);
+      });
   
       //return () => {unsubscribe()};
     }
 
-  }, [key]);
+  }, [key, key1]);
 
   useEffect(()=>{
-    // return () => {
-    //   if (unsubscribe) {
-    //     unsubscribe();
-    //   }
-    // };
-    var citiesRef = db.collection("chatGroups");
-    // this filter is kind of inefficient; gets the entire table
-    var query = citiesRef;
-    unsubscribe = query
-    .onSnapshot(function(querySnapshot) {
-      const rent = [];
-      const flock = [];
-      querySnapshot.forEach(function(doc) {
-        if (doc.data().completed === false) {
-        flock.push(doc.data());
-        } else {
-          rent.push(doc.data());
-        }
-      });
-      navigation.dispatch({
-        ...CommonActions.setParams({videoData: [], rentData: rent, flockData: flock}),
-        source: key,
-      });
-      // setFlockData(flock);
-      // setRentData(rent);
-    });
+    return () => {
+      if (unsubscribe) {
+        unsubscribe();
+      }
+    };
   },[]);
   var navigator = 
   <Tab.Navigator>
