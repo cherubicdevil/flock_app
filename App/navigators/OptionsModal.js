@@ -153,7 +153,7 @@ const OptionsModal = ({
               </Text>
             </TouchableOpacity>
           </View>
-          {/* <TouchableOpacity
+          <TouchableOpacity
             onPress={() => {
               toggleFunc();
               resetAnimation();
@@ -168,7 +168,7 @@ const OptionsModal = ({
               }}>
               Cancel
             </Text>
-          </TouchableOpacity> */}
+          </TouchableOpacity>
         </View>
       </Modal>
     </View>

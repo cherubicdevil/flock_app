@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {View, Text, SafeAreaView, TouchableOpacity, Button, Modal, TextInput} from 'react-native';
 import stripe from 'tipsi-stripe';
 import {PaymentCardTextField} from 'tipsi-stripe';
+import AnimatedModal from 'App/components/AnimatedModal';
 
 const Checkout = ({navigation, route}) => {
     const [shipModal, setShipModal] = useState(false);
@@ -37,8 +38,8 @@ const Checkout = ({navigation, route}) => {
             }}><Text>Billing information</Text></TouchableOpacity>
         </View>
         <Modal visible={shipModal} ><TouchableOpacity style={{width: '100%', height: 100, backgroundColor: 'black'}} onPress={()=>{setShipModal(false)}}></TouchableOpacity></Modal>
-        <BillingModal visible={billModal} close={()=>setBillModal(false)} state={info} setState={setInfo} />
-        
+        <AnimatedModal visible={billModal} close={()=>setBillModal(false)} state={info} setState={setInfo} content={<BillingModal state={info} setState={setInfo} close={()=>setBillModal(false)}/>}/>
+        <AnimatedModal visible={shipModal} close={()=>setShipModal(false)} state={info} setState={setInfo} content={<ShippingModal state={info} setState={setInfo} close={()=>setShipModal(false)}/>}/>
         <Button title="done" onPress={async ()=>{
             // route.params.doneFunc();
             const token = await stripe.createTokenWithCard({
@@ -83,28 +84,119 @@ const validateCard = (cardNumber) => {
     return result == last;
 }
 
-const BillingModal = ({visible, close, state, setState}) => {
-    const [cardNumber, setCardNumber] = useState('');
-    const [exp, setExp] = useState('');
-    const [sec, setSec] = useState('');
-    return <>
-    <TouchableOpacity onPress={()=>close()} style={{position: 'absolute', top:0, height: visible?1000:0, width: '100%', backgroundColor: 'black', opacity: 0.4, zIndex: 30}} />
-    <Modal style={{position: 'absolute', bottom: 0, zIndex: 20}} animationType="slide" transparent={true} visible={visible} >
-        
-    <TouchableOpacity onPress={()=>close()} style={{position: 'absolute', top:0, height: visible?1000:0, width: '100%', zIndex: 30}} />
-        <View style={{position: 'absolute', bottom: 0, width: '100%', height: '50%', paddingLeft: 30, paddingRight: 30, borderTopLeftRadius: 40, borderTopRightRadius: 40, backgroundColor:'white', zIndex: 50}}>
+const BillingModal = ({state, setState, close}) => {
+    const [localState, setLocalState] = useState(state);
+    // const [cardNumber, setCardNumber] = useState('');
+    // const [expMonth, setExpMonth] = useState('');
+    // const [expYear, setExpYear] = useState('');
+    // const [sec, setSec] = useState('');
+    
+    // const [name, setName] = useState('');
+    const [valid, setValid] = useState(false);
+    const [error, setError] = useState(false);
+
+    const placeholderColor = localState.number === ''?'grey':'black';
+    const numberPlaceholder= localState.number=== ''?'4242424242424242':localState.number;
+    const expirationPlaceholder = localState.expMonth === ''?"MM/YY":localState.expMonth+"/"+localState.expYear;
+    return <View style={{position: 'absolute', bottom: 0, width: '100%', height: '50%', paddingLeft: 30, paddingRight: 30, borderTopLeftRadius: 40, borderTopRightRadius: 40, backgroundColor:'white', zIndex: 50}}>
+           <Text style={{color: 'red', opacity: error?1:0}}>Please review your information for errors</Text>
             <Text style={{marginLeft: 10}}>Card</Text>
-            <PaymentCardTextField style={{color: 'black', borderWidth: 1, borderRadius: 30}} />
+            <PaymentCardTextField style={{color: 'black', borderWidth: 1, borderRadius: 30}} 
+            onParamsChange={(valid, params) => {
+                // setValid(valid);
+                // setCardNumber(params.number);
+                // setSec(params.cvc);
+                // setExpMonth(params.expMonth);
+                // setExpYear(params.expYear);
+                if (valid) {
+                    setValid(true);
+                    setLocalState({
+                        ...localState,
+                        ...params
+                    })
+                } else {
+                    setValid(false);
+                }
+            }}
+            />
             <Text style={{marginLeft: 10}}>Full Name</Text>
-            <TextInput style={{borderWidth: 1, borderRadius: 30, padding: 10, paddingBottom: 10, paddingTop: 10, fontSize: 18}} />
+            <TextInput defaultValue={localState.name} onChangeText={(text)=> {
+                localState.name = text;
+            }} style={{borderWidth: 1, borderRadius: 30, padding: 10, paddingBottom: 10, paddingTop: 10, fontSize: 18}} />
             <TouchableOpacity style={{width: '100%', height: 100, }} onPress={()=>{
                  // if (!(validateCard(cardNumber(cardNumber)) && validateExp(expMonth, expYear)))
-                setState({...state, number: cardNumber, expMonth: '6', expYear: '23', cvc: '223'});
+                if (!valid || localState.name === '') {
+                    setError(true);
+                    return;
+                }
+                setState(localState);
                 close();
-                }}><Text>close</Text></TouchableOpacity>
+                }}><Text>done</Text></TouchableOpacity>
+                
             </View>
-            </Modal>
-            </>
+            
+}
+
+const ShippingModal = ({state, setState, close}) => {
+    const [localState, setLocalState] = useState(state);
+    // const [cardNumber, setCardNumber] = useState('');
+    // const [expMonth, setExpMonth] = useState('');
+    // const [expYear, setExpYear] = useState('');
+    // const [sec, setSec] = useState('');
+    
+    // const [name, setName] = useState('');
+    var valid = false;
+    const [error, setError] = useState(false);
+    return <View style={{position: 'absolute', bottom: 0, width: '100%', height: '50%', paddingLeft: 30, paddingRight: 30, borderTopLeftRadius: 40, borderTopRightRadius: 40, backgroundColor:'white', zIndex: 50}}>
+            <Text style={{color: 'red', opacity: error?1:0}}>Please review your information for errors</Text>
+            <Text style={{marginLeft: 10}}>Full Name</Text>
+            <TextInput defaultValue={localState.name} onChangeText={(text)=> {
+                localState.name = text;
+            }} style={{borderWidth: 1, borderRadius: 30, padding: 10, paddingBottom: 10, paddingTop: 10, fontSize: 18}} />
+            <Text style={{marginLeft: 10}}>Address</Text>
+            <TextInput defaultValue={localState.addressLine1} onChangeText={(text)=> {
+                localState.addressLine1 = text;
+            }} style={{borderWidth: 1, borderRadius: 30, padding: 10, paddingBottom: 10, paddingTop: 10, fontSize: 18}} />
+
+            <View style={{flexDirection: 'row'}}>
+                <View>
+            <Text style={{marginLeft: 10}}>City</Text>
+            <TextInput defaultValue={localState.addressCity} onChangeText={(text)=> {
+                localState.addressCity = text;
+            }} style={{borderWidth: 1, borderRadius: 30, padding: 10, paddingBottom: 10, paddingTop: 10, fontSize: 18}} />
+                        </View>
+                        <View>
+                        <Text style={{marginLeft: 10}}>State</Text>
+            <TextInput defaultValue={localState.addressState} onChangeText={(text)=> {
+                localState.addressState = text;
+            }} style={{borderWidth: 1, borderRadius: 30, padding: 10, paddingBottom: 10, paddingTop: 10, fontSize: 18}} />
+                        </View>
+                        <View>
+                        <Text style={{marginLeft: 10}}>Country</Text>
+            <TextInput defaultValue={localState.addressCountry} onChangeText={(text)=> {
+                localState.addressCountry = text;
+            }} style={{borderWidth: 1, borderRadius: 30, padding: 10, paddingBottom: 10, paddingTop: 10, fontSize: 18}} />
+            </View>
+            </View>            
+            <Text style={{marginLeft: 10}}>Zip Code</Text>
+            <TextInput defaultValue={localState.addressZip} onChangeText={(text)=> {
+                localState.addressZip = text;
+            }} style={{borderWidth: 1, borderRadius: 30, padding: 10, paddingBottom: 10, paddingTop: 10, fontSize: 18}} />
+
+            <TouchableOpacity style={{width: '100%', height: 100, }} onPress={()=>{
+                 // if (!(validateCard(cardNumber(cardNumber)) && validateExp(expMonth, expYear)))
+                valid = true;
+                 if (!valid) {
+                    setError(true);
+                    console.log('error');
+                    return;
+                }
+                setState(localState);
+                close();
+                }}><Text>done</Text></TouchableOpacity>
+                
+            </View>
+            
 }
 
 
