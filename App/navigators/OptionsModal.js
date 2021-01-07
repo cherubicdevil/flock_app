@@ -85,6 +85,10 @@ const OptionsModal = ({
           justifyContent: 'flex-end',
           backgroundColor: '#aea',
         }}>
+          <TouchableOpacity onPress={()=>{
+            toggleFunc();
+            resetAnimation();
+              }} style={{position: 'absolute', top:0, height: '100%', width: '100%', zIndex: 30}} />
         <View
           style={{
             backgroundColor: 'transparent',
@@ -149,7 +153,7 @@ const OptionsModal = ({
               </Text>
             </TouchableOpacity>
           </View>
-          <TouchableOpacity
+          {/* <TouchableOpacity
             onPress={() => {
               toggleFunc();
               resetAnimation();
@@ -164,7 +168,7 @@ const OptionsModal = ({
               }}>
               Cancel
             </Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
       </Modal>
     </View>
