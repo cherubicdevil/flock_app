@@ -37,9 +37,10 @@ const Tab = createMaterialTopTabNavigator();
 const KeyContext = createContext();
 const KeyContextProvider = (props) => {
   const [routeKey, setRouteKey] = useState(null);
+  const [routeKey1, setRouteKey1] = useState(null);
   return (
     <KeyContext.Provider
-      value={{key: routeKey, setKey: (value) => setRouteKey(value)}}>
+      value={{key: routeKey, setKey: (value) => setRouteKey(value), key1: routeKey1, setKey1: (value) => setRouteKey1(value)}}>
       {props.children}
     </KeyContext.Provider>
   );
