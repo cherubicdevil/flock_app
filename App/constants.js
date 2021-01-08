@@ -58,5 +58,7 @@ export const constants = {
   PINK_BACKGROUND: 'rgba(223, 210, 220,0.5)',
   TRANSLUCENT: '#f2f2f7',
   PEACH: '#ff9966',
-  GREYBLUE: '#8291b0'
+  GREYBLUE: '#8291b0',
+  CHAT_ENDPOINT: 'https://enigmatic-bastion-86695.herokuapp.com/',
+  PAY_ENDPOINT: 'https://protected-thicket-47492.herokuapp.com/', // ?price=&token=
 };

@@ -3,6 +3,7 @@ import {View, Text, SafeAreaView, TouchableOpacity, Button, Modal, TextInput} fr
 import stripe from 'tipsi-stripe';
 import {PaymentCardTextField} from 'tipsi-stripe';
 import AnimatedModal from 'App/components/AnimatedModal';
+import {constants} from 'App/constants';
 
 const Checkout = ({navigation, route}) => {
     const [shipModal, setShipModal] = useState(false);
@@ -10,9 +11,9 @@ const Checkout = ({navigation, route}) => {
 
     const [info, setInfo] = useState({
         // mandatory
-        number: '4242424242424242',
+        number: '4000000000000077',
         expMonth: 11,
-        expYear: 17,
+        expYear: 23,
         cvc: '223',
         // optional
         name: 'Test User',
@@ -42,14 +43,16 @@ const Checkout = ({navigation, route}) => {
         <AnimatedModal visible={shipModal} close={()=>setShipModal(false)} state={info} setState={setInfo} content={<ShippingModal state={info} setState={setInfo} close={()=>setShipModal(false)}/>}/>
         <Button title="done" onPress={async ()=>{
             // route.params.doneFunc();
-            const token = await stripe.createTokenWithCard({
-                number: '4242424242424242',
-                expMonth: 11,
-                expYear: 23,
-                cvc: '223',
-            });
+            const token = await stripe.createTokenWithCard(info);
+            console.log("token", token);
+            const endpoint = constants.PAY_ENDPOINT + `?price=${100}&token=${token.tokenId}`;
+            fetch(endpoint);
             console.log(token);
+            if (route.params.doneFunc) {
+                route.params.doneFunc();
+            }
             console.log('done');
+            navigation.navigate('Success');
         }} />
         <Button title="back" onPress = {()=>{navigation.goBack()}}/>
     </SafeAreaView>

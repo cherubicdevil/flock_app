@@ -68,7 +68,7 @@ const FlockReserve = ({navigation, route}) => {
         <Modal transparent animationType="slide" visible={modalOpen} style={{justifyContent: 'flex-end'}}>
             <View style={{width: '100%', height: '50%', position: 'absolute', bottom: 0, backgroundColor: 'white'}}>
     <Calendar
-      markedDates={{...othersMarkedDates, ...myMarkedDates}}
+      markedDates={{...myMarkedDates, ...othersMarkedDates }}
       markingType={'period'}
       onDayPress={handleDayPress}
     />
