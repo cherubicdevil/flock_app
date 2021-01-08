@@ -85,9 +85,11 @@ const AnimatedModal = ({
           <TouchableOpacity onPress={()=>{
             close();
             resetAnimation();
-              }} style={{position: 'absolute', top:0, height: '100%', width: '100%', zIndex: 30}} />
-
+              }} style={{position: 'absolute', top:0, height: '100%', width: '100%', zIndex: -30}} />
+<View style={{position: 'absolute', bottom: 0, width: '100%', borderRadius: 70, borderBottomRightRadius: 0, borderBottomLeftRadius: 0, backgroundColor: 'white', paddingTop: 20, overflow: 'hidden'}}>
+              
               {content}
+              </View>
       </Modal>
     </View>
   );

@@ -4,10 +4,11 @@ import {Calendar} from 'react-native-calendars';
 import moment from 'moment';
 import {firebase, db, auth} from 'App/firebase/config';
 var seedrandom = require('seedrandom');
+import AnimatedModal from 'App/components/AnimatedModal';
 
 
 const FlockReserve = ({navigation, route}) => {
-    const [picked, setPicked] = useState(false);
+    
     const [othersMarkedDates, setOthersMarkedDates] = useState({});
     const [myMarkedDates, setMyMarkedDates] = useState({});
 
@@ -28,34 +29,7 @@ const FlockReserve = ({navigation, route}) => {
     });
       },[]);
 
-      const markPeriod = (start, duration=4, options) => {
-          const marked = {};
-        for (var i = 1; i < duration - 1; i++) {
-            marked[moment(start.dateString).add(i, 'days').format('YYYY-MM-DD')] = options;
-        }
-          marked[start.dateString] = {
-            startingDay: true,...options
-          };
-          console.log(start);
-          marked[moment(start.dateString).add(duration-1, 'days').format('YYYY-MM-DD')] = {endingDay: true, ...options};
-          setMyMarkedDates(marked);
-      } 
 
-
-    const handleDayPress = (day) => {
-        // if (markedDates[day.dateString]) {
-        //     markPeriod(4, {});
-        //     console.log(markedDates);
-        //     return;
-        // }
-        if (reserved(othersMarkedDates, auth.currentUser.uid, 4, day.dateString)) {
-          return;
-        }
-        setPicked(true);
-        markPeriod(start=day, duration=4, options={color: 'rgba(100,255,50,0.5)', user: auth.currentUser.uid});
-        console.log(myMarkedDates);
-        
-      }
     const [modalOpen, setModalOpen] = useState(false);
     console.log(route.params);
     const rent = route.params.data.members.includes({name: auth.currentUser.displayName, uid: auth.currentUser.uid});
@@ -67,14 +41,47 @@ const FlockReserve = ({navigation, route}) => {
         <Button title="reserve" onPress={()=>{
           setModalOpen(!modalOpen);
           }}/>
-        <Modal transparent animationType="slide" visible={modalOpen} style={{justifyContent: 'flex-end'}}>
-            <View style={{width: '100%', height: '50%', position: 'absolute', bottom: 0, backgroundColor: 'white'}}>
+        <AnimatedModal visible={modalOpen} close={()=>setModalOpen(false)} content={<ReserveCalendar navigation = {navigation} myMarkedDates={myMarkedDates} setMyMarkedDates={setMyMarkedDates} othersMarkedDates={othersMarkedDates} />} />
+        </SafeAreaView>;
+}
+
+const ReserveCalendar = ({navigation, myMarkedDates, othersMarkedDates, setMyMarkedDates}) => {
+  const [picked, setPicked] = useState(false);
+  const markPeriod = (start, duration=4, options) => {
+    const marked = {};
+  for (var i = 1; i < duration - 1; i++) {
+      marked[moment(start.dateString).add(i, 'days').format('YYYY-MM-DD')] = options;
+  }
+    marked[start.dateString] = {
+      startingDay: true,...options
+    };
+    console.log(start);
+    marked[moment(start.dateString).add(duration-1, 'days').format('YYYY-MM-DD')] = {endingDay: true, ...options};
+    setMyMarkedDates(marked);
+} 
+
+
+const handleDayPress = (day) => {
+  // if (markedDates[day.dateString]) {
+  //     markPeriod(4, {});
+  //     console.log(markedDates);
+  //     return;
+  // }
+  if (reserved(othersMarkedDates, auth.currentUser.uid, 4, day.dateString)) {
+    return;
+  }
+  setPicked(true);
+  markPeriod(start=day, duration=4, options={color: 'rgba(100,255,50,0.5)', user: auth.currentUser.uid});
+  console.log(myMarkedDates);
+  
+}
+  return <View style={{paddingBottom: 20, backgroundColor: 'white'}}>
             <Calendar
       markedDates={{...myMarkedDates, ...othersMarkedDates }}
       markingType={'period'}
       onDayPress={handleDayPress}
     />
-    {picked?<Button title="rent" onPress={()=>{
+    <Button style={{color: picked?'blue':'grey'}} title="rent" onPress={()=>{
       // db.collection("chatGroups").doc(route.params.data.id).update({[`markedDates.${auth.currentUser.uid}`]: markedDates});
       console.log('HELLOOOOOO');
       const dates = Object.keys(myMarkedDates);
@@ -85,11 +92,9 @@ const FlockReserve = ({navigation, route}) => {
         db.collection("chatGroups").doc(route.params.data.id).update({'markedDates': {...othersMarkedDates, ...myMarkedDates}});
         console.log('payment done!');
       }, extra: <Text>{start} to {end}</Text>}, );
-      setModalOpen(false);
-    }} />:<></>}
-        <Button title="close" onPress={()=>{setModalOpen(!modalOpen)}} />
-        </View></Modal>
-        </SafeAreaView>;
+    }} />
+        {/* <Button title="close" onPress={()=>{setModalOpen(!modalOpen)}} /> */}
+        </View>
 }
 
 const reserved = (markedDates, userId, duration, day) => {
