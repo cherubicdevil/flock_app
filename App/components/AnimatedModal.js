@@ -39,6 +39,7 @@ const AnimatedModal = ({
   upPercent="55%",
   colored=false,
   colors=['transparent', 'transparent'],
+  bgcolor="white",
   fade=true
 }) => {
   const animation = useRef(new Animated.Value(0));
@@ -97,9 +98,9 @@ const AnimatedModal = ({
             close();
             resetAnimation();
               }} style={{position: 'absolute', top:0, height: '100%', width: '100%', zIndex: -30}} />
-            <View style={{position: 'absolute', bottom: 15, height: upPercent, width: '84%', backgroundColor: 'white', opacity: 0.5, alignSelf: 'center', borderRadius: 90,}} />
-            <View style={{position: 'absolute', bottom: 8, height: upPercent, width: '90%', backgroundColor: 'white', opacity: 0.5, alignSelf: 'center', borderRadius: 90,}} />
-            <View style={{position: 'absolute', bottom: 0, width: '100%', height: upPercent, borderRadius: 100, borderBottomRightRadius: 0, borderBottomLeftRadius: 0, backgroundColor: 'white', paddingTop: 40, overflow: 'hidden'}}>
+            <View style={{position: 'absolute', bottom: 15, height: upPercent, width: '84%', backgroundColor: bgcolor, opacity: 0.5, alignSelf: 'center', borderRadius: 90,}} />
+            <View style={{position: 'absolute', bottom: 8, height: upPercent, width: '90%', backgroundColor: bgcolor, opacity: 0.5, alignSelf: 'center', borderRadius: 90,}} />
+            <View style={{position: 'absolute', bottom: 0, width: '100%', height: upPercent, borderRadius: 100, borderBottomRightRadius: 0, borderBottomLeftRadius: 0, backgroundColor: bgcolor, paddingTop: 40, overflow: 'hidden'}}>
               
               {content}
               </View>
