@@ -38,7 +38,8 @@ const AnimatedModal = ({
   content,
   upPercent="55%",
   colored=false,
-  colors=['transparent', 'transparent']
+  colors=['transparent', 'transparent'],
+  fade=true
 }) => {
   const animation = useRef(new Animated.Value(0));
   const startAnimation = () => {
@@ -73,7 +74,7 @@ const AnimatedModal = ({
         //   left: -500,
         //   bottom: -1000,
           right: 0,
-          backgroundColor: colored?'transparent':'rgb(0,0,0)',
+          backgroundColor: (colored || !fade)?'transparent':'rgb(0,0,0)',
           opacity: animation.current,
           //backgroundColor: modalVisible ? 'rgba(0,0,0,0.7)' : 'transparent',
         }}

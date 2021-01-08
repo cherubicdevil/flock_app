@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {View, Text, TouchableOpacity, Image} from 'react-native';
 import OptionsModal from './OptionsModal';
 import {constants} from 'App/constants';
+import AnimatedModal from 'App/components/AnimatedModal';
 
 const CustomBar = ({descriptors, state, navigation}) => {
   const focusedOptions = descriptors[state.routes[state.index].key].options;
@@ -26,6 +27,9 @@ const CustomBar = ({descriptors, state, navigation}) => {
             />
           );
         }
+        else if (options.title === 'Chat') {
+          return <EggItem image={options.image} text={options.cap} />
+        }
         const isFocused = state.index === index;
         return (
           <NavItem
@@ -37,9 +41,20 @@ const CustomBar = ({descriptors, state, navigation}) => {
           />
         );
       })}
+      
     </View>
   );
 };
+
+const EggItem = ({image, text}) => {
+  const [eggModalOpen, setEggModalOpen] = useState(false);
+  return <>
+  <TouchableOpacity onPress={()=>setEggModalOpen(true)}>
+  <InItem image={image} text={text} />
+  </TouchableOpacity>
+  <AnimatedModal upPercent="30%" visible={eggModalOpen} fade={false} close={()=>{setEggModalOpen(false)}} content={<View style={{backgroundColor:'black', height: 40}}><Text style={{color: 'white', alignSelf: 'center'}}>You've got this many eggs.</Text></View>} />
+  </>;
+}
 const AddItem = ({image, text, navigation, route}) => {
   const [modalOpen, setModalOpen] = useState(false);
   return (

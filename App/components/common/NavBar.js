@@ -13,6 +13,7 @@ import OptionsModal from 'App/navigators/OptionsModal';
 //import OptionsModalModified from 'App/components/OptionsModalModified';
 import ImagePicker from 'react-native-image-picker';
 import {fadeIn} from 'App/utils';
+import AnimatedModal from 'App/components/AnimatedModal';
 
 const imagePickerOptions = {
   //customButtons: [{name: 'fb', title: 'Choose Photo From Facebook'}],
@@ -94,6 +95,8 @@ const NavBar = ({style, route, navigation}) => {
           if (navItem.name === 'CamScreen') {
             setModalOpen(true);
             console.log('opening');
+          } else if (navItem.name === 'Products') {
+            setEggModalOpen(true);
           } else {
             navigate(navItem.name, {vidVisible: navItem.vidVisible});
           }
@@ -115,7 +118,7 @@ const NavBar = ({style, route, navigation}) => {
         width: Dimensions.get('window').width,
       }}>
       <OptionsModal
-        text1="I want to save..."
+        text1="I want to rip..."
         text2="I want to recommend..."
         func1={() => {
           console.log('you chose 1');
@@ -154,6 +157,7 @@ const NavBar = ({style, route, navigation}) => {
         {renderNavButton(navOptions.Egg)}
       </View>
     </Animated.View>
+    <AnimatedModal visible={eggModalOpen} fade={false} close={()=>{setEggModalOpen(false)}} content={<Text>Hi</Text>} />
     </>
   );
 };
