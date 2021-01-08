@@ -5,6 +5,7 @@ import moment from 'moment';
 import {firebase, db, auth} from 'App/firebase/config';
 var seedrandom = require('seedrandom');
 import AnimatedModal from 'App/components/AnimatedModal';
+import {constants} from 'App/constants';
 
 
 const FlockReserve = ({navigation, route}) => {
@@ -32,20 +33,21 @@ const FlockReserve = ({navigation, route}) => {
 
     const [modalOpen, setModalOpen] = useState(false);
     console.log(route.params);
-    const requestType = route.params.data.members.includes({name: auth.currentUser.displayName, uid: auth.currentUser.uid});
+    const requestTypeIsRent = route.params.data.members.includes({name: auth.currentUser.displayName, uid: auth.currentUser.uid});
+    const colors = (requestTypeIsRent)?[constants.PURPLE, constants.RED]:['#ff4d00', constants.PEACH];
     return <SafeAreaView>
-      <Text>{requestType?"Borrow":"Flock"}</Text>
+      <Text>{requestTypeIsRent?"Borrow":"Flock"}</Text>
         <Button title="back" onPress={()=>navigation.goBack()} style={{position: 'absolute', top: '10'}}/>
         <Image style = {{width: '100%', height: '80%', resizeMode: 'contain'}} source = {{uri: route.params.data.product.image}} />
         <Text>{route.params.data.product.title}</Text>
         <Button title="reserve" onPress={()=>{
           setModalOpen(!modalOpen);
           }}/>
-        <AnimatedModal visible={modalOpen} close={()=>setModalOpen(false)} content={<ReserveCalendar navigation = {navigation} route={route} myMarkedDates={myMarkedDates} setMyMarkedDates={setMyMarkedDates} othersMarkedDates={othersMarkedDates} />} />
+        <AnimatedModal colored={true} colors={colors} visible={modalOpen} close={()=>setModalOpen(false)} content={<ReserveCalendar navigation = {navigation} close={()=>{setModalOpen(false)}} route={route} myMarkedDates={myMarkedDates} setMyMarkedDates={setMyMarkedDates} othersMarkedDates={othersMarkedDates} />} />
         </SafeAreaView>;
 }
 
-const ReserveCalendar = ({navigation, route, myMarkedDates, othersMarkedDates, setMyMarkedDates}) => {
+const ReserveCalendar = ({navigation, route, close, myMarkedDates, othersMarkedDates, setMyMarkedDates}) => {
   const [picked, setPicked] = useState(false);
   const markPeriod = (start, duration=4, options) => {
     const marked = {};
@@ -98,6 +100,7 @@ const handleDayPress = (day) => {
         db.collection("chatGroups").doc(route.params.data.id).update({'markedDates': {...othersMarkedDates, ...myMarkedDates}});
         console.log('payment done!');
       }, extra: <Text>{start} to {end}</Text>}, );
+      close();
     }} />
         {/* <Button title="close" onPress={()=>{setModalOpen(!modalOpen)}} /> */}
         </View>
