@@ -27,8 +27,10 @@
  */
 
 import {constants} from 'App/constants';
-import {View, Modal, Text, Animated, TouchableOpacity} from 'react-native';
+import {View, Modal, Text, Animated, TouchableOpacity, Dimensions} from 'react-native';
 import React, {useRef} from 'react';
+import MaskedViewIOS from '@react-native-community/masked-view';
+import LinearGradient from 'react-native-linear-gradient';
 
 const AnimatedModal = ({
   visible,
@@ -40,9 +42,9 @@ const AnimatedModal = ({
   const startAnimation = () => {
     Animated.timing(animation.current, {
       useNativeDriver: false,
-      toValue: 0.5,
+      toValue: 0.8,
       delay: 0,
-      duration: 500,
+      duration: 700,
     }).start();
   };
 
@@ -61,17 +63,21 @@ const AnimatedModal = ({
     <View style={{zIndex: 800}}>
       <Animated.View
         style={{
-          height: visible ? 2000 : 0,
-          width: visible ? 2200 : 0,
+          height: visible ? Dimensions.get('window').height : 0,
+          width: visible ? Dimensions.get('window').width : 0,
           position: 'absolute',
-          left: -500,
-          bottom: -1000,
+          bottom: 0,
+        //   left: -500,
+        //   bottom: -1000,
           right: 0,
-          backgroundColor: 'rgb(0,0,0)',
+          //backgroundColor: 'rgb(0,0,0)',
           opacity: animation.current,
           //backgroundColor: modalVisible ? 'rgba(0,0,0,0.7)' : 'transparent',
         }}
-      />
+      >
+    <LinearGradient style={{height: '100%'}} colors={[constants.BRIGHT_BLUE, 'transparent']} />
+
+      </Animated.View>
       <Modal
         animationType="slide"
         transparent={true}
