@@ -10,6 +10,7 @@ export default function counter(state = {count: 0}, action) {
       return {count: count + 1};
     case 'setEgg':
       return {count: action.payload};
+
     default:
       return state;
   }

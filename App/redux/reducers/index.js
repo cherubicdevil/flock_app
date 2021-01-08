@@ -9,6 +9,7 @@ import ChatReducer from './ChatReducer';
 export default combineReducers({
   auth: AuthReducer,
   goose: GooseReducer,
+  egg: GooseReducer,
   videopage: VidReducer,
   modal: ModalReducer,
   userInfo: UserInfoReducer,

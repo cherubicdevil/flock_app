@@ -1,6 +1,6 @@
 import {uploadUserInfo, getIndexOfData} from '../../utils';
 
-export default function (state = {likedVideos: []}, action) {
+export default function (state = {likedVideos: [], eggCoins: 0}, action) {
   switch (action.type) {
     case 'LIKED_VIDEO':
       // Possible FLOCK_BUG should there be {...state} here?
@@ -53,6 +53,15 @@ export default function (state = {likedVideos: []}, action) {
         // assumed to always be add if not array
       }
       return res;
+    case 'spendEggs':
+      const num = action.payload;
+      if (num <= state.eggCoins ) {
+        return { ...state, eggCoins: state.eggCoins - num};
+      }
+      
+      return state;
+    case 'getEggs':
+      return { ...state, eggCoins: state.eggCoins + action.payload};
     default:
       return state;
   }
