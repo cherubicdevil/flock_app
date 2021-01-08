@@ -32,20 +32,20 @@ const FlockReserve = ({navigation, route}) => {
 
     const [modalOpen, setModalOpen] = useState(false);
     console.log(route.params);
-    const rent = route.params.data.members.includes({name: auth.currentUser.displayName, uid: auth.currentUser.uid});
+    const requestType = route.params.data.members.includes({name: auth.currentUser.displayName, uid: auth.currentUser.uid});
     return <SafeAreaView>
-      <Text>{rent?"Borrow":"Flock"}</Text>
+      <Text>{requestType?"Borrow":"Flock"}</Text>
         <Button title="back" onPress={()=>navigation.goBack()} style={{position: 'absolute', top: '10'}}/>
         <Image style = {{width: '100%', height: '80%', resizeMode: 'contain'}} source = {{uri: route.params.data.product.image}} />
         <Text>{route.params.data.product.title}</Text>
         <Button title="reserve" onPress={()=>{
           setModalOpen(!modalOpen);
           }}/>
-        <AnimatedModal visible={modalOpen} close={()=>setModalOpen(false)} content={<ReserveCalendar navigation = {navigation} myMarkedDates={myMarkedDates} setMyMarkedDates={setMyMarkedDates} othersMarkedDates={othersMarkedDates} />} />
+        <AnimatedModal visible={modalOpen} close={()=>setModalOpen(false)} content={<ReserveCalendar navigation = {navigation} route={route} myMarkedDates={myMarkedDates} setMyMarkedDates={setMyMarkedDates} othersMarkedDates={othersMarkedDates} />} />
         </SafeAreaView>;
 }
 
-const ReserveCalendar = ({navigation, myMarkedDates, othersMarkedDates, setMyMarkedDates}) => {
+const ReserveCalendar = ({navigation, route, myMarkedDates, othersMarkedDates, setMyMarkedDates}) => {
   const [picked, setPicked] = useState(false);
   const markPeriod = (start, duration=4, options) => {
     const marked = {};
@@ -60,6 +60,8 @@ const ReserveCalendar = ({navigation, myMarkedDates, othersMarkedDates, setMyMar
     setMyMarkedDates(marked);
 } 
 
+const requestTypeIsRent = route.params.data.members.includes({name: auth.currentUser.displayName, uid: auth.currentUser.uid});
+const numDays = requestTypeIsRent?4:8;
 
 const handleDayPress = (day) => {
   // if (markedDates[day.dateString]) {
@@ -67,15 +69,17 @@ const handleDayPress = (day) => {
   //     console.log(markedDates);
   //     return;
   // }
-  if (reserved(othersMarkedDates, auth.currentUser.uid, 4, day.dateString)) {
+  if (reserved(othersMarkedDates, auth.currentUser.uid, numDays, day.dateString)) {
     return;
   }
   setPicked(true);
-  markPeriod(start=day, duration=4, options={color: 'rgba(100,255,50,0.5)', user: auth.currentUser.uid});
+  markPeriod(start=day, duration=numDays, options={color: 'rgba(100,255,50,0.5)', user: auth.currentUser.uid});
   console.log(myMarkedDates);
   
 }
+
   return <View style={{paddingBottom: 20, backgroundColor: 'white'}}>
+            <Text style={{alignSelf: 'center'}}>You can {requestTypeIsRent?"borrow":"flock"} the item for {numDays} days</Text>
             <Calendar
       markedDates={{...myMarkedDates, ...othersMarkedDates }}
       markingType={'period'}
