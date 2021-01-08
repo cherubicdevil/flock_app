@@ -58,7 +58,9 @@ const FlockReserve = ({navigation, route}) => {
       }
     const [modalOpen, setModalOpen] = useState(false);
     console.log(route.params);
+    const rent = route.params.data.members.includes({name: auth.currentUser.displayName, uid: auth.currentUser.uid});
     return <SafeAreaView>
+      <Text>{rent?"Borrow":"Flock"}</Text>
         <Button title="back" onPress={()=>navigation.goBack()} style={{position: 'absolute', top: '10'}}/>
         <Image style = {{width: '100%', height: '80%', resizeMode: 'contain'}} source = {{uri: route.params.data.product.image}} />
         <Text>{route.params.data.product.title}</Text>
@@ -67,7 +69,7 @@ const FlockReserve = ({navigation, route}) => {
           }}/>
         <Modal transparent animationType="slide" visible={modalOpen} style={{justifyContent: 'flex-end'}}>
             <View style={{width: '100%', height: '50%', position: 'absolute', bottom: 0, backgroundColor: 'white'}}>
-    <Calendar
+            <Calendar
       markedDates={{...myMarkedDates, ...othersMarkedDates }}
       markingType={'period'}
       onDayPress={handleDayPress}
