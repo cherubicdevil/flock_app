@@ -30,18 +30,14 @@ const Checkout = ({navigation, route}) => {
         <View>
             {route.params.extra}
         </View>
-        <View>
+        <View style={{height: '100%'}}>
             <TouchableOpacity onPress={()=>{
                 setShipModal(true);
             }}><Text>Shipping information</Text></TouchableOpacity>
             <TouchableOpacity onPress={()=>{
                 setBillModal(true);
             }}><Text>Billing information</Text></TouchableOpacity>
-        </View>
-        <Modal visible={shipModal} ><TouchableOpacity style={{width: '100%', height: 100, backgroundColor: 'black'}} onPress={()=>{setShipModal(false)}}></TouchableOpacity></Modal>
-        <AnimatedModal visible={billModal} close={()=>setBillModal(false)} state={info} setState={setInfo} content={<BillingModal state={info} setState={setInfo} close={()=>setBillModal(false)}/>}/>
-        <AnimatedModal visible={shipModal} close={()=>setShipModal(false)} state={info} setState={setInfo} content={<ShippingModal state={info} setState={setInfo} close={()=>setShipModal(false)}/>}/>
-        <Button title="done" onPress={async ()=>{
+                <Button title="done" onPress={async ()=>{
             // route.params.doneFunc();
             const token = await stripe.createTokenWithCard(info);
             console.log("token", token);
@@ -55,6 +51,11 @@ const Checkout = ({navigation, route}) => {
             navigation.navigate('Success');
         }} />
         <Button title="back" onPress = {()=>{navigation.goBack()}}/>
+        
+        </View>
+        <AnimatedModal visible={billModal} close={()=>setBillModal(false)} state={info} setState={setInfo} content={<BillingModal state={info} setState={setInfo} close={()=>setBillModal(false)}/>}/>
+        <AnimatedModal visible={shipModal} close={()=>setShipModal(false)} state={info} setState={setInfo} content={<ShippingModal state={info} setState={setInfo} close={()=>setShipModal(false)}/>}/>
+
     </SafeAreaView>
 };
 

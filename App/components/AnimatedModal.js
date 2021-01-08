@@ -31,13 +31,16 @@ import {View, Modal, Text, Animated, TouchableOpacity, Dimensions} from 'react-n
 import React, {useRef} from 'react';
 import MaskedViewIOS from '@react-native-community/masked-view';
 import LinearGradient from 'react-native-linear-gradient';
+import { AnimationObjectGroup } from 'three';
 
 const AnimatedModal = ({
   visible,
   close,
   navigation,
   content,
-  upPercent="55%"
+  upPercent="55%",
+  colored=false,
+  colors=['transparent', 'transparent']
 }) => {
   const animation = useRef(new Animated.Value(0));
   const startAnimation = () => {
@@ -67,16 +70,17 @@ const AnimatedModal = ({
           height: visible ? Dimensions.get('window').height : 0,
           width: visible ? Dimensions.get('window').width : 0,
           position: 'absolute',
+        //   zIndex: 10,
           bottom: 0,
         //   left: -500,
         //   bottom: -1000,
           right: 0,
-          //backgroundColor: 'rgb(0,0,0)',
+          backgroundColor: colored?'transparent':'rgb(0,0,0)',
           opacity: animation.current,
           //backgroundColor: modalVisible ? 'rgba(0,0,0,0.7)' : 'transparent',
         }}
       >
-    <LinearGradient style={{height: '100%'}} colors={[constants.BRIGHT_BLUE, 'transparent']} />
+    {colored?<LinearGradient style={{height: '100%'}} colors={colors} />:<></>}
 
       </Animated.View>
       <Modal
@@ -84,17 +88,18 @@ const AnimatedModal = ({
         transparent={true}
         visible={visible}
         style={{
+            
           position: 'absolute',
           width: '100%',
           justifyContent: 'flex-end',
-          backgroundColor: '#aea',
+          //backgroundColor: '#aea',
         }}>
           <TouchableOpacity onPress={()=>{
             close();
             resetAnimation();
               }} style={{position: 'absolute', top:0, height: '100%', width: '100%', zIndex: -30}} />
-              <View style={{position: 'absolute', bottom: 15, height: upPercent, width: '84%', backgroundColor: 'white', opacity: .5, alignSelf: 'center', borderRadius: 90,}} />
-            <View style={{position: 'absolute', bottom: 8, height: upPercent, width: '90%', backgroundColor: 'white', opacity: .5, alignSelf: 'center', borderRadius: 90,}} />
+            <View style={{position: 'absolute', bottom: 15, height: upPercent, width: '84%', backgroundColor: 'white', opacity: 0.5, alignSelf: 'center', borderRadius: 90,}} />
+            <View style={{position: 'absolute', bottom: 8, height: upPercent, width: '90%', backgroundColor: 'white', opacity: 0.5, alignSelf: 'center', borderRadius: 90,}} />
             <View style={{position: 'absolute', bottom: 0, width: '100%', height: upPercent, borderRadius: 100, borderBottomRightRadius: 0, borderBottomLeftRadius: 0, backgroundColor: 'white', paddingTop: 40, overflow: 'hidden'}}>
               
               {content}
