@@ -76,6 +76,7 @@ const NavBar = ({style, route, navigation}) => {
   const routeName = route.name; // navigation.state.routeName
   const {navigate} = navigation;
   const [modalOpen, setModalOpen] = useState(false);
+  const [eggModalOpen, setEggModalOpen] = useState(false);
   const [fade, setFade] = useState(new Animated.Value(0));
 
   useEffect(() => {
@@ -103,6 +104,7 @@ const NavBar = ({style, route, navigation}) => {
   };
 
   return (
+    <>
     <Animated.View
       style={{
         position: 'absolute',
@@ -152,6 +154,7 @@ const NavBar = ({style, route, navigation}) => {
         {renderNavButton(navOptions.Egg)}
       </View>
     </Animated.View>
+    </>
   );
 };
 

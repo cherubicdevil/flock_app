@@ -14,14 +14,12 @@
 *
 */
 /*
- * OptionsModal.js
+ * AnimatedModal.js
  *
- * This file contains code for the OptionsModal that is currently used on
- *  the AppNavigator tab navigation bar to show the Add slide up modal.
+ * This file contains code for the AnimatedModal that is currently used on
+ *  the Checkout page and FlockReserve page.
  *
- * Is general enough to use for general purpose.
- * To use, set a State that allows modal to be on or off. Connect this state
- *  to modalOpen prop.
+ * It is the more general version of OptionsModal.
  *
  *
  */
