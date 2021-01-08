@@ -3,6 +3,7 @@ import {View, Text, TouchableOpacity, Image} from 'react-native';
 import OptionsModal from './OptionsModal';
 import {constants} from 'App/constants';
 import AnimatedModal from 'App/components/AnimatedModal';
+import {useSelector} from 'react-redux';
 
 const CustomBar = ({descriptors, state, navigation}) => {
   const focusedOptions = descriptors[state.routes[state.index].key].options;
@@ -47,12 +48,13 @@ const CustomBar = ({descriptors, state, navigation}) => {
 };
 
 const EggItem = ({image, text}) => {
+  const select = useSelector(state => state);
   const [eggModalOpen, setEggModalOpen] = useState(false);
   return <>
   <TouchableOpacity onPress={()=>setEggModalOpen(true)}>
   <InItem image={image} text={text} />
   </TouchableOpacity>
-  <AnimatedModal upPercent="30%" visible={eggModalOpen} fade={false} close={()=>{setEggModalOpen(false)}} content={<View style={{backgroundColor:'black', height: 40}}><Text style={{color: 'white', alignSelf: 'center'}}>You've got this many eggs.</Text></View>} />
+<AnimatedModal upPercent="30%" visible={eggModalOpen} fade={false} close={()=>{setEggModalOpen(false)}} content={<View style={{backgroundColor:'black', height: 40}}><Text style={{color: 'white', alignSelf: 'center'}}>You've got this many eggs.{select.userInfo.eggCoins}</Text></View>} />
   </>;
 }
 const AddItem = ({image, text, navigation, route}) => {
