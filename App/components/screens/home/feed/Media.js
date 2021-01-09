@@ -26,9 +26,9 @@
  */
 
 import React, {useState} from 'react';
-import {View, TouchableOpacity, Text} from 'react-native';
+import {View, TouchableOpacity, Text, Dimensions} from 'react-native';
 import {useDispatch} from 'react-redux';
-import Video from 'App/components/Video';
+import ResizeableVideo from 'App/components/ResizeableVideo';
 import LinearGradient from 'react-native-linear-gradient';
 import {constants} from 'App/constants';
 
@@ -58,7 +58,7 @@ const Media = ({isInView = true, width, navigation, videoAr, data, title}) => {
         });
       }}>
       <View style={{backgroundColor: '#ddd', marginTop: -10}}>
-        <Video
+        <VanishVideo
           viewHeight={vh}
           persistHeightFunc={changeViewHeight}
           visible={isInView}
@@ -98,5 +98,12 @@ const VideoGradient = ({title}) => {
     </LinearGradient>
   );
 };
+
+const VanishVideo = ({visible, data, maxWidth}) => {
+  if (!visible) {
+    return <View style={{width: '100%', height: 300}} />;
+  }
+  return <ResizeableVideo data = {data} horizontalLimit={true} wLimit={maxWidth} muted={true} />;
+}
 
 export default Media;

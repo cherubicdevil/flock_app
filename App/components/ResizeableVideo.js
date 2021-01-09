@@ -3,20 +3,20 @@ import {Dimensions, View, Text, StyleSheet} from 'react-native';
 import RVideo from 'react-native-video';
 
 
-const ResizeableVideo = (data, muted=false, paused=false, repeat=true, horizontalLimit=true) => {
+const ResizeableVideo = (data, muted=false, paused=false, repeat=true, horizontalLimit=true, wLimit, hLimit) => {
     const player = useRef();
-    const maxWidth = Dimensions.get('window').width;
-    const maxHeight = Dimensions.get('window').height;
+    const maxWidth = wLimit || Dimensions.get('window').width;
+    const maxHeight = hLimit || Dimensions.get('window').height;
 
     const [state, setState] = useState({vHeight: null, vWidth: null});
-    const [videoUri, setVideoUri] = useState(data.data.video);
+    var videoUri = data.data.video;
 
   const renderContent = () => {
     //const video_uri = data.video;
     //console.log(data.data.video);
       return (
         <RVideo
-          muted={false}
+          muted={muted?true:false}
           paused={paused}
           repeat={repeat}
           source={{

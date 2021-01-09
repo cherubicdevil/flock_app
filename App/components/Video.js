@@ -2,6 +2,7 @@ import React from 'react';
 import {Dimensions, View, Text, StyleSheet} from 'react-native';
 import RVideo from 'react-native-video';
 import {connect} from 'react-redux';
+import ResizeableVideo from 'App/components/ResizeableVideo';
 
 class Video extends React.Component {
   state = {
@@ -74,54 +75,7 @@ class Video extends React.Component {
       this.props.index === this.props.carIndex
     ) {
       return (
-        <RVideo
-          muted={this.props.muted}
-          paused={this.props.paused}
-          repeat={true}
-          source={{
-            //this.props.source,
-            //this.props.data.video,
-            //this.props.data.video,
-            //this.props.data.video,
-            //this.props.data.video
-            uri: video_uri,
-            // uri: this.props.data
-            //   ? this.props.data.video
-            //   : this.props.source.uri,
-            //'https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4',
-          }} // Can be a URL or a local file.
-          ref={(ref) => {
-            this.player = ref;
-          }} // Store reference
-          style={{
-            height: this.state.vHeight || 315.55555555555554,
-            width: this.state.vWidth || 200,
-          }}
-          onLoad={(response) => {
-            this.setState({muted: true});
-            // //console.log('THIS IS RESPONSE HEIGHT: ', response.naturalSize);
-            const {height: vidHeight, width: vidWidth} = response.naturalSize;
-            if (vidWidth > vidHeight || this.props.maxWidth) {
-              const heightScaled =
-                vidHeight *
-                ((this.props.maxWidth || this.state.maxWidth) / vidWidth);
-              //console.log(heightScaled);
-              this.setState({vHeight: heightScaled, vWidth: '100%'});
-              // if (heightScaled !== 0) {
-              //   this.props.persistHeightFunc(heightScaled);
-              // }
-            } else {
-              const widthScaled = vidWidth * (this.state.maxHeight / vidHeight);
-              //console.log(heightScaled);
-              this.setState({
-                vWidth: widthScaled,
-                vHeight: this.state.maxHeight,
-              });
-            }
-          }}
-          onBuffer={this.onBuffer.bind(this)} // Callback when remote video is buffering
-          onError={this.videoError} // Callback when video cannot be loaded
-        />
+        <ResizeableVideo data={this.props.data} />
       );
     } else {
       return (
