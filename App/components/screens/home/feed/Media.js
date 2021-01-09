@@ -33,13 +33,9 @@ import LinearGradient from 'react-native-linear-gradient';
 import {constants} from 'App/constants';
 
 const Media = ({isInView = true, width, navigation, videoAr, data, title}) => {
-  console.log(isInView);
-  const [vh, setVH] = useState(0);
-  const changeViewHeight = (height) => {
-    setVH(height);
-  };
   // check if type == null?
   // potential FLOCK_BUG
+  console.log("WIDTH", width);
   const dispatch = useDispatch();
   return (
     <TouchableOpacity
@@ -59,13 +55,7 @@ const Media = ({isInView = true, width, navigation, videoAr, data, title}) => {
       }}>
       <View style={{backgroundColor: '#ddd', marginTop: -10}}>
         <VanishVideo
-          viewHeight={vh}
-          persistHeightFunc={changeViewHeight}
           visible={isInView}
-          masonry={true}
-          muted={true}
-          paused={false}
-          repeat={true}
           data={data}
           maxWidth={width}
         />
@@ -101,8 +91,9 @@ const VideoGradient = ({title}) => {
 
 const VanishVideo = ({visible, data, maxWidth}) => {
   if (!visible) {
-    return <View style={{width: '100%', height: 300}} />;
+    return <View style={{width: 200 , height: 300}} />;
   }
+  //return <View style={{height: 300}} />;
   return <ResizeableVideo data = {data} horizontalLimit={true} wLimit={maxWidth} muted={true} />;
 }
 
