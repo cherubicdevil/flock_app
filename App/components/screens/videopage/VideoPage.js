@@ -368,7 +368,7 @@ const VideoPage = ({navigation, array, index, data, currIndex}) => {
             justifyContent: 'center',
             zIndex: -10,
           }}>
-          <PosterImage source={{uri: data.poster}} />
+          <ResizeableImage source={{uri: data.poster}} />
         </View>
         <View pointerEvents="none">
           <Video
@@ -400,13 +400,28 @@ const VideoPage = ({navigation, array, index, data, currIndex}) => {
   return <View>{renderVid()}</View>;
 };
 
-const PosterImage = ({source}) => {
+// const PosterImage = ({source}) => {
+//   const [width, setWidth] = useState(0);
+//   const [height, setHeight] = useState(0);
+//   Image.getSize(source.uri, (w, h) => {
+//     const ratio = Dimensions.get('window').height / h;
+//     setWidth(w * ratio);
+//     setHeight(Dimensions.get('window').height);
+//   });
+
+const ResizeableImage = ({source, limitHorizontal=true}) => {
   const [width, setWidth] = useState(0);
   const [height, setHeight] = useState(0);
   Image.getSize(source.uri, (w, h) => {
-    const ratio = Dimensions.get('window').height / h;
-    setWidth(w * ratio);
-    setHeight(Dimensions.get('window').height);
+    if (limitHorizontal) {
+    const ratio = Dimensions.get('window').width / w;
+    setHeight(h * ratio);
+    setWidth(Dimensions.get('window').width);
+    } else {
+      const ratio = Dimensions.get('window').height / h;
+      setWidth(w * ratio);
+      setHeight(Dimensions.get('window').height);
+    }
   });
 
   return (
@@ -422,6 +437,7 @@ const PosterImage = ({source}) => {
     />
   );
 };
+
 
 const styles = StyleSheet.create({
   buttonText: {
