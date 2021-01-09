@@ -25,8 +25,8 @@
  *
  */
 
-import React, {useState} from 'react';
-import {View, TouchableOpacity, Text, Dimensions} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {View, TouchableOpacity, Text, Dimensions, Image, Animated} from 'react-native';
 import {useDispatch} from 'react-redux';
 import ResizeableVideo from 'App/components/ResizeableVideo';
 import LinearGradient from 'react-native-linear-gradient';
@@ -90,15 +90,32 @@ const VideoGradient = ({title}) => {
 };
 
 const VanishVideo = ({visible, data, maxWidth}) => {
+  const [fade, setFade] = useState(new Animated.Value(0));
   // these attributes come from streamableVideo fetching, from the node heroku server. don't mess this up. make sure that data is always provided.
   // potential FLOCK_BUG later
+  const fadeIn = (val, duration) => {
+    Animated.timing(
+      // Animate over time
+      val, // The animated value to drive
+      {
+        toValue: 1, // Animate to opacity: 1 (opaque)
+        duration: duration, // 2000ms
+        useNativeDriver: true,
+      },
+    ).start();
+  };
   const height = (data.size.height / data.size.width) *
   (maxWidth);
   if (!visible) {
-    return <View style={{height: height, width: '100%'}} />;
+    return <View style={{height: height, width: '100%', }} ><View style={{justifyContent: 'center', alignItems: 'center'}}></View></View>;
   }
+  // useEffect(()=> {
+  //   fadeIn(fade, 500);
+  //   console.log('fadingIN');
+  // }, []);
+  fadeIn(fade, 500);
   //return <View style={{height: 300}} />;
-  return <View style={{height: height, width: '100%'}} ><ResizeableVideo data = {data} horizontalLimit={true} wLimit={maxWidth} muted={true} /></View>;
+  return <Animated.View style={{height: height, width: '100%', opacity: fade}} ><ResizeableVideo data = {data} horizontalLimit={true} wLimit={maxWidth} muted={true} /></Animated.View>;
 }
 
 export default Media;
