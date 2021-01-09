@@ -107,7 +107,7 @@ const VanishVideo = ({visible, data, maxWidth}) => {
   const height = (data.size.height / data.size.width) *
   (maxWidth);
   if (!visible) {
-    return <View style={{height: height, width: '100%', }} ><View style={{justifyContent: 'center', alignItems: 'center'}}></View></View>;
+    return <View style={{height: height, width: '100%', justifyContent: 'center', alignItems: 'center'}} ><View style={{justifyContent: 'center', alignItems: 'center'}}></View></View>;
   }
   // useEffect(()=> {
   //   fadeIn(fade, 500);
@@ -115,7 +115,7 @@ const VanishVideo = ({visible, data, maxWidth}) => {
   // }, []);
   fadeIn(fade, 500);
   //return <View style={{height: 300}} />;
-  return <Animated.View style={{height: height, width: '100%', opacity: fade}} ><ResizeableVideo data = {data} horizontalLimit={true} wLimit={maxWidth} muted={true} /></Animated.View>;
+  return <><View style={{position: 'absolute', height: height, width: '100%', justifyContent: 'center', alignItems: 'center'}}><Image source={require('App/Assets/Images/flock_logo_white.png')} style={{height: 100, width: 125}} /></View><Animated.View style={{height: height, width: '100%', opacity: fade}} ><ResizeableVideo data = {data} horizontalLimit={true} wLimit={maxWidth} muted={true} /></Animated.View></>;
 }
 
 export default Media;
