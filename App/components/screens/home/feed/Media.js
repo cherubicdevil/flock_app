@@ -90,6 +90,8 @@ const VideoGradient = ({title}) => {
 };
 
 const VanishVideo = ({visible, data, maxWidth}) => {
+  // these attributes come from streamableVideo fetching, from the node heroku server. don't mess this up. make sure that data is always provided.
+  // potential FLOCK_BUG later
   const height = (data.size.height / data.size.width) *
   (maxWidth);
   if (!visible) {
