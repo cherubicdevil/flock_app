@@ -90,11 +90,13 @@ const VideoGradient = ({title}) => {
 };
 
 const VanishVideo = ({visible, data, maxWidth}) => {
+  const height = (data.size.height / data.size.width) *
+  (maxWidth);
   if (!visible) {
-    return <View style={{width: 200 , height: 300}} />;
+    return <View style={{height: height, width: '100%'}} />;
   }
   //return <View style={{height: 300}} />;
-  return <ResizeableVideo data = {data} horizontalLimit={true} wLimit={maxWidth} muted={true} />;
+  return <View style={{height: height, width: '100%'}} ><ResizeableVideo data = {data} horizontalLimit={true} wLimit={maxWidth} muted={true} /></View>;
 }
 
 export default Media;
