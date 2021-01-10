@@ -23,7 +23,7 @@
  *
  */
 
-import React from 'react';
+import React, {useState} from 'react';
 import {Dimensions, ScrollView, View} from 'react-native';
 import FeedItem from './FeedItem';
 import HalfProduct from './HalfProduct';
@@ -32,34 +32,26 @@ import {fetchAlbums, fetchProducts, mergeArrays} from 'App/utils';
 import LinearGradient from 'react-native-linear-gradient';
 import ProductBlurb from 'App/components/screens/home/feed/ProductBlurb';
 const width = Dimensions.get('window').width / 2 - 30;
-class FeedList extends React.Component {
-  state = {album1: [], album2: [], myAr: [], visible: true, inInView: false};
+const FeedList= ({navigation, route, feedItem=null, productBlurb=null}) => {
+  const [myAr, setMyAr] = useState([]);
 
-  constructor(props) {
-    super(props);
-
-  }
-
-  checkVisible(isVisible) {
-    this.setState({isInView: isVisible});
-  }
-  renderProductBlurb(product) {
-    if (this.props.productBlurb) {
-      return this.props.productBlurb(product);
+  const renderProductBlurb = (product) => {
+    if (productBlurb) {
+      return productBlurb(product);
     }
     return <ProductBlurb data={product} />
   }
-  renderFeedItem(al) {
-    if (this.props.feedItem) {
-      return this.props.feedItem(al);
+  const renderFeedItem = (al) => {
+    if (feedItem) {
+      return feedItem(al);
     }
     return <FeedItem
     mute={true}
     repeat={true}
-    ar={this.state.myAr}
-    videoAr={this.props.route.params.videoData}
-    index={this.state.myAr.indexOf(al)}
-    navigation={this.props.navigation}
+    ar={myAr}
+    videoAr={route.params.videoData}
+    index={myAr.indexOf(al)}
+    navigation={navigation}
     data={al}
     source={{uri: al.image || al.video}}
     title={al.title}
@@ -67,11 +59,11 @@ class FeedList extends React.Component {
     key={al.title}
   />
   }
-  renderClucks(album) {
+  const renderClucks = (album) => {
     //console.log("CLUCKS", this.props.route.params.videoData);
     return album.map((al) => {
       if (false) {
-        return <HalfProduct navigation={this.props.navigation} album={al} />;
+        return <HalfProduct navigation={navigation} album={al} />;
       } else {
         return (
           <>
@@ -84,20 +76,19 @@ class FeedList extends React.Component {
         }}>
           <View style={{overflow: 'hidden', borderBottomLeftRadius: 40, borderBottomRightRadius: 40, borderWidth: 3, borderColor: 'black'}}>
           
-          {this.renderFeedItem(al)}
+          {renderFeedItem(al)}
           </View>
           </View>
-          {this.renderProductBlurb(al)}
+          {renderProductBlurb(al)}
           </>
         );
       }
     });
   }
 
-  render() {
     // console.log('flock data length', this.props.route.params.videoData.length);
     // console.log("FL DATA", this.props.route.params);
-    const ar = mergeArrays(this.props.route.params.videoData, []);
+    const ar = mergeArrays(route.params.videoData, []);
     const album1 = ar.slice(0, ar.length / 2);
     const album2 = ar.slice(ar.length / 2, ar.length);
     return (
@@ -139,16 +130,15 @@ class FeedList extends React.Component {
               flexDirection: 'row',
               flex: 1,
             }}>
-            <View style={styles.columnStyle}>{this.renderClucks(album1)}</View>
+            <View style={styles.columnStyle}>{renderClucks(album1)}</View>
             <View key="1" style={styles.columnStyle}>
-              {this.renderClucks(album2)}
+              {renderClucks(album2)}
             </View>
           </View>
         </ScrollView>
       </View>
     );
   }
-}
 
 const styles = {
   columnStyle: {flex: 1, alignItems: 'center'},
