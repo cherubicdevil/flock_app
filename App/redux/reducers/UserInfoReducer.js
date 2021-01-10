@@ -13,7 +13,6 @@ export default function (state = {likedVideos: [], eggCoins: 0}, action) {
         uploadUserInfo(state);
       }
 
-      console.log('THIS IS STATE GETTING UPLOADED');
       return state;
     case 'DISLIKED_VIDEO':
       // Possible FLOCK_BUG should there be {...state} here?

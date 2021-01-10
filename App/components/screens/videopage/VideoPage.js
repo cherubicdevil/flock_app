@@ -243,6 +243,7 @@ const VideoPage = ({navigation, array, index, data, currIndex}) => {
     );
     const [heartColor, setHeartColor] = useState(liked);
     useEffect(() => {
+      var original = liked;
       // dataRef = firebase
       //   .database()
       //   .ref('users')
@@ -258,6 +259,7 @@ const VideoPage = ({navigation, array, index, data, currIndex}) => {
       //   });
 
       return () => {
+        if (original == heartColor) return;
         console.log('heartColor', heartColor);
         if (heartColor) {
           console.log('liked');
