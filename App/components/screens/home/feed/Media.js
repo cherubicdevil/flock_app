@@ -35,7 +35,7 @@ import {constants} from 'App/constants';
 const Media = ({isInView = true, width, navigation, videoAr, data, title}) => {
   // check if type == null?
   // potential FLOCK_BUG
-  console.log("WIDTH", width);
+
   const dispatch = useDispatch();
   return (
     <TouchableOpacity
@@ -111,7 +111,6 @@ const VanishVideo = ({visible, data, maxWidth}) => {
   }
   // useEffect(()=> {
   //   fadeIn(fade, 500);
-  //   console.log('fadingIN');
   // }, []);
   fadeIn(fade, 500);
   //return <View style={{height: 300}} />;

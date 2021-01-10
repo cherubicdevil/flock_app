@@ -7,14 +7,11 @@ const ResizeableVideo = ({data, muted=false, paused=false, repeat=true, horizont
     const player = useRef();
     const maxWidth = wLimit || Dimensions.get('window').width;
     const maxHeight = hLimit || Dimensions.get('window').height;
-    console.log(wLimit, "LIMIT");
     const [state, setState] = useState({vHeight: null, vWidth: null});
     var videoUri = data.video;
 
   const renderContent = () => {
-    //const video_uri = data.video;
-    //console.log(data.data.video);
-    console.log(state.vHeight, state.vWidth);
+
       return (
         <RVideo
           muted={muted}
@@ -29,15 +26,12 @@ const ResizeableVideo = ({data, muted=false, paused=false, repeat=true, horizont
             width: state.vWidth
           }}
           onLoad={(response) => {
-            // //console.log('THIS IS RESPONSE HEIGHT: ', response.naturalSize);
             const {height: vidHeight, width: vidWidth} = response.naturalSize;
             
             if (horizontalLimit) {
               const heightScaled =
                 vidHeight *
                 (maxWidth / vidWidth);
-                // console.log(vidHeight, maxWidth, vidWidth);
-                // console.log(heightScaled, maxWidth, vidWidth)
               setState({vHeight: heightScaled, vWidth: maxWidth});
               
             } else {

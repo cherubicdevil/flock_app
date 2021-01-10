@@ -49,9 +49,6 @@ const KeyContextProvider = (props) => {
 const DataList = ({navigation, route}) => {
   const val = route.params?.value || null;
   const {key, setKey, key1, setKey1} = useContext(KeyContext);
-  console.log(route.params[route.params['dataType']]);
-  // console.log("DATATYPE", route.params.dataType);
-  console.log(route.params.dataType + " DATA", route.params.flockData);
   route.params.videoData = route.params[route.params.dataType];
   //route.params.videoData = route.params.flockData;
 
@@ -156,7 +153,6 @@ const Home = ({route, navigation, lastVisible = null}) => {
     // fetchChatGroups().then((ar) => {
     //   setFlockData(ar);
     //   setTestString("worldhello");
-    //   console.log("FLOCKS", ar);
     // });
     // fetchRentGroups().then((ar) => {
     //   setRentData(ar);

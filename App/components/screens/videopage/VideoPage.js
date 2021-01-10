@@ -164,7 +164,6 @@ var renderProduct = (navigation, data) => {
 const VideoPage = ({navigation, array, index, data, currIndex}) => {
   var likes = data.likes || 0;
   const dispatch = useDispatch();
-  // console.log('NAVIGATION CONTEXT:', navigation);
   const [myData, setMyData] = useState(data);
   const [leavePage, setLeavePage] = useState(false);
   const [paused, setPaused] = useState(false);
@@ -178,7 +177,6 @@ const VideoPage = ({navigation, array, index, data, currIndex}) => {
   var first = db.collection('comments').orderBy('rating').limit(25);
 
   //fetchAlbums();
-  //console.log('THIS IS WHAT A QUERY LOOKS LIKE,', first);
 
   useFocusEffect(
     React.useCallback(() => {
@@ -189,7 +187,6 @@ const VideoPage = ({navigation, array, index, data, currIndex}) => {
       return () => {
         db.collection('posts').doc(data.id).update({likes: likes});
         setPaused(true);
-        //console.log('leaving');
 
         // if (liked !== null) {
         // 	firebase
@@ -199,7 +196,6 @@ const VideoPage = ({navigation, array, index, data, currIndex}) => {
         // 		.child('likedPosts')
         // 		.child(data.id)
         // 		.setValue(liked);
-        //console.log('value set');
         //};
       };
     }),
@@ -260,9 +256,7 @@ const VideoPage = ({navigation, array, index, data, currIndex}) => {
 
       return () => {
         if (original == heartColor) return;
-        console.log('heartColor', heartColor);
         if (heartColor) {
-          console.log('liked');
           dispatch({
             type: 'LIKED_VIDEO',
             payload:
@@ -291,7 +285,6 @@ const VideoPage = ({navigation, array, index, data, currIndex}) => {
 
             data.likes += change;
             setHeartColor(!heartColor);
-            console.log('HEART COLOR:', heartColor);
           }}>
           <Image
             style={{
@@ -352,7 +345,6 @@ const VideoPage = ({navigation, array, index, data, currIndex}) => {
   };
   const renderVid = () => {
     if (leavePage) {
-      console.log('LEAVING');
       return <View />;
     }
     return (

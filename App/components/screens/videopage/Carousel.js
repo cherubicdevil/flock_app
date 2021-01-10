@@ -21,15 +21,12 @@ const VideoCarousel = ({route, navigation, array, index = 0, data}) => {
   if (route?.params?.scrollIndex !== undefined) {
     index = route.params.scrollIndex;
   }
-  console.log('index', index);
   useEffect(() => {
     (async () => {
       if (route?.params?.array === undefined) {
-        console.log('FETCHING ARRAY');
         const arr = await fetchAlbums();
         setAr(arr.ar);
         lastVisible = arr.lastVisible;
-        //console.log('ARR', arr);
         // I'm going to assume data is always defined when array is
         // possible FLOCK_BUG
         // also, what if array is empty?
@@ -38,7 +35,6 @@ const VideoCarousel = ({route, navigation, array, index = 0, data}) => {
         fetchFlockables().then((ar) => {
           setFlockData(ar);
           setTestString("worldhello");
-          console.log("FLOCKS", ar);
         });
       }
     })();
