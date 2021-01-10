@@ -23,8 +23,8 @@
  *
  */
 
-import React from 'react';
-import {Dimensions, ScrollView, View} from 'react-native';
+import React, {useContext} from 'react';
+import {Dimensions, ScrollView, View, Button} from 'react-native';
 import FeedItem from './FeedItem';
 import HalfProduct from './HalfProduct';
 import {constants} from 'App/constants';
@@ -97,11 +97,13 @@ class FeedList extends React.Component {
   render() {
     // console.log('flock data length', this.props.route.params.videoData.length);
     // console.log("FL DATA", this.props.route.params);
+
     const ar = mergeArrays(this.props.route.params.videoData, []);
     const album1 = ar.slice(0, ar.length / 2);
     const album2 = ar.slice(ar.length / 2, ar.length);
     return (
       <View>
+        <Button title="GET MORE" onPress={()=>console.log('get more')}/>
         <LinearGradient
           colors={[constants.LIGHTGREY, 'rgba(0,0,0,0)']}
           style={{
