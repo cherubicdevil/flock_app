@@ -33,6 +33,65 @@ import {fetchChatGroups} from 'App/utils';
 import {firebase, db} from 'App/firebase/config';
 import {CommonActions, NavigationContainer} from '@react-navigation/native';
 
+var messages = [] 
+var listeners = []    // list of listeners
+var pageStart = null      // start position of listener
+var pageEnd = null        // end position of listener  
+function getMessages(navigation, key, key1) {    // query reference for the messages we want
+  let ref = db.collection('chatGroups')
+  ref.orderBy('flock', 'desc')
+  // .limit(1)
+  .get()
+  .then((snapshots) => {
+  pageStart = snapshots.docs[snapshots.docs.length - 1]    // create listener using startAt snapshot (starting boundary)    
+  let listener = ref.orderBy('flock')
+    .startAt(pageStart)
+    .onSnapshot((querySnapshot) => {        // append new messages to message array
+      const rent = [];
+      const flock = [];
+      querySnapshot.forEach(function(doc) {
+        if (doc.data().completed === false) {
+        flock.push(doc.data());
+        } else {
+          rent.push(doc.data());
+        }
+      });
+      navigation.dispatch({
+        ...CommonActions.setParams({videoData: [], rentData: rent, flockData: flock}),
+        source: key,
+      });
+      navigation.dispatch({
+        ...CommonActions.setParams({videoData: [], rentData: rent, flockData: flock}),
+        source: key1,
+      });     
+    })
+    // add listener to list
+    listeners.push(listener)
+  })
+}
+
+function getMoreMessages(navigation) {
+  let ref = db.collection('chats').doc(chatId)
+  .collection('messages')    // single query to get new startAt snapshot
+  ref.orderBy('createdAt', 'desc')
+  .startAt(start)
+  .limit(1).get()
+  .then((snapshots) => {     // previous starting boundary becomes new ending boundary
+    pageEnd = start
+    start = snapshots.docs[snapshots.docs.length - 1]      // create another listener using new boundaries     
+    let listener = ref.orderBy('createdAt')
+    .startAt(start).endBefore(pageEnd)
+    .onSnapshot((groups) => {
+      // groups.forEach((group) => {
+      //   messages = messages.filter(x => x.id !== message.id)
+      //   messages.push(message.data())
+      // })
+      messages = [...groups];
+    })
+    listeners.push(listener)
+  })
+}
+
 const Tab = createMaterialTopTabNavigator();
 const KeyContext = createContext();
 const KeyContextProvider = (props) => {
@@ -88,32 +147,35 @@ const HomeTabSwipe = ({videoData, navigation, route}) => {
         });
       }, 10000);
 
-      var citiesRef = db.collection("chatGroups");
-      // this filter is kind of inefficient; gets the entire table
-      var query = citiesRef;
-      unsubscribe = query
-      .onSnapshot(function(querySnapshot) {
-        const rent = [];
-        const flock = [];
-        querySnapshot.forEach(function(doc) {
-          if (doc.data().completed === false) {
-          flock.push(doc.data());
-          } else {
-            rent.push(doc.data());
-          }
-        });
-        navigation.dispatch({
-          ...CommonActions.setParams({videoData: [], rentData: rent, flockData: flock}),
-          source: key,
-        });
-        navigation.dispatch({
-          ...CommonActions.setParams({videoData: [], rentData: rent, flockData: flock}),
-          source: key1,
-        });
-        // setFlockData(flock);
-        // setRentData(rent);
-      });
+      getMessages(navigation, key, key1);
+      // var citiesRef = db.collection("chatGroups");
+      // // this filter is kind of inefficient; gets the entire table
+      // var query = citiesRef;
+      // unsubscribe = query
+      // .onSnapshot(function(querySnapshot) {
+      //   const rent = [];
+      //   const flock = [];
+      //   querySnapshot.forEach(function(doc) {
+      //     if (doc.data().completed === false) {
+      //     flock.push(doc.data());
+      //     } else {
+      //       rent.push(doc.data());
+      //     }
+      //   });
+      //   navigation.dispatch({
+      //     ...CommonActions.setParams({videoData: [], rentData: rent, flockData: flock}),
+      //     source: key,
+      //   });
+      //   navigation.dispatch({
+      //     ...CommonActions.setParams({videoData: [], rentData: rent, flockData: flock}),
+      //     source: key1,
+      //   });
+      //   // setFlockData(flock);
+      //   // setRentData(rent);
+      // });
   
+
+      // this breaks something v
       //return () => {unsubscribe()};
     }
 
