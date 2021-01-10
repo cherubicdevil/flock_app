@@ -13,14 +13,13 @@ import {fetchAlbums, fetchFlockables, fetchRentables} from 'App/utils';
 
 const VideoCarousel = ({route, navigation, array, index = 0, data}) => {
   const dispatch = useDispatch();
-  const scrollRef = useRef(null);
   const [ar, setAr] = useState([]);
-  const [dat, setDat] = useState(data);
+  //const [dat, setDat] = useState(data);
   const [flockData, setFlockData] = useState([]);
   var lastVisible = null;
   if (route?.params?.scrollIndex !== undefined) {
     index = route.params.scrollIndex;
-  }
+  } // scrollIndex used here because redux takes a little to update.
   useEffect(() => {
     (async () => {
       if (route?.params?.array === undefined) {
@@ -30,22 +29,22 @@ const VideoCarousel = ({route, navigation, array, index = 0, data}) => {
         // I'm going to assume data is always defined when array is
         // possible FLOCK_BUG
         // also, what if array is empty?
-        setDat(arr[0]);
+        //setDat(arr[0]);
 
         fetchFlockables().then((ar) => {
           setFlockData(ar);
-          setTestString("worldhello");
+          //setTestString("worldhello");
         });
       }
     })();
   }, []);
 
   // assert: is array and data always going to be defined now?
-  try {
-    ar.length;
-  } catch (err) {
-    console.log('ERR: looks like array is not defined', err);
-  }
+  // try {
+  //   ar.length;
+  // } catch (err) {
+  //   console.log('ERR: looks like array is not defined', err);
+  // }
   return (
     <View>
       <ScrollView
@@ -53,11 +52,12 @@ const VideoCarousel = ({route, navigation, array, index = 0, data}) => {
         showsVerticalScrollIndicator={false}
         scrollEventThrottle={1}
         onScroll={function (event) {
+          index = event.nativeEvent.contentOffset.y /
+          Dimensions.get('window').height;
+          
           dispatch({
             type: 'sendCarouselIndex',
-            payload:
-              event.nativeEvent.contentOffset.y /
-              Dimensions.get('window').height,
+            payload: index
           });
         }}
         horizontal={false}
