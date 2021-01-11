@@ -40,6 +40,7 @@ const KeyContextProvider = (props) => {
   const [routeKey1, setRouteKey1] = useState(null);
   const [pageEnd, setPageEnd] = useState(2);
   const [limit, setLimit] = useState(2);
+  const [limitRent, setLimitRent] = useState(2);
   const [unsubscribe, setUnsubscribe] = useState(null);
   return (
     <KeyContext.Provider
@@ -51,6 +52,8 @@ const KeyContextProvider = (props) => {
       setPageEnd: (value) => setLimit(value),
       limitKey: limit,
       setLimitKey: (value) => setLimit(value),
+      limitKeyRent: limitRent,
+      setLimitKeyRent: (value) => setLimitRent(value),
       unsubscribeKey: unsubscribe,
       setUnsubscribeKey: (value) => setUnsubscribe(value),
 
@@ -79,7 +82,7 @@ const DataList = ({navigation, route}) => {
   // const boxes = <View style={{backgroundColor: 'white'}}>{data.map(()=>{
   //   <View style={{width: 30, height: 50, backgroundColor: 'red'}} />
   // })}</View>
-  return <View style={{height: '100%', backgroundColor: 'pink', width: '100%'}}><Text style={{color: 'white'}}>{val}</Text><FeedList route={route} KeyContext={KeyContext} feedItem={(al)=><TouchableOpacity onPress={()=>{
+  return <View style={{height: '100%', backgroundColor: 'pink', width: '100%'}}><Text style={{color: 'white'}}>{val}</Text><FeedList route={route} flockOrNot={route.params.dataType} KeyContext={KeyContext} feedItem={(al)=><TouchableOpacity onPress={()=>{
     if (route.params.dataType === "flockData") {
       navigation.navigate('ChatInterface', {data: al});
     } else if (route.params.dataType === "rentData") {
@@ -91,8 +94,9 @@ const DataList = ({navigation, route}) => {
 const HomeTabSwipe = ({videoData, navigation, route}) => {
   const [flockData, setFlockData] = useState([{flock: 'test'}]);
   const [rentData, setRentData] = useState([{flock: 'test'}]);
-  const {key, key1, limitKey, unsubscribeKey} = useContext(KeyContext);
+  const {key, key1, limitKey, unsubscribeKey, limitKeyRent} = useContext(KeyContext);
   var unsubscribeCurrent;
+  var unsubscribeCurrentRent;
   React.useEffect(() => {
     // this should make it so that on creating new listener with new limit, the previous one is gone.
       if (unsubscribeCurrent) {
@@ -112,6 +116,7 @@ const HomeTabSwipe = ({videoData, navigation, route}) => {
       // this filter is kind of inefficient; gets the entire table
       var query = citiesRef;
       unsubscribeCurrent = query
+      .where('completed', '==', false)
       .limit(limitKey)
       .onSnapshot(function(querySnapshot) {
         const rent = [];
@@ -127,10 +132,10 @@ const HomeTabSwipe = ({videoData, navigation, route}) => {
           ...CommonActions.setParams({videoData: [], rentData: rent, flockData: flock}),
           source: key,
         });
-        navigation.dispatch({
-          ...CommonActions.setParams({videoData: [], rentData: rent, flockData: flock}),
-          source: key1,
-        });
+        // navigation.dispatch({
+        //   ...CommonActions.setParams({videoData: [], rentData: rent, flockData: flock}),
+        //   source: key1,
+        // });
         // setFlockData(flock);
         // setRentData(rent);
       });
@@ -146,7 +151,63 @@ const HomeTabSwipe = ({videoData, navigation, route}) => {
         unsubscribeCurrent();
       }
     };
-  }, [key, key1, limitKey]);
+  }, [key, limitKey]);
+
+  React.useEffect(() => {
+    // this should make it so that on creating new listener with new limit, the previous one is gone.
+      if (unsubscribeCurrentRent) {
+        unsubscribeCurrentRent();
+      }
+
+    if (key && key1) {
+      setTimeout(() => {
+        navigation.dispatch({
+          ...CommonActions.setParams({value: 'Updated state'}),
+          source: key,
+        });
+      }, 10000);
+
+      // getMessages(navigation, key, key1);
+      var citiesRef = db.collection("chatGroups");
+      // this filter is kind of inefficient; gets the entire table
+      var query = citiesRef;
+      unsubscribeCurrentRent = query
+      .where('completed', '==',true)
+      .limit(limitKeyRent)
+      .onSnapshot(function(querySnapshot) {
+        const rent = [];
+        const flock = [];
+        querySnapshot.forEach(function(doc) {
+          if (doc.data().completed === false) {
+          flock.push(doc.data());
+          } else {
+            rent.push(doc.data());
+          }
+        });
+        // navigation.dispatch({
+        //   ...CommonActions.setParams({videoData: [], rentData: rent, flockData: flock}),
+        //   source: key,
+        // });
+        navigation.dispatch({
+          ...CommonActions.setParams({videoData: [], rentData: rent, flockData: flock}),
+          source: key1,
+        });
+        // setFlockData(flock);
+        // setRentData(rent);
+      });
+  
+
+      // this breaks something v
+      //return () => {unsubscribe()};
+    }
+
+
+    return () => {
+      if (unsubscribeCurrentRent) {
+        unsubscribeCurrentRent();
+      }
+    };
+  }, [key1, limitKeyRent]);
 
   // useEffect(()=>{
     // return () => {
