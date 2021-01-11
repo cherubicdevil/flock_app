@@ -64,7 +64,7 @@ const VideoCarousel = ({route, navigation, array, index = 0, data}) => {
         pagingEnabled={true}>
         {renderAlbums(route?.params?.array || ar, route, navigation, index)}
       </ScrollView>
-      {renderClose(navigation, dispatch, ar, lastVisible, flockData)}
+      {renderClose(navigation, dispatch, route?.params?.array|| ar, lastVisible, flockData)}
     </View>
   );
 };

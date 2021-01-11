@@ -99,7 +99,7 @@ const FeedList= ({navigation, route, feedItem=null, productBlurb=null, KeyContex
     var setLimit = ()=>{};
     if (KeyContext) {
 
-      var {limitKey, setLimitKey} = useContext(KeyContext);
+      var {limitKey, setLimitKey, limitKeyRent, setLimitKeyRent} = useContext(KeyContext);
     }
     return (
       <><Button style={{position: 'absolute', bottom: 0, zIndex: 500}} title="GET MORE" onPress={()=> {

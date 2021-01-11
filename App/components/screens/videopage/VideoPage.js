@@ -417,10 +417,12 @@ const ResizeableImage = ({source, limitHorizontal=true}) => {
       setHeight(Dimensions.get('window').height);
     }
   });
-
+  if (source == null) {
+    source = {uri:''};
+  }
   return (
     <Image
-      source={source}
+      source={source?.uri == ''?require('App/Assets/Images/flock_logo_white.png'):source}
       style={{
         position: 'absolute',
         zIndex: -10,

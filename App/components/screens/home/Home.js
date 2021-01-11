@@ -23,7 +23,7 @@
  */
 
 import React, {useState, useEffect, createContext, useContext} from 'react';
-import {View, Text, TextInput, Image, ImageBackground, TouchableOpacity} from 'react-native';
+import {View, Text, TextInput, Image, ImageBackground, TouchableOpacity, ScrollView} from 'react-native';
 import FeedList from './feed/FeedList';
 import {constants} from 'App/constants';
 import styles from './Home.style.ios';
@@ -32,6 +32,7 @@ import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs
 import {fetchChatGroups} from 'App/utils';
 import {firebase, db} from 'App/firebase/config';
 import {CommonActions, NavigationContainer} from '@react-navigation/native';
+import Carousel from 'App/components/screens/videopage/Carousel'
 
 const Tab = createMaterialTopTabNavigator();
 const KeyContext = createContext();
@@ -41,7 +42,8 @@ const KeyContextProvider = (props) => {
   const [pageEnd, setPageEnd] = useState(2);
   const [limit, setLimit] = useState(2);
   const [limitRent, setLimitRent] = useState(2);
-  const [unsubscribe, setUnsubscribe] = useState(null);
+  const [arrFlock, setArrFlock] = useState([]);
+  const [arrRent, setArrRent] = useState([]);
   return (
     <KeyContext.Provider
       value={{key: routeKey, 
@@ -54,8 +56,10 @@ const KeyContextProvider = (props) => {
       setLimitKey: (value) => setLimit(value),
       limitKeyRent: limitRent,
       setLimitKeyRent: (value) => setLimitRent(value),
-      unsubscribeKey: unsubscribe,
-      setUnsubscribeKey: (value) => setUnsubscribe(value),
+      keyArrFlock: arrFlock,
+      setKeyArrFlock: (value) => setArrFlock(value),
+      keyArrRent: arrRent,
+      setKeyArrRent: (value) => setArrRent(value),
 
       }}>
       {props.children}
@@ -66,9 +70,13 @@ const KeyContextProvider = (props) => {
 const DataList = ({navigation, route}) => {
   const val = route.params?.value || null;
   const {key, setKey, key1, setKey1} = useContext(KeyContext);
-  route.params.videoData = route.params[route.params.dataType];
-  //route.params.videoData = route.params.flockData;
-
+  const {keyArrFlock, keyArrRent} = useContext(KeyContext);
+  //route.params.videoData = route.params[route.params.dataType];
+  if (route.params.dataType === "flockData") {
+    route.params.videoData = keyArrFlock;
+  } else {
+    route.params.videoData = keyArrRent;
+  }
   useEffect(() => {
     if (route.params.dataType === 'flockData') {
       setKey(route.key);
@@ -92,9 +100,8 @@ const DataList = ({navigation, route}) => {
 }
 
 const HomeTabSwipe = ({videoData, navigation, route}) => {
-  const [flockData, setFlockData] = useState([{flock: 'test'}]);
-  const [rentData, setRentData] = useState([{flock: 'test'}]);
   const {key, key1, limitKey, unsubscribeKey, limitKeyRent} = useContext(KeyContext);
+  const {keyArrFlock, setKeyArrFlock, keyArrRent, setKeyArrRent} = useContext(KeyContext);
   var unsubscribeCurrent;
   var unsubscribeCurrentRent;
   React.useEffect(() => {
@@ -128,10 +135,11 @@ const HomeTabSwipe = ({videoData, navigation, route}) => {
             rent.push(doc.data());
           }
         });
-        navigation.dispatch({
-          ...CommonActions.setParams({videoData: [], rentData: rent, flockData: flock}),
-          source: key,
-        });
+        // navigation.dispatch({
+        //   ...CommonActions.setParams({videoData: [], rentData: rent, flockData: flock}),
+        //   source: key,
+        // });
+        setKeyArrFlock(flock);
         // navigation.dispatch({
         //   ...CommonActions.setParams({videoData: [], rentData: rent, flockData: flock}),
         //   source: key1,
@@ -188,10 +196,11 @@ const HomeTabSwipe = ({videoData, navigation, route}) => {
         //   ...CommonActions.setParams({videoData: [], rentData: rent, flockData: flock}),
         //   source: key,
         // });
-        navigation.dispatch({
-          ...CommonActions.setParams({videoData: [], rentData: rent, flockData: flock}),
-          source: key1,
-        });
+        // navigation.dispatch({
+        //   ...CommonActions.setParams({videoData: [], rentData: rent, flockData: flock}),
+        //   source: key1,
+        // });
+        setKeyArrRent(rent);
         // setFlockData(flock);
         // setRentData(rent);
       });
@@ -218,10 +227,13 @@ const HomeTabSwipe = ({videoData, navigation, route}) => {
   // },[key, key1]);
   var navigator = 
   <Tab.Navigator>
-  <Tab.Screen name="posts" component={FeedList} initialParams={{videoData: videoData}} />
-  <Tab.Screen name="Flocking" component={DataList} initialParams={{value: 'hello world', videoData:[], flockData: [], rentData: [], dataType: 'flockData'}} />
+    <Tab.Screen name="for you" component = {MiniCarousel} initialParams={{array: keyArrRent}} />
+  {/* <Tab.Screen name="posts" component={FeedList} initialParams={{videoData: videoData}} /> */}
   <Tab.Screen name="Popular" component={FeedList} initialParams={{videoData: []}} />
+  <Tab.Screen name="Flocking" component={DataList} initialParams={{value: 'hello world', videoData:[], flockData: [], rentData: [], dataType: 'flockData'}} />
   <Tab.Screen name="Request" component={DataList} initialParams={{value: 'hello world', videoData:[], flockData: [], rentData: [], dataType: 'rentData'}} />
+  {/* <Tab.Screen name="Flocking" component={FeedList} initialParams={{value: 'hello world', videoData:[], flockData: [], rentData: [], dataType: 'flockData', flockOrNot: 'flockData'}} /> */}
+  {/* <Tab.Screen name="Request" component={FeedList} initialParams={{value: 'hello world', videoData:[], flockData: [], rentData: [], dataType: 'rentData', flockOrNot: 'rentData'}} /> */}
 </Tab.Navigator>;
 
 
@@ -286,5 +298,40 @@ const Home = ({route, navigation, lastVisible = null}) => {
     </View>
   );
 };
+
+const MiniCarousel = ({route}) => {
+  const [viewHeight, setViewHeight] = useState(800);
+  const {key, setKey, key1, setKey1, keyArrRent, keyArrFlock} = useContext(KeyContext);
+  // return <View><Text>Hi</Text></View>;
+
+  const onLayout= (event)=> {
+    // if (event.nativeEvent.height < 1757) return;
+    console.log(event.height);
+    setView(<ScrollView horizontal={false}
+      pagingEnabled={true}>
+        {keyArrRent.map((item) => {
+          console.log(item);
+          return <View style={{backgroundColor:'yellow', justifyContent: 'center', height: event.nativeEvent.layout.height, width: '100%', borderWidth: 1}}><Text>{item?.product?.title || item.flock}{event.nativeEvent.layout.height}</Text></View>;
+        })}
+      </ScrollView>);
+  };
+
+  return <View onLayout = {(event) => {
+    setViewHeight(event.nativeEvent.layout.height);
+  }} style={{height: '100%'}}>
+    <ScrollView horizontal={false}
+      pagingEnabled={true}>
+        {keyArrRent.map((item) => {
+          console.log(item);
+          return <View style={{backgroundColor:'yellow', justifyContent: 'center', height: viewHeight, width: '100%', borderWidth: 1}}><Text>{item?.product?.title || item.flock}</Text></View>;
+        })}
+      </ScrollView>
+  </View>
+  return <View style={{height: '100%'}}
+  onLayout={onLayout}
+  >
+    {view}
+  </View>
+}
 
 export default Home;
