@@ -112,6 +112,7 @@ const HomeTabSwipe = ({videoData, navigation, route}) => {
       // this filter is kind of inefficient; gets the entire table
       var query = citiesRef;
       unsubscribeCurrent = query
+      .limit(limitKey)
       .onSnapshot(function(querySnapshot) {
         const rent = [];
         const flock = [];
@@ -145,7 +146,7 @@ const HomeTabSwipe = ({videoData, navigation, route}) => {
         unsubscribeCurrent();
       }
     };
-  }, [key, key1]);
+  }, [key, key1, limitKey]);
 
   // useEffect(()=>{
     // return () => {
