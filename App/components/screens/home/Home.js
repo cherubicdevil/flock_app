@@ -34,6 +34,7 @@ import {firebase, db} from 'App/firebase/config';
 import {CommonActions, NavigationContainer} from '@react-navigation/native';
 import Carousel from 'App/components/screens/videopage/Carousel'
 import VideoPage from 'App/components/screens/videopage/VideoPage';
+import NewVideoPage from 'App/components/screens/videopage/NewVideoPage';
 
 const Tab = createMaterialTopTabNavigator();
 const KeyContext = createContext();
@@ -97,7 +98,7 @@ const DataList = ({navigation, route}) => {
     } else if (route.params.dataType === "rentData") {
     navigation.navigate('FlockReserve', {data:al});
     }
-  }}><View style={{height: 150, backgroundColor: 'black', width: '100%'}} /></TouchableOpacity>} /></View>;
+  }}><View style={{height: 150, backgroundColor: 'white', width: '100%'}} /></TouchableOpacity>} /></View>;
 }
 
 const HomeTabSwipe = ({videoData, navigation, route}) => {
@@ -108,6 +109,7 @@ const HomeTabSwipe = ({videoData, navigation, route}) => {
   React.useEffect(() => {
     // this should make it so that on creating new listener with new limit, the previous one is gone.
       if (unsubscribeCurrent) {
+        console.log('unsubscribing flock');
         unsubscribeCurrent();
       }
 
@@ -120,6 +122,7 @@ const HomeTabSwipe = ({videoData, navigation, route}) => {
       }, 10000);
 
       // getMessages(navigation, key, key1);
+      console.log('subscribing flock');
       var citiesRef = db.collection("chatGroups");
       // this filter is kind of inefficient; gets the entire table
       var query = citiesRef;
@@ -157,6 +160,7 @@ const HomeTabSwipe = ({videoData, navigation, route}) => {
 
     return () => {
       if (unsubscribeCurrent) {
+        console.log("unsubscribing flock");
         unsubscribeCurrent();
       }
     };
@@ -165,6 +169,7 @@ const HomeTabSwipe = ({videoData, navigation, route}) => {
   React.useEffect(() => {
     // this should make it so that on creating new listener with new limit, the previous one is gone.
       if (unsubscribeCurrentRent) {
+        console.log('unsubscribing rent');
         unsubscribeCurrentRent();
       }
 
@@ -179,6 +184,7 @@ const HomeTabSwipe = ({videoData, navigation, route}) => {
       // getMessages(navigation, key, key1);
       var citiesRef = db.collection("chatGroups");
       // this filter is kind of inefficient; gets the entire table
+      console.log('subscribing rent');
       var query = citiesRef;
       unsubscribeCurrentRent = query
       .where('completed', '==',true)
@@ -214,6 +220,7 @@ const HomeTabSwipe = ({videoData, navigation, route}) => {
 
     return () => {
       if (unsubscribeCurrentRent) {
+        console.log('unsubscribing rent')
         unsubscribeCurrentRent();
       }
     };
@@ -316,10 +323,12 @@ const MiniCarousel = ({navigation, route}) => {
     <ScrollView horizontal={false}
       pagingEnabled={true}>
         {finalAr.map((item) => {
-          console.log(item);
+          //console.log('rendering video page');
+          //console.log(item);
           return <View style={{backgroundColor:'yellow', justifyContent: 'center', height: viewHeight, width: '100%', borderWidth: 1}}>
-            <Text>{item?.product?.title || item.flock}</Text>
-            <VideoPage navigation={navigation} data={item} index={finalAr.indexOf(item)} currIndex={finalAr.indexOf(item)} />
+            {/* <Text>{item?.product?.title || item.flock}</Text> */}
+            <NewVideoPage navigation={navigation} data={item} index={finalAr.indexOf(item)} currIndex={finalAr.indexOf(item)} />
+            
             </View>;
         })}
       </ScrollView>
