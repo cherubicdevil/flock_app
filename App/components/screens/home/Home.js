@@ -33,6 +33,7 @@ import {fetchChatGroups} from 'App/utils';
 import {firebase, db} from 'App/firebase/config';
 import {CommonActions, NavigationContainer} from '@react-navigation/native';
 import Carousel from 'App/components/screens/videopage/Carousel'
+import VideoPage from 'App/components/screens/videopage/VideoPage';
 
 const Tab = createMaterialTopTabNavigator();
 const KeyContext = createContext();
@@ -299,7 +300,7 @@ const Home = ({route, navigation, lastVisible = null}) => {
   );
 };
 
-const MiniCarousel = ({route}) => {
+const MiniCarousel = ({navigation, route}) => {
   const [viewHeight, setViewHeight] = useState(800);
   const {key, setKey, key1, setKey1, keyArrRent, keyArrFlock} = useContext(KeyContext);
   // return <View><Text>Hi</Text></View>;
@@ -316,7 +317,10 @@ const MiniCarousel = ({route}) => {
       pagingEnabled={true}>
         {finalAr.map((item) => {
           console.log(item);
-          return <View style={{backgroundColor:'yellow', justifyContent: 'center', height: viewHeight, width: '100%', borderWidth: 1}}><Text>{item?.product?.title || item.flock}</Text></View>;
+          return <View style={{backgroundColor:'yellow', justifyContent: 'center', height: viewHeight, width: '100%', borderWidth: 1}}>
+            <Text>{item?.product?.title || item.flock}</Text>
+            <VideoPage navigation={navigation} data={item} index={finalAr.indexOf(item)} currIndex={finalAr.indexOf(item)} />
+            </View>;
         })}
       </ScrollView>
   </View>
@@ -336,5 +340,11 @@ const shuffle = (array) => {
   }
   return array;
 }
+
+const Page = () => {
+  return <View>
+
+  </View>
+};
 
 export default Home;
