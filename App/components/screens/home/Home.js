@@ -39,6 +39,8 @@ const KeyContextProvider = (props) => {
   const [routeKey, setRouteKey] = useState(null);
   const [routeKey1, setRouteKey1] = useState(null);
   const [pageEnd, setPageEnd] = useState(2);
+  const [limit, setLimit] = useState(2);
+  const [unsubscribe, setUnsubscribe] = useState(null);
   return (
     <KeyContext.Provider
       value={{key: routeKey, 
@@ -46,7 +48,12 @@ const KeyContextProvider = (props) => {
       key1: routeKey1, 
       setKey1: (value) => setRouteKey1(value),
       pageKey: pageEnd,
-      setPageEnd: (value) => setPageEnd(value)
+      setPageEnd: (value) => setLimit(value),
+      limitKey: limit,
+      setLimitKey: (value) => setLimit(value),
+      unsubscribeKey: unsubscribe,
+      setUnsubscribeKey: (value) => setUnsubscribe(value),
+
       }}>
       {props.children}
     </KeyContext.Provider>
@@ -72,7 +79,7 @@ const DataList = ({navigation, route}) => {
   // const boxes = <View style={{backgroundColor: 'white'}}>{data.map(()=>{
   //   <View style={{width: 30, height: 50, backgroundColor: 'red'}} />
   // })}</View>
-  return <View style={{height: '100%', backgroundColor: 'pink', width: '100%'}}><Text style={{color: 'white'}}>{val}</Text><FeedList route={route} feedItem={(al)=><TouchableOpacity onPress={()=>{
+  return <View style={{height: '100%', backgroundColor: 'pink', width: '100%'}}><Text style={{color: 'white'}}>{val}</Text><FeedList route={route} KeyContext={KeyContext} feedItem={(al)=><TouchableOpacity onPress={()=>{
     if (route.params.dataType === "flockData") {
       navigation.navigate('ChatInterface', {data: al});
     } else if (route.params.dataType === "rentData") {
@@ -84,9 +91,14 @@ const DataList = ({navigation, route}) => {
 const HomeTabSwipe = ({videoData, navigation, route}) => {
   const [flockData, setFlockData] = useState([{flock: 'test'}]);
   const [rentData, setRentData] = useState([{flock: 'test'}]);
-  const {key, key1} = useContext(KeyContext);
-  var unsubscribe;
+  const {key, key1, limitKey, unsubscribeKey} = useContext(KeyContext);
+  var unsubscribeCurrent;
   React.useEffect(() => {
+    // this should make it so that on creating new listener with new limit, the previous one is gone.
+      if (unsubscribeCurrent) {
+        unsubscribeCurrent();
+      }
+
     if (key && key1) {
       setTimeout(() => {
         navigation.dispatch({
@@ -99,7 +111,7 @@ const HomeTabSwipe = ({videoData, navigation, route}) => {
       var citiesRef = db.collection("chatGroups");
       // this filter is kind of inefficient; gets the entire table
       var query = citiesRef;
-      unsubscribe = query
+      unsubscribeCurrent = query
       .onSnapshot(function(querySnapshot) {
         const rent = [];
         const flock = [];
@@ -127,15 +139,21 @@ const HomeTabSwipe = ({videoData, navigation, route}) => {
       //return () => {unsubscribe()};
     }
 
-  }, [key, key1]);
 
-  useEffect(()=>{
     return () => {
-      if (unsubscribe) {
-        unsubscribe();
+      if (unsubscribeCurrent) {
+        unsubscribeCurrent();
       }
     };
-  },[]);
+  }, [key, key1]);
+
+  // useEffect(()=>{
+    // return () => {
+    //   if (unsubscribeCurrent) {
+    //     unsubscribeCurrent();
+    //   }
+    // };
+  // },[key, key1]);
   var navigator = 
   <Tab.Navigator>
   <Tab.Screen name="posts" component={FeedList} initialParams={{videoData: videoData}} />

@@ -24,8 +24,8 @@
  */
 
 
-import React, {useState} from 'react';
-import {Dimensions, ScrollView, View} from 'react-native';
+import React, {useState, useContext} from 'react';
+import {Dimensions, ScrollView, View, Button} from 'react-native';
 import FeedItem from './FeedItem';
 import HalfProduct from './HalfProduct';
 import {constants} from 'App/constants';
@@ -33,7 +33,7 @@ import {fetchAlbums, fetchProducts, mergeArrays} from 'App/utils';
 import LinearGradient from 'react-native-linear-gradient';
 import ProductBlurb from 'App/components/screens/home/feed/ProductBlurb';
 const width = Dimensions.get('window').width / 2 - 30;
-const FeedList= ({navigation, route, feedItem=null, productBlurb=null}) => {
+const FeedList= ({navigation, route, feedItem=null, productBlurb=null, KeyContext}) => {
   const [myAr, setMyAr] = useState([]);
 
   const renderProductBlurb = (product) => {
@@ -94,9 +94,21 @@ const FeedList= ({navigation, route, feedItem=null, productBlurb=null}) => {
     const ar = mergeArrays(route.params.videoData, []);
     const album1 = ar.slice(0, ar.length / 2);
     const album2 = ar.slice(ar.length / 2, ar.length);
+
+    var limit = 0;
+    var setLimit = ()=>{};
+    if (KeyContext) {
+
+      var {limit, setLimit} = useContext(KeyContext);
+    }
     return (
+      <><Button style={{position: 'absolute', bottom: 0, zIndex: 500}} title="GET MORE" onPress={()=> {
+        setLimit(limit * 2);
+      console.log('get more');
+      }
+    }/>
       <View>
-        <Button title="GET MORE" onPress={()=>console.log('get more')}/>
+        
         <LinearGradient
           colors={[constants.LIGHTGREY, 'rgba(0,0,0,0)']}
           style={{
@@ -106,6 +118,7 @@ const FeedList= ({navigation, route, feedItem=null, productBlurb=null}) => {
             top: 0,
             zIndex: 40,
           }}></LinearGradient>
+                      
         <ScrollView
           style={{
             paddingLeft: 15,
@@ -128,19 +141,22 @@ const FeedList= ({navigation, route, feedItem=null, productBlurb=null}) => {
             }
 
           }}>
+
           <View
             key="0"
             style={{
               flexDirection: 'row',
               flex: 1,
             }}>
+              
             <View style={styles.columnStyle}>{renderClucks(album1)}</View>
             <View key="1" style={styles.columnStyle}>
               {renderClucks(album2)}
             </View>
           </View>
         </ScrollView>
-      </View>
+
+      </View></>
     );
   }
 
