@@ -11,6 +11,15 @@ import Share from './Share';
 // import React from 'react';
 // import {Text} from 'react-native';
 import {name as appName} from './app.json';
+import {LogBox} from 'react-native';
+LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
+LogBox.ignoreAllLogs();//Ignore all log notifications
+
+const w = console.warn;
+const e = console.error;
+console.warn = () => { console.log('warning');}
+console.error = () => { console.log('error')}
+
 
 // const App = () => {
 // 	return <Text>Hello world</Text>;

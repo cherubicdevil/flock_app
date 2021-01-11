@@ -227,7 +227,7 @@ const HomeTabSwipe = ({videoData, navigation, route}) => {
   // },[key, key1]);
   var navigator = 
   <Tab.Navigator>
-    <Tab.Screen name="for you" component = {MiniCarousel} initialParams={{array: keyArrRent}} />
+    <Tab.Screen name="for you" component = {MiniCarousel}/>
   {/* <Tab.Screen name="posts" component={FeedList} initialParams={{videoData: videoData}} /> */}
   <Tab.Screen name="Popular" component={FeedList} initialParams={{videoData: []}} />
   <Tab.Screen name="Flocking" component={DataList} initialParams={{value: 'hello world', videoData:[], flockData: [], rentData: [], dataType: 'flockData'}} />
@@ -303,25 +303,18 @@ const MiniCarousel = ({route}) => {
   const [viewHeight, setViewHeight] = useState(800);
   const {key, setKey, key1, setKey1, keyArrRent, keyArrFlock} = useContext(KeyContext);
   // return <View><Text>Hi</Text></View>;
-
-  const onLayout= (event)=> {
-    // if (event.nativeEvent.height < 1757) return;
-    console.log(event.height);
-    setView(<ScrollView horizontal={false}
-      pagingEnabled={true}>
-        {keyArrRent.map((item) => {
-          console.log(item);
-          return <View style={{backgroundColor:'yellow', justifyContent: 'center', height: event.nativeEvent.layout.height, width: '100%', borderWidth: 1}}><Text>{item?.product?.title || item.flock}{event.nativeEvent.layout.height}</Text></View>;
-        })}
-      </ScrollView>);
-  };
+  const [finalAr, setFinalAr] = useState([]);
+  useEffect(()=> {
+    setFinalAr(shuffle([...keyArrRent, ...keyArrFlock]));
+    
+  }, []);
 
   return <View onLayout = {(event) => {
     setViewHeight(event.nativeEvent.layout.height);
   }} style={{height: '100%'}}>
     <ScrollView horizontal={false}
       pagingEnabled={true}>
-        {keyArrRent.map((item) => {
+        {finalAr.map((item) => {
           console.log(item);
           return <View style={{backgroundColor:'yellow', justifyContent: 'center', height: viewHeight, width: '100%', borderWidth: 1}}><Text>{item?.product?.title || item.flock}</Text></View>;
         })}
@@ -332,6 +325,16 @@ const MiniCarousel = ({route}) => {
   >
     {view}
   </View>
+}
+
+const shuffle = (array) => {
+  for (var i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * i)
+    const temp = array[i]
+    array[i] = array[j]
+    array[j] = temp
+  }
+  return array;
 }
 
 export default Home;
