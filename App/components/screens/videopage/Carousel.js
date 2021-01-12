@@ -51,16 +51,26 @@ const VideoCarousel = ({route, navigation, array, index = 0, data}) => {
         contentOffset={{y: index * Dimensions.get('window').height}}
         showsVerticalScrollIndicator={false}
         scrollEventThrottle={1}
-        onScrollEndDrag={(event )=> {
+        onScrollBeginDrag={(event) => {
           const ind = Math.floor(event.nativeEvent.contentOffset.y /
-          Dimensions.get('window').height);
-          console.log(Math.floor(ar.length/2));
-          if (ind == Math.floor(ar.length - 2)) {
-            console.log('getting more');
-            fetchAlbums().then((al) => {
-              setAr([...ar, ...al.ar]);
-            })
-          }
+            Dimensions.get('window').height + 0.3);
+            if (ind == Math.floor(ar.length-1)) {
+              console.log('getting more');
+              fetchAlbums().then((al) => {
+                setAr([...ar, ...al.ar]);
+              })
+            }
+        }}
+        onScrollEndDrag={(event )=> {
+          // const ind = Math.floor(event.nativeEvent.contentOffset.y /
+          // Dimensions.get('window').height);
+          // console.log(Math.floor(ar.length/2));
+          // if (ind == Math.floor(ar.length - 2)) {
+          //   console.log('getting more');
+          //   fetchAlbums().then((al) => {
+          //     setAr([...ar, ...al.ar]);
+          //   })
+          // }
         }}
         onScroll={function (event) {
           index = event.nativeEvent.contentOffset.y /
