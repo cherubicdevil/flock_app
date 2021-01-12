@@ -314,23 +314,23 @@ const MiniCarousel = ({navigation, route}) => {
   const [finalAr, setFinalAr] = useState([]);
   useEffect(()=> {
     setFinalAr(shuffle([...keyArrRent, ...keyArrFlock]));
-    
-  }, []);
+    console.log("keyarrrent", keyArrRent);
+  }, [keyArrRent, keyArrFlock]);
 
+  var res = [];
+  for (const item of finalAr) {
+    console.log(viewHeight);
+    res.push(<View style={{height: viewHeight, width: '100%', borderWidth: 1}}>
+    {/* <Text>{item?.product?.title || item.flock}</Text> */}
+    <NewVideoPage navigation={navigation} data={item} index={finalAr.indexOf(item)} currIndex={finalAr.indexOf(item)} />
+    </View>);
+  }
   return <View onLayout = {(event) => {
     setViewHeight(event.nativeEvent.layout.height);
   }} style={{height: '100%'}}>
-    <ScrollView horizontal={false}
+    <ScrollView horizontal={false} showsVerticalScrollIndicator={false}
       pagingEnabled={true}>
-        {finalAr.map((item) => {
-          //console.log('rendering video page');
-          //console.log(item);
-          return <View style={{height: viewHeight, width: '100%', borderWidth: 1}}>
-            {/* <Text>{item?.product?.title || item.flock}</Text> */}
-            <NewVideoPage navigation={navigation} data={item} index={finalAr.indexOf(item)} currIndex={finalAr.indexOf(item)} />
-            
-            </View>;
-        })}
+        {res}
       </ScrollView>
   </View>
   return <View style={{height: '100%'}}
