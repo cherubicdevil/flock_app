@@ -51,6 +51,16 @@ const VideoCarousel = ({route, navigation, array, index = 0, data}) => {
         contentOffset={{y: index * Dimensions.get('window').height}}
         showsVerticalScrollIndicator={false}
         scrollEventThrottle={1}
+        onScrollEndDrag={(event )=> {
+          const ind = event.nativeEvent.contentOffset.y /
+          Dimensions.get('window').height;
+          if (ind >= ar.length - 1) {
+            console.log('getting more');
+            fetchAlbums().then((al) => {
+              setAr([...ar, ...al]);
+            })
+          }
+        }}
         onScroll={function (event) {
           index = event.nativeEvent.contentOffset.y /
           Dimensions.get('window').height;
@@ -59,6 +69,8 @@ const VideoCarousel = ({route, navigation, array, index = 0, data}) => {
             type: 'sendCarouselIndex',
             payload: index
           });
+
+
         }}
         horizontal={false}
         pagingEnabled={true}>

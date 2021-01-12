@@ -50,6 +50,8 @@ import {ShareDialog, LoginButton, AccessToken} from 'react-native-fbsdk';
 import { AppInstalledChecker, CheckPackageInstallation } from 'react-native-check-app-install';
 import CameraRoll from '@react-native-community/cameraroll';
 
+var lastVisible = null;
+
 const fetchStreamableSource = async (src) => {
   if (src === null || src === undefined) {
     return new Promise(function (resolve, reject) {
@@ -90,7 +92,7 @@ const fetchUserData = (user) => {
   });
 };
 
-const fetchAlbums = (lastVisible = null) => {
+const fetchAlbums = () => {
   return new Promise(async (resolve) => {
     var counter = 0;
     firebase
