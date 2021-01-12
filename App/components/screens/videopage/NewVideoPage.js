@@ -102,8 +102,11 @@ const NewVideoPage = ({navigation, array, index, data, currIndex}) => {
           position: 'absolute',
           right: 10,
           width: 50,
-          bottom: 155,
+          bottom: 45,
           zIndex: 25,
+          shadowOpacity:0.5,
+          shadowRadius: 10,
+          shadowOffset: {height: 0, width: 0}
         }}>
         <View style={{marginTop: 10}}>
           <HeartButton  data={data} />
@@ -143,18 +146,28 @@ const NewVideoPage = ({navigation, array, index, data, currIndex}) => {
       <View
         style={{
           height: '100%',
-          backgroundColor: '#000',
-          justifyContent: 'center',
+          backgroundColor: constants.PINK_BACKGROUND,
+          justifyContent: 'flex-start',
+
         }}>
         <View
           style={{
             position: 'absolute',
             width: '100%',
-            height: '100%',
-            justifyContent: 'center',
+            //justifyContent: 'center',
             zIndex: -10,
+            borderRadius: 40,
+            //overflow: 'hidden',
+            backgroundColor: 'white',
+            paddingBottom: 15,
           }}>
+              <View>
+              {renderIcons()}
           <ResizeableImage source={{uri: data?.poster || data?.product?.image}} />
+          </View>
+          <View style={{marginTop: 4, marginLeft: 10, marginRight: 10, padding: 10, paddingLeft: 30, borderRadius: 40, borderWidth: 3, borderColor: constants.ORANGE}} >
+              <Text>{data.product.title}</Text>
+          </View>
         </View>
         <View pointerEvents="none">
           {data?.video?<Video
@@ -168,10 +181,11 @@ const NewVideoPage = ({navigation, array, index, data, currIndex}) => {
             currIndex={currIndex}
             leave={leavePage}
           />:<></>}
+          {renderProduct(navigation, data)}
         </View>
         {/* {renderClose(navigation)} */}
-        {renderProduct(navigation, data)}
-        {renderIcons()}
+        
+        
         <CircleProfile
         photoUrl={constants.PLACEHOLDER_IMAGE}
         style={{
@@ -220,7 +234,7 @@ const ResizeableImage = ({source, limitHorizontal=true}) => {
     <Image
       source={source?.uri == ''?require('App/Assets/Images/flock_logo_white.png'):source}
       style={{
-        position: 'absolute',
+        //position: 'absolute',
         zIndex: -10,
         opacity: 0.935,
         width: width,

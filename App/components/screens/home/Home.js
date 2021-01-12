@@ -325,7 +325,7 @@ const MiniCarousel = ({navigation, route}) => {
         {finalAr.map((item) => {
           //console.log('rendering video page');
           //console.log(item);
-          return <View style={{backgroundColor:'yellow', justifyContent: 'center', height: viewHeight, width: '100%', borderWidth: 1}}>
+          return <View style={{height: viewHeight, width: '100%', borderWidth: 1}}>
             {/* <Text>{item?.product?.title || item.flock}</Text> */}
             <NewVideoPage navigation={navigation} data={item} index={finalAr.indexOf(item)} currIndex={finalAr.indexOf(item)} />
             
