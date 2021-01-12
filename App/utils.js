@@ -94,6 +94,7 @@ const fetchUserData = (user) => {
 
 const fetchAlbums = () => {
   return new Promise(async (resolve) => {
+    console.log("LAST VISIBLE", lastVisible);
     var counter = 0;
     firebase
       .firestore()

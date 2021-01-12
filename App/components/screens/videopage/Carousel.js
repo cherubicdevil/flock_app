@@ -52,12 +52,13 @@ const VideoCarousel = ({route, navigation, array, index = 0, data}) => {
         showsVerticalScrollIndicator={false}
         scrollEventThrottle={1}
         onScrollEndDrag={(event )=> {
-          const ind = event.nativeEvent.contentOffset.y /
-          Dimensions.get('window').height;
-          if (ind >= ar.length - 1) {
+          const ind = Math.floor(event.nativeEvent.contentOffset.y /
+          Dimensions.get('window').height);
+          console.log(Math.floor(ar.length/2));
+          if (ind == Math.floor(ar.length - 2)) {
             console.log('getting more');
             fetchAlbums().then((al) => {
-              setAr([...ar, ...al]);
+              setAr([...ar, ...al.ar]);
             })
           }
         }}
