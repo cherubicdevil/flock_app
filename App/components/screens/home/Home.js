@@ -35,6 +35,7 @@ import {CommonActions, NavigationContainer} from '@react-navigation/native';
 import Carousel from 'App/components/screens/videopage/Carousel'
 import VideoPage from 'App/components/screens/videopage/VideoPage';
 import NewVideoPage from 'App/components/screens/videopage/NewVideoPage';
+import {useDispatch, } from 'react-redux';
 import { fetchAlbums } from '../../../utils';
 
 const Tab = createMaterialTopTabNavigator();
@@ -309,6 +310,7 @@ const Home = ({route, navigation, lastVisible = null}) => {
 };
 
 const MiniCarousel = ({navigation, route}) => {
+  const dispatch = useDispatch();
   const [viewHeight, setViewHeight] = useState(800);
   const {key, setKey, key1, setKey1, keyArrRent, keyArrFlock} = useContext(KeyContext);
   const [videoAr, setVideoAr] = useState([]);
@@ -319,6 +321,7 @@ const MiniCarousel = ({navigation, route}) => {
   }, [keyArrRent, keyArrFlock, videoAr]);
 
   useEffect(()=>{
+    dispatch({type:'sendCarouselIndex', payload: 0});
     fetchAlbums().then((ar) => {
       setVideoAr(ar.ar);
     })
@@ -336,6 +339,13 @@ const MiniCarousel = ({navigation, route}) => {
     setViewHeight(event.nativeEvent.layout.height);
   }} style={{height: '100%'}}>
     <ScrollView horizontal={false} showsVerticalScrollIndicator={false}
+    onMomentumScrollEnd={(event)=>{
+      console.log(event.nativeEvent.contentOffset)
+      dispatch({type:'sendCarouselIndex', payload: Math.floor(event.nativeEvent.contentOffset.y / viewHeight)});
+    }}
+    // onScroll ={(event)=>{
+    //   dispatch({type:'sendCarouselIndex', payoad: Math.floor()});
+    // }}
       pagingEnabled={true}>
         {res}
       </ScrollView>

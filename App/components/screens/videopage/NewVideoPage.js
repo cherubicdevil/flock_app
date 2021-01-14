@@ -164,11 +164,11 @@ const NewVideoPage = ({navigation, array, index, data, currIndex, viewHeight}) =
           }}>
               <View>
               {renderIcons()}
-          {/* <ResizeableImage source={{uri: data?.poster || data?.product?.image}} /> */}
-          {data?.video?<ResizeableVideo data={data} horizontalLimit = {false} hLimit = {viewHeight}/>:<></>}
+          <ResizeableImage source={{uri: data?.poster || data?.product?.image}} horizontalLimit={false} hLimit={viewHeight} />
+          <ConditionalVideo index={index} data={data} viewHeight={viewHeight} />
           </View>
           <View style={{marginTop: 4, marginLeft: 10, marginRight: 10, padding: 10, paddingLeft: 30, borderRadius: 40, borderWidth: 3, borderColor: constants.ORANGE}} >
-              <Text>{data.product.title}</Text>
+              <Text>{data?.product?.title}</Text>
           </View>
         </View>
         <View pointerEvents="none">
@@ -205,18 +205,33 @@ const NewVideoPage = ({navigation, array, index, data, currIndex, viewHeight}) =
   return <View>{renderVid()}</View>;
 };
 
-const ResizeableImage = ({source, limitHorizontal=true}) => {
+const ConditionalVideo = ({index, data, viewHeight}) => {
+    const select = useSelector(state=>state);
+    console.log(select.videopage.carIndex, index, "carindex newivdeopage");
+    if (data?.video && (index == select.videopage.carIndex)) {
+        return <View style={{position: 'absolute', top:0}}>
+        <ResizeableVideo data={data} horizontalLimit = {false} hLimit = {viewHeight}/>
+        </View>
+    } else {
+        return <></>;
+    }
+}
+
+const ResizeableImage = ({source, limitHorizontal=true, hLimit, wLimit}) => {
   const [width, setWidth] = useState(0);
   const [height, setHeight] = useState(0);
+
+  const maxWidth = wLimit || Dimensions.get('window').width;
+  const maxHeight = hLimit || Dimensions.get('window').height;
   Image.getSize(source.uri, (w, h) => {
     if (limitHorizontal) {
-    const ratio = Dimensions.get('window').width / w;
+    const ratio = maxWidth / w;
     setHeight(h * ratio);
-    setWidth(Dimensions.get('window').width);
+    setWidth(maxWidth);
     } else {
-      const ratio = Dimensions.get('window').height / h;
+      const ratio = maxHeight;
       setWidth(w * ratio);
-      setHeight(Dimensions.get('window').height);
+      setHeight(maxHeight);
     }
   });
   if (source == null) {
