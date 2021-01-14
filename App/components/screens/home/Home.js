@@ -35,6 +35,7 @@ import {CommonActions, NavigationContainer} from '@react-navigation/native';
 import Carousel from 'App/components/screens/videopage/Carousel'
 import VideoPage from 'App/components/screens/videopage/VideoPage';
 import NewVideoPage from 'App/components/screens/videopage/NewVideoPage';
+import { fetchAlbums } from '../../../utils';
 
 const Tab = createMaterialTopTabNavigator();
 const KeyContext = createContext();
@@ -310,19 +311,25 @@ const Home = ({route, navigation, lastVisible = null}) => {
 const MiniCarousel = ({navigation, route}) => {
   const [viewHeight, setViewHeight] = useState(800);
   const {key, setKey, key1, setKey1, keyArrRent, keyArrFlock} = useContext(KeyContext);
+  const [videoAr, setVideoAr] = useState([]);
   // return <View><Text>Hi</Text></View>;
   const [finalAr, setFinalAr] = useState([]);
   useEffect(()=> {
-    setFinalAr(shuffle([...keyArrRent, ...keyArrFlock]));
-    console.log("keyarrrent", keyArrRent);
-  }, [keyArrRent, keyArrFlock]);
+    setFinalAr(shuffle([...keyArrRent, ...keyArrFlock,...videoAr]));
+  }, [keyArrRent, keyArrFlock, videoAr]);
+
+  useEffect(()=>{
+    fetchAlbums().then((ar) => {
+      setVideoAr(ar.ar);
+    })
+  }, [])
 
   var res = [];
   for (const item of finalAr) {
     console.log(viewHeight);
     res.push(<View style={{height: viewHeight, width: '100%', borderWidth: 1}}>
     {/* <Text>{item?.product?.title || item.flock}</Text> */}
-    <NewVideoPage navigation={navigation} data={item} index={finalAr.indexOf(item)} currIndex={finalAr.indexOf(item)} />
+    <NewVideoPage navigation={navigation} data={item} index={finalAr.indexOf(item)} currIndex={finalAr.indexOf(item)} viewHeight={viewHeight} />
     </View>);
   }
   return <View onLayout = {(event) => {

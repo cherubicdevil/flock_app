@@ -54,6 +54,7 @@ import {database} from 'firebase';
 
 import CircleProfile from './CircleProfile';
 import HeartButton from './HeartButton';
+import ResizeableVideo from '../../ResizeableVideo';
 
 const ICON_SIZE = 37;
 const config = {
@@ -80,7 +81,7 @@ var renderProduct = (navigation, data) => {
   );
 };
 
-const NewVideoPage = ({navigation, array, index, data, currIndex}) => {
+const NewVideoPage = ({navigation, array, index, data, currIndex, viewHeight}) => {
   var likes = data.likes || 0;
   const dispatch = useDispatch();
   const [myData, setMyData] = useState(data);
@@ -163,24 +164,15 @@ const NewVideoPage = ({navigation, array, index, data, currIndex}) => {
           }}>
               <View>
               {renderIcons()}
-          <ResizeableImage source={{uri: data?.poster || data?.product?.image}} />
+          {/* <ResizeableImage source={{uri: data?.poster || data?.product?.image}} /> */}
+          {data?.video?<ResizeableVideo data={data} horizontalLimit = {false} hLimit = {viewHeight}/>:<></>}
           </View>
           <View style={{marginTop: 4, marginLeft: 10, marginRight: 10, padding: 10, paddingLeft: 30, borderRadius: 40, borderWidth: 3, borderColor: constants.ORANGE}} >
               <Text>{data.product.title}</Text>
           </View>
         </View>
         <View pointerEvents="none">
-          {data?.video?<Video
-            style={{zIndex: 10}}
-            masonry={false}
-            paused={paused}
-            muted={false || leavePage}
-            navigation={navigation}
-            data={data}
-            index={index}
-            currIndex={currIndex}
-            leave={leavePage}
-          />:<></>}
+
           {renderProduct(navigation, data)}
         </View>
         {/* {renderClose(navigation)} */}

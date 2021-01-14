@@ -362,7 +362,7 @@ const VideoPage = ({navigation, array, index, data, currIndex}) => {
             justifyContent: 'center',
             zIndex: -10,
           }}>
-          <ResizeableImage source={{uri: data.poster}} />
+          <ResizeableImage limitHorizontal={false} source={{uri: data.poster}} />
         </View>
         <View pointerEvents="none">
           <Video
