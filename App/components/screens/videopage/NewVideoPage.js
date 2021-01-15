@@ -56,6 +56,7 @@ import CircleProfile from './CircleProfile';
 import HeartButton from './HeartButton';
 import ResizeableVideo from '../../ResizeableVideo';
 
+
 const ICON_SIZE = 37;
 const config = {
   velocityThreshold: 0.3,
@@ -162,10 +163,11 @@ const NewVideoPage = ({navigation, array, index, data, currIndex, viewHeight}) =
             backgroundColor: 'white',
             paddingBottom: 15,
           }}>
-              <View>
+              <View style={{alignItems: 'center'}}>
               {renderIcons()}
-          <ResizeableImage source={{uri: data?.poster || data?.product?.image}} horizontalLimit={false} hLimit={viewHeight} />
-          <ConditionalVideo index={index} data={data} viewHeight={viewHeight} />
+              <Image source = {{uri: data?.poster || data?.product?.image}} style={{position: 'absolute', zIndex: -10, top: 0, width: '100%', height: '100%' }} blurRadius={100} />
+          <ResizeableImage source={{uri: data?.poster || data?.product?.image}} limitHorizontal={false} hLimit={viewHeight * 0.6} />
+          <ConditionalVideo index={index} data={data} viewHeight={viewHeight * 0.6} />
           </View>
           <View style={{marginTop: 4, marginLeft: 10, marginRight: 10, padding: 10, paddingLeft: 30, borderRadius: 40, borderWidth: 3, borderColor: constants.ORANGE}} >
               <Text>{data?.product?.title}</Text>
@@ -229,7 +231,7 @@ const ResizeableImage = ({source, limitHorizontal=true, hLimit, wLimit}) => {
     setHeight(h * ratio);
     setWidth(maxWidth);
     } else {
-      const ratio = maxHeight;
+      const ratio = maxHeight / h;
       setWidth(w * ratio);
       setHeight(maxHeight);
     }

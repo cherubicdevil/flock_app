@@ -24,6 +24,7 @@
     "expo-gl": "^9.1.1",
     "expo-gl-cpp": "^9.1.2",
     "expo-three": "^5.5.1",
+    "fast-average-color": "^6.3.0",
     "firebase": "^7.19.1",
     "firebase-admin": "^9.4.2",
     "fs": "^0.0.1-security",
