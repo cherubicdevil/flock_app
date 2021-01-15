@@ -56,6 +56,8 @@ import CircleProfile from './CircleProfile';
 import HeartButton from './HeartButton';
 import ResizeableVideo from '../../ResizeableVideo';
 
+import Countdown from 'App/components/Countdown';
+
 
 const ICON_SIZE = 37;
 const config = {
@@ -83,12 +85,25 @@ var renderProduct = (navigation, data) => {
 };
 
 const NewVideoPage = ({navigation, array, index, data, currIndex, viewHeight}) => {
+
+    var dataType = "initial";
+    if (data.video) {
+        dataType = "video";
+    } else if (data.completed) {
+        dataType = "rent";
+    } else if (data.completed == false) {
+        dataType = "flock";
+    } else {
+        dataType = "product";
+    }
   var likes = data.likes || 0;
   const dispatch = useDispatch();
   const [myData, setMyData] = useState(data);
   const [leavePage, setLeavePage] = useState(false);
   const [paused, setPaused] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
+
+  const [flockCountdowns, setFlockCountdowns] = useState([]);
 
   const percentage = 60;
 
@@ -97,6 +112,23 @@ const NewVideoPage = ({navigation, array, index, data, currIndex, viewHeight}) =
   console.log('rendering video page')
 
 //   return <Text>hi</Text>
+
+
+useEffect(()=>{
+    if (dataType === "product" || dataType === "video") {
+    db.collection("chatGroups")
+    .where("productTitle", "==", data?.product?.title)
+    .get(function(querySnapshot) {
+      const arr = [];
+      querySnapshot.forEach(function(doc) {
+        if (doc.data().completed === false) {
+        arr.push(doc.data());
+        }
+      });
+      setFlockCountdowns(arr);
+    });
+    }
+  }, []);
 
   const renderIcons = () => {
     return (
@@ -161,6 +193,8 @@ const NewVideoPage = ({navigation, array, index, data, currIndex, viewHeight}) =
             //justifyContent: 'center',
             zIndex: -10,
             borderRadius: 40,
+            borderTopLeftRadius: 0,
+            borderTopRightRadius: 0,
             overflow: 'hidden',
             backgroundColor: 'white',
           }}>
@@ -171,9 +205,19 @@ const NewVideoPage = ({navigation, array, index, data, currIndex, viewHeight}) =
           <ResizeableImage source={{uri: data?.poster || data?.product?.image}} limitHorizontal={false} hLimit={viewHeight * percentage/100} />
           <ConditionalVideo index={index} data={data} viewHeight={viewHeight * percentage/100} />
           </View>
-          <View style={{backgroundColor: 'rgba(255,255,255,0.6)', marginTop: 4, marginLeft: 10, marginRight: 10, marginBottom: 10, padding: 20, paddingLeft: 30, borderRadius: 40, borderWidth: 3, borderColor: constants.ORANGE}} >
+          <TouchableOpacity onPress={()=>{
+              const video = data.video;
+              console.log(dataType);
+              if (dataType==="flock" || dataType==="video") {
+                  console.log('pressing')
+              navigation.navigate("Product", {album: data.product, video: {video}})
+              } else if (dataType==="rent") {
+                  navigation.navigate("FlockReserve", {data: data});
+              }
+          }}><View style={{backgroundColor: 'rgba(255,255,255,0.6)', marginTop: 4, marginLeft: 10, marginRight: 10, marginBottom: 10, padding: 20, paddingLeft: 30, borderRadius: 40, borderWidth: 3, borderColor: constants.ORANGE}} >
               <Text>{data?.product?.title}</Text>
           </View>
+          </TouchableOpacity>
         </View>
         <View pointerEvents="none">
 
@@ -255,6 +299,11 @@ const ResizeableImage = ({source, limitHorizontal=true, hLimit, wLimit}) => {
   );
 };
 
+const CountScroll = ({data}) => {
+    return <ScrollView>
+
+    </ScrollView>
+}
 
 const styles = StyleSheet.create({
   buttonText: {

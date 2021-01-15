@@ -37,7 +37,7 @@ const AppNavigator5 = () => {
     <NavigationContainer>
       <Tab.Navigator
         tabBar={(props) => <CustomBar {...props} />}
-        initialRouteName="Carousel"
+        initialRouteName="Home"
         //initialRouteName="ProfileMain"
         screenOptions={{
           headerShown: false,
@@ -56,7 +56,7 @@ const AppNavigator5 = () => {
           // FLOCK_BUG when click carousel nav bar, doesn't play automatically
         />
         <Tab.Screen
-          name="VideoMasonry"
+          name="Home"
           component={Home}
           options={{
             title: 'VideoMasonry',

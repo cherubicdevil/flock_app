@@ -23,6 +23,7 @@ import productData from './product.json';
 import PhotoButton from './PhotoButton';
 import ProductStyles from './ProductStyle';
 import ModalSelector from 'react-native-modal-selector';
+import ResizeableImage from 'App/components/ResizeableImage';
 
 const styles = StyleSheet.create({...ProductStyles});
 
@@ -154,11 +155,12 @@ class Product extends Component {
       <View style={styles.headerContainer}>
         <View style={styles.coverContainer}>
           <View style={styles.coverImage}>
-            <TouchableOpacity style={{zIndex: 50, height: 30, width: 50,position: 'absolute', top: 40, left: 30}} onPress={this.props.navigation.goBack}><Image style={{width: 35, height: 35, tintColor: constants.LIGHTGREY}} source = {require('App/Assets/Images/Back_Icon.png')} /></TouchableOpacity>
+            <TouchableOpacity style={{resizeMode: 'cover', zIndex: 50, height: 30, width: 50,position: 'absolute', top: 40, left: 30}} onPress={this.props.navigation.goBack}><Image style={{width: 35, height: 35, tintColor: constants.LIGHTGREY}} source = {require('App/Assets/Images/Back_Icon.png')} /></TouchableOpacity>
+            <View style={{resizeMode: 'cover'}}>
             <Image
               style={{
                 width: '100%',
-                resizeMode: 'contain',
+                resizeMode: 'cover',
                 aspectRatio: 1,
                 height: '100%',
                 //height: 200,
@@ -166,6 +168,7 @@ class Product extends Component {
               }}
               source={{uri: this.props.route.params.album.image}}
             />
+            </View>
             <Video
           repeat={true}
           muted={true}

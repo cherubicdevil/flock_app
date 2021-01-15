@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {View, Text, TouchableOpacity, Image} from 'react-native';
 import {useSelector} from 'react-redux';
+import {constants} from 'App/constants';
 
 const ICON_SIZE = 37;
 
