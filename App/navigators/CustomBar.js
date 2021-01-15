@@ -78,6 +78,7 @@ const AddItem = ({image, text, navigation, route}) => {
         }}
         func2={() => {
           navigation.navigate('CamScreen');
+          console.log('camscreen');
         }}
         modalVisible={modalOpen}
         toggleFunc={() => {
@@ -89,6 +90,7 @@ const AddItem = ({image, text, navigation, route}) => {
         style={{flex: 1}}
         onPress={() => {
           setModalOpen(true);
+          console.log('middle');
         }}>
         <InItem image={image} text={text} />
       </TouchableOpacity>

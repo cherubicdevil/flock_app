@@ -139,6 +139,7 @@ const OptionsModal = ({
               onPress={() => {
                 //navigation.navigate('CamScreen');
                 func2();
+                console.log('hello');
                 toggleFunc();
                 resetAnimation();
               }}>
@@ -155,6 +156,7 @@ const OptionsModal = ({
           </View>
           <TouchableOpacity
             onPress={() => {
+              console.log('cancel');
               toggleFunc();
               resetAnimation();
             }}
