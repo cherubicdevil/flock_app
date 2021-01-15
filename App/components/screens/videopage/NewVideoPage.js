@@ -90,6 +90,8 @@ const NewVideoPage = ({navigation, array, index, data, currIndex, viewHeight}) =
   const [paused, setPaused] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
 
+  const percentage = 60;
+
   var lastVisible = null;
 
   console.log('rendering video page')
@@ -159,17 +161,17 @@ const NewVideoPage = ({navigation, array, index, data, currIndex, viewHeight}) =
             //justifyContent: 'center',
             zIndex: -10,
             borderRadius: 40,
-            //overflow: 'hidden',
+            overflow: 'hidden',
             backgroundColor: 'white',
-            paddingBottom: 15,
           }}>
+              <Image source = {{uri: data?.poster || data?.product?.image}} style={{position: 'absolute', zIndex: -10, top: 0, width: '100%', height: '100%' }} blurRadius={100} />
               <View style={{alignItems: 'center'}}>
               {renderIcons()}
-              <Image source = {{uri: data?.poster || data?.product?.image}} style={{position: 'absolute', zIndex: -10, top: 0, width: '100%', height: '100%' }} blurRadius={100} />
-          <ResizeableImage source={{uri: data?.poster || data?.product?.image}} limitHorizontal={false} hLimit={viewHeight * 0.6} />
-          <ConditionalVideo index={index} data={data} viewHeight={viewHeight * 0.6} />
+              
+          <ResizeableImage source={{uri: data?.poster || data?.product?.image}} limitHorizontal={false} hLimit={viewHeight * percentage/100} />
+          <ConditionalVideo index={index} data={data} viewHeight={viewHeight * percentage/100} />
           </View>
-          <View style={{marginTop: 4, marginLeft: 10, marginRight: 10, padding: 10, paddingLeft: 30, borderRadius: 40, borderWidth: 3, borderColor: constants.ORANGE}} >
+          <View style={{backgroundColor: 'rgba(255,255,255,0.6)', marginTop: 4, marginLeft: 10, marginRight: 10, marginBottom: 10, padding: 20, paddingLeft: 30, borderRadius: 40, borderWidth: 3, borderColor: constants.ORANGE}} >
               <Text>{data?.product?.title}</Text>
           </View>
         </View>
