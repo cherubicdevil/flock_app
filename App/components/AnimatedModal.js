@@ -40,7 +40,9 @@ const AnimatedModal = ({
   colored=false,
   colors=['transparent', 'transparent'],
   bgcolor="white",
-  fade=true
+  fade=true,
+  curve = true,
+  viewParams={bottom: 0, height: Dimensions.get('window').height, width:Dimensions.get('window').width, left: 0}
 }) => {
   const animation = useRef(new Animated.Value(0));
   const startAnimation = () => {
@@ -67,14 +69,15 @@ const AnimatedModal = ({
     <View style={{zIndex: 800}}>
       <Animated.View
         style={{
-          height: visible ? Dimensions.get('window').height : 0,
-          width: visible ? Dimensions.get('window').width : 0,
+          height: visible ? viewParams.height : 0,
+          width: visible ? viewParams.width: 0,
           position: 'absolute',
         //   zIndex: 10,
-          bottom: 0,
-        //   left: -500,
+          bottom: viewParams.bottom,
+          left: viewParams.left,
         //   bottom: -1000,
-          right: 0,
+        alignSelf: 'center', 
+          //right: Dimensions.get('window').width/2,
           backgroundColor: (colored || !fade)?'transparent':'rgb(0,0,0)',
           opacity: animation.current,
           //backgroundColor: modalVisible ? 'rgba(0,0,0,0.7)' : 'transparent',
@@ -98,9 +101,10 @@ const AnimatedModal = ({
             close();
             resetAnimation();
               }} style={{position: 'absolute', top:0, height: '100%', width: '100%', zIndex: -30}} />
-            <View style={{position: 'absolute', bottom: 15, height: upPercent, width: '84%', backgroundColor: bgcolor, opacity: 0.5, alignSelf: 'center', borderRadius: 90,}} />
-            <View style={{position: 'absolute', bottom: 8, height: upPercent, width: '90%', backgroundColor: bgcolor, opacity: 0.5, alignSelf: 'center', borderRadius: 90,}} />
-            <View style={{position: 'absolute', bottom: 0, width: '100%', height: upPercent, borderRadius: 100, borderBottomRightRadius: 0, borderBottomLeftRadius: 0, backgroundColor: bgcolor, paddingTop: 40, overflow: 'hidden'}}>
+            
+            {curve?<View style={{position: 'absolute', bottom: 15, height: upPercent, width: '84%', backgroundColor: bgcolor, opacity: 0.5, alignSelf: 'center', borderRadius: 90,}} />:<></>}
+            {curve?<View style={{position: 'absolute', bottom: 8, height: upPercent, width: '90%', backgroundColor: bgcolor, opacity: 0.5, alignSelf: 'center', borderRadius: 90,}} />:<></>}
+            <View style={{position: 'absolute', bottom: 0, width: '100%', height: upPercent, borderRadius: curve?100:0, borderBottomRightRadius: 0, borderBottomLeftRadius: 0, backgroundColor: bgcolor, paddingTop: 40, overflow: 'hidden'}}>
               
               {content}
               </View>

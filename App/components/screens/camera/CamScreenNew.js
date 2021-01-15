@@ -53,7 +53,7 @@ const CamScreenNew = ({navigation}) => {
         goBack={true}
         headerText="Create a Cluck"
         nextRoute="Search Product"
-        index={1}
+        index={0}
         navigation={navigation}
         canGoNext={pic !== null && pic?.uri !== undefined}
       />

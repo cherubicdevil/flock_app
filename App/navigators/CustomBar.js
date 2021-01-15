@@ -70,7 +70,7 @@ const AddItem = ({image, text, navigation, route}) => {
   const [modalOpen, setModalOpen] = useState(false);
   return (
     <>
-      <OptionsModal
+      {/* <OptionsModal
         text1="I want to save..."
         text2="I want to recommend..."
         func1={() => {
@@ -85,7 +85,21 @@ const AddItem = ({image, text, navigation, route}) => {
           setModalOpen(false);
           //ImagePicker.showImagePicker(options, get)
         }}
-      />
+      /> */}
+      <AnimatedModal curve={false} visible = {modalOpen} close = {()=> setModalOpen(false)} navigation={navigation} content={<View style={{flex:1}}>
+<View style={{flex: 1, justifyContent: 'center'}}><View style={{height: 70, borderRadius: 40, backgroundColor: 'white', marginLeft: 20, marginRight: 20}}><TouchableOpacity onPress={()=>{
+  setModalOpen(false);
+  navigation.navigate('CamScreen');
+
+  }} style={{height: '100%', width: '100%'}}></TouchableOpacity></View></View>
+<View style={{flex: 1}}>
+<View style={{height: 70, borderRadius: 40, backgroundColor: 'white', marginLeft: 20, marginRight: 20}}><TouchableOpacity onPress={()=>{
+  setModalOpen(false);
+  navigation.navigate('CamScreen');
+
+  }} style={{height: '100%', width: '100%'}}></TouchableOpacity></View>
+</View>
+      </View>} viewParams={{width:1500, height: 1500, left: -300, bottom: -200}} bgcolor="transparent" upPercent="25%"/>
       <TouchableOpacity
         style={{flex: 1}}
         onPress={() => {
@@ -94,6 +108,7 @@ const AddItem = ({image, text, navigation, route}) => {
         }}>
         <InItem image={image} text={text} />
       </TouchableOpacity>
+      
     </>
   );
 };
