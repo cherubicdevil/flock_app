@@ -108,6 +108,7 @@ const NewVideoPage = ({navigation, array, index, data, currIndex, viewHeight}) =
   const percentage = 60;
 
   var lastVisible = null;
+  const select = useSelector(state=>state);
 
   console.log('rendering video page')
 
@@ -205,7 +206,7 @@ useEffect(()=>{
               
           <ResizeableImage source={{uri: data?.poster || data?.product?.image}} limitHorizontal={false} hLimit={viewHeight * percentage/100} />
           <ConditionalVideo index={index} data={data} viewHeight={viewHeight * percentage/100} />
-          <ScrollCount data={flockCountdowns} />
+          {select.videopage.carIndex==index?<ScrollCount data={flockCountdowns} />:<></>}
           </View>
           <TouchableOpacity onPress={()=>{
               const video = data.video;
@@ -317,9 +318,14 @@ const ScrollCount = ({data}) => {
         }
     };
     useEffect(()=>{
-        const interval = setInterval(callback, 2000);
+      var interval;
+        if (data !== null && data.length > 2) {
+        interval = setInterval(callback, 2000);
+        }
         return ()=>{
+          if (interval) {
             clearInterval(interval);
+          }
         }
     },[])
     return <ScrollView ref = {scrollRef} pagingEnabled={true} horizontal={false} style={{position: 'absolute', bottom: 0, backgroundColor: 'yellow', zIndex: 300, height: 100}}>
