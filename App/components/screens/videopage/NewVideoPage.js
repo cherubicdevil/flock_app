@@ -117,8 +117,8 @@ const NewVideoPage = ({navigation, array, index, data, currIndex, viewHeight}) =
 useEffect(()=>{
     if (dataType === "product" || dataType === "video") {
     db.collection("chatGroups")
-    .where("productTitle", "==", data?.product?.title)
-    .get(function(querySnapshot) {
+    .where("productTitle", "==", data?.product?.title || "")
+    .get().then(function(querySnapshot) {
       const arr = [];
       querySnapshot.forEach(function(doc) {
         if (doc.data().completed === false) {
@@ -177,6 +177,7 @@ useEffect(()=>{
       </View>
     );
   };
+
   const renderVid = () => {
     return (
       <View
@@ -204,6 +205,7 @@ useEffect(()=>{
               
           <ResizeableImage source={{uri: data?.poster || data?.product?.image}} limitHorizontal={false} hLimit={viewHeight * percentage/100} />
           <ConditionalVideo index={index} data={data} viewHeight={viewHeight * percentage/100} />
+          <ScrollCount data={flockCountdowns} />
           </View>
           <TouchableOpacity onPress={()=>{
               const video = data.video;
@@ -299,10 +301,35 @@ const ResizeableImage = ({source, limitHorizontal=true, hLimit, wLimit}) => {
   );
 };
 
-const CountScroll = ({data}) => {
-    return <ScrollView>
+const ScrollCount = ({data}) => {
+    const scrollRef = useRef();
+    var offset = 0;
 
-    </ScrollView>
+    const callback = ()=>{
+        offset+=50;
+        console.log(offset);
+        if (offset/50 > data.length) {
+            scrollRef.current.scrollTo({y:0});
+            offset = 50;
+        } else {
+        scrollRef.current.scrollTo({y:offset});
+        //console.log('scrolling', offset);
+        }
+    };
+    useEffect(()=>{
+        const interval = setInterval(callback, 2000);
+        return ()=>{
+            clearInterval(interval);
+        }
+    },[])
+    return <ScrollView ref = {scrollRef} pagingEnabled={true} horizontal={false} style={{position: 'absolute', bottom: 0, backgroundColor: 'yellow', zIndex: 300, height: 100}}>
+    {data.map((item)=> {
+        return <View style={{flexDirection: 'row', height: 50}}>
+            <Countdown dateObj={item.time} />
+            <Text>price {item?.product?.price / (item?.members?.length+1)}</Text>
+            </View>
+    })}
+  </ScrollView>
 }
 
 const styles = StyleSheet.create({
