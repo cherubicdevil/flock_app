@@ -7,7 +7,9 @@ import CamScreen3 from 'App/components/screens/camera/CamScreen3';
 
 const Stack = createStackNavigator();
 
-const CamNavigator = () => {
+
+const CamNavigator = ({route}) => {
+  console.log('data', route.params.data);
   return (
     <Stack.Navigator
       screenOptions={{
@@ -16,17 +18,20 @@ const CamNavigator = () => {
       <Stack.Screen
         name="Add Video"
         component={CamScreenNew}
-        options={{animationEnabled: false}}
+        initialParams={{data: route.params.data}}
+        options={{animationEnabled: true}}
       />
       <Stack.Screen
         name="Search Product"
         component={CamScreenTwo}
-        options={{animationEnabled: false}}
+        initialParams={{data: route.params.data}}
+        options={{animationEnabled: true}}
       />
       <Stack.Screen
         name="Product Options"
         component={CamScreen3}
-        options={{animationEnabled: false}}
+        initialParams={{data: route.params.data}}
+        options={{animationEnabled: true}}
       />
     </Stack.Navigator>
   );

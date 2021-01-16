@@ -47,6 +47,8 @@ const ProgressHeader = ({
   data,
   nextText="next",
   closeText="close",
+  nextFunc=() => {
+  },
   closeFunc = ()=>{
     navigation.goBack();
   }
@@ -133,6 +135,7 @@ const ProgressHeader = ({
             return;
           }
           if (canGoNext) {
+            nextFunc();
             navigation.navigate(nextRoute, {index: index+1, data: data});
           }
         }}>

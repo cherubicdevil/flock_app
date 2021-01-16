@@ -19,7 +19,7 @@ import ProgressHeader from 'App/components/ProgressHeader';
 //import Video from 'App/components/Video';
 import {pickVideo} from 'App/utils';
 
-const CamScreenNew = ({navigation}) => {
+const CamScreenNew = ({navigation, route}) => {
   fetch(constants.HEROKU + 'setup');
   const titleRef = useRef(null);
   const descRef = useRef(null);
@@ -46,7 +46,7 @@ const CamScreenNew = ({navigation}) => {
       };
     }, []),
   );
-
+    route.params.data['hello1'] ='one';
   return (
     <View>
       <ProgressHeader
@@ -54,8 +54,13 @@ const CamScreenNew = ({navigation}) => {
         headerText="Create a Cluck"
         nextRoute="Search Product"
         index={0}
+        number={3}
         navigation={navigation}
-        canGoNext={pic !== null && pic?.uri !== undefined}
+        data={route.params.data}
+        canGoNext={true}
+        nextFunc={() => {
+          route.params.data.video = pic.uri || "";
+        }}
       />
 
       <View

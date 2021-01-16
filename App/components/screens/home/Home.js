@@ -332,7 +332,7 @@ const MiniCarousel = ({navigation, route}) => {
     console.log(viewHeight);
     res.push(<View style={{height: viewHeight, width: '100%', borderWidth: 1}}>
     {/* <Text>{item?.product?.title || item.flock}</Text> */}
-    <NewVideoPage navigation={navigation} data={item} index={finalAr.indexOf(item)} currIndex={finalAr.indexOf(item)} viewHeight={viewHeight} />
+    <NewVideoPage route={route} navigation={navigation} data={item} index={finalAr.indexOf(item)} currIndex={finalAr.indexOf(item)} viewHeight={viewHeight} />
     </View>);
   }
   return <View onLayout = {(event) => {

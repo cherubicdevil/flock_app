@@ -84,8 +84,7 @@ var renderProduct = (navigation, data) => {
   );
 };
 
-const NewVideoPage = ({navigation, array, index, data, currIndex, viewHeight}) => {
-
+const NewVideoPage = ({navigation, route, array, index, data, currIndex, viewHeight}) => {
     var dataType = "initial";
     if (data.video) {
         dataType = "video";
@@ -205,7 +204,7 @@ useEffect(()=>{
               {renderIcons()}
               
           <ResizeableImage source={{uri: data?.poster || data?.product?.image}} limitHorizontal={false} hLimit={viewHeight * percentage/100} />
-          <ConditionalVideo index={index} data={data} viewHeight={viewHeight * percentage/100} />
+          <ConditionalVideo route={route} index={index} data={data} viewHeight={viewHeight * percentage/100} />
           {select.videopage.carIndex==index?<ScrollCount data={flockCountdowns} />:<></>}
           </View>
           <TouchableOpacity onPress={()=>{
@@ -256,10 +255,10 @@ useEffect(()=>{
   return <View>{renderVid()}</View>;
 };
 
-const ConditionalVideo = ({index, data, viewHeight}) => {
+const ConditionalVideo = ({index, data, viewHeight, route}) => {
     const select = useSelector(state=>state);
     console.log(select.videopage.carIndex, index, "carindex newivdeopage");
-    if (data?.video && (index == select.videopage.carIndex)) {
+    if (data?.video && (index == select.videopage.carIndex) && route.name == "for you" ) {
         return <View style={{position: 'absolute', top:0}}>
         <ResizeableVideo data={data} horizontalLimit = {false} hLimit = {viewHeight}/>
         </View>

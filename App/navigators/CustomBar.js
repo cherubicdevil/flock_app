@@ -89,13 +89,13 @@ const AddItem = ({image, text, navigation, route}) => {
       <AnimatedModal curve={false} visible = {modalOpen} close = {()=> setModalOpen(false)} navigation={navigation} content={<View style={{flex:1}}>
 <View style={{flex: 1, justifyContent: 'center'}}><View style={{height: 70, borderRadius: 40, backgroundColor: 'white', marginLeft: 20, marginRight: 20}}><TouchableOpacity onPress={()=>{
   setModalOpen(false);
-  navigation.navigate('CamScreen');
+  navigation.navigate('CamScreen', {data: {}});
 
   }} style={{height: '100%', width: '100%'}}></TouchableOpacity></View></View>
 <View style={{flex: 1}}>
 <View style={{height: 70, borderRadius: 40, backgroundColor: 'white', marginLeft: 20, marginRight: 20}}><TouchableOpacity onPress={()=>{
   setModalOpen(false);
-  navigation.navigate('CamScreen');
+  navigation.navigate('CamScreen', {data: {}});
 
   }} style={{height: '100%', width: '100%'}}></TouchableOpacity></View>
 </View>
