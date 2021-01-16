@@ -4,7 +4,9 @@ import {View, Text, PanResponder, Animated, Dimensions} from 'react-native';
 const data = ["hello", 'world', 'hi', 'hey'];
 
 const FeatherList = () => {
-    return data.map((item)=> <FeatherPanResponder text={item} index = {data.indexOf(item)} />);
+    var getBackPrev = null;
+
+    return data.map((item)=> <FeatherPanResponder text={item} index = {data.indexOf(item)} getBackPrev = {getBackPrev} />);
 
 }
 const FeatherPanResponder = ({text, index}) => {
@@ -28,7 +30,7 @@ const FeatherPanResponder = ({text, index}) => {
         }).start();
       };
     const panResponder = PanResponder.create({
-        onStartShouldSetPanResponder: () => true,
+        onStartShouldSetPanResponder: (event, gesture) => true,
         onPanResponderMove: (event, gesture) => {
             yposition.setValue(gesture.dy);
             console.log(yposition);
@@ -39,7 +41,17 @@ const FeatherPanResponder = ({text, index}) => {
             if (gesture.dy < -200) {
                 console.log('swipe up');
                 swipeUpAnimation();
+                getBackPrev = () => {
+                    setDone(false);
+                    resetAnimation();
+                    console.log(text);
+                };
                 setDone(true);
+            } else if (gesture.dy > 200) {
+                console.log('swipe down');
+                if (getBackPrev) {
+                    getBackPrev();
+                }
             } else {
                 resetAnimation();
             }
