@@ -39,6 +39,7 @@ import {useDispatch, } from 'react-redux';
 import { fetchAlbums } from '../../../utils';
 
 import FeatherCarousel from 'App/components/FeatherCarousel';
+import FeatherPanResponder from 'App/components/FeatherPanResponder';
 
 const Tab = createMaterialTopTabNavigator();
 const KeyContext = createContext();
@@ -247,6 +248,8 @@ const HomeTabSwipe = ({videoData, navigation, route}) => {
   {/* <Tab.Screen name="Flocking" component={FeedList} initialParams={{value: 'hello world', videoData:[], flockData: [], rentData: [], dataType: 'flockData', flockOrNot: 'flockData'}} /> */}
   {/* <Tab.Screen name="Request" component={FeedList} initialParams={{value: 'hello world', videoData:[], flockData: [], rentData: [], dataType: 'rentData', flockOrNot: 'rentData'}} /> */}
   <Tab.Screen name="feather" component={FeatherCarousel} initialParams={{value: 'hello world', videoData:[], flockData: [], rentData: [], dataType: 'rentData'}} />
+  <Tab.Screen name="featherpan" component={FeatherPanResponder} initialParams={{value: 'hello world', videoData:[], flockData: [], rentData: [], dataType: 'rentData'}} />
+
 </Tab.Navigator>;
 
 
