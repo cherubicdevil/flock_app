@@ -12,6 +12,9 @@ import {constants} from 'App/constants';
 import ProgressHeader from 'App/components/ProgressHeader';
 import {firebase, db} from 'App/firebase/config';
 
+import { CommonActions } from '@react-navigation/native';
+
+
 const options = [];
 
 const CamScreen3 = ({navigation, route}) => {
@@ -91,6 +94,15 @@ const CamScreen3 = ({navigation, route}) => {
         .catch(function(error) {
             console.error("Error adding document: ", error);
         });
+
+        navigation.dispatch(
+          CommonActions.reset({
+            index: 0,
+            routes: [
+              { name: 'Home' },
+            ],
+          })
+        );
         }}
       />
       <View style={{paddingLeft: 20, paddingRight: 20}}>

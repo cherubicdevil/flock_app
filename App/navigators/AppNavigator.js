@@ -69,7 +69,9 @@ const AppNavigator5 = () => {
           name="CamScreen"
           component={CamNavigator}
           initialParams={{vidVisible: false}}
+          
           options={{
+            tabBarVisible: false,
             title: 'CamScreen',
             cap: 'add',
             image: require('App/Assets/Images/Add_Icon.png'),

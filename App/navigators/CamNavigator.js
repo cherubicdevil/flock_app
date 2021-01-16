@@ -12,6 +12,7 @@ const CamNavigator = ({route}) => {
   console.log('data', route.params.data);
   return (
     <Stack.Navigator
+    initialRouteName="Add Video"
       screenOptions={{
         headerShown: false,
       }}>

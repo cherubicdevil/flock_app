@@ -35,6 +35,7 @@
     "react": "16.13.1",
     "react-native": "0.63.2",
     "react-native-animated-splash-screen": "^2.0.5",
+    "react-native-blob-courier": "^1.0.8",
     "react-native-bubble-input": "^1.0.1",
     "react-native-calendars": "^1.1129.0",
     "react-native-check-app-install": "^0.0.5",

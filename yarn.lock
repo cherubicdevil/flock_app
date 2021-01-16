@@ -8102,6 +8102,11 @@ react-native-animated-splash-screen@^2.0.5:
   dependencies:
     prop-types "^15.7.2"
 
+react-native-blob-courier@^1.0.8:
+  version "1.0.8"
+  resolved "https://registry.yarnpkg.com/react-native-blob-courier/-/react-native-blob-courier-1.0.8.tgz#077c659685758670135ef140061dd12a147636f1"
+  integrity sha512-QYfawT2O8oL1A4Gh4aK1jlRPQ0yKvmqg7HDkmtH5gy/cYbXOjW8ZhbKIku0Nw7PxtXETPhI3WVmBytWhncXVgg==
+
 react-native-bubble-input@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/react-native-bubble-input/-/react-native-bubble-input-1.0.1.tgz#066fa549c95bc2807c0acdb2abe0df53acdf5dc0"
