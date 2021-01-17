@@ -141,12 +141,12 @@ const FeatherPanResponder = ({index, positions, currIndex, setCurrentIndex, cont
             duration: animtime,
           }));
 
-          pararr.push(Animated.timing(topAnim, {
-            useNativeDriver: false,
-            toValue: nexttop,
-            delay: 0,
-            duration: animtime,
-          }));
+        //   pararr.push(Animated.timing(topAnim, {
+        //     useNativeDriver: false,
+        //     toValue: nexttop,
+        //     delay: 0,
+        //     duration: animtime,
+        //   }));
         }
 
           Animated.sequence([Animated.parallel([...animations, ...pararr]), ]).start();
