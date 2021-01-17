@@ -81,7 +81,7 @@ const FeatherPanResponder = ({index, positions, currentIndex, setCurrentIndex}) 
         onPanResponderRelease: (event, gesture) => {
             if (gesture.dy > 0) {
                 outofwayAnimation();
-                setTimeout(()=>setCurrentIndex(currentIndex - 1), 200);
+                //setTimeout(()=>setCurrentIndex(currentIndex - 1), 200);
                 //setCurrentIndex(currentIndex - 1);
             } else if (gesture.dy < 0) {
                 if (!isTop) {
@@ -92,7 +92,7 @@ const FeatherPanResponder = ({index, positions, currentIndex, setCurrentIndex}) 
                         duration: 300,
                       }).start();
                       //setCurrentIndex(current+1);
-                      setTimeout(()=>setCurrentIndex(currentIndex + 1), 200);
+                      //setTimeout(()=>setCurrentIndex(currentIndex + 1), 200);
                 }
             }
         }
