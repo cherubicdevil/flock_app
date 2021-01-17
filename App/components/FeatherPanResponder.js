@@ -4,7 +4,6 @@ import {View, Text, PanResponder, Animated, Dimensions} from 'react-native';
 const data = ["hello", 'world', 'hi', 'hey'];
 
 const FeatherList = () => {
-    var animations = [];
     const [currentIndex, setCurrentIndex] = useState(data.length - 1);
 
     var positions = [];
@@ -12,16 +11,16 @@ const FeatherList = () => {
         positions.push(new Animated.ValueXY());
     }
 
-    return <View style={{alignItems: 'center', height: '100%', width: '100%'}}>{data.map((item)=> <FeatherPanResponder index = {data.indexOf(item)} currentIndex = {currentIndex} setCurrentIndex={setCurrentIndex} positions = {positions} animations = {animations} />)}</View>
+    return <View style={{alignItems: 'center', height: '100%', width: '100%'}}>{data.map((item)=> <FeatherPanResponder index = {data.indexOf(item)} currentIndex = {currentIndex} setCurrentIndex={setCurrentIndex} positions = {positions} />)}</View>
 
 }
-const FeatherPanResponder = ({index, positions, currentIndex, setCurrentIndex, animations}) => {
+const FeatherPanResponder = ({index, positions, currentIndex, setCurrentIndex}) => {
     var percentage = 1;
     var topPercentage = 1;
     var width = Dimensions.get('window').width;
     var top = 50;
 
-    const fade = new Animated.Value(index==currentIndex?1:0.3);
+    const fade = new Animated.Value(0.3);
 
 
     if (index > currentIndex) {
@@ -37,53 +36,28 @@ const FeatherPanResponder = ({index, positions, currentIndex, setCurrentIndex, a
     const [widthAnim, setWidthAnim] = useState(new Animated.Value(width));
 
     useEffect(()=>{
-        // console.log(index, currentIndex);
-        console.log(fade);
+        console.log('fade change', fade);
         if (index == currentIndex) {
-        // Animated.timing(fade, {
-        //     useNativeDriver: false,
-        //     toValue: 1,
-        //     delay: 0,
-        //     duration: 1000,
-        //   }).start();
-        animations.push(Animated.timing(fade, {
+        Animated.timing(fade, {
             useNativeDriver: false,
             toValue: 1,
             delay: 0,
             duration: 1000,
-          }));
-
-          setTimeout(()=>{
-            Animated.parallel(animations).start();
-          }, 500);
-        } else {
-            animations.push(Animated.timing(fade, {
-                useNativeDriver: false,
-                toValue: 0.3,
-                delay: 0,
-                duration: 1000,
-              }));
+          }).start();
         }
-        // Animated.timing(widthAnim, {
-        //     useNativeDriver: false,
-        //     toValue: width,
-        //     delay: 0,
-        //     duration: 1000,
-        //   }).start();
-
-        // animations.push(Animated.timing(widthAnim, {
-        //     useNativeDriver: false,
-        //     toValue: width,
-        //     delay: 0,
-        //     duration: 1000,
-        //   }));
+        Animated.timing(widthAnim, {
+            useNativeDriver: false,
+            toValue: width,
+            delay: 0,
+            duration: 1000,
+          }).start();
     }, [currentIndex]);
 
     //const [done, setDone] = useState(false);
     const position = positions[index];
     const isTop = index == positions.length - 1;
     const outofwayAnimation = () => {
-        const newLeft = 500; // ypos.getLayout().top , left
+        const newLeft = 1000; // ypos.getLayout().top , left
         Animated.timing(position, {
           useNativeDriver: false,
           toValue: {y:1000, x: newLeft},
@@ -99,7 +73,7 @@ const FeatherPanResponder = ({index, positions, currentIndex, setCurrentIndex, a
             position.setValue({ x: gesture.dx, y: gesture.dy });
             } else if (gesture.dy < 0) {
                 if (!isTop) {
-                    positions[index+1].setValue({y: Dimensions.get('window').height/2 + gesture.dy, x: 300+ gesture.dx});
+                    positions[index+1].setValue({y: Dimensions.get('window').height + gesture.dy, x: 300});
                 }
             }
         
@@ -127,7 +101,7 @@ const FeatherPanResponder = ({index, positions, currentIndex, setCurrentIndex, a
      
 
      const leftMargin = Dimensions.get('window').width * (1-percentage) / 2;
-    return <Animated.View style={{alignSelf: 'center', opacity: index==currentIndex?fade:0.3, justifyContent: 'center', position: 'absolute', top: position.getLayout().top, marginTop: top, marginLeft: leftMargin, left: position.getLayout().left, zIndex: index + 50, borderColor: 'black', borderWidth: 1, backgroundColor: 'yellow', height: '100%', width: width}} {...panResponder.panHandlers} ></Animated.View>
+    return <Animated.View style={{alignSelf: 'center', opacity: fade, justifyContent: 'center', position: 'absolute', top: position.getLayout().top, marginTop: top, marginLeft: leftMargin, left: position.getLayout().left, zIndex: index + 50, borderColor: 'black', borderWidth: 1, backgroundColor: 'yellow', height: '100%', width: width}} {...panResponder.panHandlers} ></Animated.View>
 }
 
 const MinimalFeatherParent = () => {
