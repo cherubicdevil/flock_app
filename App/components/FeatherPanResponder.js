@@ -4,19 +4,34 @@ import {View, Text, PanResponder, Animated, Dimensions} from 'react-native';
 const data = ["hello", 'world', 'hi', 'hey'];
 
 const FeatherList = () => {
+    const [currentIndex, setCurrentIndex] = useState(data.length - 1);
 
     var positions = [];
     for (const item of data) {
         positions.push(new Animated.ValueXY());
     }
 
-    return data.map((item)=> <FeatherPanResponder index = {data.indexOf(item)} positions = {positions} />);
+    return <View style={{alignItems: 'center', height: '100%', width: '100%'}}>{data.map((item)=> <FeatherPanResponder index = {data.indexOf(item)} currentIndex = {currentIndex} setCurrentIndex={setCurrentIndex} positions = {positions} />)}</View>
 
 }
-const FeatherPanResponder = ({index, positions}) => {
+const FeatherPanResponder = ({index, positions, currentIndex}) => {
+    var percentage = 1;
+    var topPercentage = 1;
+    var width = "100%";
+    var top = 50;
+    if (index > currentIndex) {
+
+    } else {
+        const diff = currentIndex - index;
+        percentage = percentage * Math.pow(0.95, diff);
+        topPercentage = topPercentage * Math.pow(0.8, diff);
+        top = Math.round(topPercentage * top);
+        console.log("TOP", top);
+        width = Math.round(percentage * 100) + "%";
+    }
     //const [done, setDone] = useState(false);
     const position = positions[index];
-    const top = index == positions.length - 1;
+    const isTop = index == positions.length - 1;
     const outofwayAnimation = () => {
         const newLeft = 1000; // ypos.getLayout().top , left
         Animated.timing(position, {
@@ -33,7 +48,7 @@ const FeatherPanResponder = ({index, positions}) => {
             if (gesture.dy > 0) {
             position.setValue({ x: gesture.dx, y: gesture.dy });
             } else if (gesture.dy < 0) {
-                if (!top) {
+                if (!isTop) {
                     positions[index+1].setValue({y: Dimensions.get('window').height + gesture.dy, x: 1000});
                 }
             }
@@ -43,7 +58,7 @@ const FeatherPanResponder = ({index, positions}) => {
             if (gesture.dy > 0) {
                 outofwayAnimation();
             } else if (gesture.dy < 0) {
-                if (!top) {
+                if (!isTop) {
                     Animated.timing(positions[index+1], {
                         useNativeDriver: false,
                         toValue: {y:0, x: 0},
@@ -57,8 +72,9 @@ const FeatherPanResponder = ({index, positions}) => {
      });
      
 
-
-    return <Animated.View style={{opacity: 0.5, justifyContent: 'center', position: 'absolute', top: position.getLayout().top, left: position.getLayout().left, zIndex: index + 50, borderColor: 'black', borderWidth: 1, backgroundColor: 'yellow', height: '100%', width: '100%'}} {...panResponder.panHandlers} ></Animated.View>
+     const leftMargin = Dimensions.get('window').width * (1-percentage) / 2;
+     console.log('index', index, 'leftmargin', leftMargin);
+    return <Animated.View style={{alignSelf: 'center', opacity: index==currentIndex?1:0.3, justifyContent: 'center', position: 'absolute', top: position.getLayout().top, marginTop: top, marginLeft: leftMargin, left: position.getLayout().left, zIndex: index + 50, borderColor: 'black', borderWidth: 1, backgroundColor: 'yellow', height: '100%', width: width}} {...panResponder.panHandlers} ></Animated.View>
 }
 
 const MinimalFeatherParent = () => {
