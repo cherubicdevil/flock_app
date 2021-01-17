@@ -43,7 +43,7 @@ const FeatherPanResponder = ({index, positions, currIndex, setCurrentIndex, cont
         }
     }
 
-    var fade = new Animated.Value(initialFade);
+    var fade = new Animated.Value(getFade(index, previousIndex));
     if (currentIndex > index) {
         fade = new Animated.Value(1);
     }
