@@ -20,7 +20,7 @@ const FeatherPanResponder = ({index, positions, currentIndex, setCurrentIndex}) 
     var width = Dimensions.get('window').width;
     var top = 50;
 
-    const fade = new Animated.Value(0.3);
+    const fade = new Animated.Value(index==currentIndex?1:0.3);
 
 
     if (index > currentIndex) {
@@ -35,22 +35,48 @@ const FeatherPanResponder = ({index, positions, currentIndex, setCurrentIndex}) 
 
     const [widthAnim, setWidthAnim] = useState(new Animated.Value(width));
 
+    
     useEffect(()=>{
-        console.log('fade change', fade);
+        const animations = [];
+        console.log(index, fade);
         if (index == currentIndex) {
-        Animated.timing(fade, {
+        // Animated.timing(fade, {
+        //     useNativeDriver: false,
+        //     toValue: 1,
+        //     delay: 0,
+        //     duration: 1000,
+        //   }).start();
+        animations.push(Animated.timing(fade, {
             useNativeDriver: false,
             toValue: 1,
             delay: 0,
             duration: 1000,
-          }).start();
+          }));
+        } else if (index == currentIndex - 1) {
+            // Animated.timing(fade, {
+            //     useNativeDriver: false,
+            //     toValue: 0.3,
+            //     delay: 1100,
+            //     duration: 2000,
+            //   }).start();
+            animations.push(Animated.timing(fade, {
+                useNativeDriver: false,
+                toValue: 0.3,
+                delay: 0,
+                duration: 2000,
+              }));
         }
-        Animated.timing(widthAnim, {
+        const pararr = [];
+        if (index != currentIndex) {
+        pararr.push(Animated.timing(widthAnim, {
             useNativeDriver: false,
             toValue: width,
             delay: 0,
             duration: 1000,
-          }).start();
+          }));
+        }
+
+          Animated.parallel([Animated.sequence(animations), ...pararr]).start();
     }, [currentIndex]);
 
     //const [done, setDone] = useState(false);
@@ -73,7 +99,7 @@ const FeatherPanResponder = ({index, positions, currentIndex, setCurrentIndex}) 
             position.setValue({ x: gesture.dx, y: gesture.dy });
             } else if (gesture.dy < 0) {
                 if (!isTop) {
-                    positions[index+1].setValue({y: Dimensions.get('window').height + gesture.dy, x: 300});
+                    positions[index+1].setValue({y: Dimensions.get('window').height + gesture.dy, x: 300 +gesture.dx});
                 }
             }
         
@@ -89,10 +115,10 @@ const FeatherPanResponder = ({index, positions, currentIndex, setCurrentIndex}) 
                         useNativeDriver: false,
                         toValue: {y:0, x: 0},
                         delay: 0,
-                        duration: 300,
+                        duration: 1000,
                       }).start();
                       //setCurrentIndex(current+1);
-                      setTimeout(()=>setCurrentIndex(currentIndex + 1), 200);
+                      setTimeout(()=>setCurrentIndex(currentIndex + 1), 1000);
                 }
             }
         }
