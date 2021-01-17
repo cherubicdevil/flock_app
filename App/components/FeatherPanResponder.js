@@ -46,20 +46,23 @@ const FeatherPanResponder = ({index, positions, currentIndex, setCurrentIndex, a
         //     delay: 0,
         //     duration: 1000,
         //   }).start();
-        Animated.timing(fade, {
+        animations.push(Animated.timing(fade, {
             useNativeDriver: false,
             toValue: 1,
             delay: 0,
             duration: 1000,
-          }).start();
+          }));
 
+          setTimeout(()=>{
+            Animated.parallel(animations).start();
+          }, 500);
         } else {
-            // animations.push(Animated.timing(fade, {
-            //     useNativeDriver: false,
-            //     toValue: 0.3,
-            //     delay: 100,
-            //     duration: 500,
-            //   }));
+            animations.push(Animated.timing(fade, {
+                useNativeDriver: false,
+                toValue: 0.3,
+                delay: 0,
+                duration: 1000,
+              }));
         }
         // Animated.timing(widthAnim, {
         //     useNativeDriver: false,
