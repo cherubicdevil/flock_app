@@ -57,7 +57,7 @@ const FeatherPanResponder = ({index, positions, currentIndex, setCurrentIndex}) 
     const position = positions[index];
     const isTop = index == positions.length - 1;
     const outofwayAnimation = () => {
-        const newLeft = 1000; // ypos.getLayout().top , left
+        const newLeft = 500; // ypos.getLayout().top , left
         Animated.timing(position, {
           useNativeDriver: false,
           toValue: {y:1000, x: newLeft},
@@ -65,20 +65,27 @@ const FeatherPanResponder = ({index, positions, currentIndex, setCurrentIndex}) 
           duration: 300,
         }).start();
       };
-
+      var isUp = false;
+      var isDown = false;
       const panResponder = PanResponder.create({
         onStartShouldSetPanResponder: (event, gesture) => true,
         onPanResponderMove: (event, gesture) => {
             if (gesture.dy > 0) {
+                if (isUp) return;
+                isDown = true;
             position.setValue({ x: gesture.dx, y: gesture.dy });
             } else if (gesture.dy < 0) {
+                if (isDown) return;
                 if (!isTop) {
-                    positions[index+1].setValue({y: Dimensions.get('window').height + gesture.dy, x: 1000});
+                    isUp = true;
+                    positions[index+1].setValue({y: Dimensions.get('window').height/4 *3 + gesture.dy, x: 300});
                 }
             }
         
         },
         onPanResponderRelease: (event, gesture) => {
+            isUp = false;
+            isDown = false;
             if (gesture.dy > 0) {
                 outofwayAnimation();
                 //setTimeout(()=>setCurrentIndex(currentIndex - 1), 200);
