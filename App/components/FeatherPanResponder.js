@@ -17,7 +17,7 @@ const FeatherList = () => {
     />)}</View>
 
 }
-const FeatherPanResponder = ({index, positions, currIndex, setCurrentIndex, content}) => {
+const FeatherPanResponder = ({index, positions, currIndex, setCurrentIndex, content, text}) => {
     var previouspercentage = 1;
     var nextpercentage = 1;
     var topPercentage = 1;
@@ -43,7 +43,7 @@ const FeatherPanResponder = ({index, positions, currIndex, setCurrentIndex, cont
         }
     }
 
-    var fade = new Animated.Value(getFade(index, previousIndex));
+    var fade = new Animated.Value(initialFade);
     if (currentIndex > index) {
         fade = new Animated.Value(1);
     }
@@ -89,20 +89,35 @@ const FeatherPanResponder = ({index, positions, currIndex, setCurrentIndex, cont
           }));
         }
         // } else if (index == currentIndex - 1) {
-            // animations.push(Animated.timing(fade, {
-            //     useNativeDriver: false,
-            //     toValue: 0.3,
-            //     delay: 0,
-            //     duration: 2000,
-            //   }));
+        //     animations.push(Animated.timing(fade, {
+        //         useNativeDriver: false,
+        //         toValue: 0.3,
+        //         delay: 0,
+        //         duration: 2000,
+        //       }));
         // }
 
-        pararr.push(Animated.timing(fade, {
-            useNativeDriver: false,
-            toValue: getFade(index, currentIndex),
-            delay: 0,
-            duration: 2000,
-          }));
+        if (index < currentIndex - 1) {
+            pararr.push(Animated.timing(fade, {
+                useNativeDriver: false,
+                toValue: initialFade,
+                delay: 0,
+                duration: 2000,
+              }));
+        } else if (index == currentIndex - 1) {
+            pararr.push(Animated.timing(fade, {
+                useNativeDriver: false,
+                toValue: secondFade,
+                delay: 0,
+                duration: 2000,
+              }));
+        }
+        // pararr.push(Animated.timing(fade, {
+        //     useNativeDriver: false,
+        //     toValue: getFade(index, currentIndex),
+        //     delay: 0,
+        //     duration: 2000,
+        //   }));
 
         if (index <= currentIndex) {
         pararr.push(Animated.timing(widthAnim, {
@@ -126,12 +141,12 @@ const FeatherPanResponder = ({index, positions, currIndex, setCurrentIndex, cont
             duration: animtime,
           }));
 
-        //   pararr.push(Animated.timing(topAnim, {
-        //     useNativeDriver: false,
-        //     toValue: top,
-        //     delay: 1000,
-        //     duration: 1000,
-        //   }));
+          pararr.push(Animated.timing(topAnim, {
+            useNativeDriver: false,
+            toValue: nexttop,
+            delay: 0,
+            duration: animtime,
+          }));
         }
 
           Animated.sequence([Animated.parallel([...animations, ...pararr]), ]).start();
