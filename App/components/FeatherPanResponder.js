@@ -176,12 +176,7 @@ const FeatherPanResponder = ({index, positions, currIndex, setCurrentIndex, cont
             } else if (gesture.dy < 0) {
                 if (isDown) return;
                 if (!isTop) {
-<<<<<<< HEAD
-                    isUp = true;
-                    positions[index+1].setValue({y: Dimensions.get('window').height/4 *3 + gesture.dy, x: 300});
-=======
                     positions[index+1].setValue({y: Dimensions.get('window').height + gesture.dy, x: 300 +gesture.dx});
->>>>>>> featherMainV2
                 }
             }
         
@@ -191,13 +186,8 @@ const FeatherPanResponder = ({index, positions, currIndex, setCurrentIndex, cont
             isDown = false;
             if (gesture.dy > 0) {
                 outofwayAnimation();
-<<<<<<< HEAD
-                setTimeout(()=>setCurrentIndex(currentIndex - 1), 1000);
-                setCurrentIndex(currentIndex - 1);
-=======
                 setTimeout(()=>setCurrentIndex({curr:currentIndex - 1, prev: currentIndex}), 200);
                 //setCurrentIndex(currentIndex - 1);
->>>>>>> featherMainV2
             } else if (gesture.dy < 0) {
                 if (!isTop) {
                     Animated.timing(positions[index+1], {
@@ -207,11 +197,7 @@ const FeatherPanResponder = ({index, positions, currIndex, setCurrentIndex, cont
                         duration: 1000,
                       }).start();
                       //setCurrentIndex(current+1);
-<<<<<<< HEAD
-                      setTimeout(()=>setCurrentIndex(currentIndex + 1), 1000);
-=======
                       setTimeout(()=>setCurrentIndex({curr: currentIndex + 1, prev: currentIndex}), 1000);
->>>>>>> featherMainV2
                 }
             }
         }
