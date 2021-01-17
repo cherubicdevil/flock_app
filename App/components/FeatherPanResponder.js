@@ -25,6 +25,9 @@ const FeatherList = ({navigation, route, data=data}) => {
 
 }
 const FeatherPanResponder = ({index, positions, currIndex, setCurrentIndex, content}) => {
+    
+    const dispatch = useDispatch();
+    
     var previouspercentage = 1;
     var nextpercentage = 1;
     var topPercentage = 1;
@@ -198,6 +201,7 @@ const FeatherPanResponder = ({index, positions, currIndex, setCurrentIndex, cont
                 outofwayAnimation();
                 setTimeout(()=>setCurrentIndex({curr:currentIndex - 1, prev: currentIndex}), 200);
                 //setCurrentIndex(currentIndex - 1);
+                dispatch({type: 'sendCarouselIndex', payload: currentIndex - 1});
             } else if (gesture.dy < 0) {
                 if (!isTop) {
                     Animated.timing(positions[index+1], {
@@ -207,7 +211,8 @@ const FeatherPanResponder = ({index, positions, currIndex, setCurrentIndex, cont
                         duration: 1000,
                       }).start();
                       //setCurrentIndex(current+1);
-                      setTimeout(()=>setCurrentIndex({curr: currentIndex + 1, prev: currentIndex}), 1000);
+                      setTimeout(()=>setCurrentIndex({curr: currentIndex + 1, prev: currentIndex}), 200);
+                      dispatch({type: 'sendCarouselIndex', payload: currentIndex + 1});
                 }
             }
         }
