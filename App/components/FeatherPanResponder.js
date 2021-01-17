@@ -185,7 +185,7 @@ const FeatherPanResponder = ({index, positions, currIndex, setCurrentIndex, cont
      
 
      
-    return <Animated.View style={{alignSelf: 'center', opacity: fade, justifyContent: 'center', position: 'absolute', top: position.getLayout().top, marginTop: topAnim, marginLeft: leftAnim, left: position.getLayout().left, zIndex: index + 50, height: '100%', width: widthAnim}} {...panResponder.panHandlers} >{content}</Animated.View>
+    return <Animated.View style={{alignSelf: 'center', opacity: fade, justifyContent: 'center', position: 'absolute', top: position.getLayout().top, marginTop: topAnim, marginLeft: leftAnim, left: position.getLayout().left, zIndex: index + 50, height: '100%', width: widthAnim, borderWidth:1}} {...panResponder.panHandlers} >{content}</Animated.View>
 }
 
 const MinimalFeatherParent = () => {
