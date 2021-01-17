@@ -73,7 +73,7 @@ const FeatherPanResponder = ({index, positions, currentIndex, setCurrentIndex}) 
             position.setValue({ x: gesture.dx, y: gesture.dy });
             } else if (gesture.dy < 0) {
                 if (!isTop) {
-                    positions[index+1].setValue({y: Dimensions.get('window').height + gesture.dy, x: 1000});
+                    positions[index+1].setValue({y: Dimensions.get('window').height + gesture.dy, x: 300});
                 }
             }
         
