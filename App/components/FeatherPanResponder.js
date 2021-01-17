@@ -20,7 +20,10 @@ const FeatherPanResponder = ({index, positions, currentIndex, setCurrentIndex}) 
     var width = Dimensions.get('window').width;
     var top = 50;
 
-    const fade = new Animated.Value(index==currentIndex?1:0.3);
+    var fade = new Animated.Value(0.3);
+    if (currentIndex > index) {
+        fade = new Animated.Value(1);
+    }
 
 
     if (index > currentIndex) {
@@ -33,7 +36,7 @@ const FeatherPanResponder = ({index, positions, currentIndex, setCurrentIndex}) 
         width = Math.round(percentage * width);
     }
 
-    const [widthAnim, setWidthAnim] = useState(new Animated.Value(width));
+    const widthAnim = new Animated.Value(width);
 
     
     useEffect(()=>{
@@ -76,7 +79,7 @@ const FeatherPanResponder = ({index, positions, currentIndex, setCurrentIndex}) 
           }));
         }
 
-          Animated.parallel([Animated.sequence(animations), ...pararr]).start();
+          Animated.parallel([...animations, ...pararr]).start();
     }, [currentIndex]);
 
     //const [done, setDone] = useState(false);
