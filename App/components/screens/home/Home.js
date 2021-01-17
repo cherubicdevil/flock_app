@@ -37,9 +37,10 @@ import VideoPage from 'App/components/screens/videopage/VideoPage';
 import NewVideoPage from 'App/components/screens/videopage/NewVideoPage';
 import {useDispatch, } from 'react-redux';
 import { fetchAlbums } from '../../../utils';
+import FeatherPanResponder from 'App/components/FeatherPanResponder';
 
 import FeatherCarousel from 'App/components/FeatherCarousel';
-import FeatherPanResponder from 'App/components/FeatherPanResponder';
+// import FeatherPanResponder from 'App/components/FeatherPanResponder';
 
 const Tab = createMaterialTopTabNavigator();
 const KeyContext = createContext();
@@ -248,7 +249,7 @@ const HomeTabSwipe = ({videoData, navigation, route}) => {
   {/* <Tab.Screen name="Flocking" component={FeedList} initialParams={{value: 'hello world', videoData:[], flockData: [], rentData: [], dataType: 'flockData', flockOrNot: 'flockData'}} /> */}
   {/* <Tab.Screen name="Request" component={FeedList} initialParams={{value: 'hello world', videoData:[], flockData: [], rentData: [], dataType: 'rentData', flockOrNot: 'rentData'}} /> */}
   <Tab.Screen name="feather" component={FeatherCarousel} initialParams={{value: 'hello world', videoData:[], flockData: [], rentData: [], dataType: 'rentData'}} />
-  <Tab.Screen name="featherpan" component={FeatherPanResponder} initialParams={{value: 'hello world', videoData:[], flockData: [], rentData: [], dataType: 'rentData'}} />
+  {/* <Tab.Screen name="featherpan" component={FeatherPanResponder} initialParams={{KeyContext: KeyContext,value: 'hello world', videoData:[], flockData: [], rentData: [], dataType: 'rentData'}} /> */}
 
 </Tab.Navigator>;
 
@@ -322,8 +323,10 @@ const MiniCarousel = ({navigation, route}) => {
   const [videoAr, setVideoAr] = useState([]);
   // return <View><Text>Hi</Text></View>;
   const [finalAr, setFinalAr] = useState([]);
+  var testAr = [];
   useEffect(()=> {
     setFinalAr(shuffle([...keyArrRent, ...keyArrFlock,...videoAr]));
+    
   }, [keyArrRent, keyArrFlock, videoAr]);
 
   useEffect(()=>{
@@ -335,32 +338,28 @@ const MiniCarousel = ({navigation, route}) => {
 
   var res = [];
   for (const item of finalAr) {
-    console.log(viewHeight);
     res.push(<View style={{height: viewHeight, width: '100%', borderWidth: 1}}>
     {/* <Text>{item?.product?.title || item.flock}</Text> */}
     <NewVideoPage navigation={navigation} data={item} index={finalAr.indexOf(item)} currIndex={finalAr.indexOf(item)} viewHeight={viewHeight} />
     </View>);
   }
-  return <View onLayout = {(event) => {
-    setViewHeight(event.nativeEvent.layout.height);
-  }} style={{height: '100%'}}>
-    <ScrollView horizontal={false} showsVerticalScrollIndicator={false}
-    onMomentumScrollEnd={(event)=>{
-      console.log(event.nativeEvent.contentOffset)
-      dispatch({type:'sendCarouselIndex', payload: Math.floor(event.nativeEvent.contentOffset.y / viewHeight)});
-    }}
-    // onScroll ={(event)=>{
-    //   dispatch({type:'sendCarouselIndex', payoad: Math.floor()});
-    // }}
-      pagingEnabled={true}>
-        {res}
-      </ScrollView>
-  </View>
-  return <View style={{height: '100%'}}
-  onLayout={onLayout}
-  >
-    {view}
-  </View>
+  // return <View onLayout = {(event) => {
+  //   setViewHeight(event.nativeEvent.layout.height);
+  // }} style={{height: '100%'}}>
+  //   <ScrollView horizontal={false} showsVerticalScrollIndicator={false}
+  //   onMomentumScrollEnd={(event)=>{
+  //     console.log(event.nativeEvent.contentOffset)
+  //     dispatch({type:'sendCarouselIndex', payload: Math.floor(event.nativeEvent.contentOffset.y / viewHeight)});
+  //   }}
+  //   // onScroll ={(event)=>{
+  //   //   dispatch({type:'sendCarouselIndex', payoad: Math.floor()});
+  //   // }}
+  //     pagingEnabled={true}>
+  //       {res}
+  //     </ScrollView>
+  // </View>
+  return <FeatherPanResponder navigation={navigation} route={route} data={res} />;
+
 }
 
 const shuffle = (array) => {

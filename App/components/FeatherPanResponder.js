@@ -1,23 +1,30 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import {View, Text, PanResponder, Animated, Dimensions} from 'react-native';
 import {constants } from 'App/constants';
+import {useDispatch, useSelector} from 'react-redux';
+import {fetchAlbums} from 'App/utils';
+import NewVideoPage from 'App/components/screens/videopage/NewVideoPage';
 
 const data = ["hello",'world', 'data', 'i', 'am', 'so', 'sad'];
 
-const FeatherList = () => {
+const FeatherList = ({navigation, route, data=data}) => {
     const [currentIndex, setCurrentIndex] = useState({curr: data.length - 1, prev: data.length});
+    
+    useEffect(()=>{
+        setCurrentIndex({curr:data.length - 1, prev:data.length});
+    }, [data]);
 
     var positions = [];
     for (const item of data) {
         positions.push(new Animated.ValueXY());
     }
 
-    return <View style={{alignItems: 'center', height: '100%', width: '100%', backgroundColor: constants.PINK_BACKGROUND}}>{data.map((item)=> <FeatherPanResponder index = {data.indexOf(item)} currIndex = {currentIndex} setCurrentIndex={setCurrentIndex} positions = {positions} text={item} 
-    content={<View style={{height: '100%', width: '100%', borderRadius: 40, borderTopLeftRadius: 0, borderTopRightRadius: 0, backgroundColor: 'white', }} />}
-    />)}</View>
+    return <View 
+        style={{alignItems: 'center', height: '100%', width: '100%', backgroundColor: constants.PINK_BACKGROUND}}>{data.map((item)=> <FeatherPanResponder index = {data.indexOf(item)} currIndex = {currentIndex} setCurrentIndex={setCurrentIndex} positions = {positions} content={item} />)}
+    </View>
 
 }
-const FeatherPanResponder = ({index, positions, currIndex, setCurrentIndex, content, text}) => {
+const FeatherPanResponder = ({index, positions, currIndex, setCurrentIndex, content}) => {
     var previouspercentage = 1;
     var nextpercentage = 1;
     var topPercentage = 1;
@@ -27,9 +34,11 @@ const FeatherPanResponder = ({index, positions, currIndex, setCurrentIndex, cont
     const widthdecay = 0.95;
     const topdecay = .5;
 
+    const animdelay = 0;
     const animtime = 300;
     const initialFade = 0.2;
     const secondFade = 0.5;
+
 
     const {curr: currentIndex, prev: previousIndex} = currIndex;
 
@@ -69,6 +78,7 @@ const FeatherPanResponder = ({index, positions, currIndex, setCurrentIndex, cont
         var previousleft = Dimensions.get('window').width * (1-previouspercentage) / 2;
         var nextleft = Dimensions.get('window').width * (1-nextpercentage) / 2;
 
+        console.log(index, currentIndex, nexttop, newwidth);
 
     const [widthAnim, setWidthAnim] = useState(new Animated.Value(previouswidth));
     const [leftAnim, setLeftAnim] = useState(new Animated.Value(previousleft));
@@ -84,8 +94,8 @@ const FeatherPanResponder = ({index, positions, currIndex, setCurrentIndex, cont
         animations.push(Animated.timing(fade, {
             useNativeDriver: false,
             toValue: 1,
-            delay: 0,
-            duration: 1000,
+            delay: animdelay,
+            duration: animtime,
           }));
         }
         // } else if (index == currentIndex - 1) {
@@ -101,15 +111,15 @@ const FeatherPanResponder = ({index, positions, currIndex, setCurrentIndex, cont
             pararr.push(Animated.timing(fade, {
                 useNativeDriver: false,
                 toValue: initialFade,
-                delay: 0,
-                duration: 2000,
+                delay: animdelay,
+                duration: animtime,
               }));
         } else if (index == currentIndex - 1) {
             pararr.push(Animated.timing(fade, {
                 useNativeDriver: false,
                 toValue: secondFade,
-                delay: 0,
-                duration: 2000,
+                delay: animdelay,
+                duration: animtime,
               }));
         }
         // pararr.push(Animated.timing(fade, {
@@ -123,21 +133,21 @@ const FeatherPanResponder = ({index, positions, currIndex, setCurrentIndex, cont
         pararr.push(Animated.timing(widthAnim, {
             useNativeDriver: false,
             toValue: newwidth,
-            delay: 0,
+            delay: animdelay,
             duration: animtime,
           }));
 
           pararr.push(Animated.timing(leftAnim, {
             useNativeDriver: false,
             toValue: nextleft,
-            delay: 0,
+            delay: animdelay,
             duration: animtime,
           }));
 
           pararr.push(Animated.timing(topAnim, {
             useNativeDriver: false,
             toValue: nexttop,
-            delay: 0,
+            delay: animdelay,
             duration: animtime,
           }));
 
@@ -206,58 +216,7 @@ const FeatherPanResponder = ({index, positions, currIndex, setCurrentIndex, cont
      
 
      
-    return <Animated.View style={{alignSelf: 'center', opacity: fade, justifyContent: 'center', position: 'absolute', top: position.getLayout().top, marginTop: topAnim, marginLeft: leftAnim, left: position.getLayout().left, zIndex: index + 50, height: '100%', width: widthAnim, borderWidth:1}} {...panResponder.panHandlers} >{content}</Animated.View>
-}
-
-const MinimalFeatherParent = () => {
-    const yposition1 = new Animated.ValueXY();
-    const yposition2 = new Animated.ValueXY();
-    return <View style={{position: 'absolute', height: '100%', width: '100%', backgroundColor: 'black'}}>
-        <FeatherChild ypos = {yposition1} ypos2 = {yposition2} index = {1} />
-        <FeatherChild ypos = {yposition2} ypos2 = {yposition1} index = {2} />
-    </View>
-}
-
-const FeatherChild = ({ypos, index, ypos2}) => {
-    const top = index==2;
-    const outofwayAnimation = () => {
-        const newLeft = ypos.getLayout().left>Dimensions.get('window').width?-500:1000;
-        Animated.timing(ypos, {
-          useNativeDriver: false,
-          toValue: {y:1000, x: newLeft},
-          delay: 0,
-          duration: 300,
-        }).start();
-      };
-    const panResponder = PanResponder.create({
-        onStartShouldSetPanResponder: (event, gesture) => true,
-        onPanResponderMove: (event, gesture) => {
-            if (gesture.dy > 0) {
-            ypos.setValue({ x: gesture.dx, y: gesture.dy });
-            } else if (gesture.dy < 0) {
-                if (!top) {
-                    ypos2.setValue({y: Dimensions.get('window').height + gesture.dy, x: 1000});
-                }
-            }
-        
-        },
-        onPanResponderRelease: (event, gesture) => {
-            if (gesture.dy > 0) {
-                outofwayAnimation();
-            } else if (gesture.dy < 0) {
-                if (!top) {
-                    Animated.timing(ypos2, {
-                        useNativeDriver: false,
-                        toValue: {y:0, x: 0},
-                        delay: 0,
-                        duration: 300,
-                      }).start();
-                }
-            }
-        }
-
-     });
-     return <Animated.View style={{justifyContent: 'center', position: 'absolute', top: ypos.getLayout().top, left: ypos.getLayout().left, borderColor: 'black', borderWidth: 1, backgroundColor: top?'yellow':'green', height: '100%', width: '100%'}} {...panResponder.panHandlers} ></Animated.View>;
+    return <Animated.View style={{alignSelf: 'center', opacity: fade, justifyContent: 'center', position: 'absolute', top: position.getLayout().top, marginTop: topAnim, marginLeft: leftAnim, left: position.getLayout().left, zIndex: index + 50, height: 600, width: widthAnim, borderWidth:1, backgroundColor: 'white'}} {...panResponder.panHandlers}>{content}</Animated.View>
 }
 
 export default FeatherList;
