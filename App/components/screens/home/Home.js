@@ -53,6 +53,7 @@ const KeyContextProvider = (props) => {
   const [limitRent, setLimitRent] = useState(2);
   const [arrFlock, setArrFlock] = useState([]);
   const [arrRent, setArrRent] = useState([]);
+  const [videoData, setVideoData] = useState([]);
   return (
     <KeyContext.Provider
       value={{key: routeKey, 
@@ -69,6 +70,8 @@ const KeyContextProvider = (props) => {
       setKeyArrFlock: (value) => setArrFlock(value),
       keyArrRent: arrRent,
       setKeyArrRent: (value) => setArrRent(value),
+      keyVideoData: videoData,
+      setKeyVideoData: (value) => setVideoData(value),
 
       }}>
       {props.children}
@@ -116,7 +119,7 @@ const DataList = ({navigation, route}) => {
 
 const HomeTabSwipe = ({videoData, navigation, route}) => {
   const {key, key1, limitKey, unsubscribeKey, limitKeyRent} = useContext(KeyContext);
-  const {keyArrFlock, setKeyArrFlock, keyArrRent, setKeyArrRent} = useContext(KeyContext);
+  const {keyArrFlock, setKeyArrFlock, keyArrRent, setKeyArrRent, keyVideoData} = useContext(KeyContext);
   var unsubscribeCurrent;
   var unsubscribeCurrentRent;
   React.useEffect(() => {
@@ -250,7 +253,7 @@ const HomeTabSwipe = ({videoData, navigation, route}) => {
   <Tab.Navigator
   >
     <Tab.Screen name="for you" component = {MiniCarousel}/>
-  {/* <Tab.Screen name="posts" component={FeedList} initialParams={{videoData: videoData}} /> */}
+  <Tab.Screen name="posts" component={FeedList} initialParams={{videoData: keyVideoData}} />
   <Tab.Screen name="Popular" component={FeedList} initialParams={{videoData: []}} />
   <Tab.Screen name="Flocking" component={DataList} initialParams={{value: 'hello world', videoData:[], flockData: [], rentData: [], dataType: 'flockData'}} />
   <Tab.Screen name="Request" component={DataList} initialParams={{value: 'hello world', videoData:[], flockData: [], rentData: [], dataType: 'rentData'}} />
