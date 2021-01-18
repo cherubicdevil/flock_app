@@ -416,7 +416,9 @@ const MiniCarousel = ({navigation, route}) => {
   //       {res}
   //     </ScrollView>
   // </View>
-  return <FeatherPanResponder navigation={navigation} route={route} data={res} />;
+  return <View onLayout = {(event) => {
+    setViewHeight(event.nativeEvent.layout.height);
+  }}><FeatherPanResponder navigation={navigation} route={route} data={res} viewHeight={viewHeight} /></View>;
 
 }
 

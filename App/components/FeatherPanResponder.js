@@ -8,7 +8,7 @@ import { useFocusEffect } from '@react-navigation/native';
 
 const data = ["hello",'world', 'data', 'i', 'am', 'so', 'sad'];
 
-const FeatherList = ({navigation, route, data=data}) => {
+const FeatherList = ({navigation, route, data=data, viewHeight}) => {
     const store = useStore();
     const dispatch = useDispatch();
     // const select = useSelector(state=>state.videopage);
@@ -46,11 +46,12 @@ const FeatherList = ({navigation, route, data=data}) => {
     }
 
     return <View 
-        style={{alignItems: 'center', height: '100%', width: '100%', backgroundColor: constants.PINK_BACKGROUND}}>{data.map((item)=> <FeatherPanResponder index = {data.indexOf(item)} currIndex = {currentIndex} setCurrentIndex={setCurrentIndex} positions = {positions} content={item} />)}
+        style={{alignItems: 'center', height: '100%', width: '100%', backgroundColor: constants.PINK_BACKGROUND}}>
+            {data.map((item)=> <FeatherPanResponder viewHeight={viewHeight} index = {data.indexOf(item)} currIndex = {currentIndex} setCurrentIndex={setCurrentIndex} positions = {positions} content={item} />)}
     </View>
 
 }
-const FeatherPanResponder = ({index, positions, currIndex, setCurrentIndex, content}) => {
+const FeatherPanResponder = ({index, positions, currIndex, setCurrentIndex, content, viewHeight}) => {
     
     const dispatch = useDispatch();
     
@@ -262,7 +263,7 @@ const FeatherPanResponder = ({index, positions, currIndex, setCurrentIndex, cont
      
 
      
-    return <Animated.View style={{overflow: 'hidden', alignSelf: 'center', opacity: fade, justifyContent: 'center', position: 'absolute', top: position.getLayout().top, marginTop: topAnim, marginLeft: leftAnim, left: position.getLayout().left, zIndex: index + 50, height: 600, width: widthAnim, borderWidth:1, backgroundColor: 'white'}} {...panResponder.panHandlers}>{content}</Animated.View>
+    return <Animated.View style={{overflow: 'hidden', alignSelf: 'center', opacity: fade, justifyContent: 'center', position: 'absolute', top: position.getLayout().top, marginTop: topAnim, marginLeft: leftAnim, left: position.getLayout().left, zIndex: index + 50, height: viewHeight - 50, width: widthAnim, borderWidth:0, backgroundColor: 'white'}} {...panResponder.panHandlers}>{content}</Animated.View>
 }
 
 export default FeatherList;
