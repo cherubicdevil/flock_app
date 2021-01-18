@@ -203,7 +203,7 @@ useEffect(()=>{
             overflow: 'hidden',
             backgroundColor: 'white',
           }}>
-              {/* <Image source = {{uri: data?.poster || data?.product?.image || ''}} style={{position: 'absolute', zIndex: -10, top: 0, width: '100%', height: '100%' }} blurRadius={100} /> */}
+              <Image source = {{uri: data?.poster || data?.product?.image || ''}} style={{position: 'absolute', zIndex: -10, top: 0, width: '100%', height: '100%' }} blurRadius={100} />
               <View style={{alignItems: 'center'}}>
               {renderIcons()}
               
@@ -310,7 +310,6 @@ const ScrollCount = ({data}) => {
 
     const callback = ()=>{
         offset+=50;
-        console.log(offset);
         if (offset/50 > data.length) {
             scrollRef.current.scrollTo({y:0});
             offset = 50;

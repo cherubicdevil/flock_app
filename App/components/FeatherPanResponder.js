@@ -1,15 +1,20 @@
 import React, {useState, useEffect, useContext} from 'react';
 import {View, Text, PanResponder, Animated, Dimensions} from 'react-native';
 import {constants } from 'App/constants';
-import {useDispatch, useSelector} from 'react-redux';
+import {useDispatch, useSelector, useStore} from 'react-redux';
 import {fetchAlbums} from 'App/utils';
 import NewVideoPage from 'App/components/screens/videopage/NewVideoPage';
 import { useFocusEffect } from '@react-navigation/native';
 
 const data = ["hello",'world', 'data', 'i', 'am', 'so', 'sad'];
 
+<<<<<<< HEAD
 const FeatherList = ({navigation, route, data=data}) => {
 
+=======
+const FeatherList = ({navigation, route, data=data, viewHeight}) => {
+    const store = useStore();
+>>>>>>> mainpageIndex
     const dispatch = useDispatch();
     // const select = useSelector(state=>state.videopage);
 
@@ -34,6 +39,10 @@ const FeatherList = ({navigation, route, data=data}) => {
     useFocusEffect(
         React.useCallback(() => {
             dispatch({type: 'leave', payload: false});
+            //setCurrentIndex()
+            const carIndex = store.getState().videopage.carIndex;
+            setTimeout(()=>setCurrentIndex({curr: carIndex, prev: carIndex+1}), 0);
+            console.log("CARINDEX:", carIndex);
           return ()=>{dispatch({type: 'leave', payload: true});};
         }, [])
       );
@@ -47,11 +56,12 @@ const FeatherList = ({navigation, route, data=data}) => {
     }
 
     return <View 
-        style={{alignItems: 'center', height: '100%', width: '100%', backgroundColor: constants.PINK_BACKGROUND}}>{data.map((item)=> <FeatherPanResponder index = {data.indexOf(item)} currIndex = {currentIndex} setCurrentIndex={setCurrentIndex} positions = {positions} content={item} />)}
+        style={{alignItems: 'center', height: '100%', width: '100%', backgroundColor: constants.PINK_BACKGROUND}}>
+            {data.map((item)=> <FeatherPanResponder viewHeight={viewHeight} index = {data.indexOf(item)} currIndex = {currentIndex} setCurrentIndex={setCurrentIndex} positions = {positions} content={item} />)}
     </View>
 
 }
-const FeatherPanResponder = ({index, positions, currIndex, setCurrentIndex, content}) => {
+const FeatherPanResponder = ({index, positions, currIndex, setCurrentIndex, content, viewHeight}) => {
     
     const dispatch = useDispatch();
     
@@ -78,7 +88,7 @@ const FeatherPanResponder = ({index, positions, currIndex, setCurrentIndex, cont
         } else if (curr == ref - 1) {
             return secondFade;
         } else {
-            return 1;
+            return 0;
         }
     }
 
@@ -188,6 +198,15 @@ const FeatherPanResponder = ({index, positions, currIndex, setCurrentIndex, cont
         //   }));
         }
 
+        if (index > currentIndex) {
+            pararr.push(Animated.timing(topAnim, {
+                useNativeDriver: false,
+                toValue: 1000,
+                delay: animdelay,
+                duration: 0,
+              }));
+        }
+
           Animated.sequence([Animated.parallel([...animations, ...pararr]), ]).start();
     }, [currentIndex]);
 
@@ -232,6 +251,7 @@ const FeatherPanResponder = ({index, positions, currIndex, setCurrentIndex, cont
                 //setCurrentIndex(currentIndex - 1);
                 
                 dispatch({type: 'sendCarouselIndex', payload: currentIndex - 1});
+                console.log("changing carindex", currentIndex - 1);
             } else if (gesture.dy < 0) {
                 if (!isTop) {
                     Animated.timing(positions[index+1], {
@@ -246,6 +266,7 @@ const FeatherPanResponder = ({index, positions, currIndex, setCurrentIndex, cont
                         // dispatch({type: 'sendCarouselIndex', payload: currentIndex + 1});
                     }, 200);
                       dispatch({type: 'sendCarouselIndex', payload: currentIndex + 1});
+                      console.log("changing carindex", currentIndex + 1);
                 }
             }
         }
@@ -254,7 +275,11 @@ const FeatherPanResponder = ({index, positions, currIndex, setCurrentIndex, cont
      
 
      
+<<<<<<< HEAD
     return <Animated.View style={{overflow: 'hidden', alignSelf: 'center', opacity: fade, justifyContent: 'center', position: 'absolute', top: position.getLayout().top, marginTop: topAnim, marginLeft: leftAnim, left: position.getLayout().left, zIndex: index + 50, height: 600, width: widthAnim, borderWidth:1, borderOpacity: 0, backgroundColor: 'white'}} {...panResponder.panHandlers}>{content}</Animated.View>
+=======
+    return <Animated.View style={{overflow: 'hidden', alignSelf: 'center', opacity: fade, justifyContent: 'center', position: 'absolute', top: position.getLayout().top, marginTop: topAnim, marginLeft: leftAnim, left: position.getLayout().left, zIndex: index + 50, height: viewHeight - 50, width: widthAnim, borderWidth:0, backgroundColor: 'white'}} {...panResponder.panHandlers}>{content}</Animated.View>
+>>>>>>> mainpageIndex
 }
 
 export default FeatherList;

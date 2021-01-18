@@ -55,6 +55,7 @@ const KeyContextProvider = (props) => {
   const [arrFlock, setArrFlock] = useState([]);
   const [arrRent, setArrRent] = useState([]);
   const [videoData, setVideoData] = useState([]);
+  const [finishedLoading, setFinishedLoading] = useState(false);
   return (
     <KeyContext.Provider
       value={{key: routeKey, 
@@ -73,6 +74,9 @@ const KeyContextProvider = (props) => {
       setKeyArrRent: (value) => setArrRent(value),
       keyVideoData: videoData,
       setKeyVideoData: (value) => setVideoData(value),
+
+      keyFinishedLoading: finishedLoading,
+      setKeyFinishedLoading: (value) => setFinishedLoading(value),
 
       }}>
       {props.children}
@@ -251,11 +255,12 @@ const HomeTabSwipe = ({videoData, navigation, route}) => {
     };
   }, [key1, limitKeyRent]);
 
+  const {keyFinishedLoading} = useContext(KeyContext);
   useEffect(()=>{
     const fadeAnimation = Animated.timing(coverfade, // The animated value to drive
       {
         toValue: 0, // Animate to opacity: 1 (opaque)
-        delay: 8000, 
+        delay: 0, 
         duration: 400, // 2000ms
         useNativeDriver: false,
       },
@@ -263,14 +268,16 @@ const HomeTabSwipe = ({videoData, navigation, route}) => {
     const sizeAnimation = Animated.timing(coverheight,
       {
         toValue: 0,
-        delay: 5000,
+        delay: 0,
         duration: 300,
         useNativeDriver: false,
       });
-    Animated.sequence([fadeAnimation, sizeAnimation]).start();
+      if (keyFinishedLoading) {
+        Animated.sequence([fadeAnimation, sizeAnimation]).start();
+      }
 
 
-  }, []);
+  }, [keyFinishedLoading]);
 
   // useEffect(()=>{
     // return () => {
@@ -364,7 +371,7 @@ const MiniCarousel = ({navigation, route}) => {
 
   const dispatch = useDispatch();
   const [viewHeight, setViewHeight] = useState(800);
-  const {key, setKey, key1, setKey1, keyArrRent, keyArrFlock, keyVideoData, setKeyVideoData} = useContext(KeyContext);
+  const {key, setKey, key1, setKey1, keyArrRent, keyArrFlock, keyVideoData, setKeyVideoData, setKeyFinishedLoading} = useContext(KeyContext);
   // return <View><Text>Hi</Text></View>;
   const [finalAr, setFinalAr] = useState([]);
   var testAr = [];
@@ -378,6 +385,10 @@ const MiniCarousel = ({navigation, route}) => {
     fetchAlbums().then((ar) => {
       setKeyVideoData(ar.ar);
       dispatch({type:'sendCarouselIndex', payload: ar.ar.length - 1});
+      setTimeout(()=>{
+        setKeyFinishedLoading(true);
+      }, 2000);
+
     })
   }, []);
 
@@ -385,7 +396,7 @@ const MiniCarousel = ({navigation, route}) => {
 
   var res = [];
   for (const item of finalAr) {
-    res.push(<View style={{height: viewHeight, width: '100%', borderWidth: 1}}>
+    res.push(<View style={{height: '100%', width: '100%', borderWidth: 1}}>
     {/* <Text>{item?.product?.title || item.flock}</Text> */}
     <NewVideoPage navigation={navigation} data={item} index={finalAr.indexOf(item)} currIndex={finalAr.indexOf(item)} viewHeight={viewHeight} />
     </View>);
@@ -405,7 +416,9 @@ const MiniCarousel = ({navigation, route}) => {
   //       {res}
   //     </ScrollView>
   // </View>
-  return <FeatherPanResponder navigation={navigation} route={route} data={res} />;
+  return <View onLayout = {(event) => {
+    setViewHeight(event.nativeEvent.layout.height);
+  }}><FeatherPanResponder navigation={navigation} route={route} data={res} viewHeight={viewHeight} /></View>;
 
 }
 
