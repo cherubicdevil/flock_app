@@ -37,7 +37,7 @@ const AppNavigator5 = () => {
     <NavigationContainer>
       <Tab.Navigator
         tabBar={(props) => <CustomBar {...props} />}
-        initialRouteName="Home"
+        initialRouteName="Carousel"
         //initialRouteName="ProfileMain"
         screenOptions={{
           headerShown: false,
@@ -57,6 +57,16 @@ const AppNavigator5 = () => {
         />
         <Tab.Screen
           name="Home"
+          component={Home}
+          options={{
+            title: 'VideoMasonry',
+            cap: 'shop',
+            image: require('App/Assets/Images/Happy_Shopping_Icon.png'),
+          }}
+          initialParams={{vidVisible: false}}
+        />
+                <Tab.Screen
+          name="VideoMasonry"
           component={Home}
           options={{
             title: 'VideoMasonry',
