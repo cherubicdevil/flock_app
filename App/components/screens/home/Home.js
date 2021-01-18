@@ -36,7 +36,7 @@ import Carousel from 'App/components/screens/videopage/Carousel'
 import VideoPage from 'App/components/screens/videopage/VideoPage';
 import NewVideoPage from 'App/components/screens/videopage/NewVideoPage';
 import {useDispatch, } from 'react-redux';
-import { fetchAlbums } from '../../../utils';
+import { fetchAlbums, shuffle } from '../../../utils';
 import FeatherPanResponder from 'App/components/FeatherPanResponder';
 import ResizeableImage from 'App/components/ResizeableImage';
 
@@ -86,10 +86,11 @@ const DataList = ({navigation, route}) => {
   //route.params.videoData = route.params[route.params.dataType];
   if (route.params.dataType === "flockData") {
     route.params.videoData = keyArrFlock;
-  } else if (route.params.videoData === "rentData") {
+  } else if (route.params.dataType === "rentData") {
     route.params.videoData = keyArrRent;
-  } else if (route.params.videoData === "videoData") {
-    route.params.videoData = keyVideoData;
+    console.log("RENTTTTT", keyArrRent);
+  } else if (route.params.dataType === "videoData") {
+    route.params.videoData = shuffle([...keyVideoData, ...keyArrRent, ...keyArrFlock]);
   }
   useEffect(() => {
     if (route.params.dataType === 'flockData') {
@@ -373,15 +374,7 @@ const MiniCarousel = ({navigation, route}) => {
 
 }
 
-const shuffle = (array) => {
-  for (var i = array.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * i)
-    const temp = array[i]
-    array[i] = array[j]
-    array[j] = temp
-  }
-  return array;
-}
+
 
 const Page = () => {
   return <View>

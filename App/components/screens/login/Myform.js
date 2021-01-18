@@ -47,7 +47,7 @@ class Myform extends Component {
             .firestore()
             .collection('users')
             .doc(user.user.uid)
-            .set({likedVideos: [], chatGroups: {}});
+            .set({likedVideos: [], chatGroups: {}, chatIds:[]});
         })
         .catch(function (error) {
           // Handle Errors here.

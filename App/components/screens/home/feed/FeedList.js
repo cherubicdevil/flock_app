@@ -88,6 +88,7 @@ const FeedList= ({navigation, route, feedItem=null, productBlurb=null, KeyContex
           borderBottomLeftRadius: 44,
           borderBottomRightRadius: 44,
           borderWidth:3,
+          marginTop: 10,
           width: width,
         }}>
           <View style={{overflow: 'hidden', borderBottomRightRadius: 40, borderBottomLeftRadius: 40,}}>

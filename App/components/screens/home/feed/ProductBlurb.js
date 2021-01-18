@@ -30,6 +30,17 @@ const ProductBlurb = ({data}) => {
       <Text>{data?.members?.length} flocking</Text>
       </View>
     </View>;
+  } else if (type == "rent") {
+      return <View style= {{
+        padding: 15,
+        width: '100%'
+      }}>
+        <Text numberOfLines={1} style={{flex: 1, color: 'black', fontWeight:'bold'}}>{data?.product?.title}</Text>
+        <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+        <Text style={{color: constants.ORANGE, fontWeight: 'bold'}}>${(.15 * data?.product?.price + data?.product?.price / data?.members?.length).toFixed(2)}</Text>
+        <Text>now borrowable</Text>
+        </View>
+      </View>;
   }
   return (
     <View

@@ -15,10 +15,10 @@ import {LogBox} from 'react-native';
 LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
 LogBox.ignoreAllLogs();//Ignore all log notifications
 
-// const w = console.warn;
-// const e = console.error;
-// console.warn = () => { console.log('warning');}
-// console.error = () => { console.log('error')}
+const w = console.warn;
+const e = console.error;
+console.warn = () => { console.log('warning');}
+console.error = () => { console.log('error')}
 
 
 // const App = () => {
