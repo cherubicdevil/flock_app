@@ -96,6 +96,9 @@ const NewVideoPage = ({navigation, array, index, data, currIndex, viewHeight}) =
     } else {
         dataType = "product";
     }
+    if (data.type ==="rec") {
+      // FLOCK_BUG
+    }
   var likes = data.likes || 0;
   const dispatch = useDispatch();
   const [myData, setMyData] = useState(data);
@@ -200,11 +203,11 @@ useEffect(()=>{
             overflow: 'hidden',
             backgroundColor: 'white',
           }}>
-              <Image source = {{uri: data?.poster || data?.product?.image}} style={{position: 'absolute', zIndex: -10, top: 0, width: '100%', height: '100%' }} blurRadius={100} />
+              {/* <Image source = {{uri: data?.poster || data?.product?.image || ''}} style={{position: 'absolute', zIndex: -10, top: 0, width: '100%', height: '100%' }} blurRadius={100} /> */}
               <View style={{alignItems: 'center'}}>
               {renderIcons()}
               
-          <ResizeableImage source={{uri: data?.poster || data?.product?.image}} limitHorizontal={false} hLimit={viewHeight * percentage/100} />
+          <ResizeableImage source={{uri: data?.poster || data?.product?.image || ''}} limitHorizontal={false} hLimit={viewHeight * percentage/100} />
           <ConditionalVideo index={index} data={data} viewHeight={viewHeight * percentage/100} />
           {select.videopage.carIndex==index?<ScrollCount data={flockCountdowns} />:<></>}
           </View>
@@ -290,7 +293,7 @@ const ResizeableImage = ({source, limitHorizontal=true, hLimit, wLimit}) => {
   }
   return (
     <Image
-      source={source?.uri == ''?require('App/Assets/Images/flock_logo_white.png'):source}
+      source={source?.uri === ''?require('App/Assets/Images/flock_logo_white.png'):source}
       style={{
         //position: 'absolute',
         zIndex: -10,

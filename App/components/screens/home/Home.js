@@ -23,7 +23,7 @@
  */
 
 import React, {useState, useEffect, createContext, useContext} from 'react';
-import {SafeAreaView, View, Text, TextInput, Image, ImageBackground, TouchableOpacity, ScrollView, Dimensions} from 'react-native';
+import {SafeAreaView, View, Text, TextInput, Image, ImageBackground, TouchableOpacity, ScrollView, Dimensions, Animated} from 'react-native';
 import FeedList from './feed/FeedList';
 import {constants} from 'App/constants';
 import styles from './Home.style.ios';
@@ -41,6 +41,7 @@ import FeatherPanResponder from 'App/components/FeatherPanResponder';
 import ResizeableImage from 'App/components/ResizeableImage';
 
 import FeatherCarousel from 'App/components/FeatherCarousel';
+// import Animated from 'react-native-reanimated';
 // import FeatherPanResponder from 'App/components/FeatherPanResponder';
 
 const Tab = createMaterialTopTabNavigator();
@@ -128,6 +129,9 @@ const HomeTabSwipe = ({videoData, navigation, route}) => {
   const {keyArrFlock, setKeyArrFlock, keyArrRent, setKeyArrRent, keyVideoData} = useContext(KeyContext);
   var unsubscribeCurrent;
   var unsubscribeCurrentRent;
+
+  const [coverfade, setCoverFade] = useState(new Animated.Value(1));
+  const [coverheight, setCoverHeight] = useState(new Animated.Value(Dimensions.get('window').height));
   React.useEffect(() => {
     // this should make it so that on creating new listener with new limit, the previous one is gone.
       if (unsubscribeCurrent) {
@@ -248,6 +252,27 @@ const HomeTabSwipe = ({videoData, navigation, route}) => {
     };
   }, [key1, limitKeyRent]);
 
+  useEffect(()=>{
+    const fadeAnimation = Animated.timing(coverfade, // The animated value to drive
+      {
+        toValue: 0, // Animate to opacity: 1 (opaque)
+        delay: 8000, 
+        duration: 400, // 2000ms
+        useNativeDriver: false,
+      },
+    );
+    const sizeAnimation = Animated.timing(coverheight,
+      {
+        toValue: 0,
+        delay: 5000,
+        duration: 300,
+        useNativeDriver: false,
+      });
+    Animated.sequence([fadeAnimation, sizeAnimation]).start();
+
+
+  }, []);
+
   // useEffect(()=>{
     // return () => {
     //   if (unsubscribeCurrent) {
@@ -271,7 +296,9 @@ const HomeTabSwipe = ({videoData, navigation, route}) => {
 </Tab.Navigator>;
 
 
-return <>{navigator}</>;
+return <><Animated.View style={{backgroundColor: 'white', position: 'absolute', left: 0, bottom: 0, width:'100%', height: coverheight, opacity: coverfade, zIndex: 10000}} ><View style={{
+    backgroundColor: constants.PINK_BACKGROUND, height: '100%', width: '100%',
+}}/></Animated.View>{navigator}</>;
 
 
 }
@@ -330,6 +357,7 @@ const Home = ({route, navigation, lastVisible = null}) => {
 };
 
 const MiniCarousel = ({navigation, route}) => {
+
   const dispatch = useDispatch();
   const [viewHeight, setViewHeight] = useState(800);
   const {key, setKey, key1, setKey1, keyArrRent, keyArrFlock, keyVideoData, setKeyVideoData} = useContext(KeyContext);
@@ -342,11 +370,14 @@ const MiniCarousel = ({navigation, route}) => {
   }, [keyArrRent, keyArrFlock, keyVideoData]);
 
   useEffect(()=>{
-    dispatch({type:'sendCarouselIndex', payload: 0});
+    
     fetchAlbums().then((ar) => {
       setKeyVideoData(ar.ar);
+      dispatch({type:'sendCarouselIndex', payload: ar.ar.length - 1});
     })
-  }, [])
+  }, []);
+
+
 
   var res = [];
   for (const item of finalAr) {
