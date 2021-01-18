@@ -18,12 +18,11 @@ const FeatherList = ({navigation, route, data=data}) => {
     }, [data]);
 
     // useEffect(()=>{
-    //     console.log(route.name, "changing");
-    //     if (route.name === "for you") {
-    //         // dispatch({type:'sendCarouselIndex', payload: data.length - 1});
-    //         // setCurrentIndex({curr:select.videopage.carIndex, prev:select.videopage.carIndex+1});
-    //     }
-    // }, [route.name]);
+    //     setTimeout(()=>{
+    //         setCurrentIndex({curr:select.videopage.carIndex, prev:select.videopage.carIndex + 1});
+    //     }, 2000);
+        
+    // }, [route]);
 
     var positions = [];
     for (const item of data) {
