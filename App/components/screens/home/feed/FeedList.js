@@ -73,8 +73,8 @@ const FeedList= ({navigation, route, feedItem=null, productBlurb=null, KeyContex
           borderTopWidth: 3,
           borderColor: 'black',
           overflow: 'hidden',
-          borderBottomLeftRadius: 40,
-          borderBottomRightRadius: 40,
+          borderBottomLeftRadius: 45,
+          borderBottomRightRadius: 45,
           borderWidth:3,
           width: width,
         }}>
