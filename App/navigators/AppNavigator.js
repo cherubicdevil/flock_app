@@ -37,7 +37,7 @@ const AppNavigator5 = () => {
     <NavigationContainer>
       <Tab.Navigator
         tabBar={(props) => <CustomBar {...props} />}
-        initialRouteName="Carousel"
+        initialRouteName="Home"
         //initialRouteName="ProfileMain"
         screenOptions={{
           headerShown: false,

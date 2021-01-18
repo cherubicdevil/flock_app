@@ -112,11 +112,20 @@ const DataList = ({navigation, route}) => {
     } else if (route.params.dataType === "rentData") {
     navigation.navigate('FlockReserve', {data:al});
     }
-  }}>
+  }}
+
+  >
     <View style={{backgroundColor: 'black', width: '100%', resizeMode: 'contain'}} >
       <ResizeableImage source = {{uri: al?.product?.image}} wLimit = {Dimensions.get('window').width/2 - 30} />
     </View>
-    </TouchableOpacity>}} /></View>;
+    </TouchableOpacity>}} 
+      productBlurb={(item)=> {
+        return <View style={{padding: 20, width: '100%'}} >
+          <Text numberOfLines={1} style={{flex: 1, fontWeight:'bold'}}>{item.product?.title}hi</Text>
+          
+        </View>
+      }}
+    /></View>;
 }
 
 const HomeTabSwipe = ({videoData, navigation, route}) => {

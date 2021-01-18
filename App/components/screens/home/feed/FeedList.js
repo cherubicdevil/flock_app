@@ -24,7 +24,7 @@
  */
 
 
-import React, {useState, useContext, useEffect} from 'react';
+import React, {useState, useContext} from 'react';
 import {Dimensions, ScrollView, View, Button} from 'react-native';
 import FeedItem from './FeedItem';
 import HalfProduct from './HalfProduct';
@@ -34,11 +34,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import ProductBlurb from 'App/components/screens/home/feed/ProductBlurb';
 const width = Dimensions.get('window').width / 2 - 30;
 const FeedList= ({navigation, route, feedItem=null, productBlurb=null, KeyContext, flockOrNot}) => {
-  const [myAr, setMyAr] = useState([route.params.videoData]);
-  console.log("video data",route.params.dataType, route.params.videoData);
-  // useEffect(()=> {
-  //   setMyAr(route.params.videoData);
-  // }, [route.params.videoData]);
+  const [myAr, setMyAr] = useState([]);
 
   const renderProductBlurb = (product) => {
     if (productBlurb) {
@@ -54,7 +50,7 @@ const FeedList= ({navigation, route, feedItem=null, productBlurb=null, KeyContex
     mute={true}
     repeat={true}
     ar={myAr}
-    videoAr={myAr}
+    videoAr={route.params.videoData}
     index={myAr.indexOf(al)}
     navigation={navigation}
     data={al}
@@ -67,6 +63,14 @@ const FeedList= ({navigation, route, feedItem=null, productBlurb=null, KeyContex
   const renderClucks = (album) => {
     //console.log("CLUCKS", this.props.route.params.videoData);
     return album.map((al) => {
+      var color = 'black';
+      if (al.type == 'rec') {
+        color= 'purple';
+      } else if (al.completed) {
+        color = 'blue';
+      } else if (al.completed==false) {
+        color = constants.ORANGE;
+      }
       if (false) {
         return <HalfProduct navigation={navigation} album={al} />;
       } else {
@@ -75,10 +79,10 @@ const FeedList= ({navigation, route, feedItem=null, productBlurb=null, KeyContex
                     <View
         style={{
           borderTopWidth: 3,
-          borderColor: 'black',
+          borderColor: color,
           overflow: 'hidden',
-          borderBottomLeftRadius: 45,
-          borderBottomRightRadius: 45,
+          borderBottomLeftRadius: 44,
+          borderBottomRightRadius: 44,
           borderWidth:3,
           width: width,
         }}>
@@ -98,7 +102,7 @@ const FeedList= ({navigation, route, feedItem=null, productBlurb=null, KeyContex
     // console.log("FL DATA", this.props.route.params);
 
 
-    const ar = mergeArrays(myAr, []);
+    const ar = mergeArrays(route.params.videoData, []);
     const album1 = ar.slice(0, ar.length / 2);
     const album2 = ar.slice(ar.length / 2, ar.length);
 

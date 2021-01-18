@@ -23,13 +23,13 @@ const ResizeableImage = ({source, limitHorizontal=true, hLimit, wLimit}) => {
   }
   return (
     <Image
-      source={source?.uri == ''?require('App/Assets/Images/flock_logo_white.png'):source}
+      source={(source?.uri === '' || source?.uri == undefined)?require('App/Assets/Images/flock_logo_white.png'):source}
       style={{
         //position: 'absolute',
         zIndex: -10,
         opacity: 0.935,
         width: width,
-        height: height,
+        height: height == 0?100:height,
       }}
     />
   );

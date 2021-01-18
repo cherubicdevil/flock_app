@@ -114,6 +114,7 @@ const fetchAlbums = () => {
             video: newSource.streamableVideo,
             poster: newSource.posterSource,
             size: newSource.size,
+            type: 'rec',
           };
           ar.push(entity);
           counter = counter + 1;
