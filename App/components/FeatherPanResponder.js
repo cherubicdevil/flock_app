@@ -8,13 +8,9 @@ import { useFocusEffect } from '@react-navigation/native';
 
 const data = ["hello",'world', 'data', 'i', 'am', 'so', 'sad'];
 
-<<<<<<< HEAD
-const FeatherList = ({navigation, route, data=data}) => {
 
-=======
 const FeatherList = ({navigation, route, data=data, viewHeight}) => {
     const store = useStore();
->>>>>>> mainpageIndex
     const dispatch = useDispatch();
     // const select = useSelector(state=>state.videopage);
 
