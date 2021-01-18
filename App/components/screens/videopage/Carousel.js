@@ -123,7 +123,7 @@ const renderClose = (navigation, dispatch, array, lastVisible, flockData) => {
         if (navigation.canGoBack()) {
           navigation.goBack();
         } else {
-          navigation.navigate('VideoMasonry', {
+          navigation.navigate('Home', {
             videoData: array,
             lastVisible: lastVisible,
             hello: 'hello',
