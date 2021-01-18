@@ -296,9 +296,14 @@ const HomeTabSwipe = ({videoData, navigation, route}) => {
 </Tab.Navigator>;
 
 
-return <><Animated.View style={{backgroundColor: 'white', position: 'absolute', left: 0, bottom: 0, width:'100%', height: coverheight, opacity: coverfade, zIndex: 10000}} ><View style={{
+return <>
+<Animated.View style={{backgroundColor: 'white', position: 'absolute', left: 0, bottom: 0, width:'100%', height: coverheight, opacity: coverfade, zIndex: 10000}} ><View style={{
     backgroundColor: constants.PINK_BACKGROUND, height: '100%', width: '100%',
-}}/></Animated.View>{navigator}</>;
+    justifyContent: 'center', alignItems: 'center',
+}}/>
+<Image source={require('App/Assets/Images/flock-anim.gif')} style={{width: 200, height: 200, position: 'absolute', top: '30%', left: '30%'}} />
+</Animated.View>
+{navigator}</>;
 
 
 }
