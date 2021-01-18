@@ -35,10 +35,10 @@ import ProductBlurb from 'App/components/screens/home/feed/ProductBlurb';
 const width = Dimensions.get('window').width / 2 - 30;
 const FeedList= ({navigation, route, feedItem=null, productBlurb=null, KeyContext, flockOrNot}) => {
   const [myAr, setMyAr] = useState([route.params.videoData]);
-
-  useEffect(()=> {
-    setMyAr(route.params.videoData);
-  }, [route.params.videoData]);
+  console.log("video data",route.params.dataType, route.params.videoData);
+  // useEffect(()=> {
+  //   setMyAr(route.params.videoData);
+  // }, [route.params.videoData]);
 
   const renderProductBlurb = (product) => {
     if (productBlurb) {
