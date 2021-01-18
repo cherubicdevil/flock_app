@@ -78,7 +78,6 @@ var previousIndex = 0;
     renderCard={(card) => {
         
         const index = data.indexOf(card);
-        console.log('local index', index);
         return <Card index={index} card={card} />;
     }}
     // onSwiped={(cardIndex) => {

@@ -203,8 +203,10 @@ function ChatInterface({route, navigation}) {
             chatIds: firebase.firestore.FieldValue.arrayUnion(route.params.data.id)
           });
           const maxi = {};
+          
           // TODO: change to data maxPrice
           maxi[firebase.auth().currentUser.uid] = 100;
+          console.log(maxi, "IS THIS WHERE IT GOES WRONG");
           db.collection('chatGroups').doc(route.params.data.id).update({
             members: firebase.firestore.FieldValue.arrayUnion(memberInfo),
             maximums: firebase.firestore.FieldValue.arrayUnion(maxi)
@@ -216,12 +218,16 @@ function ChatInterface({route, navigation}) {
           // send to socket, which pushes a broadcast
           // test signal, send test, on receive, console log "RECEIVED"
           // condition
+          // FLOCK_UPDATE
           if (true) {
           socket.current.emit('complete', route.params.data.id);
-          db.collection('chatGroups').doc(route.params.data.id).update({
+          db.collection('chatGroups').doc(route.params.data.id).set({
             completed: true,
-
+            
+            // rentPrice: ((route.params.data.product.price * .15 + route.params.data.product.price / route.params.data.members.length) / 2).toFixed(2),
+            // FLOCK_UPDATE this should go in the backend so that prices can be adjusted easily
           });
+          
           navigation.navigate('FlockChatComplete', {data: route.params.data})
           }
           if (route.params.data.members.length > 3) {

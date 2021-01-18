@@ -22,7 +22,7 @@
  *
  */
 
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState, useEffect, useRef, useContext} from 'react';
 import {
   KeyboardAvoidingView,
   ScrollView,
@@ -96,6 +96,9 @@ const NewVideoPage = ({navigation, array, index, data, currIndex, viewHeight}) =
     } else {
         dataType = "product";
     }
+    if (data.type ==="rec") {
+      // FLOCK_BUG
+    }
   var likes = data.likes || 0;
   const dispatch = useDispatch();
   const [myData, setMyData] = useState(data);
@@ -110,7 +113,7 @@ const NewVideoPage = ({navigation, array, index, data, currIndex, viewHeight}) =
   var lastVisible = null;
   const select = useSelector(state=>state);
 
-  console.log('rendering video page')
+
 
 //   return <Text>hi</Text>
 
@@ -200,13 +203,13 @@ useEffect(()=>{
             overflow: 'hidden',
             backgroundColor: 'white',
           }}>
-              <Image source = {{uri: data?.poster || data?.product?.image}} style={{position: 'absolute', zIndex: -10, top: 0, width: '100%', height: '100%' }} blurRadius={100} />
+              <Image source = {{uri: data?.poster || data?.product?.image || ''}} style={{position: 'absolute', zIndex: -10, top: 0, width: '100%', height: '100%' }} blurRadius={100} />
               <View style={{alignItems: 'center'}}>
               {renderIcons()}
               
-          <ResizeableImage source={{uri: data?.poster || data?.product?.image}} limitHorizontal={false} hLimit={viewHeight * percentage/100} />
+          <ResizeableImage source={{uri: data?.poster || data?.product?.image || ''}} limitHorizontal={false} hLimit={viewHeight * percentage/100} />
           <ConditionalVideo index={index} data={data} viewHeight={viewHeight * percentage/100} />
-          {select.videopage.carIndex==index?<ScrollCount data={flockCountdowns} />:<></>}
+          {(select.videopage.carIndex==index && select.videopage.leave==false)?<ScrollCount data={flockCountdowns} />:<></>}
           </View>
           <TouchableOpacity onPress={()=>{
               const video = data.video;
@@ -258,8 +261,7 @@ useEffect(()=>{
 
 const ConditionalVideo = ({index, data, viewHeight}) => {
     const select = useSelector(state=>state);
-    console.log(select.videopage.carIndex, index, "carindex newivdeopage");
-    if (data?.video && (index == select.videopage.carIndex)) {
+    if (data?.video && (index == select.videopage.carIndex) && select.videopage.leave===false) {
         return <View style={{position: 'absolute', top:0}}>
         <ResizeableVideo data={data} horizontalLimit = {false} hLimit = {viewHeight}/>
         </View>
@@ -290,7 +292,7 @@ const ResizeableImage = ({source, limitHorizontal=true, hLimit, wLimit}) => {
   }
   return (
     <Image
-      source={source?.uri == ''?require('App/Assets/Images/flock_logo_white.png'):source}
+      source={source?.uri === ''?require('App/Assets/Images/flock_logo_white.png'):source}
       style={{
         //position: 'absolute',
         zIndex: -10,
@@ -308,7 +310,6 @@ const ScrollCount = ({data}) => {
 
     const callback = ()=>{
         offset+=50;
-        console.log(offset);
         if (offset/50 > data.length) {
             scrollRef.current.scrollTo({y:0});
             offset = 50;

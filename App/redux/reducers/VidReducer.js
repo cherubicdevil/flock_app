@@ -5,6 +5,7 @@ export default function setVidVisible(
 		vidData: [],
 		vidIndex: true,
 		carIndex: 0,
+		leave: false,
 	},
 	action,
 ) {
@@ -20,6 +21,8 @@ export default function setVidVisible(
 			return {...state, vidIndex: false};
 		case 'sendCarouselIndex':
 			return {...state, carIndex: action.payload};
+		case 'leave':
+			return {...state, leave: action.payload};
 		default:
 			return state;
 	}

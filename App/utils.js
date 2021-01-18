@@ -114,6 +114,7 @@ const fetchAlbums = () => {
             video: newSource.streamableVideo,
             poster: newSource.posterSource,
             size: newSource.size,
+            type: 'rec',
           };
           ar.push(entity);
           counter = counter + 1;
@@ -443,6 +444,16 @@ AppInstalledChecker
 const generateUserObject = (displayName, uid) => {
   return {displayName: displayName, uid: uid};
 }
+
+const shuffle = (array) => {
+  for (var i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * i)
+    const temp = array[i]
+    array[i] = array[j]
+    array[j] = temp
+  }
+  return array;
+}
 export {
   fetchStreamableSource,
   fetchAlbums,
@@ -460,5 +471,6 @@ export {
   getChatsFromId,
   fetchGlobalFlocks,
   shareActions,
-  generateUserObject
+  generateUserObject,
+  shuffle,
 };

@@ -1,30 +1,63 @@
 import React, {useState, useEffect, useContext} from 'react';
 import {View, Text, PanResponder, Animated, Dimensions} from 'react-native';
 import {constants } from 'App/constants';
-import {useDispatch, useSelector} from 'react-redux';
+import {useDispatch, useSelector, useStore} from 'react-redux';
 import {fetchAlbums} from 'App/utils';
 import NewVideoPage from 'App/components/screens/videopage/NewVideoPage';
+import { useFocusEffect } from '@react-navigation/native';
 
 const data = ["hello",'world', 'data', 'i', 'am', 'so', 'sad'];
 
-const FeatherList = ({navigation, route, data=data}) => {
+
+const FeatherList = ({navigation, route, data=data, viewHeight}) => {
+    const store = useStore();
+    const dispatch = useDispatch();
+    // const select = useSelector(state=>state.videopage);
+
     const [currentIndex, setCurrentIndex] = useState({curr: data.length - 1, prev: data.length});
     
     useEffect(()=>{
         setCurrentIndex({curr:data.length - 1, prev:data.length});
+        dispatch({type:'sendCarouselIndex', payload: data.length - 1});
     }, [data]);
+
+
+    // useEffect(()=> {
+    //     console.log(route.name);
+    //     if (route.name === "for you") {
+    //         dispatch({type: 'leave', payload: false});
+    //     } else {
+    //         dispatch({type: 'leave', payload: true});
+    //     }
+
+    // }, [route.key]);
+
+    useFocusEffect(
+        React.useCallback(() => {
+            dispatch({type: 'leave', payload: false});
+            //setCurrentIndex()
+            const carIndex = store.getState().videopage.carIndex;
+            setTimeout(()=>setCurrentIndex({curr: carIndex, prev: carIndex+1}), 0);
+            console.log("CARINDEX:", carIndex);
+          return ()=>{dispatch({type: 'leave', payload: true});};
+        }, [])
+      );
+
 
     var positions = [];
     for (const item of data) {
+        // var [positionInstance, _] = useState(new Animated.ValueXY());
+        // positions.push(positionInstance);
         positions.push(new Animated.ValueXY());
     }
 
     return <View 
-        style={{alignItems: 'center', height: '100%', width: '100%', backgroundColor: constants.PINK_BACKGROUND}}>{data.map((item)=> <FeatherPanResponder index = {data.indexOf(item)} currIndex = {currentIndex} setCurrentIndex={setCurrentIndex} positions = {positions} content={item} />)}
+        style={{alignItems: 'center', height: '100%', width: '100%', backgroundColor: constants.PINK_BACKGROUND}}>
+            {data.map((item)=> <FeatherPanResponder viewHeight={viewHeight} index = {data.indexOf(item)} currIndex = {currentIndex} setCurrentIndex={setCurrentIndex} positions = {positions} content={item} />)}
     </View>
 
 }
-const FeatherPanResponder = ({index, positions, currIndex, setCurrentIndex, content}) => {
+const FeatherPanResponder = ({index, positions, currIndex, setCurrentIndex, content, viewHeight}) => {
     
     const dispatch = useDispatch();
     
@@ -51,14 +84,16 @@ const FeatherPanResponder = ({index, positions, currIndex, setCurrentIndex, cont
         } else if (curr == ref - 1) {
             return secondFade;
         } else {
-            return 1;
+            return 0;
         }
     }
 
-    var fade = new Animated.Value(getFade(index, previousIndex));
+    var init = getFade(index, previousIndex);
     if (currentIndex > index) {
-        fade = new Animated.Value(1);
+        init = 1;
     }
+    const [fade, setFade] = useState(new Animated.Value(init));
+
 
     var previouswidth = Dimensions.get('window').width;
         var diff = previousIndex - index;
@@ -76,12 +111,10 @@ const FeatherPanResponder = ({index, positions, currIndex, setCurrentIndex, cont
         newwidth = Math.round(nextpercentage * newwidth);
         nexttop = Math.round(topPercentage * nexttop);
 
-        // console.log(text, previouswidth, newwidth);
 
         var previousleft = Dimensions.get('window').width * (1-previouspercentage) / 2;
         var nextleft = Dimensions.get('window').width * (1-nextpercentage) / 2;
 
-        console.log(index, currentIndex, nexttop, newwidth, nexttop);
 
     const [widthAnim, setWidthAnim] = useState(new Animated.Value(previouswidth));
     const [leftAnim, setLeftAnim] = useState(new Animated.Value(previousleft));
@@ -92,7 +125,6 @@ const FeatherPanResponder = ({index, positions, currIndex, setCurrentIndex, cont
     useEffect(()=>{
         const animations = [];
         const pararr = [];
-        console.log(index, fade);
         if (index == currentIndex) {
         animations.push(Animated.timing(fade, {
             useNativeDriver: false,
@@ -162,6 +194,15 @@ const FeatherPanResponder = ({index, positions, currIndex, setCurrentIndex, cont
         //   }));
         }
 
+        if (index > currentIndex) {
+            pararr.push(Animated.timing(topAnim, {
+                useNativeDriver: false,
+                toValue: 1000,
+                delay: animdelay,
+                duration: 0,
+              }));
+        }
+
           Animated.sequence([Animated.parallel([...animations, ...pararr]), ]).start();
     }, [currentIndex]);
 
@@ -199,9 +240,14 @@ const FeatherPanResponder = ({index, positions, currIndex, setCurrentIndex, cont
             isDown = false;
             if (gesture.dy > 0) {
                 outofwayAnimation();
-                setTimeout(()=>setCurrentIndex({curr:currentIndex - 1, prev: currentIndex}), 200);
+                setTimeout(()=>{
+                    setCurrentIndex({curr:currentIndex - 1, prev: currentIndex});
+                    // dispatch({type: 'sendCarouselIndex', payload: currentIndex - 1});
+                }, 200);
                 //setCurrentIndex(currentIndex - 1);
+                
                 dispatch({type: 'sendCarouselIndex', payload: currentIndex - 1});
+                console.log("changing carindex", currentIndex - 1);
             } else if (gesture.dy < 0) {
                 if (!isTop) {
                     Animated.timing(positions[index+1], {
@@ -211,8 +257,12 @@ const FeatherPanResponder = ({index, positions, currIndex, setCurrentIndex, cont
                         duration: 1000,
                       }).start();
                       //setCurrentIndex(current+1);
-                      setTimeout(()=>setCurrentIndex({curr: currentIndex + 1, prev: currentIndex}), 200);
+                      setTimeout(()=>{
+                        setCurrentIndex({curr:currentIndex + 1, prev: currentIndex});
+                        // dispatch({type: 'sendCarouselIndex', payload: currentIndex + 1});
+                    }, 200);
                       dispatch({type: 'sendCarouselIndex', payload: currentIndex + 1});
+                      console.log("changing carindex", currentIndex + 1);
                 }
             }
         }
@@ -221,7 +271,9 @@ const FeatherPanResponder = ({index, positions, currIndex, setCurrentIndex, cont
      
 
      
-    return <Animated.View style={{overflow: 'hidden', alignSelf: 'center', opacity: fade, justifyContent: 'center', position: 'absolute', top: position.getLayout().top, marginTop: topAnim, marginLeft: leftAnim, left: position.getLayout().left, zIndex: index + 50, height: 600, width: widthAnim, borderWidth:1, backgroundColor: 'white'}} {...panResponder.panHandlers}>{content}</Animated.View>
+
+    return <Animated.View style={{overflow: 'hidden', alignSelf: 'center', opacity: fade, justifyContent: 'center', position: 'absolute', top: position.getLayout().top, marginTop: topAnim, marginLeft: leftAnim, left: position.getLayout().left, zIndex: index + 50, height: viewHeight - 50, width: widthAnim, borderWidth:0, backgroundColor: 'white'}} {...panResponder.panHandlers}>{content}</Animated.View>
+
 }
 
 export default FeatherList;

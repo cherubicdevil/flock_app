@@ -9,6 +9,39 @@ const ProductBlurb = ({data}) => {
     return <View />;
   }
 
+  // FLOCK_UPDATE all data should have type tags
+  var type = "";
+  if (data.type == 'rec') {
+    type = "rec";
+  } else if (data.completed) {
+    type="rent";
+  } else if (data.completed==false) {
+    type="flock";
+  }
+
+  if (type == "flock") {
+    return <View style= {{
+      padding: 15,
+      width: '100%'
+    }}>
+      <Text numberOfLines={1} style={{flex: 1, color: 'black', fontWeight:'bold'}}>{data?.product?.title}</Text>
+      <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+      <Text style={{color: constants.ORANGE, fontWeight: 'bold'}}>${data?.product?.price / data?.members?.length} pp</Text>
+      <Text>{data?.members?.length} flocking</Text>
+      </View>
+    </View>;
+  } else if (type == "rent") {
+      return <View style= {{
+        padding: 15,
+        width: '100%'
+      }}>
+        <Text numberOfLines={1} style={{flex: 1, color: 'black', fontWeight:'bold'}}>{data?.product?.title}</Text>
+        <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+        <Text style={{color: constants.ORANGE, fontWeight: 'bold'}}>${(.15 * data?.product?.price + data?.product?.price / data?.members?.length).toFixed(2)}</Text>
+        <Text>now borrowable</Text>
+        </View>
+      </View>;
+  }
   return (
     <View
       style={{
