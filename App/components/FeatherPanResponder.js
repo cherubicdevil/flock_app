@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useContext} from 'react';
 import {View, Text, PanResponder, Animated, Dimensions} from 'react-native';
 import {constants } from 'App/constants';
-import {useDispatch, useSelector} from 'react-redux';
+import {useDispatch, useSelector, useStore} from 'react-redux';
 import {fetchAlbums} from 'App/utils';
 import NewVideoPage from 'App/components/screens/videopage/NewVideoPage';
 import { useFocusEffect } from '@react-navigation/native';
@@ -9,6 +9,7 @@ import { useFocusEffect } from '@react-navigation/native';
 const data = ["hello",'world', 'data', 'i', 'am', 'so', 'sad'];
 
 const FeatherList = ({navigation, route, data=data}) => {
+    const store = useStore();
     const dispatch = useDispatch();
     // const select = useSelector(state=>state.videopage);
     const [currentIndex, setCurrentIndex] = useState({curr: data.length - 1, prev: data.length});
@@ -30,6 +31,10 @@ const FeatherList = ({navigation, route, data=data}) => {
     useFocusEffect(
         React.useCallback(() => {
             dispatch({type: 'leave', payload: false});
+            //setCurrentIndex()
+            const carIndex = store.getState().videopage.carIndex;
+            // setTimeout(()=>setCurrentIndex({curr: carIndex, prev: carIndex+1}, 500);
+            
           return ()=>{dispatch({type: 'leave', payload: true});};
         }, [])
       );
