@@ -4,15 +4,36 @@ import {constants } from 'App/constants';
 import {useDispatch, useSelector} from 'react-redux';
 import {fetchAlbums} from 'App/utils';
 import NewVideoPage from 'App/components/screens/videopage/NewVideoPage';
+import { useFocusEffect } from '@react-navigation/native';
 
 const data = ["hello",'world', 'data', 'i', 'am', 'so', 'sad'];
 
 const FeatherList = ({navigation, route, data=data}) => {
+    const dispatch = useDispatch();
+    // const select = useSelector(state=>state.videopage);
     const [currentIndex, setCurrentIndex] = useState({curr: data.length - 1, prev: data.length});
     
     useEffect(()=>{
         setCurrentIndex({curr:data.length - 1, prev:data.length});
     }, [data]);
+
+    // useEffect(()=> {
+    //     console.log(route.name);
+    //     if (route.name === "for you") {
+    //         dispatch({type: 'leave', payload: false});
+    //     } else {
+    //         dispatch({type: 'leave', payload: true});
+    //     }
+
+    // }, [route.key]);
+
+    useFocusEffect(
+        React.useCallback(() => {
+            dispatch({type: 'leave', payload: false});
+          return ()=>{dispatch({type: 'leave', payload: true});};
+        }, [])
+      );
+
 
     var positions = [];
     for (const item of data) {
@@ -76,12 +97,10 @@ const FeatherPanResponder = ({index, positions, currIndex, setCurrentIndex, cont
         newwidth = Math.round(nextpercentage * newwidth);
         nexttop = Math.round(topPercentage * nexttop);
 
-        // console.log(text, previouswidth, newwidth);
 
         var previousleft = Dimensions.get('window').width * (1-previouspercentage) / 2;
         var nextleft = Dimensions.get('window').width * (1-nextpercentage) / 2;
 
-        console.log(index, currentIndex, nexttop, newwidth, nexttop);
 
     const [widthAnim, setWidthAnim] = useState(new Animated.Value(previouswidth));
     const [leftAnim, setLeftAnim] = useState(new Animated.Value(previousleft));
@@ -92,7 +111,6 @@ const FeatherPanResponder = ({index, positions, currIndex, setCurrentIndex, cont
     useEffect(()=>{
         const animations = [];
         const pararr = [];
-        console.log(index, fade);
         if (index == currentIndex) {
         animations.push(Animated.timing(fade, {
             useNativeDriver: false,
@@ -199,8 +217,12 @@ const FeatherPanResponder = ({index, positions, currIndex, setCurrentIndex, cont
             isDown = false;
             if (gesture.dy > 0) {
                 outofwayAnimation();
-                setTimeout(()=>setCurrentIndex({curr:currentIndex - 1, prev: currentIndex}), 200);
+                setTimeout(()=>{
+                    setCurrentIndex({curr:currentIndex - 1, prev: currentIndex});
+                    // dispatch({type: 'sendCarouselIndex', payload: currentIndex - 1});
+                }, 200);
                 //setCurrentIndex(currentIndex - 1);
+                
                 dispatch({type: 'sendCarouselIndex', payload: currentIndex - 1});
             } else if (gesture.dy < 0) {
                 if (!isTop) {
@@ -211,7 +233,10 @@ const FeatherPanResponder = ({index, positions, currIndex, setCurrentIndex, cont
                         duration: 1000,
                       }).start();
                       //setCurrentIndex(current+1);
-                      setTimeout(()=>setCurrentIndex({curr: currentIndex + 1, prev: currentIndex}), 200);
+                      setTimeout(()=>{
+                        setCurrentIndex({curr:currentIndex + 1, prev: currentIndex});
+                        // dispatch({type: 'sendCarouselIndex', payload: currentIndex + 1});
+                    }, 200);
                       dispatch({type: 'sendCarouselIndex', payload: currentIndex + 1});
                 }
             }
