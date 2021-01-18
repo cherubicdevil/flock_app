@@ -67,21 +67,21 @@ const config = {
 
 
 var renderProduct = (navigation, data) => {
-  return (
-    <VideoDescription
-      video={data.video}
-      album={data.product}
-      user={data.username}
-      description={data.title}
-      navigation={navigation}
-      style={{
-        position: 'absolute',
-        bottom: 40,
-        alignSelf: 'center',
-        zIndex: 20,
-      }}
-    />
-  );
+  // return (
+  //   <VideoDescription
+  //     video={data.video}
+  //     album={data.product}
+  //     user={data.username}
+  //     description={data.title}
+  //     navigation={navigation}
+  //     style={{
+  //       position: 'absolute',
+  //       top: 0,
+  //       alignSelf: 'center',
+  //       zIndex: 20,
+  //     }}
+  //   />
+  // );
 };
 
 const NewVideoPage = ({navigation, array, index, data, currIndex, viewHeight}) => {

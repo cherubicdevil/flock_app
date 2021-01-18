@@ -240,7 +240,9 @@ const HomeTabSwipe = ({videoData, navigation, route}) => {
     // };
   // },[key, key1]);
   var navigator = 
-  <Tab.Navigator>
+  <Tab.Navigator
+  tabBar={()=><View style={{backgroundColor:'black'}} />}
+  >
     <Tab.Screen name="for you" component = {MiniCarousel}/>
   {/* <Tab.Screen name="posts" component={FeedList} initialParams={{videoData: videoData}} /> */}
   <Tab.Screen name="Popular" component={FeedList} initialParams={{videoData: []}} />
@@ -280,9 +282,6 @@ const Home = ({route, navigation, lastVisible = null}) => {
   }, []);
   return (
     <View style={styles.wrapperAll}>
-
-      <View style={[styles.sectionOneStyle, {backgroundColor: 'rgba(255,255,255,0.3)'}]}>
-        <View style={{width: '100%', height: '100%'}} />
         {/* <ImageBackground
           imageStyle={{borderRadius: 25}}
           style={styles.topBox}
@@ -298,7 +297,6 @@ const Home = ({route, navigation, lastVisible = null}) => {
             />
           </View>
         </ImageBackground> */}
-      </View>
  
       <View style={styles.sectionThreeStyle}>
         {/* <View style={styles.loadingBackground}>

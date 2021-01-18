@@ -81,7 +81,7 @@ const FeatherPanResponder = ({index, positions, currIndex, setCurrentIndex, cont
         var previousleft = Dimensions.get('window').width * (1-previouspercentage) / 2;
         var nextleft = Dimensions.get('window').width * (1-nextpercentage) / 2;
 
-        console.log(index, currentIndex, nexttop, newwidth);
+        console.log(index, currentIndex, nexttop, newwidth, nexttop);
 
     const [widthAnim, setWidthAnim] = useState(new Animated.Value(previouswidth));
     const [leftAnim, setLeftAnim] = useState(new Animated.Value(previousleft));
@@ -221,7 +221,7 @@ const FeatherPanResponder = ({index, positions, currIndex, setCurrentIndex, cont
      
 
      
-    return <Animated.View style={{alignSelf: 'center', opacity: fade, justifyContent: 'center', position: 'absolute', top: position.getLayout().top, marginTop: topAnim, marginLeft: leftAnim, left: position.getLayout().left, zIndex: index + 50, height: 600, width: widthAnim, borderWidth:1, backgroundColor: 'white'}} {...panResponder.panHandlers}>{content}</Animated.View>
+    return <Animated.View style={{overflow: 'hidden', alignSelf: 'center', opacity: fade, justifyContent: 'center', position: 'absolute', top: position.getLayout().top, marginTop: topAnim, marginLeft: leftAnim, left: position.getLayout().left, zIndex: index + 50, height: 600, width: widthAnim, borderWidth:1, backgroundColor: 'white'}} {...panResponder.panHandlers}>{content}</Animated.View>
 }
 
 export default FeatherList;
