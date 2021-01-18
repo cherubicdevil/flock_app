@@ -53,7 +53,7 @@ const Media = ({isInView = true, width, navigation, videoAr, data, title}) => {
           array: videoAr,
         });
       }}>
-      <View style={{backgroundColor: '#ddd', marginTop: -10}}>
+      <View style={{backgroundColor: '#ddd', marginTop: -10,}}>
         <VanishVideo
           visible={isInView}
           data={data}

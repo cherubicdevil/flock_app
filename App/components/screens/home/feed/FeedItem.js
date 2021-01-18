@@ -29,11 +29,21 @@ import ProductBlurb from './ProductBlurb';
 import Berry from './Berry';
 import Media from './Media';
 
-const FeedItem = ({videoAr, navigation, data, title}) => {
+const FeedItem = ({videoAr, navigation, data, title, useInView}) => {
   const width = Dimensions.get('window').width / 2 - 30;
 
   const [isInView, setIsInView] = useState(false);
   const colortype = 'black';
+  if (!useInView) {
+    return <Media
+    isInView={true}
+    width={width}
+    navigation={navigation}
+    data={data}
+    videoAr={videoAr}
+    title={title}
+  />
+  }
   return (
 
     <InViewPort

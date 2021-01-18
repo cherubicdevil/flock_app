@@ -73,9 +73,12 @@ const FeedList= ({navigation, route, feedItem=null, productBlurb=null, KeyContex
           borderTopWidth: 3,
           borderColor: 'black',
           overflow: 'hidden',
+          borderBottomLeftRadius: 40,
+          borderBottomRightRadius: 40,
+          borderWidth:3,
           width: width,
         }}>
-          <View style={{overflow: 'hidden', borderBottomLeftRadius: 40, borderBottomRightRadius: 40, borderWidth: 3, borderColor: 'black'}}>
+          <View style={{overflow: 'hidden', borderBottomRightRadius: 40, borderBottomLeftRadius: 40,}}>
           
           {renderFeedItem(al)}
           </View>

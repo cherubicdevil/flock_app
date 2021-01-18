@@ -23,7 +23,7 @@
  */
 
 import React, {useState, useEffect, createContext, useContext} from 'react';
-import {View, Text, TextInput, Image, ImageBackground, TouchableOpacity, ScrollView} from 'react-native';
+import {SafeAreaView, View, Text, TextInput, Image, ImageBackground, TouchableOpacity, ScrollView, Dimensions} from 'react-native';
 import FeedList from './feed/FeedList';
 import {constants} from 'App/constants';
 import styles from './Home.style.ios';
@@ -38,6 +38,7 @@ import NewVideoPage from 'App/components/screens/videopage/NewVideoPage';
 import {useDispatch, } from 'react-redux';
 import { fetchAlbums } from '../../../utils';
 import FeatherPanResponder from 'App/components/FeatherPanResponder';
+import ResizeableImage from 'App/components/ResizeableImage';
 
 import FeatherCarousel from 'App/components/FeatherCarousel';
 // import FeatherPanResponder from 'App/components/FeatherPanResponder';
@@ -98,13 +99,19 @@ const DataList = ({navigation, route}) => {
   // const boxes = <View style={{backgroundColor: 'white'}}>{data.map(()=>{
   //   <View style={{width: 30, height: 50, backgroundColor: 'red'}} />
   // })}</View>
-  return <View style={{height: '100%', backgroundColor: 'pink', width: '100%'}}><Text style={{color: 'white'}}>{val}</Text><FeedList route={route} flockOrNot={route.params.dataType} KeyContext={KeyContext} feedItem={(al)=><TouchableOpacity onPress={()=>{
+  return <View style={{height: '100%', backgroundColor: constants.PINK_BACKGROUND, width: '100%'}}><Text style={{color: 'white'}}>{val}</Text><FeedList route={route} flockOrNot={route.params.dataType} KeyContext={KeyContext} feedItem={(al)=>{
+  console.log('al image', al.image, al.title, al.product.image);
+    return <TouchableOpacity onPress={()=>{
     if (route.params.dataType === "flockData") {
       navigation.navigate('ChatInterface', {data: al});
     } else if (route.params.dataType === "rentData") {
     navigation.navigate('FlockReserve', {data:al});
     }
-  }}><View style={{height: 150, backgroundColor: 'white', width: '100%'}} /></TouchableOpacity>} /></View>;
+  }}>
+    <View style={{backgroundColor: 'black', width: '100%', resizeMode: 'contain'}} >
+      <ResizeableImage source = {{uri: al?.product?.image}} wLimit = {Dimensions.get('window').width/2 - 30} />
+    </View>
+    </TouchableOpacity>}} /></View>;
 }
 
 const HomeTabSwipe = ({videoData, navigation, route}) => {
@@ -241,7 +248,6 @@ const HomeTabSwipe = ({videoData, navigation, route}) => {
   // },[key, key1]);
   var navigator = 
   <Tab.Navigator
-  tabBar={()=><View style={{backgroundColor:'black'}} />}
   >
     <Tab.Screen name="for you" component = {MiniCarousel}/>
   {/* <Tab.Screen name="posts" component={FeedList} initialParams={{videoData: videoData}} /> */}
