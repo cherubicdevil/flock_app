@@ -89,7 +89,6 @@ const DataList = ({navigation, route}) => {
     route.params.videoData = keyArrFlock;
   } else if (route.params.dataType === "rentData") {
     route.params.videoData = keyArrRent;
-    console.log("RENTTTTT", keyArrRent);
   } else if (route.params.dataType === "videoData") {
     route.params.videoData = shuffle([...keyVideoData, ...keyArrRent, ...keyArrFlock]);
   }
@@ -290,7 +289,7 @@ const HomeTabSwipe = ({videoData, navigation, route}) => {
   <Tab.Screen name="Request" component={DataList} initialParams={{value: 'hello world', videoData:[], flockData: [], rentData: [], dataType: 'rentData'}} />
   {/* <Tab.Screen name="Flocking" component={FeedList} initialParams={{value: 'hello world', videoData:[], flockData: [], rentData: [], dataType: 'flockData', flockOrNot: 'flockData'}} /> */}
   {/* <Tab.Screen name="Request" component={FeedList} initialParams={{value: 'hello world', videoData:[], flockData: [], rentData: [], dataType: 'rentData', flockOrNot: 'rentData'}} /> */}
-  <Tab.Screen name="feather" component={FeatherCarousel} initialParams={{value: 'hello world', videoData:[], flockData: [], rentData: [], dataType: 'rentData'}} />
+  {/* <Tab.Screen name="feather" component={FeatherCarousel} initialParams={{value: 'hello world', videoData:[], flockData: [], rentData: [], dataType: 'rentData'}} /> */}
   {/* <Tab.Screen name="featherpan" component={FeatherPanResponder} initialParams={{KeyContext: KeyContext,value: 'hello world', videoData:[], flockData: [], rentData: [], dataType: 'rentData'}} /> */}
 
 </Tab.Navigator>;
