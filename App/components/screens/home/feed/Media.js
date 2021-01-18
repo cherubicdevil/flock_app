@@ -104,7 +104,9 @@ const VanishVideo = ({visible, data, maxWidth}) => {
       },
     ).start();
   };
-  const height = (data.size.height / data.size.width) *
+  const datasizeheight = data?.size?.height || 50;
+  const datasizewidth = data?.size?.width || 50;
+  const height = (datasizeheight / datasizewidth) *
   (maxWidth);
   if (!visible) {
     return <View style={{height: height, width: '100%', justifyContent: 'center', alignItems: 'center'}} ><View style={{justifyContent: 'center', alignItems: 'center'}}></View></View>;

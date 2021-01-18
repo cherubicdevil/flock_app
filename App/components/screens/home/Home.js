@@ -82,12 +82,14 @@ const KeyContextProvider = (props) => {
 const DataList = ({navigation, route}) => {
   const val = route.params?.value || null;
   const {key, setKey, key1, setKey1} = useContext(KeyContext);
-  const {keyArrFlock, keyArrRent} = useContext(KeyContext);
+  const {keyArrFlock, keyArrRent, keyVideoData} = useContext(KeyContext);
   //route.params.videoData = route.params[route.params.dataType];
   if (route.params.dataType === "flockData") {
     route.params.videoData = keyArrFlock;
-  } else {
+  } else if (route.params.videoData === "rentData") {
     route.params.videoData = keyArrRent;
+  } else if (route.params.videoData === "videoData") {
+    route.params.videoData = keyVideoData;
   }
   useEffect(() => {
     if (route.params.dataType === 'flockData') {
@@ -103,7 +105,7 @@ const DataList = ({navigation, route}) => {
   //   <View style={{width: 30, height: 50, backgroundColor: 'red'}} />
   // })}</View>
   return <View style={{height: '100%', backgroundColor: constants.PINK_BACKGROUND, width: '100%'}}><Text style={{color: 'white'}}>{val}</Text><FeedList route={route} flockOrNot={route.params.dataType} KeyContext={KeyContext} feedItem={(al)=>{
-  console.log('al image', al.image, al.title, al.product.image);
+  // console.log('al image', al.image, al.title, al.product.image);
     return <TouchableOpacity onPress={()=>{
     if (route.params.dataType === "flockData") {
       navigation.navigate('ChatInterface', {data: al});
@@ -253,7 +255,7 @@ const HomeTabSwipe = ({videoData, navigation, route}) => {
   <Tab.Navigator
   >
     <Tab.Screen name="for you" component = {MiniCarousel}/>
-  <Tab.Screen name="posts" component={FeedList} initialParams={{videoData: keyVideoData}} />
+  <Tab.Screen name="posts" component={DataList} initialParams={{videoData: keyVideoData, dataType:'videoData'}} />
   <Tab.Screen name="Popular" component={FeedList} initialParams={{videoData: []}} />
   <Tab.Screen name="Flocking" component={DataList} initialParams={{value: 'hello world', videoData:[], flockData: [], rentData: [], dataType: 'flockData'}} />
   <Tab.Screen name="Request" component={DataList} initialParams={{value: 'hello world', videoData:[], flockData: [], rentData: [], dataType: 'rentData'}} />
@@ -326,20 +328,19 @@ const Home = ({route, navigation, lastVisible = null}) => {
 const MiniCarousel = ({navigation, route}) => {
   const dispatch = useDispatch();
   const [viewHeight, setViewHeight] = useState(800);
-  const {key, setKey, key1, setKey1, keyArrRent, keyArrFlock} = useContext(KeyContext);
-  const [videoAr, setVideoAr] = useState([]);
+  const {key, setKey, key1, setKey1, keyArrRent, keyArrFlock, keyVideoData, setKeyVideoData} = useContext(KeyContext);
   // return <View><Text>Hi</Text></View>;
   const [finalAr, setFinalAr] = useState([]);
   var testAr = [];
   useEffect(()=> {
-    setFinalAr(shuffle([...keyArrRent, ...keyArrFlock,...videoAr]));
+    setFinalAr(shuffle([...keyArrRent, ...keyArrFlock,...keyVideoData]));
     
-  }, [keyArrRent, keyArrFlock, videoAr]);
+  }, [keyArrRent, keyArrFlock, keyVideoData]);
 
   useEffect(()=>{
     dispatch({type:'sendCarouselIndex', payload: 0});
     fetchAlbums().then((ar) => {
-      setVideoAr(ar.ar);
+      setKeyVideoData(ar.ar);
     })
   }, [])
 
