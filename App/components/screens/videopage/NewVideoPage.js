@@ -310,7 +310,6 @@ const ScrollCount = ({data}) => {
 
     const callback = ()=>{
         offset+=50;
-        console.log(offset);
         if (offset/50 > data.length) {
             scrollRef.current.scrollTo({y:0});
             offset = 50;

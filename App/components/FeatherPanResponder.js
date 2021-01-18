@@ -33,8 +33,8 @@ const FeatherList = ({navigation, route, data=data}) => {
             dispatch({type: 'leave', payload: false});
             //setCurrentIndex()
             const carIndex = store.getState().videopage.carIndex;
-            // setTimeout(()=>setCurrentIndex({curr: carIndex, prev: carIndex+1}, 500);
-            
+            setTimeout(()=>setCurrentIndex({curr: carIndex, prev: carIndex+1}), 0);
+            console.log("CARINDEX:", carIndex);
           return ()=>{dispatch({type: 'leave', payload: true});};
         }, [])
       );
@@ -77,7 +77,7 @@ const FeatherPanResponder = ({index, positions, currIndex, setCurrentIndex, cont
         } else if (curr == ref - 1) {
             return secondFade;
         } else {
-            return 1;
+            return 0;
         }
     }
 
@@ -185,6 +185,15 @@ const FeatherPanResponder = ({index, positions, currIndex, setCurrentIndex, cont
         //   }));
         }
 
+        if (index > currentIndex) {
+            pararr.push(Animated.timing(topAnim, {
+                useNativeDriver: false,
+                toValue: 1000,
+                delay: animdelay,
+                duration: 0,
+              }));
+        }
+
           Animated.sequence([Animated.parallel([...animations, ...pararr]), ]).start();
     }, [currentIndex]);
 
@@ -229,6 +238,7 @@ const FeatherPanResponder = ({index, positions, currIndex, setCurrentIndex, cont
                 //setCurrentIndex(currentIndex - 1);
                 
                 dispatch({type: 'sendCarouselIndex', payload: currentIndex - 1});
+                console.log("changing carindex", currentIndex - 1);
             } else if (gesture.dy < 0) {
                 if (!isTop) {
                     Animated.timing(positions[index+1], {
@@ -243,6 +253,7 @@ const FeatherPanResponder = ({index, positions, currIndex, setCurrentIndex, cont
                         // dispatch({type: 'sendCarouselIndex', payload: currentIndex + 1});
                     }, 200);
                       dispatch({type: 'sendCarouselIndex', payload: currentIndex + 1});
+                      console.log("changing carindex", currentIndex + 1);
                 }
             }
         }
