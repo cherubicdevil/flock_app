@@ -119,12 +119,6 @@ const DataList = ({navigation, route}) => {
       <ResizeableImage source = {{uri: al?.product?.image}} wLimit = {Dimensions.get('window').width/2 - 30} />
     </View>
     </TouchableOpacity>}} 
-      productBlurb={(item)=> {
-        return <View style={{padding: 20, width: '100%'}} >
-          <Text numberOfLines={1} style={{flex: 1, fontWeight:'bold'}}>{item.product?.title}hi</Text>
-          
-        </View>
-      }}
     /></View>;
 }
 

@@ -63,13 +63,17 @@ const FeedList= ({navigation, route, feedItem=null, productBlurb=null, KeyContex
   const renderClucks = (album) => {
     //console.log("CLUCKS", this.props.route.params.videoData);
     return album.map((al) => {
+      var type = "";
       var color = 'black';
       if (al.type == 'rec') {
         color= 'purple';
+        type = "rec";
       } else if (al.completed) {
         color = 'blue';
+        type="rent";
       } else if (al.completed==false) {
         color = constants.ORANGE;
+        type="flock";
       }
       if (false) {
         return <HalfProduct navigation={navigation} album={al} />;
