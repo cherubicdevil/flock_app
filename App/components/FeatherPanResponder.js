@@ -8,14 +8,27 @@ import NewVideoPage from 'App/components/screens/videopage/NewVideoPage';
 const data = ["hello",'world', 'data', 'i', 'am', 'so', 'sad'];
 
 const FeatherList = ({navigation, route, data=data}) => {
+    const select = useSelector(state=>state);
+    const dispatch = useDispatch();
     const [currentIndex, setCurrentIndex] = useState({curr: data.length - 1, prev: data.length});
     
     useEffect(()=>{
         setCurrentIndex({curr:data.length - 1, prev:data.length});
+        dispatch({type:'sendCarouselIndex', payload: data.length - 1});
     }, [data]);
+
+    // useEffect(()=>{
+    //     console.log(route.name, "changing");
+    //     if (route.name === "for you") {
+    //         // dispatch({type:'sendCarouselIndex', payload: data.length - 1});
+    //         // setCurrentIndex({curr:select.videopage.carIndex, prev:select.videopage.carIndex+1});
+    //     }
+    // }, [route.name]);
 
     var positions = [];
     for (const item of data) {
+        // var [positionInstance, _] = useState(new Animated.ValueXY());
+        // positions.push(positionInstance);
         positions.push(new Animated.ValueXY());
     }
 
@@ -55,10 +68,12 @@ const FeatherPanResponder = ({index, positions, currIndex, setCurrentIndex, cont
         }
     }
 
-    var fade = new Animated.Value(getFade(index, previousIndex));
+    var init = getFade(index, previousIndex);
     if (currentIndex > index) {
-        fade = new Animated.Value(1);
+        init = 1;
     }
+    const [fade, setFade] = useState(new Animated.Value(init));
+
 
     var previouswidth = Dimensions.get('window').width;
         var diff = previousIndex - index;
@@ -221,7 +236,7 @@ const FeatherPanResponder = ({index, positions, currIndex, setCurrentIndex, cont
      
 
      
-    return <Animated.View style={{overflow: 'hidden', alignSelf: 'center', opacity: fade, justifyContent: 'center', position: 'absolute', top: position.getLayout().top, marginTop: topAnim, marginLeft: leftAnim, left: position.getLayout().left, zIndex: index + 50, height: 600, width: widthAnim, borderWidth:1, backgroundColor: 'white'}} {...panResponder.panHandlers}>{content}</Animated.View>
+    return <Animated.View style={{overflow: 'hidden', alignSelf: 'center', opacity: fade, justifyContent: 'center', position: 'absolute', top: position.getLayout().top, marginTop: topAnim, marginLeft: leftAnim, left: position.getLayout().left, zIndex: index + 50, height: 600, width: widthAnim, borderWidth:1, borderOpacity: 0, backgroundColor: 'white'}} {...panResponder.panHandlers}>{content}</Animated.View>
 }
 
 export default FeatherList;
