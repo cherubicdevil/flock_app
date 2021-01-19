@@ -117,6 +117,7 @@ const NewVideoPage = ({navigation, array, index, data, currIndex, viewHeight}) =
 //   return <Text>hi</Text>
 
 const comments = [{user: {name: 'Hellowrld'}, content: "this is a message", time: 1234, replies: []}, ];
+const [firstComment, setFirstComment] = useState({});
 
 useEffect(()=>{
     if (dataType === "product" || dataType === "video") {
@@ -133,7 +134,19 @@ useEffect(()=>{
     });
     }
 
-
+    console.log("DATAID", data.id);
+    db.collection('comments')
+    .where('cluck', '==', `${data.id}`)
+    .orderBy('date', 'desc')
+    .limit(1)
+    .get()
+    .then((querySnapshot) => {
+      //console.log(querySnapshot.getKey());
+      querySnapshot.forEach((doc) => {
+        const entity = doc.data();
+        setFirstComment(entity);
+      });
+    });
   }, []);
 
   const renderIcons = () => {
@@ -184,6 +197,7 @@ useEffect(()=>{
     );
   };
 
+  // console.log("FIRST COMMENT", firstComment, firstComment === undefined || Object.keys(firstComment).length==0);
   const renderVid = () => {
     return (
       <View
@@ -230,7 +244,7 @@ useEffect(()=>{
         <View pointerEvents="none">
 
           {renderProduct(navigation, data)}
-          <View style={{}} ><Text>{comments[0].content}</Text></View>
+          <View style={{height: (100-percentage)+"%", zIndex: 2000,}} ><TouchableWithoutFeedback style={{width:'100%', height: '100%', backgroundColor: 'yellow'}} onPress={()=>setModalVisible(true)}>{firstComment === undefined || Object.keys(firstComment).length==0?<></>:<View style={{flexDirection: 'row', marginLeft: 30, marginTop: 20}}><Text style={{fontWeight: 'bold'}}>{firstComment.user.name}:</Text><Text style={{marginLeft: 20}}>{firstComment.text}</Text></View>}</TouchableWithoutFeedback></View>
         </View>
         {/* {renderClose(navigation)} */}
         
