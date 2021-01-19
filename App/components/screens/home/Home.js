@@ -288,14 +288,16 @@ const HomeTabSwipe = ({videoData, navigation, route}) => {
   // },[key, key1]);
   var navigator = 
   <Tab.Navigator
+  
+  tabBar= {(props)=><TopBar {...props} />}
   >
     <Tab.Screen name="for you" component = {MiniCarousel}/>
 
   <Tab.Screen name="posts" component={DataList} initialParams={{videoData: keyVideoData, dataType:'videoData'}} />
 
-  <Tab.Screen name="Popular" component={FeedList} initialParams={{videoData: []}} />
-  <Tab.Screen name="Flocking" component={DataList} initialParams={{value: 'hello world', videoData:[], flockData: [], rentData: [], dataType: 'flockData'}} />
-  <Tab.Screen name="Request" component={DataList} initialParams={{value: 'hello world', videoData:[], flockData: [], rentData: [], dataType: 'rentData'}} />
+  {/* <Tab.Screen name="Popular" component={FeedList} initialParams={{videoData: []}} /> */}
+  <Tab.Screen name="flocking" component={DataList} initialParams={{value: 'hello world', videoData:[], flockData: [], rentData: [], dataType: 'flockData'}} />
+  <Tab.Screen name="borrow" component={DataList} initialParams={{value: 'hello world', videoData:[], flockData: [], rentData: [], dataType: 'rentData'}} />
   {/* <Tab.Screen name="Flocking" component={FeedList} initialParams={{value: 'hello world', videoData:[], flockData: [], rentData: [], dataType: 'flockData', flockOrNot: 'flockData'}} /> */}
   {/* <Tab.Screen name="Request" component={FeedList} initialParams={{value: 'hello world', videoData:[], flockData: [], rentData: [], dataType: 'rentData', flockOrNot: 'rentData'}} /> */}
   {/* <Tab.Screen name="feather" component={FeatherCarousel} initialParams={{value: 'hello world', videoData:[], flockData: [], rentData: [], dataType: 'rentData'}} /> */}
@@ -336,7 +338,7 @@ const Home = ({route, navigation, lastVisible = null}) => {
 
   }, []);
   return (
-    <Fragment><SafeAreaView style={{ flex: 0, backgroundColor: constants.GREY }} /><SafeAreaView style={{ flex: 1, backgroundColor: constants.PINK_BACKGROUND }}>
+    <Fragment><SafeAreaView style={{ flex: 0, backgroundColor: constants.TRANSLUCENT }} /><SafeAreaView style={{ flex: 1, backgroundColor: constants.PINK_BACKGROUND }}>
     {/* <SafeAreaView style={[styles.wrapperAll,{backgroundColor: constants.PINK_BACKGROUND}]}> */}
         {/* <ImageBackground
           imageStyle={{borderRadius: 25}}
@@ -434,5 +436,71 @@ const Page = () => {
 
   </View>
 };
+
+const TopBar = ({descriptors, state, navigation}) => {
+  const focusedOptions = descriptors[state.routes[state.index].key].options;
+
+  // if (focusedOptions.tabBarVisible === false) {
+  //   return null;
+  // }
+  console.log('route', state.routes);
+  return (
+    <LinearGradient
+    colors={[constants.TRANSLUCENT, 'white']}
+    start={{ x: 0, y: 0 }} end={{ x: 0, y: 1 }}
+    style={{
+      flexDirection: 'row',
+      justifyContent: 'space-around',
+      alignItems: 'flex-end',
+      paddingTop: 20,
+      paddingBottom: 20,
+      // borderBottomRightRadius:20,
+      // borderBottomLeftRadius: 20,
+      //shadowColor: "#ff7009", shadowOffset: {height: 10, width: 0}, shadowOpacity: 0.39, elevation: 13, shadowRadius: 28.30,
+      //alignItems: 'center',
+    }}>
+      {state.routes.map((route, index) => {
+        const {options} = descriptors[route.key];
+        
+        
+        const isFocused = state.index === index;
+        console.log(route.name);
+        if (route.name === "for you") {
+          return <LinearGradient 
+          colors={[constants.GREY, 'white']}
+          style={{flex: 1, marginLeft: 10, marginRight: 10, 
+          // backgroundColor: isFocused?'orange':'purple', 
+          padding: 10, borderRadius: 30, justifyContent: 'center', alignItems: 'center'}}>
+            <Text>{route.name}</Text>
+            </LinearGradient>
+        }
+        if (route.name === "flocking") {
+          return <LinearGradient 
+          colors={[constants.PURPLE, 'white']}
+          style={{flex: 1, marginLeft: 10, marginRight: 10, 
+          // backgroundColor: isFocused?'orange':'purple', 
+          padding: 10, borderRadius: 30, justifyContent: 'center', alignItems: 'center'}}>
+            <Text>{route.name}</Text>
+            </LinearGradient>
+        }
+        if (route.name === "borrow") {
+          return <LinearGradient 
+          colors={[constants.PURPLE, constants.ORANGE]}
+          style={{flex: 1, marginLeft: 10, marginRight: 10, 
+          // backgroundColor: isFocused?'orange':'purple', 
+          padding: 10, borderRadius: 30, justifyContent: 'center', alignItems: 'center'}}>
+            <Text>{route.name}</Text>
+            </LinearGradient>
+        }
+        return (
+          <View style={{flex: 1, marginLeft: 10, marginRight: 10, backgroundColor: isFocused?'orange':'purple', padding: 10, borderRadius: 30, justifyContent: 'center', alignItems: 'center'}}>
+            <Text>{route.name}</Text>
+            </View>
+        );
+      })}
+    </LinearGradient>
+  );
+};
+
 
 export default Home;
