@@ -19,7 +19,8 @@ const FeatherList = ({navigation, route, data=data, viewHeight}) => {
     useEffect(()=>{
         setCurrentIndex({curr:data.length - 1, prev:data.length});
         dispatch({type:'sendCarouselIndex', payload: data.length - 1});
-    }, [data]);
+        console.log('changingSHIt');
+    }, [data.length]);
 
 
     // useEffect(()=> {
@@ -39,7 +40,10 @@ const FeatherList = ({navigation, route, data=data, viewHeight}) => {
             const carIndex = store.getState().videopage.carIndex;
             setTimeout(()=>setCurrentIndex({curr: carIndex, prev: carIndex+1}), 0);
             console.log("CARINDEX:", carIndex);
-          return ()=>{dispatch({type: 'leave', payload: true});};
+          return ()=>{
+              dispatch({type: 'leave', payload: true});
+              console.log(store.getState().videopage.carIndex);
+        };
         }, [])
       );
 
