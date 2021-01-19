@@ -23,7 +23,7 @@
  */
 
 import React, {useState, useEffect, createContext, useContext, Fragment} from 'react';
-import {SafeAreaView, View, Text, TextInput, Image, ImageBackground, TouchableOpacity, ScrollView, Dimensions, Animated} from 'react-native';
+import {SafeAreaView, View, Text, TextInput, Image, ImageBackground, TouchableOpacity, TouchableWithoutFeedback,ScrollView, Dimensions, Animated} from 'react-native';
 import FeedList from './feed/FeedList';
 import {constants} from 'App/constants';
 import styles from './Home.style.ios';
@@ -443,6 +443,13 @@ const TopBar = ({descriptors, state, navigation}) => {
   // if (focusedOptions.tabBarVisible === false) {
   //   return null;
   // }
+  const totalWidth = Dimensions.get("window").width;
+  const tabWidth = totalWidth / state.routes.length;
+  const [left, setLeft] = useState(new Animated.Value(0));
+  var color = left.interpolate({
+    inputRange: [0, tabWidth, tabWidth*2, tabWidth*3],
+    outputRange: [constants.PURPLE, constants.ORANGE, constants.RED, constants.GREY]
+});
   console.log('route', state.routes);
   return (
     <LinearGradient
@@ -464,40 +471,44 @@ const TopBar = ({descriptors, state, navigation}) => {
         
         
         const isFocused = state.index === index;
-        console.log(route.name);
-        if (route.name === "for you") {
-          return <LinearGradient 
-          colors={[constants.GREY, 'white']}
-          style={{flex: 1, marginLeft: 10, marginRight: 10, 
-          // backgroundColor: isFocused?'orange':'purple', 
-          padding: 10, borderRadius: 30, justifyContent: 'center', alignItems: 'center'}}>
-            <Text>{route.name}</Text>
-            </LinearGradient>
+
+        const onPress = () => {
+          const event = navigation.emit({
+            type: "tabPress",
+            target: route.key,
+            canPreventDefault: true,
+          });
+          Animated.timing(left, {
+            toValue: index * tabWidth,
+            velocity: 10,
+            useNativeDriver: true,
+          }).start();
         }
-        if (route.name === "flocking") {
-          return <LinearGradient 
-          colors={[constants.PURPLE, 'white']}
-          style={{flex: 1, marginLeft: 10, marginRight: 10, 
-          // backgroundColor: isFocused?'orange':'purple', 
-          padding: 10, borderRadius: 30, justifyContent: 'center', alignItems: 'center'}}>
+
+          return <TouchableOpacity activeOpacity={1} style={{flex: 1,marginLeft: 10, marginRight: 10,}} onPress={onPress}>
+          {/* <LinearGradient 
+          colors={[constants.TRANSLUCENT, 'white']}
+          style={{width: '100%', height: 50,  
+          padding: 10, borderRadius: 30, borderWidth: 1,justifyContent: 'center', alignItems: 'center'}}>
             <Text>{route.name}</Text>
-            </LinearGradient>
-        }
-        if (route.name === "borrow") {
-          return <LinearGradient 
-          colors={[constants.PURPLE, constants.ORANGE]}
-          style={{flex: 1, marginLeft: 10, marginRight: 10, 
-          // backgroundColor: isFocused?'orange':'purple', 
-          padding: 10, borderRadius: 30, justifyContent: 'center', alignItems: 'center'}}>
-            <Text>{route.name}</Text>
-            </LinearGradient>
-        }
-        return (
-          <View style={{flex: 1, marginLeft: 10, marginRight: 10, backgroundColor: isFocused?'orange':'purple', padding: 10, borderRadius: 30, justifyContent: 'center', alignItems: 'center'}}>
+            </LinearGradient> */}
+                      <View
+          style={{width: '100%', height: 50,  backgroundColor: 'rgba(255,255,255,0)',
+          padding: 10, borderRadius: 30, borderWidth: 1,justifyContent: 'center', alignItems: 'center'}}>
             <Text>{route.name}</Text>
             </View>
-        );
+            </TouchableOpacity>
+
       })}
+      <Animated.View style={{alignSelf: 'center',height: 50, position: 'absolute',  width: tabWidth - 20,
+      borderRadius: 40, zIndex: -10, left: 10,
+    transform: [{ translateX: left }],
+     }} >
+      <LinearGradient 
+          colors={[constants.PURPLE, 'white']}
+          style={{width: '100%', height: '100%',   borderRadius: 40,
+          }} />
+     </Animated.View>
     </LinearGradient>
   );
 };
