@@ -65,7 +65,7 @@ const AppNavigator5 = () => {
           }}
           initialParams={{vidVisible: false}}
         />
-                <Tab.Screen
+                {/* <Tab.Screen
           name="VideoMasonry"
           component={Home}
           options={{
@@ -74,7 +74,7 @@ const AppNavigator5 = () => {
             image: require('App/Assets/Images/Happy_Shopping_Icon.png'),
           }}
           initialParams={{vidVisible: false}}
-        />
+        /> */}
         <Tab.Screen
           name="CamScreen"
           component={CamNavigator}

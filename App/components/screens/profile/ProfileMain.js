@@ -23,6 +23,7 @@ import {constants} from 'App/constants';
 import {firebase, db, auth} from 'App/firebase/config';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import {getIndexOfData} from '../../../utils';
+import ResizeableImage from 'App/components/ResizeableImage';
 //import Base64 from 'base-64';
 
 // global.atob = Base64.encode;
@@ -100,9 +101,11 @@ const ProfileMain = ({navigation}) => {
             numColumns={3}
             data={flockData}
             renderItem={(el) => {
-              return <TouchableOpacity onPress={()=>{navigation.navigate("ChatInterface", {data: el.item})}}><View style={{width: Dimensions.get('window').width/3, height: 150, borderBottomRightRadius: 40, borderBottomLeftRadius: 40, backgroundColor: 'white'}} >
+              return <TouchableOpacity onPress={()=>{navigation.navigate("ChatInterface", {data: el.item})}}><View style={{width: Dimensions.get('window').width/3 - 10, margin: 5, paddingBottom: 30, borderBottomRightRadius: 40, borderBottomLeftRadius: 40, backgroundColor: 'white', resizeMode: 'contain'}} >
                 <Text>Current Price: ${(el.item.product.price/el.item.members.length).toFixed(2)} </Text>
-              <Text>Your Maximum: ${(el.item.maximums[firebase.auth().currentUser.uid])}</Text></View>
+              <Text>Your Maximum: ${(el.item.maximums[firebase.auth().currentUser.uid])}</Text>
+              <ResizeableImage limitHorizontal={false} hLimit={50} source={{uri: el.item.product.image}} style={{width:'100%', height: 50}} />
+              </View>
               </TouchableOpacity>
             }}
           />
