@@ -114,7 +114,6 @@ const NewVideoPage = ({navigation, array, index, data, currIndex, viewHeight}) =
   const select = useSelector(state=>state);
 
 
-
 //   return <Text>hi</Text>
 
 const comments = [{user: {name: 'Hellowrld'}, content: "this is a message", time: 1234, replies: []}, ];
@@ -133,6 +132,8 @@ useEffect(()=>{
       setFlockCountdowns(arr);
     });
     }
+
+
   }, []);
 
   const renderIcons = () => {
