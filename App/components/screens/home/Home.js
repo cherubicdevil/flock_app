@@ -22,7 +22,7 @@
  *
  */
 
-import React, {useState, useEffect, createContext, useContext} from 'react';
+import React, {useState, useEffect, createContext, useContext, Fragment} from 'react';
 import {SafeAreaView, View, Text, TextInput, Image, ImageBackground, TouchableOpacity, ScrollView, Dimensions, Animated} from 'react-native';
 import FeedList from './feed/FeedList';
 import {constants} from 'App/constants';
@@ -336,7 +336,8 @@ const Home = ({route, navigation, lastVisible = null}) => {
 
   }, []);
   return (
-    <View style={styles.wrapperAll}>
+    <Fragment><SafeAreaView style={{ flex: 0, backgroundColor: constants.GREY }} /><SafeAreaView style={{ flex: 1, backgroundColor: constants.PINK_BACKGROUND }}>
+    {/* <SafeAreaView style={[styles.wrapperAll,{backgroundColor: constants.PINK_BACKGROUND}]}> */}
         {/* <ImageBackground
           imageStyle={{borderRadius: 25}}
           style={styles.topBox}
@@ -353,7 +354,7 @@ const Home = ({route, navigation, lastVisible = null}) => {
           </View>
         </ImageBackground> */}
  
-      <View style={styles.sectionThreeStyle}>
+      {/* <View style={styles.sectionThreeStyle}> */}
         {/* <View style={styles.loadingBackground}>
           <Image
             style={{width: 60, height: 60}}
@@ -364,8 +365,10 @@ const Home = ({route, navigation, lastVisible = null}) => {
         <KeyContextProvider>
         <HomeTabSwipe navigation={navigation} route= {route} videoData={route.params.videoData} />
         </KeyContextProvider>
-      </View>
-    </View>
+      {/* </View> */}
+    </SafeAreaView>
+    
+    </Fragment>
   );
 };
 
@@ -398,7 +401,7 @@ const MiniCarousel = ({navigation, route}) => {
 
   var res = [];
   for (const item of finalAr) {
-    res.push(<View style={{height: '100%', width: '100%', borderWidth: 1}}>
+    res.push(<View style={{height: '100%', width: '100%', borderWidth: 1, borderOpacity: 0.1,borderBottomWidth: 0,}}>
     {/* <Text>{item?.product?.title || item.flock}</Text> */}
     <NewVideoPage navigation={navigation} data={item} index={finalAr.indexOf(item)} currIndex={finalAr.indexOf(item)} viewHeight={viewHeight} />
     </View>);

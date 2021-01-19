@@ -223,8 +223,9 @@ useEffect(()=>{
               <View style={{alignItems: 'center'}}>
               {renderIcons()}
               
-          <ResizeableImage source={{uri: data?.poster || data?.product?.image || ''}} limitHorizontal={false} hLimit={viewHeight * percentage/100} />
-          <ConditionalVideo index={index} data={data} viewHeight={viewHeight * percentage/100} />
+          {/* <ResizeableImage source={{uri: data?.poster || data?.product?.image || ''}} limitHorizontal={false} hLimit={viewHeight * percentage/100} /> */}
+          <ResizeableImage source={{uri: data?.product?.image || ''}} limitHorizontal={false} hLimit={viewHeight * percentage/100} />
+          {/* <ConditionalVideo index={index} data={data} viewHeight={viewHeight * percentage/100} /> */}
           {(select.videopage.carIndex==index && select.videopage.leave==false)?<ScrollCount data={flockCountdowns} />:<></>}
           </View>
           <TouchableOpacity onPress={()=>{
@@ -281,8 +282,8 @@ useEffect(()=>{
 const ConditionalVideo = ({index, data, viewHeight}) => {
     const select = useSelector(state=>state);
     if (data?.video && (index == select.videopage.carIndex) && select.videopage.leave===false) {
-        return <View style={{position: 'absolute', top:0}}>
-        <ResizeableVideo data={data} horizontalLimit = {false} hLimit = {viewHeight}/>
+        return <View style={{position: 'absolute', top:0, right: 0}}>
+        <ResizeableVideo data={data} horizontalLimit = {false} hLimit={150}/>
         </View>
     } else {
         return <></>;
