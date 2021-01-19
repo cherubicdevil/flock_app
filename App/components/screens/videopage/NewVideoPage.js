@@ -117,6 +117,7 @@ const NewVideoPage = ({navigation, array, index, data, currIndex, viewHeight}) =
 
 //   return <Text>hi</Text>
 
+const comments = [{user: {name: 'Hellowrld'}, content: "this is a message", time: 1234, replies: []}, ];
 
 useEffect(()=>{
     if (dataType === "product" || dataType === "video") {
@@ -193,7 +194,7 @@ useEffect(()=>{
         }}>
         <View
           style={{
-            position: 'absolute',
+            //position: 'absolute',
             width: '100%',
             //justifyContent: 'center',
             zIndex: -10,
@@ -228,11 +229,12 @@ useEffect(()=>{
         <View pointerEvents="none">
 
           {renderProduct(navigation, data)}
+          <View style={{}} ><Text>{comments[0].content}</Text></View>
         </View>
         {/* {renderClose(navigation)} */}
         
         
-        <CircleProfile
+        {/* <CircleProfile
         photoUrl={constants.PLACEHOLDER_IMAGE}
         style={{
           resizeMode: 'contain',
@@ -244,7 +246,7 @@ useEffect(()=>{
           paddingLeft: 5,
           paddingRight: 5,
         }}
-      />
+      /> */}
         
         <CommentsModal
           data={data}
@@ -253,6 +255,8 @@ useEffect(()=>{
           }}
           modalVisible={modalVisible}
         />
+
+        
       </View>
     );
   };
