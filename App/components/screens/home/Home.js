@@ -446,10 +446,13 @@ const TopBar = ({descriptors, state, navigation}) => {
   const totalWidth = Dimensions.get("window").width;
   const tabWidth = totalWidth / state.routes.length;
   const [left, setLeft] = useState(new Animated.Value(0));
+  const tabScale = new Animated.Value(1);
   var color = left.interpolate({
     inputRange: [0, tabWidth, tabWidth*2, tabWidth*3],
     outputRange: [constants.PURPLE, constants.ORANGE, constants.RED, constants.GREY]
 });
+
+  const tabColors = [constants.PURPLE, constants.ORANGE, constants.RED, constants.GREY];
   console.log('route', state.routes);
   return (
     <LinearGradient
@@ -473,19 +476,29 @@ const TopBar = ({descriptors, state, navigation}) => {
         const isFocused = state.index === index;
 
         const onPress = () => {
-          const event = navigation.emit({
-            type: "tabPress",
-            target: route.key,
-            canPreventDefault: true,
-          });
-          Animated.timing(left, {
+
+          const slide = Animated.spring(left, {
             toValue: index * tabWidth,
             velocity: 10,
             useNativeDriver: true,
-          }).start();
+          });
+          const shrink = Animated.timing(tabScale, {
+            toValue: 0.2,
+            duration: 1000,
+            useNativeDriver: false,
+          });
+          const grow = Animated.timing(tabScale, {
+            toValue: 1,
+            duration: 1000,
+            useNativeDriver: false,
+          });
+          const shrinkgrow = Animated.sequence([shrink, grow]);
+          // Animated.parallel([slide, shrinkgrow]).start();
+          slide.start();
+          navigation.navigate(route.name);
         }
 
-          return <TouchableOpacity activeOpacity={1} style={{flex: 1,marginLeft: 10, marginRight: 10,}} onPress={onPress}>
+          return <TouchableOpacity activeOpacity={1} style={{flex: 1,marginLeft: 10, marginRight: 10}} onPress={onPress}>
           {/* <LinearGradient 
           colors={[constants.TRANSLUCENT, 'white']}
           style={{width: '100%', height: 50,  
@@ -493,21 +506,21 @@ const TopBar = ({descriptors, state, navigation}) => {
             <Text>{route.name}</Text>
             </LinearGradient> */}
                       <View
-          style={{width: '100%', height: 50,  backgroundColor: 'rgba(255,255,255,0)',
-          padding: 10, borderRadius: 30, borderWidth: 1,justifyContent: 'center', alignItems: 'center'}}>
+          style={{width: '100%', height: 50,  backgroundColor: tabColors[index], borderColor: isFocused?constants.ORANGE:'grey',
+          padding: 10, borderRadius: 30, borderWidth: 3,justifyContent: 'center', alignItems: 'center'}}>
             <Text>{route.name}</Text>
             </View>
             </TouchableOpacity>
 
       })}
-      <Animated.View style={{alignSelf: 'center',height: 50, position: 'absolute',  width: tabWidth - 20,
-      borderRadius: 40, zIndex: -10, left: 10,
-    transform: [{ translateX: left }],
+      <Animated.View style={{alignSelf: 'center',height: 25, position: 'absolute',  width: tabWidth - 50,
+      borderRadius: 40, zIndex: -10, left: 30, backgroundColor: 'blue',
+    transform: [{scale: tabScale },{ translateX: left}, ],
      }} >
-      <LinearGradient 
+      {/* <LinearGradient 
           colors={[constants.PURPLE, 'white']}
           style={{width: '100%', height: '100%',   borderRadius: 40,
-          }} />
+          }} /> */}
      </Animated.View>
     </LinearGradient>
   );
