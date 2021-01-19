@@ -507,7 +507,8 @@ const TopBar = ({descriptors, state, navigation}) => {
             </LinearGradient> */}
                       <View
           style={{width: '100%', height: 50,  backgroundColor: tabColors[index], borderColor: isFocused?constants.ORANGE:'grey',
-          padding: 10, borderRadius: 30, borderWidth: 3,justifyContent: 'center', alignItems: 'center'}}>
+          shadowOpacity: isFocused?0.6:0, shadowColor: constants.PURPLE, shadowRadius: 10,
+          padding: 10, borderRadius: 30, justifyContent: 'center', alignItems: 'center'}}>
             <Text>{route.name}</Text>
             </View>
             </TouchableOpacity>
