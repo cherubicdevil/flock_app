@@ -33,7 +33,7 @@ const SearchPage = ({navigation}) => {
         />
             {results.map((item)=> {
         return <View style={{height: 100, width: '100%'}}>
-            <TouchableOpacity onPress={()=>{navigation.navigate('Product',{album: item.product})}}>
+            <TouchableOpacity style={{flexDirection: 'row'}} onPress={()=>{navigation.navigate('Product',{album: item.product})}}>
             <Image source = {{uri: item.product.image}} style={{width: 70, height: 70}} />
             <View>
                 <Text>
