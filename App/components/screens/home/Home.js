@@ -122,6 +122,7 @@ const DataList = ({navigation, route}) => {
   >
     <View style={{backgroundColor: 'black', width: '100%', resizeMode: 'contain'}} >
       <ResizeableImage source = {{uri: al?.product?.image}} wLimit = {Dimensions.get('window').width/2 - 30} />
+    {/* <Image defaultSource={require('App/Assets/Images/flock_logo_white.png')} style={{width: 50, height: 50,}} source = {{uri: al?.product?.image}} /> */}
     </View>
     </TouchableOpacity>}} 
     /></View>;

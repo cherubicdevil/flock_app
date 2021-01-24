@@ -2,11 +2,12 @@ import React, {useState} from 'react';
 import {Image, Dimensions} from 'react-native';
 
 const ResizeableImage = ({source, limitHorizontal=true, hLimit, wLimit}) => {
-  const [width, setWidth] = useState(0);
-  const [height, setHeight] = useState(0);
+  const [width, setWidth] = useState(100);
+  const [height, setHeight] = useState(100);
 
   const maxWidth = wLimit || Dimensions.get('window').width;
   const maxHeight = hLimit || Dimensions.get('window').height;
+  if (source?.uri !== undefined && source?.uri !== null ) {
   Image.getSize(source.uri, (w, h) => {
     if (limitHorizontal) {
     const ratio = maxWidth / w;
@@ -18,12 +19,12 @@ const ResizeableImage = ({source, limitHorizontal=true, hLimit, wLimit}) => {
       setHeight(maxHeight);
     }
   });
-  if (source == null) {
-    source = {uri:''};
-  }
+}
+
   return (
     <Image
-      source={(source?.uri === '' || source?.uri == undefined)?require('App/Assets/Images/flock_logo_white.png'):source}
+    defaultSource={require('App/Assets/Images/flock_logo_white.png')}
+      source={{uri: source.uri}}
       style={{
         //position: 'absolute',
         zIndex: -10,
