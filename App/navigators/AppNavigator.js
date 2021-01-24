@@ -4,7 +4,7 @@ import {View, Text, Image, TouchableOpacity} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-
+import SearchPage from 'App/components/screens/SearchPage';
 import Carousel from 'App/components/screens/videopage/Carousel';
 import Home from 'App/components/screens/home/Home';
 import CamNavigator from './CamNavigator';
@@ -45,9 +45,9 @@ const AppNavigator5 = () => {
         }}>
         <Tab.Screen
           name="Carousel"
-          component={Carousel}
+          component={Home}
           options={{
-            tabBarVisible: false,
+            tabBarVisible: true,
             title: 'Carousel',
             cap: 'play',
             image: require('App/Assets/Images/Play.png'),
@@ -57,7 +57,7 @@ const AppNavigator5 = () => {
         />
         <Tab.Screen
           name="Home"
-          component={Home}
+          component={SearchPage}
           options={{
             title: 'VideoMasonry',
             cap: 'shop',
