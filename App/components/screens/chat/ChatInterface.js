@@ -115,6 +115,20 @@ function ChatInterface({route, navigation}) {
     }
   }
   const [partOf, setPartOf] = useState(part);
+  console.log(route.params.data.maximums, user.uid);
+
+  const priceText = () => {
+    if (part) {
+      return <><Text style={{color:'white', marginBottom: 10, fontWeight: 'bold'}}>You can have it now if all flockers increase maximum to ${(route.params.data.product.price / route.params.data.members.length).toFixed(2)}.</Text>
+      <Text style={{color:'white', marginBottom: 10, fontWeight: 'bold'}}>Your maximum: ${route.params.data.maximums[user.uid]}</Text>
+      <Text style={{color:'white', marginBottom: 10, fontWeight: 'bold'}}>Want to pay less? Get more people to join!</Text></>;
+
+    } else {
+      return <><Text style={{color:'white', marginBottom: 10, fontWeight: 'bold'}}>You can have it now if you join for ${(route.params.data.product.price / (route.params.data.members.length+1)).toFixed(2)}.</Text>
+      <Text style={{color:'white', marginBottom: 10, fontWeight: 'bold'}}>Want to pay less? Get more people to join!</Text>
+      </>;
+    }
+  }
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
       
@@ -137,19 +151,20 @@ function ChatInterface({route, navigation}) {
             <View style={{width: '80%', alignSelf: 'center'}}>
             <Text style={{color:'white', marginBottom: 10, fontWeight: 'bold'}}>Current flock price: ${route.params.data?.product?.price || ""}</Text>
             {/* <Text style={{color:'white', marginBottom: 10, fontWeight: 'bold'}}>Total price: ${route.params.data?.product?.price || ""}</Text> */}
-            <Text style={{color:'white', marginBottom: 10, fontWeight: 'bold'}}>You can have it now if all flockers increase maximum to $150.</Text>
-            <Text style={{color:'white', marginBottom: 10, fontWeight: 'bold'}}>Your maximum: </Text>
-            <Text style={{color:'white', marginBottom: 10, fontWeight: 'bold'}}>Want to pay less? Get more people to join!</Text>
+            {priceText()}
             </View>
-            <View style={{padding: 20, marginBottom: 15, paddingLeft: 30, borderRadius: 50, shadowRadius: 2.62, backgroundColor: 'white', shadowOpacity: 0.23, shadowOffset:{height: 2,width:0}, elevation: 1}}>
+            <View style={{flexDirection: 'row', padding: 20, marginBottom: 15, paddingLeft: 30, borderRadius: 50, shadowRadius: 2.62, backgroundColor: 'white', shadowOpacity: 0.23, shadowOffset:{height: 2,width:0}, elevation: 1}}>
             <Image style={{width: 50, height: 50}} source={{uri: route.params.data.product.image}} />
+            <Text>{route.params.data.product.title}</Text>
             </View>
           </LinearGradient>
         </View>
+        {route.params.data.product.description?
       <View style={{marginTop: 20, flexDirection: 'row'}}>
         <Image style = {{width: 40, height: 40}} source ={constants.PLACEHOLDER_IMAGE } />
         <View style={{borderRadius: 30, flex: 1, backgroundColor: constants.GREYBLUE, padding: 20, marginRight: 20, shadowColor: constants.GREYBLUE, shadowOffset: {height: 10, width: 0}, shadowOpacity: 0.82, elevation: 13, shadowRadius: 18.30,}}><Text>Description Hello world</Text></View>
-      </View>
+      </View>:<></>
+}
       </View>
       
       <View style={{backgroundColor: constants.PINK_BACKGROUND, flex: 1}}>
