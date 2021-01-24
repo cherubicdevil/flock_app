@@ -16,11 +16,17 @@ const CamNavigator = ({route}) => {
       screenOptions={{
         headerShown: false,
       }}>
-      <Stack.Screen
+      {/* <Stack.Screen
         name="Add Video"
         component={CamScreenNew}
-        options={{animationEnabled: false}}
+<<<<<<< HEAD
+        initialParams={{data: route.params.data}}
+        options={{animationEnabled: true}}
       />
+=======
+        options={{animationEnabled: false}}
+      /> */}
+>>>>>>> algolia
       <Stack.Screen
         name="Search Product"
         component={CamScreenTwo}
