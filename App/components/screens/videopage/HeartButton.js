@@ -1,11 +1,13 @@
 import React, {useState, useEffect} from 'react';
 import {View, Text, TouchableOpacity, Image} from 'react-native';
-import {useSelector} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 import {constants} from 'App/constants';
 
 const ICON_SIZE = 37;
 
 const HeartIcon = ({data}) => {
+  const dispatch = useDispatch();
+  var likes = data.likes || 0;
     const selector = useSelector((state) => state);
     //var liked = selector.userInfo.likedVideos.includes(data);
     var liked = selector.userInfo.likedVideos.some(
