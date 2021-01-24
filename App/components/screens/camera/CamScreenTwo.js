@@ -47,6 +47,7 @@ const CamScreenTwo = ({navigation, route}) => {
   const [titleState, setTitleState] = useState(null);
   const [descState, setDescState] = useState(null);
   const [priceState, setPriceState] = useState(null);
+  var dataUrl = "";
   const [enlarge, setEnlarge] = useState(false);
   const animation = useRef(new Animated.Value(90));
   //var searchUrl = '';
@@ -213,6 +214,7 @@ const CamScreenTwo = ({navigation, route}) => {
               price: priceState || "",
               title: titleState || "",
               image: imageState || "",
+              url: dataUrl || "",
             };
           }}
           closeFunc={()=>{
@@ -220,6 +222,7 @@ const CamScreenTwo = ({navigation, route}) => {
               price: priceState || "",
               title: titleState || "",
               image: imageState || "",
+              url: dataUrl || "",
             };
             console.log('closing');
             console.log(route.params.data);
@@ -390,6 +393,7 @@ const CamScreenTwo = ({navigation, route}) => {
                       .then((data) => {
                         setTitleState(data.title);
                         setPriceState(data.price);
+                        dataUrl = data.url;
                         var ar = data.image.split('//');
 
                         setImageState('https://' + ar[ar.length - 1]);

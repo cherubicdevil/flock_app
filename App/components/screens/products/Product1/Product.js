@@ -173,7 +173,7 @@ class Product extends Component {
           repeat={true}
           muted={true}
           source={{
-            uri: this.props.route.params.video.video,
+            uri: this.props.route.params.video?.video || "",
           }}
           style={{
             height: 150,

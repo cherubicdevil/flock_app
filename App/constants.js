@@ -62,4 +62,6 @@ export const constants = {
   GREYBLUE: '#8291b0',
   CHAT_ENDPOINT: 'https://enigmatic-bastion-86695.herokuapp.com/',
   PAY_ENDPOINT: 'https://protected-thicket-47492.herokuapp.com/', // ?price=&token=
+  ALGOLIA_SEARCH: '3a59c3ff5dd5ec3b1fc14e11a2044115',
+  ALGOLIA_ID: 'QDYS7569GL'
 };
