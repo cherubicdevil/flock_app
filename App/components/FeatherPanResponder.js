@@ -56,7 +56,7 @@ const FeatherList = ({navigation, route, data=data, viewHeight}) => {
     }
 
     return <View 
-        style={{alignItems: 'center', height: '100%', width: '100%', backgroundColor: constants.PINK_BACKGROUND}}>
+        style={{alignItems: 'center', height: '100%', width: '100%', backgroundColor: constants.PINK_BACKGROUND_OPAQUE}}>
             {data.map((item)=> <FeatherPanResponder viewHeight={viewHeight} index = {data.indexOf(item)} currIndex = {currentIndex} setCurrentIndex={setCurrentIndex} positions = {positions} content={item} />)}
     </View>
 
