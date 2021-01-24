@@ -1,7 +1,8 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, } from 'react';
 import {View, Text, TouchableOpacity, Image} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {constants} from 'App/constants';
+import { useFocusEffect } from '@react-navigation/native';
 
 const ICON_SIZE = 37;
 
@@ -14,7 +15,7 @@ const HeartIcon = ({data}) => {
       (item) => item.title === data.title,
     );
     const [heartColor, setHeartColor] = useState(liked);
-    useEffect(() => {
+    useFocusEffect(() => {
       var original = liked;
       // dataRef = firebase
       //   .database()
