@@ -47,7 +47,7 @@ const CamScreenNew = ({navigation, route}) => {
     }, []),
   );
     // route.params.data['hello1'] ='one';
-    // console.log("WHY UNDEFINED", route.params.data);
+    console.log(route.params.data);
   return (
     <View>
       <ProgressHeader
@@ -57,11 +57,11 @@ const CamScreenNew = ({navigation, route}) => {
         index={0}
         number={3}
         navigation={navigation}
-        data={route.params.data}
+        // data={route.params.data}
         data={{}}
         canGoNext={true}
         nextFunc={() => {
-          route.params.data.video = pic.uri || "";
+          // route.params.data.video = pic.uri || "";
         }}
       />
 
