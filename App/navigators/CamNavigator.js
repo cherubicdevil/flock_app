@@ -19,6 +19,7 @@ const CamNavigator = ({route}) => {
       <Stack.Screen
         name="Add Video"
         component={CamScreenNew}
+        initialParams={{data: route.params.data}}
         options={{animationEnabled: false}}
       />
       <Stack.Screen
