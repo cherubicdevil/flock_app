@@ -45,10 +45,10 @@ so there is no chance that the data will be out of sync.
 
 
 const ProfilePicture = () => {
-
+  const user = auth.currentUser;
   const [avatar, setAvatar] = useState({
     //user.photoUrl,
-    uri: '',
+    uri: user.photoURL || '',
   });
 
   //ImagePicker.launchImageLibrary(options, getResponse);
@@ -62,6 +62,7 @@ const ProfilePicture = () => {
         borderRadius: 60,
       }}>
       <Image
+      defaultSource={constants.PLACEHOLDER_IMAGE}
         style={{width: 120, height: 120, borderRadius: 60}}
         source={avatar}
       />
@@ -71,9 +72,9 @@ const ProfilePicture = () => {
 const ProfileMain = ({navigation}) => {
   const userInfo = {
     username: auth.currentUser.displayName,
-    bio: 'Hi I like pie. I also like pi. I am a user of flock, a flocker.',
-    age: '20',
-    gender: 'Male',
+    bio: auth.currentUser.bio,
+    // age: '20',
+    // gender: 'Male',
   };
   const selector = useSelector((state) => state);
   //const user = firebase.auth().currentUser;

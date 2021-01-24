@@ -177,7 +177,7 @@ const AppNavigator5 = () => {
         />
         <Tab.Screen
           name="Egg"
-          component={Egg}
+          component={ProfileMain}
           options={{
             title: 'Egg',
             cap: 'save',
