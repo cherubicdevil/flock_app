@@ -19,7 +19,28 @@ import {
 import {constants} from 'App/constants';
 import ProgressHeader from 'App/components/ProgressHeader';
 
-const CamScreenTwo = ({navigation}) => {
+const CamScreenTwo = ({navigation, route}) => {
+  route.params.data['hello2'] ='twp';
+  const [fade, setFade] = useState(new Animated.Value(1));
+
+  const startAnimation = () => {
+    Animated.timing(fade, {
+      useNativeDriver: false,
+      toValue: 1,
+      delay: 0,
+      duration: 700,
+    }).start();
+  };
+
+  const resetAnimation = () => {
+    Animated.timing(fade, {
+      useNativeDriver: false,
+      toValue: 0,
+      delay: 0,
+      duration: 500,
+    }).start();
+  };
+
   const [foundProduct, setFoundProduct] = useState(true);
   const [titleState, setTitleState] = useState(null);
   const [descState, setDescState] = useState(null);
@@ -30,14 +51,6 @@ const CamScreenTwo = ({navigation}) => {
   const [imageState, setImageState] = useState(null);
   const [searchUrl, setSearchUrl] = useState('https://www.shopwithflock.com');
   const [urlState, setUrlState] = useState('https://www.shopwithflock.com');
-  const startAnimation = () => {
-    Animated.timing(animation.current, {
-      useNativeDriver: false,
-      toValue: 95,
-      delay: 0,
-      duration: 500,
-    }).start();
-  };
 
   const renderForm = () => {
     //console.log('foundProduct:', foundProduct);
@@ -157,6 +170,8 @@ const CamScreenTwo = ({navigation}) => {
       return <View />;
     }
   };
+
+  
   return (
     <KeyboardAvoidingView
       style={{flex: 1}}
@@ -176,6 +191,7 @@ const CamScreenTwo = ({navigation}) => {
             style={{height: '100%', width: '100%'}}
             onPress={() => {
               setEnlarge(false);
+              resetAnimation();
               Keyboard.dismiss();
             }}
           />
@@ -185,8 +201,18 @@ const CamScreenTwo = ({navigation}) => {
           headerText="Find a Product"
           goBack={true}
           nextRoute="Product Options"
-          index={2}
+          number={3}
+          index={1}
+          backRoute="Add Video"
           navigation={navigation}
+          data={route.params.data}
+          nextFunc={()=>{
+            route.params.data.product = {
+              price: priceState || "",
+              title: titleState || "",
+              image: imageState || "",
+            };
+          }}
         />
         <View style={{flex: 1, zIndex: 300}}>
           <View style={{paddingLeft: 20, paddingTop: 10}}>
@@ -195,7 +221,7 @@ const CamScreenTwo = ({navigation}) => {
               Find the product you recommended. Import it below.
             </Text>
           </View>
-          <View
+          <Animated.View
             style={{
               flex: 1,
               //height: '95%',
@@ -205,6 +231,7 @@ const CamScreenTwo = ({navigation}) => {
               backgroundColor: enlarge ? 'white' : constants.BGGREY,
               //opacity: 0,
               //backgroundColor: 'transparent',
+              opacity: fade,
               borderRadius: 20,
               borderBottomLeftRadius: 0,
               borderBottomRightRadius: 0,
@@ -229,6 +256,7 @@ const CamScreenTwo = ({navigation}) => {
                 }}
                 onPress={() => {
                   setEnlarge(false);
+                  resetAnimation();
                   Keyboard.dismiss();
                 }}>
                 <Image
@@ -278,6 +306,7 @@ const CamScreenTwo = ({navigation}) => {
                     styles.textBoxStyle,
 
                     {
+                      opacity: 1,
                       color: constants.LIGHTGREY,
                       backgroundColor: enlarge ? constants.GREY : 'white',
                     },
@@ -285,6 +314,7 @@ const CamScreenTwo = ({navigation}) => {
                   onFocus={() => {
                     console.log('focusing');
                     setEnlarge(true);
+                    startAnimation();
                   }}
                 />
                 <TouchableOpacity
@@ -381,6 +411,7 @@ const CamScreenTwo = ({navigation}) => {
                 marginTop: 5,
                 alignSelf: 'center',
                 width: '100%',
+                
                 height: enlarge ? 1000 : 0,
               }}>
               <WebView
@@ -394,7 +425,7 @@ const CamScreenTwo = ({navigation}) => {
                 source={{uri: urlState}}
               />
             </View>
-          </View>
+          </Animated.View>
           {renderForm()}
         </View>
       </View>

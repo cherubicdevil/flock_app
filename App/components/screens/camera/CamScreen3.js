@@ -10,15 +10,19 @@ import {
 import BubbleInput from 'react-native-bubble-input';
 import {constants} from 'App/constants';
 import ProgressHeader from 'App/components/ProgressHeader';
+import {firebase, db} from 'App/firebase/config';
+
+import { CommonActions } from '@react-navigation/native';
+
 
 const options = [];
 
-const CamScreen3 = ({navigation}) => {
+const CamScreen3 = ({navigation, route}) => {
   const [dummyState, setDummyState] = useState(false);
   // var options = [
   // 	{label: 'test', ref: useRef(null), choices: ['choice1', 'choice2']},
   // ];
-
+  route.params.data['hello3'] ='three';
   const OptionBox = () => {
     const [dummyState, setDummyState] = useState(false);
 
@@ -73,9 +77,33 @@ const CamScreen3 = ({navigation}) => {
       <ProgressHeader
         nextRoute="Home"
         headerText="Product Options"
+        canGoNext={true}
+        number = {3}
         goBack={true}
         navigation={navigation}
-        index={3}
+        index={2}
+        backRoute="Search Product"
+        data={route.params.data}
+        closeFunc={()=>{
+          console.log('closing');
+          console.log(route.params.data);
+          db.collection("posts").add(route.params.data)
+        .then(function(docRef) {
+            console.log("Document written with ID: ", docRef.id);
+        })
+        .catch(function(error) {
+            console.error("Error adding document: ", error);
+        });
+
+        navigation.dispatch(
+          CommonActions.reset({
+            index: 0,
+            routes: [
+              { name: 'Home' },
+            ],
+          })
+        );
+        }}
       />
       <View style={{paddingLeft: 20, paddingRight: 20}}>
         <Text

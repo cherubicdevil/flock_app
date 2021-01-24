@@ -84,8 +84,7 @@ var renderProduct = (navigation, data) => {
   // );
 };
 
-const NewVideoPage = ({navigation, array, index, data, currIndex, viewHeight}) => {
-
+const NewVideoPage = ({navigation, route, array, index, data, currIndex, viewHeight}) => {
     var dataType = "initial";
     if (data.video) {
         dataType = "video";
@@ -279,7 +278,7 @@ useEffect(()=>{
   return <View>{renderVid()}</View>;
 };
 
-const ConditionalVideo = ({index, data, viewHeight}) => {
+const ConditionalVideo = ({index, data, viewHeight, route}) => {
     const select = useSelector(state=>state);
     if (data?.video && (index == select.videopage.carIndex) && select.videopage.leave===false) {
         return <View style={{position: 'absolute', top:0, right: 0}}>
