@@ -163,9 +163,9 @@ const HomeTabSwipe = ({videoData, navigation, route}) => {
         const flock = [];
         querySnapshot.forEach(function(doc) {
           if (doc.data().completed === false) {
-          flock.push(doc.data());
+          flock.push({...doc.data(), id: doc.id});
           } else {
-            rent.push(doc.data());
+            rent.push(doc.data({...doc.data(), id: doc.id}));
           }
         });
         // navigation.dispatch({

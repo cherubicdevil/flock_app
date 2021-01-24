@@ -1,6 +1,7 @@
 import React, {useEffect, useState, useRef} from 'react';
 import {constants} from 'App/constants';
 import Collapsible from 'react-native-collapsible';
+import {useStore} from 'react-redux';
 import {
   Button,
   Image,
@@ -14,7 +15,7 @@ import {
   Modal,
   TouchableWithoutFeedback,
 } from 'react-native';
-import {firebase, db} from 'App/firebase/config';
+import {firebase, db, auth} from 'App/firebase/config';
 import io from 'socket.io-client';
 import NavBar from 'App/components/common/NavBar';
 import {GiftedChat} from 'react-native-gifted-chat';
@@ -45,6 +46,47 @@ const updateCache = (id, messages) => {
 const systemMessages = [];
 
 function ChatInterface({route, navigation}) {
+
+  const completeFunc = () => {
+    const memberInfo = {name: auth.currentUser.displayName, uid: auth.currentUser.uid, max: 50};
+    // check if the flock is completed
+    // make user enter credit card information
+    db.collection('users').doc(auth.currentUser.uid).update({
+      chatIds: firebase.firestore.FieldValue.arrayUnion(route.params.data.id)
+    });
+    const maxi = {};
+    
+    // TODO: change to data maxPrice
+    maxi[firebase.auth().currentUser.uid] = 100;
+    console.log(maxi, "IS THIS WHERE IT GOES WRONG");
+    db.collection('chatGroups').doc(route.params.data.id).update({
+      members: firebase.firestore.FieldValue.arrayUnion(memberInfo),
+      maximums: firebase.firestore.FieldValue.arrayUnion(maxi)
+    });
+    setPartOf(true);
+  dispatch({type: "UPDATE_DATA", payload: ["chatIds", "add", "array", route.params.data.id]});
+  dispatch({type: "UPDATE_DATA", payload: ["chatGroups", "add", "array", route.params.data]});
+    route.params.data.members.push(memberInfo);
+    // send to socket, which pushes a broadcast
+    // test signal, send test, on receive, console log "RECEIVED"
+    // condition
+    // FLOCK_UPDATE
+    if (true) {
+    socket.current.emit('complete', route.params.data.id);
+    db.collection('chatGroups').doc(route.params.data.id).set({
+      completed: true,
+      
+      // rentPrice: ((route.params.data.product.price * .15 + route.params.data.product.price / route.params.data.members.length) / 2).toFixed(2),
+      // FLOCK_UPDATE this should go in the backend so that prices can be adjusted easily
+    });
+    
+    navigation.navigate('FlockChatComplete', {data: route.params.data})
+    }
+    if (route.params.data.members.length > 3) {
+      // send to socket complete signal, which three are complete
+    }
+  };
+  const store = useStore();
   const select = useSelector((state) => state);
   const socket = useRef(null);
   const [recvMessages, setRecvMessages] = useState(route.params.data.messages);
@@ -211,44 +253,15 @@ function ChatInterface({route, navigation}) {
       
       {partOf?<></>:<View style={{position: 'absolute', bottom: 0, width: '100%', height: 100, backgroundColor: 'white'}}><View style={{height: '100%', backgroundColor: constants.PINK_BACKGROUND }}>
         <TouchableOpacity style={{width: '90%', height: 50, backgroundColor: constants.ORANGE, alignSelf: 'center', borderRadius: 30, justifyContent: 'center'}} onPress={()=>{
-          const memberInfo = {name: firebase.auth().currentUser.displayName, uid: firebase.auth().currentUser.uid, max: 50};
-          // check if the flock is completed
-          // make user enter credit card information
-          db.collection('users').doc(firebase.auth().currentUser.uid).update({
-            chatIds: firebase.firestore.FieldValue.arrayUnion(route.params.data.id)
-          });
-          const maxi = {};
-          
-          // TODO: change to data maxPrice
-          maxi[firebase.auth().currentUser.uid] = 100;
-          console.log(maxi, "IS THIS WHERE IT GOES WRONG");
-          db.collection('chatGroups').doc(route.params.data.id).update({
-            members: firebase.firestore.FieldValue.arrayUnion(memberInfo),
-            maximums: firebase.firestore.FieldValue.arrayUnion(maxi)
-          });
-          setPartOf(true);
-        dispatch({type: "UPDATE_DATA", payload: ["chatIds", "add", "array", route.params.data.id]});
-        dispatch({type: "UPDATE_DATA", payload: ["chatGroups", "add", "array", route.params.data]});
-          route.params.data.members.push(memberInfo);
-          // send to socket, which pushes a broadcast
-          // test signal, send test, on receive, console log "RECEIVED"
-          // condition
-          // FLOCK_UPDATE
-          if (true) {
-          socket.current.emit('complete', route.params.data.id);
-          db.collection('chatGroups').doc(route.params.data.id).set({
-            completed: true,
+
+
+          if (true || store.getState().userInfo.customerId) {
+            completeFunc();
+          } else {
             
-            // rentPrice: ((route.params.data.product.price * .15 + route.params.data.product.price / route.params.data.members.length) / 2).toFixed(2),
-            // FLOCK_UPDATE this should go in the backend so that prices can be adjusted easily
-          });
-          
-          navigation.navigate('FlockChatComplete', {data: route.params.data})
-          }
-          if (route.params.data.members.length > 3) {
-            // send to socket complete signal, which three are complete
           }
       }}><Text style={{color: 'white', alignSelf: 'center', fontWeight: 'bold'}}>JOIN</Text></TouchableOpacity></View></View>}
+
     </SafeAreaView>
   );
 }
