@@ -234,7 +234,11 @@ const ProfileMain = ({navigation}) => {
           }}
         />
       </View>
-
+      <ImageBackground
+        source={require('App/Assets/Images/Orange_Gradient_Small.png')}
+        style={{
+          flex: 1,
+        }}>
         <View
           style={{
             flex: 1,
@@ -290,6 +294,7 @@ const ProfileMain = ({navigation}) => {
             </View>
           </View>
         </View>
+      </ImageBackground>
       <View style={{flex: 2}}>
         <Tab.Navigator>
           <Tab.Screen name="flocking" component={Test1} />
