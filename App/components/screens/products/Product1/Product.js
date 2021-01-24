@@ -345,7 +345,7 @@ const FlockList = ({product, navigation}) => {
       querySnapshot.forEach(function(doc) {
         console.log("FOUNDDDDDD");
         if (doc.data().completed === false) {
-        arr.push(doc.data());
+        arr.push({...doc.data(), id:doc.id});
 
           // doc.data() is never undefined for query doc snapshots
           console.log(doc.id, " => ", doc.data());

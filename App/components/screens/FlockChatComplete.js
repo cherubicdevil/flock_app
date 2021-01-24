@@ -135,11 +135,7 @@ function FlockChatComplete({route, navigation}) {
             flex: 1,
           }}>
             <View style={{width: '80%', alignSelf: 'center'}}>
-            <Text style={{color:'white', marginBottom: 10, fontWeight: 'bold'}}>Current flock price: ${route.params.data?.product?.price || ""}</Text>
-            {/* <Text style={{color:'white', marginBottom: 10, fontWeight: 'bold'}}>Total price: ${route.params.data?.product?.price || ""}</Text> */}
-            <Text style={{color:'white', marginBottom: 10, fontWeight: 'bold'}}>You can have it now if all flockers increase maximum to $150.</Text>
-            <Text style={{color:'white', marginBottom: 10, fontWeight: 'bold'}}>Your maximum: </Text>
-            <Text style={{color:'white', marginBottom: 10, fontWeight: 'bold'}}>Want to pay less? Get more people to join!</Text>
+            <Text style={{color:'white', marginBottom: 10, fontWeight: 'bold'}}>This flock has taken off together! Click the blurb below to use your new item!</Text>
             </View>
             <TouchableOpacity onPress={()=>{
               navigation.navigate("FlockReserve", {data: route.params.data});
