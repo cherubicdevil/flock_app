@@ -216,6 +216,11 @@ const CamScreenTwo = ({navigation, route}) => {
             };
           }}
           closeFunc={()=>{
+            route.params.data.product = {
+              price: priceState || "",
+              title: titleState || "",
+              image: imageState || "",
+            };
             console.log('closing');
             console.log(route.params.data);
             db.collection("posts").add(route.params.data)
