@@ -99,11 +99,7 @@ const AddItem = ({image, text, navigation, route}) => {
 <View style={{flex: 1}}>
 <View style={{height: 70, borderRadius: 40, backgroundColor: 'rgba(255,255,255,0.6)', marginLeft: 20, marginRight: 20, justifyContent: 'center'}}><TouchableOpacity onPress={()=>{
   setModalOpen(false);
-<<<<<<< HEAD
-  navigation.navigate('CamScreen', {data: {}});
-=======
   // navigation.navigate('CamScreen');
->>>>>>> algolia
 
   }} style={{height: '100%', width: '100%', justifyContent: 'center'}}><Text style={{alignSelf: 'center', color: constants.PURPLE, fontFamily: constants.FONT, fontSize: 24}}>Cancel</Text></TouchableOpacity></View>
 </View>
