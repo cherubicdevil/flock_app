@@ -19,6 +19,7 @@ import {firebase, db, auth} from 'App/firebase/config';
 import io from 'socket.io-client';
 import NavBar from 'App/components/common/NavBar';
 import {GiftedChat} from 'react-native-gifted-chat';
+import AnimatedModal from 'App/components/AnimatedModal';
 import {
   DrawerContentScrollView,
   DrawerItemList,
@@ -46,6 +47,8 @@ const updateCache = (id, messages) => {
 const systemMessages = [];
 
 function ChatInterface({route, navigation}) {
+
+  const [creditModal, setCreditModal] = useState(false);
 
   const completeFunc = () => {
     const memberInfo = {name: auth.currentUser.displayName, uid: auth.currentUser.uid, max: 50};
@@ -255,13 +258,13 @@ function ChatInterface({route, navigation}) {
         <TouchableOpacity style={{width: '90%', height: 50, backgroundColor: constants.ORANGE, alignSelf: 'center', borderRadius: 30, justifyContent: 'center'}} onPress={()=>{
 
 
-          if (true || store.getState().userInfo.customerId) {
+          if (store.getState().userInfo.customerId) {
             completeFunc();
           } else {
-            
+            setCreditModal(true);
           }
       }}><Text style={{color: 'white', alignSelf: 'center', fontWeight: 'bold'}}>JOIN</Text></TouchableOpacity></View></View>}
-
+    <AnimatedModal visible={creditModal} close={()=>setCreditModal(false)} navigation={navigation} content={<View />} />
     </SafeAreaView>
   );
 }
