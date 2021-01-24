@@ -20,6 +20,7 @@ import io from 'socket.io-client';
 import NavBar from 'App/components/common/NavBar';
 import {GiftedChat} from 'react-native-gifted-chat';
 import AnimatedModal from 'App/components/AnimatedModal';
+import Checkout from 'App/components/Checkout';
 import {
   DrawerContentScrollView,
   DrawerItemList,
@@ -264,7 +265,11 @@ function ChatInterface({route, navigation}) {
             setCreditModal(true);
           }
       }}><Text style={{color: 'white', alignSelf: 'center', fontWeight: 'bold'}}>JOIN</Text></TouchableOpacity></View></View>}
-    <AnimatedModal visible={creditModal} close={()=>setCreditModal(false)} navigation={navigation} content={<View />} />
+    <AnimatedModal visible={creditModal} close={()=>setCreditModal(false)} navigation={navigation} content={<Checkout navigation={navigation} route={route} doneFunc={(token)=> {
+      fetch(constants.CUSTOMER_ENDPOINT + "?token=" + token).then((response)=>response.json().then((res)=> {
+        db.collection('users').doc(auth.currentUser.uid).set({customerId: res.customerId});
+      }));
+      completeFunc();}} price = {0}/>} />
     </SafeAreaView>
   );
 }

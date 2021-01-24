@@ -199,9 +199,9 @@ const ProfileMain = ({navigation}) => {
       querySnapshot.forEach(function(doc) {
         console.log("FOUNDDDDDD");
         if (doc.data().completed === false) {
-        flock.push(doc.data());
+        flock.push({...doc.data(), id: doc.id});
         } else {
-          rent.push(doc.data());
+          rent.push({...doc.data(), id: doc.id});
         }
       });
       setFlockData(flock);
@@ -270,6 +270,7 @@ const ProfileMain = ({navigation}) => {
                     fontFamily: 'Nunito',
                   }}>
                   {userInfo.username}
+                  {auth.currentUser.uid}
                 </Text>
                 <Text
                   style={{

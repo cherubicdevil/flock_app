@@ -295,6 +295,7 @@ const ResizeableImage = ({source, limitHorizontal=true, hLimit, wLimit}) => {
 
   const maxWidth = wLimit || Dimensions.get('window').width;
   const maxHeight = hLimit || Dimensions.get('window').height;
+  if (source?.uri) {
   Image.getSize(source.uri, (w, h) => {
     if (limitHorizontal) {
     const ratio = maxWidth / w;
@@ -306,6 +307,7 @@ const ResizeableImage = ({source, limitHorizontal=true, hLimit, wLimit}) => {
       setHeight(maxHeight);
     }
   });
+}
   if (source == null) {
     source = {uri:''};
   }
