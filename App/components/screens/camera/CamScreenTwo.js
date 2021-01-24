@@ -18,6 +18,8 @@ import {
 } from 'react-native';
 import {constants} from 'App/constants';
 import ProgressHeader from 'App/components/ProgressHeader';
+import {firebase, db} from 'App/firebase/config';
+import { CommonActions } from '@react-navigation/native';
 
 const CamScreenTwo = ({navigation, route}) => {
   route.params.data['hello2'] ='twp';
@@ -201,8 +203,8 @@ const CamScreenTwo = ({navigation, route}) => {
           headerText="Find a Product"
           goBack={true}
           nextRoute="Product Options"
-          number={3}
-          index={1}
+          number={1}
+          index={0}
           backRoute="Add Video"
           navigation={navigation}
           data={route.params.data}
@@ -212,6 +214,26 @@ const CamScreenTwo = ({navigation, route}) => {
               title: titleState || "",
               image: imageState || "",
             };
+          }}
+          closeFunc={()=>{
+            console.log('closing');
+            console.log(route.params.data);
+            db.collection("posts").add(route.params.data)
+          .then(function(docRef) {
+              console.log("Document written with ID: ", docRef.id);
+          })
+          .catch(function(error) {
+              console.error("Error adding document: ", error);
+          });
+  
+          navigation.dispatch(
+            CommonActions.reset({
+              index: 0,
+              routes: [
+                { name: 'Home' },
+              ],
+            })
+          );
           }}
         />
         <View style={{flex: 1, zIndex: 300}}>
