@@ -18,7 +18,7 @@ const CustomBar = ({descriptors, state, navigation}) => {
         if (options.title === undefined) {
           return null;
         }
-        if (false && options.title === 'CamScreen') {
+        if (options.title === 'CamScreen') {
           return (
             <AddItem
               image={options.image}
