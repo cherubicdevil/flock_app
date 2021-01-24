@@ -268,8 +268,9 @@ function ChatInterface({route, navigation}) {
       }}><Text style={{color: 'white', alignSelf: 'center', fontWeight: 'bold'}}>JOIN</Text></TouchableOpacity></View></View>}
     <AnimatedModal visible={creditModal} close={()=>setCreditModal(false)} navigation={navigation} content={<Checkout navigation={navigation} route={route} doneFunc={(token)=> {
       fetch(constants.CUSTOMER_ENDPOINT + "?token=" + token).then((response)=>response.json().then((res)=> {
-        console.log(res.customerId, "customerid");
-        db.collection('users').doc(auth.currentUser.uid).update({customerId: res.customerId});
+        console.log(res.id, "customerid");
+        dispatch({type: "UPDATE_DATA", payload: {membertype: 'customerId',data: res.id}})
+        db.collection('users').doc(auth.currentUser.uid).update({customerId: res.id});
         completeFunc();
         setCreditModal(false);
       }).catch((err)=>{
