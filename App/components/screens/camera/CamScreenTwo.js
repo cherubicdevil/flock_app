@@ -185,7 +185,7 @@ const CamScreenTwo = ({navigation}) => {
           headerText="Find a Product"
           goBack={true}
           nextRoute="Product Options"
-          index={2}
+          index={1}
           navigation={navigation}
         />
         <View style={{flex: 1, zIndex: 300}}>

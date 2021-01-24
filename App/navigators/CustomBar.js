@@ -18,7 +18,7 @@ const CustomBar = ({descriptors, state, navigation}) => {
         if (options.title === undefined) {
           return null;
         }
-        if (options.title === 'CamScreen') {
+        if (false && options.title === 'CamScreen') {
           return (
             <AddItem
               image={options.image}
@@ -91,17 +91,21 @@ const AddItem = ({image, text, navigation, route}) => {
   setModalOpen(false);
   navigation.navigate('CamScreen');
 
-  }} style={{height: '100%', width: '100%'}}></TouchableOpacity></View></View>
+  }} style={{height: '100%', width: '100%', justifyContent: 'center'}}>
+    <Text style={{alignSelf: 'center', color: constants.PURPLE, fontFamily: constants.FONT, fontSize: 24}}>
+      Add Product to Flock
+    </Text>
+    </TouchableOpacity></View></View>
 <View style={{flex: 1}}>
-<View style={{height: 70, borderRadius: 40, backgroundColor: 'white', marginLeft: 20, marginRight: 20}}><TouchableOpacity onPress={()=>{
+<View style={{height: 70, borderRadius: 40, backgroundColor: 'rgba(255,255,255,0.6)', marginLeft: 20, marginRight: 20, justifyContent: 'center'}}><TouchableOpacity onPress={()=>{
   setModalOpen(false);
-  navigation.navigate('CamScreen');
+  // navigation.navigate('CamScreen');
 
-  }} style={{height: '100%', width: '100%'}}></TouchableOpacity></View>
+  }} style={{height: '100%', width: '100%', justifyContent: 'center'}}><Text style={{alignSelf: 'center', color: constants.PURPLE, fontFamily: constants.FONT, fontSize: 24}}>Cancel</Text></TouchableOpacity></View>
 </View>
       </View>} viewParams={{width:1500, height: 1500, left: -300, bottom: -200}} bgcolor="transparent" upPercent="25%"/>
       <TouchableOpacity
-        style={{flex: 1}}
+        // style={{flex: 1}}
         onPress={() => {
           setModalOpen(true);
           console.log('middle');
@@ -120,10 +124,12 @@ const InItem = ({image, text, focused}) => {
         source={image}
         style={{
           height: '100%',
-          width: null,
+          width: 50,
           marginTop: -5,
           resizeMode: 'contain',
           tintColor: focused ? constants.PURPLE : constants.ICONGREY,
+          backgroundColor: 'black',
+          borderWidth: 2,
         }}
       />
       <Text
@@ -145,7 +151,8 @@ const NavItem = ({image, text, focused, navigation, route}) => {
           navigation.navigate(route.name);
         }
       }}
-      style={{flex: 1}}>
+      style={{flex: 1}}
+      >
       <InItem image={image} text={text} focused={focused} />
     </TouchableOpacity>
   );
@@ -170,7 +177,7 @@ const styles = {
     width: '90%',
     height: constants.NAVBARHEIGHT,
     flexDirection: 'row',
-    justifyContent: 'space-around',
+    // justifyContent: 'center',
     position: 'absolute',
     bottom: 40,
     zIndex: 100,

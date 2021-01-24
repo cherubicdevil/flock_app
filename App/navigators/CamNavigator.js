@@ -13,11 +13,11 @@ const CamNavigator = () => {
       screenOptions={{
         headerShown: false,
       }}>
-      <Stack.Screen
+      {/* <Stack.Screen
         name="Add Video"
         component={CamScreenNew}
         options={{animationEnabled: false}}
-      />
+      /> */}
       <Stack.Screen
         name="Search Product"
         component={CamScreenTwo}
