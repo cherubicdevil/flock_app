@@ -175,6 +175,7 @@ function ChatInterface({route, navigation}) {
       </>;
     }
   }
+  console.log("PARTOF?", partOf, part);
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
       
@@ -255,11 +256,11 @@ function ChatInterface({route, navigation}) {
         user={{_id: 1}}
       /></View>
       
-      {partOf?<></>:<View style={{position: 'absolute', bottom: 0, width: '100%', height: 100, backgroundColor: 'white'}}><View style={{height: '100%', backgroundColor: constants.PINK_BACKGROUND }}>
+      {part?<></>:<View style={{position: 'absolute', bottom: 0, width: '100%', height: 100, backgroundColor: 'white'}}><View style={{height: '100%', backgroundColor: constants.PINK_BACKGROUND }}>
         <TouchableOpacity style={{width: '90%', height: 50, backgroundColor: constants.ORANGE, alignSelf: 'center', borderRadius: 30, justifyContent: 'center'}} onPress={()=>{
 
 
-          if (store.getState().userInfo.customerId) {
+          if (store.getState().userInfo.customerId !== "none") {
             completeFunc();
           } else {
             setCreditModal(true);
@@ -267,9 +268,16 @@ function ChatInterface({route, navigation}) {
       }}><Text style={{color: 'white', alignSelf: 'center', fontWeight: 'bold'}}>JOIN</Text></TouchableOpacity></View></View>}
     <AnimatedModal visible={creditModal} close={()=>setCreditModal(false)} navigation={navigation} content={<Checkout navigation={navigation} route={route} doneFunc={(token)=> {
       fetch(constants.CUSTOMER_ENDPOINT + "?token=" + token).then((response)=>response.json().then((res)=> {
-        db.collection('users').doc(auth.currentUser.uid).set({customerId: res.customerId});
+        console.log(res.customerId, "customerid");
+        db.collection('users').doc(auth.currentUser.uid).update({customerId: res.customerId});
+        completeFunc();
+        setCreditModal(false);
+      }).catch((err)=>{
+        console.log(err);
       }));
-      completeFunc();}} price = {0}/>} />
+      
+      
+      }} price = {0}/>} />
     </SafeAreaView>
   );
 }

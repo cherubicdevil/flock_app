@@ -56,7 +56,7 @@ const Checkout = ({navigation, route,
             <Button title = "done" onPress={async ()=>{
                 if (valid) {
                 const token = await stripe.createTokenWithCard(info);
-                doneFunc(token);
+                doneFunc(token.tokenId);
                 }
             }}/>
     </SafeAreaView>
