@@ -69,6 +69,7 @@
 	<string></string>
 	<key>UIAppFonts</key>
 	<array>
+		<string>FontAwesome.ttf</string>
 		<string>Nunito-Light.ttf</string>
 		<string>Nunito-Bold.ttf</string>
 	</array>

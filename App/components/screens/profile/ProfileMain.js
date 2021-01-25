@@ -25,6 +25,7 @@ import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs
 import {getIndexOfData} from '../../../utils';
 import ResizeableImage from 'App/components/ResizeableImage';
 import AnimatedModal from 'App/components/AnimatedModal';
+import Icon from 'react-native-vector-icons/FontAwesome';
 //import Base64 from 'base-64';
 
 // global.atob = Base64.encode;
@@ -271,7 +272,9 @@ const ProfileMain = ({navigation}) => {
                   }}>
                   {userInfo.username}
                 </Text>
-                <Button title="expand" onPress={()=>{setModalOpen(true)}} />
+                <TouchableOpacity onPress={()=>{setModalOpen(true)}} >
+                <Icon name="chevron-down" size={15} color="#300" />
+                </TouchableOpacity>
                 <Text
                   style={{
                     marginRight: 10,
