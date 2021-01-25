@@ -56,7 +56,9 @@ const EggItem = ({image, text}) => {
   <InItem image={image} text={text} />
   </TouchableOpacity>
 <AnimatedModal upPercent="30%" bgcolor="#FFD700" visible={eggModalOpen} fade={false} close={()=>{setEggModalOpen(false)}} content={<View style={{height: 40}}>
+  <View style={{borderWidth: 1, borderColor: 'yellow', width: '60%', alignSelf: 'center', padding: 10, justifyContent: 'center', alignItems: 'center'}}>
   <Text style={{color: 'white', alignSelf: 'center'}}>You've got this many eggs.{select.userInfo.eggCoins}</Text>
+  </View>
   <Button title="spend" onPress={()=>{
     dispatch({type:'spendEggs', payload: 50});
 }} />
