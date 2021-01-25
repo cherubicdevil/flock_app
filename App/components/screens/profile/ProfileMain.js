@@ -219,7 +219,7 @@ const ProfileMain = ({navigation}) => {
   console.log("MY USERNAME IS:", auth.currentUser.displayName);
   return (
     <Fragment><SafeAreaView style={{ flex: 0, backgroundColor: constants.TRANSLUCENT }} /><SafeAreaView style={{flex: 1, backgroundColor: constants.PINK_BACKGROUND}}>
-      <AnimatedModal upPercent="35%" visible={modalOpen} close={()=>setModalOpen(false)} content={<View>
+      <AnimatedModal fade={false} upPercent="35%" visible={modalOpen} close={()=>setModalOpen(false)} content={<View>
         <Button
           title="Edit Profile"
           onPress={() => {
@@ -236,13 +236,13 @@ const ProfileMain = ({navigation}) => {
       </View>}/>
       <View style={{height: 50, backgroundColor: constants.TRANSLUCENT}}>
       <View style={{position: 'absolute', left: 10, top: 0, zIndex: 400}}>
-        <Button
-          title="back"
+        <TouchableOpacity
           onPress={() => {
             navigation.goBack();
           }}
-        />
-
+        >
+        <Icon name="chevron-left" size={40} color="#999" />
+</TouchableOpacity>
         </View>
         <Text style={{alignSelf: 'center'}}>Profile</Text>
       </View>
@@ -263,7 +263,9 @@ const ProfileMain = ({navigation}) => {
           <View style={{flexDirection: 'row'}}>
             <ProfilePicture />
             <View style={{flex: 1, marginLeft: 10}}>
-              <View style={{flexDirection: 'row'}}>
+              <View style={{flexDirection: 'row',}}>
+              <TouchableOpacity onPress={()=>{setModalOpen(true)}} >
+                <View style={{backgroundColor:'rgba(0,0,0,0.1)', padding: 5, borderRadius:40, flexDirection:'row'}}>
                 <Text
                   style={{
                     marginRight: 10,
@@ -272,8 +274,11 @@ const ProfileMain = ({navigation}) => {
                   }}>
                   {userInfo.username}
                 </Text>
-                <TouchableOpacity onPress={()=>{setModalOpen(true)}} >
+                
+                
                 <Icon name="chevron-down" size={15} color="#300" />
+                
+                </View>
                 </TouchableOpacity>
                 <Text
                   style={{
