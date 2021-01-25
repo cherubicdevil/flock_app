@@ -98,6 +98,11 @@ const handleDayPress = (day) => {
       // db.collection("chatGroups").doc(route.params.data.id).update({'markedDates': {...othersMarkedDates, ...myMarkedDates}});
       navigation.navigate('Checkout', {doneFunc: ()=> {
         db.collection("chatGroups").doc(route.params.data.id).update({'markedDates': {...othersMarkedDates, ...myMarkedDates}});
+        db.collection("purchaseOrders").doc().set({
+          chatGroupId: route.params.data.id,
+          user: auth.currentUser.uid,
+          product: route.params.data.product,
+        });
         console.log('payment done!');
       }, extra: <Text>{start} to {end}</Text>}, );
       close();

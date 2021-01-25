@@ -14,7 +14,7 @@ import {
 import ImagePicker from 'react-native-image-picker';
 import {constants} from 'App/constants';
 //import Input from 'App/components/common/Input';
-import {firebase} from 'App/firebase/config';
+import {firebase, auth, db} from 'App/firebase/config';
 import OptionsModal from 'App/navigators/OptionsModal';
 import {useDispatch} from 'react-redux';
 // FLOCK_TODO: make this into an npm module so I don't have to put it here.
@@ -362,7 +362,10 @@ const Profile = ({navigation}) => {
               user.updateProfile({displayName: username});
               user.updateEmail(email);
               // update bio
-              dispatch({type:'UPDATE_DATA', payload: ["bio", null, null, bio]})
+              dispatch({type:'UPDATE_DATA', payload: ["bio", null, null, bio]});
+              db.collection('users').doc(auth.currentUser.uid).update({
+                bio: bio,
+              });
               console.log("updated", username, email)
             }}>
             <Text
