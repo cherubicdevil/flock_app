@@ -51,7 +51,7 @@ function ChatInterface({route, navigation}) {
 
   const [creditModal, setCreditModal] = useState(false);
 
-  const completeFunc = () => {
+  const completeFunc = (customerId) => {
     const memberInfo = {name: auth.currentUser.displayName, uid: auth.currentUser.uid, max: 50};
     // check if the flock is completed
     // make user enter credit card information
@@ -97,7 +97,7 @@ function ChatInterface({route, navigation}) {
     let postData = {
       product: route.params.data.product,
       members: route.params.data.members,
-
+      customerId: customerId,
     }
     fetch(constants.CHARGE_FLOCK_COMPLETE_ENDPOINT, {
     method: 'POST',
@@ -275,12 +275,12 @@ function ChatInterface({route, navigation}) {
         user={{_id: 1}}
       /></View>
       
-      {part?<></>:<View style={{position: 'absolute', bottom: 0, width: '100%', height: 100, backgroundColor: 'white'}}><View style={{height: '100%', backgroundColor: constants.PINK_BACKGROUND }}>
+      {partOf?<></>:<View style={{position: 'absolute', bottom: 0, width: '100%', height: 100, backgroundColor: 'white'}}><View style={{height: '100%', backgroundColor: constants.PINK_BACKGROUND }}>
         <TouchableOpacity style={{width: '90%', height: 50, backgroundColor: constants.ORANGE, alignSelf: 'center', borderRadius: 30, justifyContent: 'center'}} onPress={()=>{
 
 
           if (store.getState().userInfo.customerId !== "none") {
-            completeFunc();
+            completeFunc(sore.getState().userInfo.customerId);
           } else {
             setCreditModal(true);
           }
