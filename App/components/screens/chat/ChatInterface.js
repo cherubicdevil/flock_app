@@ -75,19 +75,27 @@ function ChatInterface({route, navigation}) {
     // test signal, send test, on receive, console log "RECEIVED"
     // condition
     // FLOCK_UPDATE
-    if (true) {
+
+    const res = splitAlgorithm(route.params.data.members, route.params.data.maximums, route.params.data.product.price)
+    if (res.length > 0) {
     socket.current.emit('complete', route.params.data.id);
-    db.collection('chatGroups').doc(route.params.data.id).set({
+    db.collection('chatGroups').doc(route.params.data.id).update({
+      members: res,
       completed: true,
       
       // rentPrice: ((route.params.data.product.price * .15 + route.params.data.product.price / route.params.data.members.length) / 2).toFixed(2),
       // FLOCK_UPDATE this should go in the backend so that prices can be adjusted easily
+      
+    });
+    //purchase order addd
+    route.params.data.members = res;
+    db.collection('purchaseOrders').doc().set({
+      product: route.params.data,
+      user: {name: auth.currentUser.displayName, uid: auth.currentUser.uid},
+      transaction: "price here",
     });
     
     navigation.navigate('FlockChatComplete', {data: route.params.data})
-    }
-    if (route.params.data.members.length > 3) {
-      // send to socket complete signal, which three are complete
     }
   };
   const store = useStore();
@@ -415,4 +423,36 @@ const data = {
     messages: [],
   },
 };
+
+
+var splitAlgorithm = (members, maximums, totalPrice) => {
+
+
+  var splitFunc = (currIndex, completed) => {
+  if (completed.length == 0) return null;
+  if (satisfy(completed)) return completed;
+  if (currIndex >= members.length) {
+  return null;
+  }
+  var r1, r2;
+
+  r1 = splitFunc(currIndex+1, completed=[...completed, members[currIndex]]);
+
+  r2 = splitFunc(currIndex+1, completed=[...completed])
+  return r2 || r1;
+  }
+
+  var satisfy = (ar) => {
+  var works = true;
+  const split = totalPrice / ar.length;
+  for (var item of ar) {
+  if (maximums[item.uid] < split) works = false;
+  }
+
+  return works;
+  }
+
+  var res = splitFunc(1, [members[0]]);
+  return res;
+}
 export default ChatInterface;
