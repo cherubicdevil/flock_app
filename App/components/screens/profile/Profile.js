@@ -16,12 +16,14 @@ import {constants} from 'App/constants';
 //import Input from 'App/components/common/Input';
 import {firebase} from 'App/firebase/config';
 import OptionsModal from 'App/navigators/OptionsModal';
+import {useDispatch} from 'react-redux';
 // FLOCK_TODO: make this into an npm module so I don't have to put it here.
 //import Base64 from 'base-64';
 
 // global.atob = Base64.encode;
 
 const ProfilePicture = () => {
+
   const user = firebase.auth().currentUser;
   const options = {
     //customButtons: [{name: 'fb', title: 'Choose Photo From Facebook'}],
@@ -169,6 +171,7 @@ const uploadImage = async ({data, filename, uri}) => {
 };
 
 const Profile = ({navigation}) => {
+  const dispatch = useDispatch();
   const user = firebase.auth().currentUser;
   const settings = {
     username: {
@@ -341,7 +344,7 @@ const Profile = ({navigation}) => {
                 textAlign: 'center',
                 fontFamily: 'Nunito-Bold',
               }}>
-              Cancel
+              Done
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
@@ -358,6 +361,8 @@ const Profile = ({navigation}) => {
             onPress={() => {
               user.updateProfile({displayName: username});
               user.updateEmail(email);
+              // update bio
+              dispatch({type:'UPDATE_DATA', payload: ["bio", null, null, bio]})
               console.log("updated", username, email)
             }}>
             <Text

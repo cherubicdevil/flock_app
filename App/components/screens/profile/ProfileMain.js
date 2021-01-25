@@ -72,9 +72,10 @@ const ProfilePicture = () => {
   );
 };
 const ProfileMain = ({navigation}) => {
+  const select = useSelector(state=>state);
   const userInfo = {
     username: auth.currentUser.displayName,
-    bio: auth.currentUser.bio,
+    bio: select.userInfo.bio || "This user likes to keep an air of mystery",
     // age: '20',
     // gender: 'Male',
   };
@@ -256,6 +257,7 @@ const ProfileMain = ({navigation}) => {
             flex: 1,
             justifyContent: 'flex-end',
             paddingBottom: 20,
+            paddingRight: 30,
             alignItems: 'flex-start',
             paddingLeft: 40,
           }}>
@@ -294,8 +296,9 @@ const ProfileMain = ({navigation}) => {
               </View>
               <Text
                 style={{
+                  marginLeft: 5,
                   marginTop: 10,
-                  color: 'white',
+                  color: 'black',
                   fontFamily: 'Nunito',
                 }}>
                 {userInfo.bio}
