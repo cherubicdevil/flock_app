@@ -208,10 +208,50 @@ const Profile = ({navigation}) => {
 
   const [username, setUserName] = useState(user.displayName || '');
   const [email, setEmail] = useState(user.email || '');
+  const [bio, setBio] = useState("")
   //settings.username.ref.current = user.displayName;
   console.log('my ref', settings.username.ref.current);
   //console.log('photoURL', user.photoURL);
+  const renderFormBox = (flex, label, defaultValue, placeholder, state, setState) => {
+    return (
+      <View
+        style={{
+          //borderBottomWidth: 1,
+          borderColor: constants.GREY,
+          alignItems: 'center',
+          height: 40,
+          flexDirection: 'row',
+          backgroundColor: constants.BGGREY,
+        }}>
+        <Text
+          style={{
+            //fontVariant: ['tabular-nums'],
+            fontFamily: 'Nunito-Light',
 
+            flex: flex,
+          }}>
+          {label}
+        </Text>
+        <TextInput
+          defaultValue={defaultValue}
+          placeholder={placeholder}
+          value = {state}
+          onChangeText={(text) => {
+            setState(text);
+          }}
+          style={{
+            //margin: 10,
+            paddingTop: 8,
+            paddingBottom: 8,
+            flex: 1,
+            paddingLeft: 10,
+            borderRadius: 10,
+            backgroundColor: constants.GREY,
+          }}
+        />
+      </View>
+    );
+  }
   const renderFormBoxes = () => {
     return Object.entries(settings).map(([key, item]) => {
       return (
@@ -245,6 +285,9 @@ const Profile = ({navigation}) => {
               borderRadius: 10,
               backgroundColor: constants.GREY,
             }}
+            onBlur={(event)=>{
+              setevent.nativeEvent.text
+            }}
             ref={item.ref}
           />
         </View>
@@ -272,7 +315,10 @@ const Profile = ({navigation}) => {
         <ProfilePicture />
 
         <View style={{marginTop: 50, justifyContent: 'flex-start'}}>
-          {renderFormBoxes()}
+          {/* {renderFormBoxes()} */}
+          {renderFormBox(0.5, "test", "test", "test", username, setUserName)}
+          {renderFormBox(0.5, "test", "test", "test", email, setEmail)}
+          {renderFormBox(0.5, "test", "test", "test", bio, setBio)}
         </View>
         <View style={{flex: 1}} />
         <View style={{justifyContent: 'center', flexDirection: 'row'}}>
@@ -312,6 +358,7 @@ const Profile = ({navigation}) => {
             onPress={() => {
               user.updateProfile({displayName: username});
               user.updateEmail(email);
+              console.log("updated", username, email)
             }}>
             <Text
               style={{

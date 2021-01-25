@@ -1,4 +1,4 @@
-import React, {useState, useRef, useEffect, createRef} from 'react';
+import React, {useState, useRef, useEffect, createRef, Fragment} from 'react';
 import {
   SafeAreaView,
   View,
@@ -24,6 +24,7 @@ import {firebase, db, auth} from 'App/firebase/config';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import {getIndexOfData} from '../../../utils';
 import ResizeableImage from 'App/components/ResizeableImage';
+import AnimatedModal from 'App/components/AnimatedModal';
 //import Base64 from 'base-64';
 
 // global.atob = Base64.encode;
@@ -210,18 +211,16 @@ const ProfileMain = ({navigation}) => {
 
     return () => {unsubscribe()};
   }, []);
+
+  const [modalOpen, setModalOpen] = useState(false);
   const Tab = createMaterialTopTabNavigator();
+
+  console.log("MY USERNAME IS:", auth.currentUser.displayName);
   return (
-    <SafeAreaView style={{flex: 1, backgroundColor: constants.PINK_BACKGROUND}}>
-      <View style={{position: 'absolute', right: 10, top: 50, zIndex: 400}}>
+    <Fragment><SafeAreaView style={{ flex: 0, backgroundColor: constants.TRANSLUCENT }} /><SafeAreaView style={{flex: 1, backgroundColor: constants.PINK_BACKGROUND}}>
+      <AnimatedModal upPercent="35%" visible={modalOpen} close={()=>setModalOpen(false)} content={<View>
         <Button
-          title="back"
-          onPress={() => {
-            navigation.goBack();
-          }}
-        />
-        <Button
-          title="changeProfile"
+          title="Edit Profile"
           onPress={() => {
             navigation.navigate('Profile');
           }}
@@ -233,12 +232,24 @@ const ProfileMain = ({navigation}) => {
             console.log('logout');
           }}
         />
+      </View>}/>
+      <View style={{height: 50, backgroundColor: constants.TRANSLUCENT}}>
+      <View style={{position: 'absolute', left: 10, top: 0, zIndex: 400}}>
+        <Button
+          title="back"
+          onPress={() => {
+            navigation.goBack();
+          }}
+        />
+
+        </View>
+        <Text style={{alignSelf: 'center'}}>Profile</Text>
       </View>
-      <ImageBackground
+      {/* <ImageBackground
         source={require('App/Assets/Images/Orange_Gradient_Small.png')}
         style={{
           flex: 1,
-        }}>
+        }}> */}
         <View
           style={{
             flex: 1,
@@ -247,17 +258,6 @@ const ProfileMain = ({navigation}) => {
             alignItems: 'flex-start',
             paddingLeft: 40,
           }}>
-          <Text
-            style={{
-              paddingLeft: 25,
-              fontSize: 24,
-              textAlign: 'center',
-
-              fontFamily: 'Nunito-Light',
-              color: 'white',
-            }}>
-            Profile
-          </Text>
           
           <View style={{flexDirection: 'row'}}>
             <ProfilePicture />
@@ -266,12 +266,12 @@ const ProfileMain = ({navigation}) => {
                 <Text
                   style={{
                     marginRight: 10,
-                    color: 'white',
+                    color: 'black',
                     fontFamily: 'Nunito',
                   }}>
                   {userInfo.username}
-                  {auth.currentUser.uid}
                 </Text>
+                <Button title="expand" onPress={()=>{setModalOpen(true)}} />
                 <Text
                   style={{
                     marginRight: 10,
@@ -295,14 +295,15 @@ const ProfileMain = ({navigation}) => {
             </View>
           </View>
         </View>
-      </ImageBackground>
-      <View style={{flex: 2}}>
+      {/* </ImageBackground> */}
+      <View style={{flex: 4}}>
         <Tab.Navigator>
           <Tab.Screen name="flocking" component={Test1} />
           <Tab.Screen name="flocked" component={Test3} />
         </Tab.Navigator>
       </View>
     </SafeAreaView>
+    </Fragment>
   );
 };
 
