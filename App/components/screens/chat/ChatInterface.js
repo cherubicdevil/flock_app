@@ -94,6 +94,17 @@ function ChatInterface({route, navigation}) {
       user: {name: auth.currentUser.displayName, uid: auth.currentUser.uid},
       transaction: "price here",
     });
+    let postData = {
+      product: route.params.data.product,
+      members: route.params.data.members,
+
+    }
+    fetch(constants.CHARGE_FLOCK_COMPLETE_ENDPOINT, {
+    method: 'POST',
+    body: JSON.stringify(postData),
+    headers: { 'Content-Type': 'application/json' }
+}).then(res => res.json())
+  .then(json => console.log(json));
     
     navigation.navigate('FlockChatComplete', {data: route.params.data})
     }
