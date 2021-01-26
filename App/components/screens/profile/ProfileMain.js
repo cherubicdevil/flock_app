@@ -268,13 +268,13 @@ const ProfileMain = ({navigation}) => {
               <View style={{flexDirection: 'row',}}>
               <TouchableOpacity onPress={()=>{
                 setModalOpen(true)
-                fetch("http://localhost:5000/testAddBackend/", {
-                  method: 'POST',
-                  body: JSON.stringify({test:"test"}),
-                  headers: { 'Content-Type': 'application/json' }
-              }).then(res => res.json())
-                .then(json => console.log(json));
-                }} >
+              //   fetch("http://localhost:5000/testAddBackend/", {
+              //     method: 'POST',
+              //     body: JSON.stringify({test:"test"}),
+              //     headers: { 'Content-Type': 'application/json' }
+              // }).then(res => res.json())
+              //   .then(json => console.log(json));
+                }}>
                 <View style={{backgroundColor:'rgba(0,0,0,0.1)', padding: 5, borderRadius:40, flexDirection:'row'}}>
                 <Text
                   style={{
