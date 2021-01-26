@@ -15,18 +15,20 @@ import {
 import LottieView from 'lottie-react-native';
 import Myform from './Myform';
 import Social from './Social';
+import LinearGradient from 'react-native-linear-gradient';
 import { TouchableWithoutFeedback } from 'react-native';
 
 const LoginCommon = ({content, lowerlink}) => {
-    return <ImageBackground
-    style={styles.headerbg}
-    source={require('./images/OrangePurpleGradient.png')}>
+    return <LinearGradient
+    colors={['#a48fac', '#c39cad', "#ff9966", "#ff7009"]}
+    start={{ x: 0, y: 0 }} end={{ x: 0, y: 1 }}
+    style={styles.headerbg}>
       <TouchableWithoutFeedback onPress={()=>Keyboard.dismiss()} style={{flex: 1}}>
     <View behavior="padding" style={styles.container}>
       <View style={styles.logocontainer}>
         <Image
           style={styles.logo}
-          source={require('./images/flockicon3.png')}
+          source={require('App/Assets/Images/flock_logo_splash_test.png')}
         />
       </View>
       <View style={styles.myform}>
@@ -41,7 +43,7 @@ const LoginCommon = ({content, lowerlink}) => {
       </View>
     </View>
 </TouchableWithoutFeedback>
-  </ImageBackground>
+  </LinearGradient>
 }
 
 const styles = StyleSheet.create({
@@ -60,6 +62,9 @@ const styles = StyleSheet.create({
       flex: 1.8,
     },
     logo: {
+        // shadowColor: 'white',
+        // shadowOpacity: 0.4,
+        // shadowRadius: 10,
       width: 150,
       height: 150,
       resizeMode: 'contain',

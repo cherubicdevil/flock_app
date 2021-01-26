@@ -12,6 +12,7 @@ import {constants} from 'App/constants';
 import {Input} from './Input';
 import {emailChanged, passwordChanged} from 'App/redux/actions';
 import {firebase} from 'App/firebase/config';
+import LinearGradient from 'react-native-linear-gradient';
 
 const Myform = ({registration, navigation}) => {
   const [email, setEmail] = useState("");
@@ -92,7 +93,18 @@ const Myform = ({registration, navigation}) => {
         <TouchableOpacity
           style={styles.buttoncontainer}
           onPress={onButtonPress}>
+            <LinearGradient
+          colors={["#ff6009", constants.ORANGE]}
+          start={{ x: 0, y: 1 }} end={{ x: 1, y: 1 }}
+          style={{
+            borderRadius: 30,
+            zIndex: 40,
+            // height: '100%',
+            width: '100%',
+            paddingVertical: 15,
+          }}>
           <Text style={styles.submitButton}>{retLogSign()}</Text>
+          </LinearGradient>
         </TouchableOpacity>
         <TouchableOpacity
           style={{marginTop: 10}}
@@ -122,8 +134,8 @@ const styles = StyleSheet.create({
   borderRadius: 35,
   },
   buttoncontainer: {
-    backgroundColor: '#459ff3',
-    paddingVertical: 15,
+    // backgroundColor: '#ff7009',
+    // paddingVertical: 15,
     borderRadius: 45,
     marginTop: 10,
   },
