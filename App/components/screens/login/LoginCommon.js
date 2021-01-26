@@ -34,6 +34,7 @@ const LoginCommon = ({content, lowerlink}) => {
             toValue: -200,
             useNativeDriver: false,
         });
+        animation.start();
         var anim = setInterval(()=>{
             // cloudPos = -200;
             resetAnimation.start();
