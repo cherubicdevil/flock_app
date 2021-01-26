@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, useEffect, useState} from 'react';
 import {
   ScrollView,
   Button,
@@ -11,6 +11,7 @@ import {
   KeyboardAvoidingView,
   StyleSheet,
   Keyboard,
+  Animated,
 } from 'react-native';
 import LottieView from 'lottie-react-native';
 import Myform from './Myform';
@@ -19,16 +20,38 @@ import LinearGradient from 'react-native-linear-gradient';
 import { TouchableWithoutFeedback } from 'react-native';
 
 const LoginCommon = ({content, lowerlink}) => {
+    const [cloudPos, setCloudPos] = useState(new Animated.Value(-200));
+    useEffect(() => {
+        const animation = Animated.spring(cloudPos, {
+            duration: 10000,
+            // velocity: 5,
+            toValue: 1000,
+            useNativeDriver: false,
+        });
+        const resetAnimation = Animated.timing(cloudPos, {
+            duration: 0,
+            toValue: -200,
+            useNativeDriver: false,
+        });
+        setInterval(()=>{
+            // cloudPos = -200;
+            resetAnimation.start();
+            animation.start();
+        }, 20000);
+    },[])
     return <LinearGradient
     colors={['#a48fac', '#c39cad', "#ff9966", "#ff7009"]}
     start={{ x: 0, y: 0 }} end={{ x: 0, y: 1 }}
     style={styles.headerbg}>
+        <Animated.View style={{position: 'absolute', left: 20, marginLeft: cloudPos, top: 50}}>
+        <Image style={{tintColor: 'rgba(255,255,255,0.5)', opacity: 0.3,}} source={require('App/Assets/Images/cloud.png')}/>
+        </Animated.View>
       <TouchableWithoutFeedback onPress={()=>Keyboard.dismiss()} style={{flex: 1}}>
     <View behavior="padding" style={styles.container}>
       <View style={styles.logocontainer}>
         <Image
           style={styles.logo}
-          source={require('App/Assets/Images/flock_logo_splash_test.png')}
+          source={require('App/Assets/Images/flock_logo_splash_screen.png')}
         />
       </View>
       <View style={styles.myform}>
@@ -59,6 +82,7 @@ const styles = StyleSheet.create({
     logocontainer: {
       alignItems: 'center',
       justifyContent: 'center',
+      marginTop: 40,
       flex: 1.8,
     },
     logo: {
