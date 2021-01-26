@@ -1,7 +1,7 @@
 import React from 'react'
 import { TextInput, View, Text } from 'react-native'
 
-const Input = ({ label, value, onChangeText, placeholder, secureTextEntry }) => {
+const Input = ({ label, value, onChangeText, placeholder, secureTextEntry, style }) => {
 	const { inputStyle, labelStyle, containerStyle } = styles
 	return (
 		<View style={containerStyle}>
@@ -11,7 +11,7 @@ const Input = ({ label, value, onChangeText, placeholder, secureTextEntry }) => 
 				autoCorrect={false}
 				value={value}
 				onChangeText={onChangeText}
-				style={inputStyle}
+				style={[inputStyle, style]}
 				placeholderTextColor="rgba(255,255,255,0.3)"
 			/>
 		</View>

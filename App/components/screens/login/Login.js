@@ -2,6 +2,7 @@
 
 import React, {Component} from 'react';
 import {
+  ScrollView,
   Button,
   TouchableOpacity,
   View,
@@ -11,44 +12,20 @@ import {
   Dimensions,
   KeyboardAvoidingView,
   StyleSheet,
+  Keyboard,
 } from 'react-native';
 import LottieView from 'lottie-react-native';
 import Myform from './Myform';
 import Social from './Social';
-export default class Login extends Component {
-  render() {
+import { TouchableWithoutFeedback } from 'react-native';
+import LoginCommon from './LoginCommon';
+const Login = ({navigation}) => {
     return (
-      <ImageBackground
-        style={styles.headerbg}
-        source={require('./images/OrangePurpleGradient.png')}>
-        <View behavior="padding" style={styles.container}>
-          <View style={styles.logocontainer}>
-            <Image
-              style={styles.logo}
-              source={require('./images/flockicon3.png')}
-            />
-          </View>
-          <View style={styles.myform}>
-            <Myform registration={false} />
-          </View>
-          <View style={styles.social}>
-            <Social />
-            <TouchableOpacity
-              style={styles.buttontext2}
-              onPress={() => {
-                this.props.navigation.navigate('Signup');
-              }}>
-              <Text style={styles.buttontext}>
-                {' '}
-                Not yet a flocker? Sign up now!
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-        
-      </ImageBackground>
+      <LoginCommon content={<Myform navigation={navigation} registration= {false} />} />
+ 
+
+
     );
-  }
 }
 
 const styles = StyleSheet.create({
@@ -88,7 +65,10 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: '#ffff',
     fontWeight: 'bold',
-    marginTop: 5,
-    marginBottom: 15,
+    marginTop: 0,
+    marginBottom: 0,
   },
 });
+
+
+export default Login;

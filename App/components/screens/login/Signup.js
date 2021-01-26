@@ -13,37 +13,12 @@ import {
 } from 'react-native';
 import Myform from './Myform';
 import Social from './Social';
-export default class Login extends Component {
-  render() {
-    return (
-      <ImageBackground
-        style={styles.headerbg}
-        source={require('./images/OrangePurpleGradient.png')}>
-        <View behavior="padding" style={styles.container}>
-          <View style={styles.logocontainer}>
-            <Image
-              style={styles.logo}
-              source={require('./images/flockicon3.png')}
-            />
-          </View>
-          <View style={styles.myform}>
-            <Myform registration={true} />
-          </View>
-          <View style={styles.social}>
-            <Social />
-            <TouchableOpacity
-              style={styles.buttontext2}
-              onPress={() => {
-                this.props.navigation.navigate('Login');
-                console.log('trying to goto login');
-              }}>
-              <Text style={styles.buttontext}> Already a flocker? Login!</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </ImageBackground>
-    );
-  }
+import LoginCommon from './LoginCommon';
+const Signup = ({navigation}) =>  {
+  return (
+    <LoginCommon content={<Myform registration= {true} navigation={navigation} />} />
+
+  );
 }
 
 const styles = StyleSheet.create({
@@ -83,7 +58,10 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: '#ffff',
     fontWeight: 'bold',
-    marginTop: 5,
+    marginTop: 0,
     marginBottom: 15,
   },
 });
+
+
+export default Signup;

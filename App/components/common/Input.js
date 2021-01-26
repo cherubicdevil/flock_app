@@ -14,7 +14,7 @@ const Input = (props) => {
 	} = props;
 	const {inputStyle, labelStyle, containerStyle} = styles;
 	return (
-		<View style={[containerStyle, conStyle]}>
+		<View style={[containerStyle, conStyle, style]}>
 			<Text style={[labelStyle, labStyle]}>{label}</Text>
 			<TextInput
 				{...props}
@@ -37,6 +37,8 @@ const styles = {
 		fontSize: 18,
 		lineHeight: 23,
 		flex: 2,
+		borderWidth: 2,
+		borderRadius: 55,
 	},
 	labelStyle: {
 		fontSize: 18,

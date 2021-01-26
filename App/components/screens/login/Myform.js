@@ -13,7 +13,7 @@ import {Input} from './Input';
 import {emailChanged, passwordChanged} from 'App/redux/actions';
 import {firebase} from 'App/firebase/config';
 
-const Myform = ({registration}) => {
+const Myform = ({registration, navigation}) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -62,7 +62,7 @@ const Myform = ({registration}) => {
   }
     return (
       <View style={styles.container}>
-        <Text style={{fontSize: 17, color: 'white', fontFamily: constants.FONT}}>{retLogSign()}</Text>
+        <Text style={{fontSize: 17, marginLeft: 10, color: 'white', fontFamily: constants.FONT}}>{registration?"Create an account":"Have an account? Login."}</Text>
         <Text style={{color: 'red', fontFamily: constants.FONT}}>{errorMessage}</Text>
         <Input
           label=""
@@ -73,6 +73,7 @@ const Myform = ({registration}) => {
           }}
           value={email}
           style={styles.input}
+        
         />
         <Input
           secureTextEntry
@@ -81,8 +82,9 @@ const Myform = ({registration}) => {
           onChangeText={(text)=>{
             setPassword(text);
           }}
-          value={password}
           style={styles.input}
+          value={password}
+          
         />
         <TouchableOpacity style={styles.forgotcontainer}>
           {/* {renderForget()} */}
@@ -90,7 +92,16 @@ const Myform = ({registration}) => {
         <TouchableOpacity
           style={styles.buttoncontainer}
           onPress={onButtonPress}>
-          <Text style={styles.buttontext}>{retLogSign()}</Text>
+          <Text style={styles.submitButton}>{retLogSign()}</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={{marginTop: 10}}
+          onPress={() => {
+            navigation.navigate(registration?"Login":'Signup');
+          }}>
+          <Text style={styles.buttontext}>
+            {registration?"Already a flocker? Login!":"Not yet a flocker? Sign up now!"}
+          </Text>
         </TouchableOpacity>
       </View>
     );
@@ -101,29 +112,38 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
+    paddingBottom: 0,
   },
   input: {
     height: 40,
-    backgroundColor: '#fff',
+    // backgroundColor: '#fff',
     paddingLeft: 10,
     marginBottom: 10,
-    borderRadius: 5,
+  borderRadius: 35,
   },
   buttoncontainer: {
     backgroundColor: '#459ff3',
     paddingVertical: 15,
-    borderRadius: 5,
+    borderRadius: 45,
+    marginTop: 10,
   },
   forgotcontainer: {
     flexDirection: 'row',
     justifyContent: 'flex-end',
     marginBottom: 10,
   },
+  submitButton: {
+    fontFamily: constants.FONT,
+    textAlign: 'center',
+    fontSize: 17,
+    color: 'rgba(255,255,255,0.9)',
+    fontWeight: 'bold',
+  },
   buttontext: {
     fontFamily: constants.FONT,
     textAlign: 'center',
     color: 'rgba(255,255,255,0.9)',
-    fontWeight: 'bold',
+    // fontWeight: 'bold',
   },
 });
 
