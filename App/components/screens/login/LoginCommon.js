@@ -33,11 +33,15 @@ const LoginCommon = ({content, lowerlink}) => {
             toValue: -200,
             useNativeDriver: false,
         });
-        setInterval(()=>{
+        var anim = setInterval(()=>{
             // cloudPos = -200;
             resetAnimation.start();
             animation.start();
         }, 20000);
+
+        return () => {
+            clearInterval(anim);
+        }
     },[])
     return <LinearGradient
     colors={['#a48fac', '#c39cad', "#ff9966", "#ff7009"]}

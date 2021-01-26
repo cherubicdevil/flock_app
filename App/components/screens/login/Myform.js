@@ -94,7 +94,7 @@ const Myform = ({registration, navigation}) => {
           style={styles.buttoncontainer}
           onPress={onButtonPress}>
             <LinearGradient
-          colors={["#ff6009", constants.ORANGE]}
+          colors={[registration?"#ff6009":"#728cb1", registration?constants.ORANGE:"#8a86aa"]}
           start={{ x: 0, y: 1 }} end={{ x: 1, y: 1 }}
           style={{
             borderRadius: 30,
