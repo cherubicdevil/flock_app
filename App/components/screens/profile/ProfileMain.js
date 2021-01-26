@@ -221,11 +221,12 @@ const ProfileMain = ({navigation}) => {
   console.log("MY USERNAME IS:", auth.currentUser.displayName);
   return (
     <Fragment><SafeAreaView style={{ flex: 0, backgroundColor: constants.TRANSLUCENT }} /><SafeAreaView style={{flex: 1, backgroundColor: constants.PINK_BACKGROUND}}>
-      {/* <AnimatedModal fade={false} upPercent="35%" visible={modalOpen} close={()=>setModalOpen(false)} content={<View>
+      <AnimatedModal fade={false} upPercent="35%" visible={modalOpen} close={()=>setModalOpen(false)} content={<View>
         <Button
           title="Edit Profile"
           onPress={() => {
             navigation.navigate('Profile');
+            setModalOpen(false);
           }}
         />
         <Button
@@ -235,15 +236,8 @@ const ProfileMain = ({navigation}) => {
             console.log('logout');
           }}
         />
-      </View>}/> */}
-      <Modal animationType="slide" style={{justifyContent: 'flex-end', flex: 1}} visible={modalOpen} transparent={true}>
-        <View style={{flex: 1,position: 'absolute', bottom: 0, height: '50%', width: '100%', backgroundColor: 'white'}}>
-          <Button title="test" onPress={()=>{
-            setModalOpen(false);
-            console.log('test');
-          }}/>
-        </View>
-      </Modal>
+      </View>}/>
+
       <View style={{height: 50, backgroundColor: constants.TRANSLUCENT}}>
       <View style={{position: 'absolute', left: 10, top: 0, zIndex: 400}}>
         <TouchableOpacity

@@ -19,13 +19,14 @@ import Social from './Social';
 import LinearGradient from 'react-native-linear-gradient';
 import { TouchableWithoutFeedback } from 'react-native';
 
+const anim_duration = 20000;
 const LoginCommon = ({content, lowerlink}) => {
     const [cloudPos, setCloudPos] = useState(new Animated.Value(-200));
     useEffect(() => {
-        const animation = Animated.spring(cloudPos, {
-            duration: 10000,
-            // velocity: 5,
-            toValue: 1000,
+        const animation = Animated.timing(cloudPos, {
+            duration: anim_duration,
+            // velocity: 1,
+            toValue: 500,
             useNativeDriver: false,
         });
         const resetAnimation = Animated.timing(cloudPos, {
@@ -37,7 +38,7 @@ const LoginCommon = ({content, lowerlink}) => {
             // cloudPos = -200;
             resetAnimation.start();
             animation.start();
-        }, 20000);
+        }, anim_duration);
 
         return () => {
             clearInterval(anim);
