@@ -89,15 +89,16 @@ function ChatInterface({route, navigation}) {
     });
     //purchase order addd
     route.params.data.members = res;
-    db.collection('purchaseOrders').doc().set({
-      product: route.params.data,
-      user: {name: auth.currentUser.displayName, uid: auth.currentUser.uid},
-      transaction: "price here",
-    });
+    // db.collection('purchaseOrders').doc().set({
+    //   product: route.params.data,
+    //   user: {name: auth.currentUser.displayName, uid: auth.currentUser.uid},
+    //   transaction: "price here",
+    // });
     let postData = {
-      product: route.params.data.product,
-      members: route.params.data.members,
+      ...route.params.data,
       customerId: customerId,
+      chatId: route.params.data.id,
+      userId: auth.currentUser.uid,
     }
     fetch(constants.CHARGE_FLOCK_COMPLETE_ENDPOINT, {
     method: 'POST',

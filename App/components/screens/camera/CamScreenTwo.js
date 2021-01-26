@@ -71,17 +71,17 @@ const CamScreenTwo = ({navigation, route}) => {
           <View style={{height: 200, flexDirection: 'row'}}>
             <Image
               style={{
-                flex: 2,
-                width: '100%',
-                height: null,
+                alignSelf: 'flex-start',
+                width: 150,
+                height: 200,
                 resizeMode: 'contain',
               }}
+              defaultSource={require('App/Assets/Images/Blank_Photo_Icon.png')}
               source={
-                {uri: imageState} ||
-                require('App/Assets/Images/Blank_Photo_Icon.png')
+                {uri: imageState}
               }
             />
-            <View style={{flex: 2}}>
+            {/* <View style={{flex: 2}}>
               <View
                 style={{
                   //backgroundColor: 'black',
@@ -130,7 +130,7 @@ const CamScreenTwo = ({navigation, route}) => {
                   source={require('App/Assets/Images/Blank_Photo_Icon.png')}
                 />
               </View>
-            </View>
+            </View> */}
           </View>
           <View style={{flex: 2, justifyContent: 'flex-start'}}>
             <View style={{paddingRight: 10, marginBottom: 20}}>
@@ -201,6 +201,7 @@ const CamScreenTwo = ({navigation, route}) => {
         </View>
 
         <ProgressHeader
+        closeText="done"
           headerText="Find a Product"
           goBack={true}
           nextRoute="Product Options"
