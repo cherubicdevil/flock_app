@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -7,34 +7,30 @@ import {
   StyleSheet,
 } from 'react-native';
 import {connect} from 'react-redux';
+import {constants} from 'App/constants';
 
 import {Input} from './Input';
 import {emailChanged, passwordChanged} from 'App/redux/actions';
 import {firebase} from 'App/firebase/config';
 
-class Myform extends Component {
-  retLogSign() {
-    return this.props.registration ? 'Sign Up' : 'Login';
-  }
-  onEmailChange(text) {
-    this.props.emailChanged(text);
-    console.log(this.props.email);
-  }
-  onPasswordChange(text) {
-    this.props.passwordChanged(text);
-    console.log(this.props.password);
+const Myform = ({registration}) => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const retLogSign = () => {
+    return registration ? 'Sign Up' : 'Login';
   }
 
-  onButtonPress() {
-    const email = this.props.email;
-    const password = this.props.password;
-    //this.setState({ error: '', loading: true })
-    if (!this.props.registration) {
+  const onButtonPress = () => {
+    if (!registration) {
       firebase
         .auth()
         .signInWithEmailAndPassword(email, password)
         .catch(() => {
           console.log("this login didn't work");
+          setPassword("");
+          setErrorMessage("This login didn't work");
         });
     } else {
       firebase
@@ -53,46 +49,53 @@ class Myform extends Component {
           // Handle Errors here.
           console.log('EERRRROR', error);
           console.log('This registration did not work');
+          setPassword("");
+          setErrorMessage("This signup didn't work!");
           // ...
         });
     }
   }
-  renderForget() {
-    return this.props.registration ? null : (
+  const renderForget = () => {
+    return registration ? null : (
       <Text style={styles.buttontext}>Forgot Password?</Text>
     );
   }
-
-  render() {
     return (
       <View style={styles.container}>
+        <Text style={{fontSize: 17, color: 'white', fontFamily: constants.FONT}}>{retLogSign()}</Text>
+        <Text style={{color: 'red', fontFamily: constants.FONT}}>{errorMessage}</Text>
         <Input
           label=""
+          
           placeholder="email@gmail.com"
-          onChangeText={this.onEmailChange.bind(this)}
-          value={this.props.email}
+          onChangeText={(text) => {
+            setEmail(text);
+          }}
+          value={email}
           style={styles.input}
         />
         <Input
           secureTextEntry
           label=""
           placeholder="password"
-          onChangeText={this.onPasswordChange.bind(this)}
-          value={this.props.password}
+          onChangeText={(text)=>{
+            setPassword(text);
+          }}
+          value={password}
           style={styles.input}
         />
         <TouchableOpacity style={styles.forgotcontainer}>
-          {this.renderForget()}
+          {/* {renderForget()} */}
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.buttoncontainer}
-          onPress={this.onButtonPress.bind(this)}>
-          <Text style={styles.buttontext}>{this.retLogSign()}</Text>
+          onPress={onButtonPress}>
+          <Text style={styles.buttontext}>{retLogSign()}</Text>
         </TouchableOpacity>
       </View>
     );
   }
-}
+
 
 const styles = StyleSheet.create({
   container: {
@@ -117,6 +120,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   buttontext: {
+    fontFamily: constants.FONT,
     textAlign: 'center',
     color: 'rgba(255,255,255,0.9)',
     fontWeight: 'bold',
@@ -130,6 +134,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, {emailChanged, passwordChanged})(
-  Myform,
-);
+export default Myform;
