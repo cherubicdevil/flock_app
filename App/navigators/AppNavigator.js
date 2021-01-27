@@ -180,8 +180,8 @@ const AppNavigator5 = () => {
           component={ProfileMain}
           options={{
             title: 'Egg',
-            cap: 'You',
-            image: require('App/Assets/Images/cute_duck.png'),
+            cap: 'you',
+            image: require('App/Assets/Images/cute_duck_silhouette.png'),
           }}
         />
       </Tab.Navigator>
