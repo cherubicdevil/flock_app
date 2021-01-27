@@ -294,12 +294,12 @@ const HomeTabSwipe = ({videoData, navigation, route}) => {
   >
     <Tab.Screen name="flocking" component={DataList} initialParams={{value: 'hello world', videoData:[], flockData: [], rentData: [], dataType: 'flockData'}} />
     <Tab.Screen name="for you" component = {MiniCarousel}/>
-
-  <Tab.Screen name="posts" component={DataList} initialParams={{videoData: keyVideoData, dataType:'videoData'}} />
+    <Tab.Screen name="borrow" component={DataList} initialParams={{value: 'hello world', videoData:[], flockData: [], rentData: [], dataType: 'rentData'}} />
+  {/* <Tab.Screen name="posts" component={DataList} initialParams={{videoData: keyVideoData, dataType:'videoData'}} /> */}
 
   {/* <Tab.Screen name="Popular" component={FeedList} initialParams={{videoData: []}} /> */}
   
-  <Tab.Screen name="borrow" component={DataList} initialParams={{value: 'hello world', videoData:[], flockData: [], rentData: [], dataType: 'rentData'}} />
+  
   {/* <Tab.Screen name="Flocking" component={FeedList} initialParams={{value: 'hello world', videoData:[], flockData: [], rentData: [], dataType: 'flockData', flockOrNot: 'flockData'}} /> */}
   {/* <Tab.Screen name="Request" component={FeedList} initialParams={{value: 'hello world', videoData:[], flockData: [], rentData: [], dataType: 'rentData', flockOrNot: 'rentData'}} /> */}
   {/* <Tab.Screen name="feather" component={FeatherCarousel} initialParams={{value: 'hello world', videoData:[], flockData: [], rentData: [], dataType: 'rentData'}} /> */}
@@ -501,7 +501,7 @@ const TopBar = ({descriptors, state, navigation}) => {
         }
 
           return <TouchableOpacity activeOpacity={1} style={{flex: 1,marginLeft: 10, marginRight: 10,
-            shadowOpacity: isFocused?0.5:0, shadowColor: tabColors[index][0], shadowRadius: 10,
+            
           }} onPress={onPress}>
           {/* <LinearGradient 
           colors={[constants.TRANSLUCENT, 'white']}
@@ -509,19 +509,22 @@ const TopBar = ({descriptors, state, navigation}) => {
           padding: 10, borderRadius: 30, borderWidth: 1,justifyContent: 'center', alignItems: 'center'}}>
             <Text>{route.name}</Text>
             </LinearGradient> */}
+            <View style={{borderRadius: 40, shadowOpacity: isFocused?1:0, shadowRadius: 5, shadowColor: tabColors[index][0], shadowOffset: {height: 5}}}>
             <LinearGradient 
           colors={[tabColors[index][0], tabColors[index][1]]}
           style={{width: '100%',   borderRadius: 40,
           }}>
                       <View
-          style={{width: '100%', height: 42, borderColor: isFocused?constants.ORANGE:'grey',
+          style={{borderWidth: isFocused?0:0, width: '100%', height: 42, borderColor: "#ff9966",
           
           padding: 10, borderRadius: 30, justifyContent: 'center', alignItems: 'center'}}>
             
             <Text style={{color: 'white'}}>{route.name}</Text>
             
             </View>
+
             </LinearGradient>
+            </View>
             </TouchableOpacity>
 
       })}
