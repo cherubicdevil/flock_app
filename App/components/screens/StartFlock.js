@@ -76,7 +76,7 @@ const PageTwo = ({product, data}) => {
         <Text style={{color:constants.DARKGREY, marginRight: 5, marginTop:1, fontWeight: 'bold'}}>USD</Text>
     <View style={[styles.inputBox,{flex: 1, height: 35, paddingLeft: 5, marginLeft: 1, flexDirection: 'row', alignItems: 'center', borderWidth: 2, borderColor: constants.DARKGREY}]}>
     <Text style={{color: constants.DARKGREY}}>$</Text>
-    <BasicInputText data={data} title="maxPrice" defaultValue = {(product.price / 2).toFixed(2)} style={[styles.inputBox,{flex: 1, paddingLeft: 0, marginLeft: 3, borderWidth: 0}]} />
+    <BasicInputText numeric = {true} data={data} title="maxPrice" defaultValue = {(product.price / 2).toFixed(2)} style={[styles.inputBox,{flex: 1, paddingLeft: 0, marginLeft: 3, borderWidth: 0}]} />
     </View>
     </View>
 
@@ -122,13 +122,34 @@ const InputText = ({numLines, data, title, placeholder, label, defaultValue=""})
     }} /></View>
 }
 
-const BasicInputText = ({numLines=1, data, placeholder, label, title, defaultValue=""}) => {
+const BasicInputText = ({numLines=1, numeric, data, placeholder, label, title, defaultValue=""}) => {
+    
     console.log(data[label]);
     data[title] = defaultValue;
-    return <TextInput defaultValue={data[title] || defaultValue} blurOnSubmit placeholder={placeholder} onBlur = {(e)=> {
+    const [dataValue, setDataValue] = useState(data[title] || defaultValue);
+    console.log(dataValue, "why no change?");
+    return <TextInput
+    // contextMenuHidden={numeric}
+    keyboardType={numeric?"numeric":"default"}
+    defaultValue={data[title] || defaultValue} blurOnSubmit placeholder={placeholder} onBlur = {(e)=> {
         console.log("BLUR", e.nativeEvent.text);
         data[title] = e.nativeEvent.text;
-    }} />;
+    }} 
+    value={dataValue.toFixed(2) || ""}
+    onChangeText={(text)=>{
+        if (numeric) {
+            console.log("THis is undefined?", parseInt(text.replace(".",""))/100);
+            if (text === "") {
+                setDataValue("");
+            } else {
+                setDataValue(parseInt(text.replace(".",""))/100);
+            }
+        } else {
+            setDataValue(text);
+        }
+    }}
+    
+    />;
 }
 
 const ProductPreview = ({product}) => {
