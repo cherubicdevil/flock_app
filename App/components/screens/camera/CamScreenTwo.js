@@ -24,7 +24,7 @@ import AnimatedModal from 'App/components/AnimatedModal';
 import LinearGradient from 'react-native-linear-gradient';
 
 const CamScreenTwo = ({navigation, route}) => {
-  const [modalOpen, setModalOpen] = useState(false);
+  const [modalOpen, setModalOpen] = useState(true);
   route.params.data['hello2'] ='twp';
   const [fade, setFade] = useState(new Animated.Value(1));
  const pinFunc=() => {
@@ -305,196 +305,6 @@ const CamScreenTwo = ({navigation, route}) => {
               setModalOpen(true);
             }}/>
           </View>
-          
-          <Animated.View
-            style={{
-              flex: 1,
-              //height: '95%',
-              width: '100%',
-              shadowOpacity: enlarge ? 0.2 : 0,
-              shadowOffset: {height: -20},
-              backgroundColor: enlarge ? 'white' : constants.BGGREY,
-              //opacity: 0,
-              //backgroundColor: 'transparent',
-              opacity: fade,
-              borderRadius: 20,
-              borderBottomLeftRadius: 0,
-              borderBottomRightRadius: 0,
-              marginTop: -2,
-              //position: enlarge ? 'absolute' : 'relative',
-              //bottom: 0,
-              alignSelf: 'center',
-            }}>
-            <View
-              style={{
-                flex: 1,
-                marginBottom: 10,
-                flexDirection: 'row',
-                paddingLeft: 10,
-                paddingRight: 10,
-              }}>
-              <TouchableOpacity
-                style={{
-                  position: 'absolute',
-                  left: 7,
-                  top: -8,
-                }}
-                onPress={() => {
-                  setEnlarge(false);
-                  resetAnimation();
-                  Keyboard.dismiss();
-                }}>
-                <Image
-                  style={{
-                    height: enlarge ? 15 : 0,
-                    width: enlarge ? 15 : 0,
-                    tintColor: 'black',
-                  }}
-                  source={require('App/Assets/Images/Close_Icon_White.png')}
-                />
-              </TouchableOpacity>
-              <View
-                style={{
-                  shadowOpacity: enlarge ? 0.2 : 0,
-                  shadowOffset: {height: -25},
-                  flex: 1,
-                  flexDirection: 'row',
-                  marginTop: 2.2,
-                  marginBottom: 7,
-
-                  //marginLeft: 10,
-                  //marginRight: 10,
-                  backgroundColor: enlarge ? constants.GREY : 'white',
-                  //width: '90%',
-                  borderRadius: 25,
-                  marginLeft: enlarge ? 17 : 0,
-                  paddingLeft: 10,
-                  paddingRight: 15,
-                  paddingTop: 7,
-                  paddingBottom: 7,
-                  alignSelf: 'center',
-                  borderBottomColor: 'constants.PURPLE',
-
-                  borderStartColor: 'constants.PURPLE',
-                  borderBottomWidth: enlarge ? 1 : 0,
-                  borderStartWidth: enlarge ? 1 : 0,
-                }}>
-                <TextInput
-                  placeholder="Enter link or search by keyword"
-                  selectTextOnFocus
-                  value={enlarge ? searchUrl : ''}
-                  onChangeText={(text) => {
-                    //searchUrl = text;
-                    setSearchUrl(text);
-                  }}
-                  style={[
-                    styles.textBoxStyle,
-
-                    {
-                      opacity: 1,
-                      color: constants.LIGHTGREY,
-                      backgroundColor: enlarge ? constants.GREY : 'white',
-                    },
-                  ]}
-                  onFocus={() => {
-                    console.log('focusing');
-                    setEnlarge(true);
-                    startAnimation();
-                  }}
-                />
-                <TouchableOpacity
-                  style={{height: 20}}
-                  onPress={searchFunc}>
-                  <Image
-                    source={require('App/Assets/Images/Search.png')}
-                    style={{
-                      tintColor: constants.ICONGREY,
-                      flex: 1,
-                      width: 20,
-                      resizeMode: 'contain',
-                      height: 20,
-                      marginRight: -10,
-                    }}
-                  />
-                </TouchableOpacity>
-                {/*<Button onPress={() => navigation.navigate('')} />*/}
-              </View>
-              {enlarge ? (
-                <TouchableHighlight
-                  onPress={() => {
-                    console.log('pinned');
-                    fetch(
-                      'https://powerful-everglades-32172.herokuapp.com/find_product/' +
-                        searchUrl,
-                    )
-                      .then((response) => response.json())
-                      .then((data) => {
-                        setTitleState(data.title);
-                        setPriceState(data.price);
-                        dataUrl = data.url;
-                        var ar = data.image.split('//');
-
-                        setImageState('https://' + ar[ar.length - 1]);
-                        // setTimeout(() => {
-                        //   setEnlarge(false);
-                        // }, 500);
-                        // Keyboard.dismiss();
-                        console.log(data);
-                      });
-                    setTimeout(() => {
-                      setEnlarge(false);
-                    }, 500);
-                    Keyboard.dismiss();
-                  }}
-                  style={{
-                    height: 25,
-                    marginTop: -13,
-                    //borderWidth: 2,
-                    borderRadius: 20,
-                    paddingLeft: 5,
-                    paddingRight: 5,
-                    paddingTop: 2,
-                    marginLeft: 5,
-                    borderColor: 'white',
-                    //borderWidth: 1,
-                    backgroundColor: constants.PURPLE,
-                  }}>
-                  <Text
-                    style={{
-                      color: 'white',
-                      fontSize: 14,
-                      fontFamily: 'Nunito-Bold',
-                      height: 90,
-                      zIndex: 50,
-                    }}
-                    title="test">
-                    Import
-                  </Text>
-                </TouchableHighlight>
-              ) : (
-                <View />
-              )}
-            </View>
-            <View
-              style={{
-                marginTop: 5,
-                alignSelf: 'center',
-                width: '100%',
-                
-                height: enlarge ? 1000 : 0,
-              }}>
-              <WebView
-                onNavigationStateChange={(webViewState) => {
-                  setUrlState(webViewState.url);
-                  setSearchUrl(webViewState.url);
-                }}
-                style={{
-                  backgroundColor: enlarge ? 'white' : 'transparent',
-                }}
-                source={{uri: urlState}}
-              />
-            </View>
-          </Animated.View>
           {renderForm()}
         </View>
       </View>
@@ -535,7 +345,7 @@ const CamScreenTwo = ({navigation, route}) => {
           <Text style={{color: 'white'}}>import</Text>
           </TouchableOpacity>
                 </View>
-                <LinearGradient style={{flex: 1, height: '100%', width: '100%'}} colors={[constants.ORANGE, constants.YELLOW]}>
+                <LinearGradient style={{flex: 1, height: '100%', width: '100%'}} colors={[constants.PINK_BACKGROUND, constants.TRANSLUCENT]}>
                 <View style={{flex: 1}}>
                 <WebView
                 onNavigationStateChange={(webViewState) => {
