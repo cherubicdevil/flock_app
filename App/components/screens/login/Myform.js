@@ -72,7 +72,7 @@ const Myform = ({registration, navigation}) => {
           
           placeholder="email@gmail.com"
           onChangeText={(text) => {
-            setEmail(text);
+            setEmail(text.toLowerCase());
           }}
           value={email}
           style={styles.input}
