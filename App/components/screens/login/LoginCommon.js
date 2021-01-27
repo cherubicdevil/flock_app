@@ -22,7 +22,7 @@ import { TouchableWithoutFeedback } from 'react-native';
 const anim_duration = 20000;
 const LoginCommon = ({content, lowerlink}) => {
     const [cloudPos, setCloudPos] = useState(new Animated.Value(-200));
-    const [randomTop, setRandomTop] = useState("30%");
+    const [randomTop, setRandomTop] = useState("10%");
     useEffect(() => {
         const animation = Animated.timing(cloudPos, {
             duration: anim_duration,
@@ -32,7 +32,7 @@ const LoginCommon = ({content, lowerlink}) => {
         });
         const resetAnimation = Animated.timing(cloudPos, {
             duration: 0,
-            toValue: -200,
+            toValue: -500,
             useNativeDriver: false,
         });
         animation.start();
@@ -53,7 +53,7 @@ const LoginCommon = ({content, lowerlink}) => {
     start={{ x: 0, y: 0 }} end={{ x: 0, y: 1 }}
     style={styles.headerbg}>
         <Animated.View style={{position: 'absolute', left: 20, marginLeft: cloudPos, top: randomTop}}>
-        <Image style={{opacity: 0.1,}} source={require('App/Assets/Images/cloud.png')}/>
+        <Image style={{opacity: 0.2,}} source={require('App/Assets/Images/cloud.png')}/>
         </Animated.View>
       <TouchableWithoutFeedback onPress={()=>Keyboard.dismiss()} style={{flex: 1}}>
     <View behavior="padding" style={styles.container}>
