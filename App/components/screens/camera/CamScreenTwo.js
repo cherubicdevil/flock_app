@@ -21,11 +21,55 @@ import ProgressHeader from 'App/components/ProgressHeader';
 import {firebase, db} from 'App/firebase/config';
 import { CommonActions } from '@react-navigation/native';
 import AnimatedModal from 'App/components/AnimatedModal';
+import LinearGradient from 'react-native-linear-gradient';
 
 const CamScreenTwo = ({navigation, route}) => {
   const [modalOpen, setModalOpen] = useState(false);
   route.params.data['hello2'] ='twp';
   const [fade, setFade] = useState(new Animated.Value(1));
+ const pinFunc=() => {
+  console.log('pinned');
+  fetch(
+    'https://powerful-everglades-32172.herokuapp.com/find_product/' +
+      searchUrl,
+  )
+    .then((response) => response.json())
+    .then((data) => {
+      setTitleState(data.title);
+      setPriceState(data.price);
+      dataUrl = data.url;
+      var ar = data.image.split('//');
+
+      setImageState('https://' + ar[ar.length - 1]);
+      // setTimeout(() => {
+      //   setEnlarge(false);
+      // }, 500);
+      // Keyboard.dismiss();
+      console.log(data);
+    });
+  setTimeout(() => {
+    setModalOpen(false);
+  }, 500);
+  Keyboard.dismiss();
+};
+  const searchFunc = () => {
+    var url = '';
+    const isURL =
+      searchUrl.split(' ').length === 1 &&
+      searchUrl.includes('.');
+    if (isURL) {
+      if (!searchUrl.startsWith('http')) {
+        url = 'https://www.' + searchUrl;
+      } else {
+        url = searchUrl;
+      }
+    } else {
+      url = `https://www.google.com/search?q=${searchUrl}`;
+    }
+    console.log(url, searchUrl);
+    setUrlState(url);
+    //setSearchUrl(url);
+  };
 
   const startAnimation = () => {
     Animated.timing(fade, {
@@ -54,8 +98,8 @@ const CamScreenTwo = ({navigation, route}) => {
   const animation = useRef(new Animated.Value(90));
   //var searchUrl = '';
   const [imageState, setImageState] = useState(null);
-  const [searchUrl, setSearchUrl] = useState('https://www.shopwithflock.com');
-  const [urlState, setUrlState] = useState('https://www.shopwithflock.com');
+  const [searchUrl, setSearchUrl] = useState('');
+  const [urlState, setUrlState] = useState('');
 
   const renderForm = () => {
     //console.log('foundProduct:', foundProduct);
@@ -360,24 +404,7 @@ const CamScreenTwo = ({navigation, route}) => {
                 />
                 <TouchableOpacity
                   style={{height: 20}}
-                  onPress={() => {
-                    var url = '';
-                    const isURL =
-                      searchUrl.split(' ').length === 1 &&
-                      searchUrl.includes('.');
-                    if (isURL) {
-                      if (!searchUrl.startsWith('http')) {
-                        url = 'https://www.' + searchUrl;
-                      } else {
-                        url = searchUrl;
-                      }
-                    } else {
-                      url = `https://www.google.com/search?q=${searchUrl}`;
-                    }
-                    console.log(url, searchUrl);
-                    setUrlState(url);
-                    //setSearchUrl(url);
-                  }}>
+                  onPress={searchFunc}>
                   <Image
                     source={require('App/Assets/Images/Search.png')}
                     style={{
@@ -472,7 +499,59 @@ const CamScreenTwo = ({navigation, route}) => {
         </View>
       </View>
     </KeyboardAvoidingView>
-    <AnimatedModal visible={modalOpen} close={()=>setModalOpen(false)} content={<View/>} />
+    <AnimatedModal upPercent={"90%"} visible={modalOpen} close={()=>setModalOpen(false)} content={
+      
+    <View style={{height:"100%"}}>
+      <View style={{alignItems: 'center', width: '100%', height: 50, flexDirection: 'row'}}>
+
+        <TouchableOpacity 
+        style={{marginRight: 10, marginLeft: 10, paddingLeft: 15, paddingRight: 15, height: 40, justifyContent:'center', alignItems:'center', backgroundColor:constants.RED, borderRadius: 50,}}
+        onPress={()=> {
+          Keyboard.dismiss();
+          setModalOpen(false);
+        }}>
+          <Text style={{color: 'white'}}>close</Text>
+          </TouchableOpacity>
+      <TextInput
+      onSubmitEditing={searchFunc}
+                  placeholder="Enter link or search by keyword"
+                  selectTextOnFocus
+                  value={searchUrl}
+                  onChangeText={(text) => {
+                    //searchUrl = text;
+                    setSearchUrl(text);
+                  }}
+                  style={
+                    styles.textBoxStyle}
+                  // onFocus={() => {
+                  //   console.log('focusing');
+                  //   setEnlarge(true);
+                  //   startAnimation();
+                  // }}
+      />
+              <TouchableOpacity 
+        style={{marginRight: 10, marginLeft: 10, paddingLeft: 15, paddingRight: 15, height: 40, justifyContent:'center', alignItems:'center', backgroundColor:constants.BLUE, borderRadius: 50,}}
+        onPress={pinFunc}>
+          <Text style={{color: 'white'}}>import</Text>
+          </TouchableOpacity>
+                </View>
+                <LinearGradient style={{flex: 1, height: '100%', width: '100%'}} colors={[constants.ORANGE, constants.YELLOW]}>
+                <View style={{flex: 1}}>
+                <WebView
+                onNavigationStateChange={(webViewState) => {
+                  setUrlState(webViewState.url);
+                  setSearchUrl(webViewState.url);
+                }}
+                style={{
+                  backgroundColor: enlarge ? 'white' : 'transparent',
+                }}
+                source={{uri: urlState}}
+              />
+                </View>
+                </LinearGradient>
+    </View>
+
+    } />
     </>
   );
 };
@@ -486,6 +565,13 @@ const styles = StyleSheet.create({
   textBoxStyle: {
     fontFamily: 'Nunito-Light',
     flex: 10,
+    backgroundColor: 'white',
+    paddingTop: 10,
+    paddingBottom: 10,
+    paddingLeft: 10,
+    width: '50%',
+    borderRadius: 50,
+    borderWidth: 1,
   },
 });
 
