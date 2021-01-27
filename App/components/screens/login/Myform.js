@@ -28,9 +28,10 @@ const Myform = ({registration, navigation}) => {
       firebase
         .auth()
         .signInWithEmailAndPassword(email, password)
-        .catch(() => {
+        .catch((err) => {
           console.log("this login didn't work");
           setPassword("");
+          console.log(err);
           setErrorMessage("This login didn't work");
         });
     } else {
@@ -51,6 +52,7 @@ const Myform = ({registration, navigation}) => {
           console.log('EERRRROR', error);
           console.log('This registration did not work');
           setPassword("");
+          if (error === "[Error: The email address is already in use by another account.]"){}
           setErrorMessage("This signup didn't work!");
           // ...
         });

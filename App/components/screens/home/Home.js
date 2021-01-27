@@ -292,12 +292,13 @@ const HomeTabSwipe = ({videoData, navigation, route}) => {
   
   tabBar= {(props)=><TopBar {...props} />}
   >
+    <Tab.Screen name="flocking" component={DataList} initialParams={{value: 'hello world', videoData:[], flockData: [], rentData: [], dataType: 'flockData'}} />
     <Tab.Screen name="for you" component = {MiniCarousel}/>
 
   <Tab.Screen name="posts" component={DataList} initialParams={{videoData: keyVideoData, dataType:'videoData'}} />
 
   {/* <Tab.Screen name="Popular" component={FeedList} initialParams={{videoData: []}} /> */}
-  <Tab.Screen name="flocking" component={DataList} initialParams={{value: 'hello world', videoData:[], flockData: [], rentData: [], dataType: 'flockData'}} />
+  
   <Tab.Screen name="borrow" component={DataList} initialParams={{value: 'hello world', videoData:[], flockData: [], rentData: [], dataType: 'rentData'}} />
   {/* <Tab.Screen name="Flocking" component={FeedList} initialParams={{value: 'hello world', videoData:[], flockData: [], rentData: [], dataType: 'flockData', flockOrNot: 'flockData'}} /> */}
   {/* <Tab.Screen name="Request" component={FeedList} initialParams={{value: 'hello world', videoData:[], flockData: [], rentData: [], dataType: 'rentData', flockOrNot: 'rentData'}} /> */}
@@ -453,7 +454,7 @@ const TopBar = ({descriptors, state, navigation}) => {
     outputRange: [constants.PURPLE, constants.ORANGE, constants.RED, constants.GREY]
 });
 
-  const tabColors = [constants.PURPLE, constants.ORANGE, constants.RED, constants.GREY];
+  const tabColors = [["#c09bae", "#ff9966"], ["#6989af", "#c09bae"], ["#c09bae","#e1cbd7"], ['black',"#ffffff"]];
   console.log('route', state.routes);
   return (
     <LinearGradient
@@ -499,19 +500,28 @@ const TopBar = ({descriptors, state, navigation}) => {
           navigation.navigate(route.name);
         }
 
-          return <TouchableOpacity activeOpacity={1} style={{flex: 1,marginLeft: 10, marginRight: 10}} onPress={onPress}>
+          return <TouchableOpacity activeOpacity={1} style={{flex: 1,marginLeft: 10, marginRight: 10,
+            shadowOpacity: isFocused?0.5:0, shadowColor: tabColors[index][0], shadowRadius: 10,
+          }} onPress={onPress}>
           {/* <LinearGradient 
           colors={[constants.TRANSLUCENT, 'white']}
           style={{width: '100%', height: 50,  
           padding: 10, borderRadius: 30, borderWidth: 1,justifyContent: 'center', alignItems: 'center'}}>
             <Text>{route.name}</Text>
             </LinearGradient> */}
+            <LinearGradient 
+          colors={[tabColors[index][0], tabColors[index][1]]}
+          style={{width: '100%',   borderRadius: 40,
+          }}>
                       <View
-          style={{width: '100%', height: 50,  backgroundColor: tabColors[index], borderColor: isFocused?constants.ORANGE:'grey',
-          shadowOpacity: isFocused?0.6:0, shadowColor: constants.PURPLE, shadowRadius: 10,
+          style={{width: '100%', height: 42, borderColor: isFocused?constants.ORANGE:'grey',
+          
           padding: 10, borderRadius: 30, justifyContent: 'center', alignItems: 'center'}}>
-            <Text>{route.name}</Text>
+            
+            <Text style={{color: 'white'}}>{route.name}</Text>
+            
             </View>
+            </LinearGradient>
             </TouchableOpacity>
 
       })}
