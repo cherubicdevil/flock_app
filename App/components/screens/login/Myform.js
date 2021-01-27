@@ -65,7 +65,7 @@ const Myform = ({registration, navigation}) => {
   }
     return (
       <View style={styles.container}>
-        <Text style={{fontSize: 17, marginLeft: 10, color: 'white', fontFamily: constants.FONT}}>{registration?"Create an account":"Have an account? Login."}</Text>
+        <Text style={{fontSize: 17, marginLeft: 10, color: 'white', fontFamily: constants.FONT}}>{registration?"Create an account.":"Have an account? Login."}</Text>
         <Text style={{color: 'red', fontFamily: constants.FONT}}>{errorMessage}</Text>
         <Input
           label=""

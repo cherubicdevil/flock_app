@@ -222,24 +222,28 @@ const ProfileMain = ({navigation}) => {
   return (
     <Fragment><SafeAreaView style={{ flex: 0, backgroundColor: constants.TRANSLUCENT }} /><SafeAreaView style={{flex: 1, backgroundColor: constants.PINK_BACKGROUND}}>
       <AnimatedModal fade={false} upPercent="35%" visible={modalOpen} close={()=>setModalOpen(false)} content={<View>
-        <Button
-          title="Edit Profile"
+        <TouchableOpacity
           onPress={() => {
             navigation.navigate('Profile');
             setModalOpen(false);
           }}
-        />
-        <Button
-          title="logout"
+          style={{padding: 20, alignItems: 'center', justifyContent: 'center', borderBottomWidth: 1, borderColor: constants.GREY}}
+        >
+        <Text style={{color: constants.PURPLE}}>Edit Profile</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
           onPress={() => {
             firebase.auth().signOut();
             console.log('logout');
           }}
-        />
+          style={{padding: 20, alignItems: 'center', justifyContent: 'center', borderBottomWidth: 1, borderColor: constants.GREY, borderTopWidth:0}}
+        >
+          <Text style={{color: constants.BLUE}}>Logout</Text>
+          </TouchableOpacity>
       </View>}/>
 
       <View style={{height: 50, backgroundColor: constants.TRANSLUCENT}}>
-      <View style={{position: 'absolute', left: 10, top: 0, zIndex: 400}}>
+      <View style={{justifyContent: 'center', position: 'absolute', left: 10, top: 0, zIndex: 400}}>
         <TouchableOpacity
           onPress={() => {
             navigation.goBack();
@@ -248,7 +252,7 @@ const ProfileMain = ({navigation}) => {
         <Icon name="chevron-left" size={40} color="#999" />
 </TouchableOpacity>
         </View>
-        <Text style={{alignSelf: 'center'}}>Profile</Text>
+        <Text style={{alignSelf: 'center', marginTop: 5, fontSize: 20}}>Profile</Text>
       </View>
       {/* <ImageBackground
         source={require('App/Assets/Images/Orange_Gradient_Small.png')}
