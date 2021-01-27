@@ -72,7 +72,7 @@ const AnimatedModal = ({
           height: visible ? viewParams.height : 0,
           width: visible ? viewParams.width: 0,
           position: 'absolute',
-        //   zIndex: 10,
+          zIndex: 500,
           bottom: viewParams.bottom,
           left: viewParams.left,
         //   bottom: -1000,

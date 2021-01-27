@@ -20,8 +20,10 @@ import {constants} from 'App/constants';
 import ProgressHeader from 'App/components/ProgressHeader';
 import {firebase, db} from 'App/firebase/config';
 import { CommonActions } from '@react-navigation/native';
+import AnimatedModal from 'App/components/AnimatedModal';
 
 const CamScreenTwo = ({navigation, route}) => {
+  const [modalOpen, setModalOpen] = useState(false);
   route.params.data['hello2'] ='twp';
   const [fade, setFade] = useState(new Animated.Value(1));
 
@@ -176,10 +178,12 @@ const CamScreenTwo = ({navigation, route}) => {
 
   
   return (
+    <>
     <KeyboardAvoidingView
       style={{flex: 1}}
       behavior="padding"
       keyboardVerticalOffset={100}>
+        
       <View behavior="height" keyboardVerticalOffset={0} style={{flex: 1}}>
         <View
           style={{
@@ -245,13 +249,19 @@ const CamScreenTwo = ({navigation, route}) => {
           );
           }}
         />
-        <View style={{flex: 1, zIndex: 300}}>
+        
+        <View style={{flex: 1, zIndex: -100}}>
           <View style={{paddingLeft: 20, paddingTop: 10}}>
             <Text
               style={{fontFamily: 'Nunito-Light', color: constants.LIGHTGREY}}>
               Find the product you recommended. Import it below.
             </Text>
+            
+            <Button title="test" onPress={()=> {
+              setModalOpen(true);
+            }}/>
           </View>
+          
           <Animated.View
             style={{
               flex: 1,
@@ -462,6 +472,8 @@ const CamScreenTwo = ({navigation, route}) => {
         </View>
       </View>
     </KeyboardAvoidingView>
+    <AnimatedModal visible={modalOpen} close={()=>setModalOpen(false)} content={<View/>} />
+    </>
   );
 };
 
