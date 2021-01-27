@@ -376,6 +376,61 @@ const Home = ({route, navigation, lastVisible = null}) => {
   );
 };
 
+
+const MiniCarouselFlocking = ({navigation, route}) => {
+
+  const dispatch = useDispatch();
+  const [viewHeight, setViewHeight] = useState(800);
+  const {keyArrFlock, keyVideoData, setKeyVideoData, setKeyFinishedLoading} = useContext(KeyContext);
+  // return <View><Text>Hi</Text></View>;
+  const [finalAr, setFinalAr] = useState([]);
+  var testAr = [];
+  useEffect(()=> {
+    setFinalAr(shuffle([...keyArrRent, ...keyArrFlock,...keyVideoData]));
+    
+  }, [keyArrRent, keyArrFlock, keyVideoData]);
+
+  useEffect(()=>{
+    
+    fetchAlbums().then((ar) => {
+      setKeyVideoData(ar.ar);
+      dispatch({type:'sendCarouselIndex', payload: ar.ar.length - 1});
+      setTimeout(()=>{
+        setKeyFinishedLoading(true);
+      }, 2000);
+
+    })
+  }, []);
+
+
+
+  var res = [];
+  for (const item of finalAr) {
+    res.push(<View style={{height: '100%', width: '100%', borderWidth: 1, borderOpacity: 0.1,borderBottomWidth: 0,}}>
+    {/* <Text>{item?.product?.title || item.flock}</Text> */}
+    <NewVideoPage route={route} navigation={navigation} data={item} index={finalAr.indexOf(item)} currIndex={finalAr.indexOf(item)} viewHeight={viewHeight} />
+    </View>);
+  }
+  // return <View onLayout = {(event) => {
+  //   setViewHeight(event.nativeEvent.layout.height);
+  // }} style={{height: '100%'}}>
+  //   <ScrollView horizontal={false} showsVerticalScrollIndicator={false}
+  //   onMomentumScrollEnd={(event)=>{
+  //     console.log(event.nativeEvent.contentOffset)
+  //     dispatch({type:'sendCarouselIndex', payload: Math.floor(event.nativeEvent.contentOffset.y / viewHeight)});
+  //   }}
+  //   // onScroll ={(event)=>{
+  //   //   dispatch({type:'sendCarouselIndex', payoad: Math.floor()});
+  //   // }}
+  //     pagingEnabled={true}>
+  //       {res}
+  //     </ScrollView>
+  // </View>
+  return <View onLayout = {(event) => {
+    setViewHeight(event.nativeEvent.layout.height);
+  }}><FeatherPanResponder navigation={navigation} route={route} data={res} viewHeight={viewHeight} /></View>;
+
+};
 const MiniCarousel = ({navigation, route}) => {
 
   const dispatch = useDispatch();

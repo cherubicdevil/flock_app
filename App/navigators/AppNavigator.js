@@ -50,7 +50,7 @@ const AppNavigator5 = () => {
             tabBarVisible: true,
             title: 'Carousel',
             cap: 'play',
-            image: require('App/Assets/Images/Play.png'),
+            image: require('App/Assets/Images/Home_Icon.png'),
           }}
           initialParams={{vidVisible: true, scrollIndex: 0}}
           // FLOCK_BUG when click carousel nav bar, doesn't play automatically
@@ -61,7 +61,7 @@ const AppNavigator5 = () => {
           options={{
             title: 'VideoMasonry',
             cap: 'shop',
-            image: require('App/Assets/Images/Happy_Shopping_Icon.png'),
+            image: require('App/Assets/Images/Magnifying_Glass.png'),
           }}
           initialParams={{vidVisible: false}}
         />
@@ -137,7 +137,7 @@ const AppNavigator5 = () => {
             tabBarVisible: false,
             title: 'Chat',
             cap: 'flocks',
-            image: require('App/Assets/Images/Group_Chat_Icon.png'),
+            image: require('App/Assets/Images/Goose_Egg_White.png'),
           }}
         />
         <Tab.Screen
@@ -180,8 +180,8 @@ const AppNavigator5 = () => {
           component={ProfileMain}
           options={{
             title: 'Egg',
-            cap: 'save',
-            image: require('App/Assets/Images/Goose_Egg_White.png'),
+            cap: 'You',
+            image: require('App/Assets/Images/cute_duck.png'),
           }}
         />
       </Tab.Navigator>

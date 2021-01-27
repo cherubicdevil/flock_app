@@ -53,7 +53,7 @@ const EggItem = ({image, text}) => {
   const [eggModalOpen, setEggModalOpen] = useState(false);
   return <>
   <TouchableOpacity style={{flex: 1}} onPress={()=>setEggModalOpen(true)}>
-  <InItem image={image} text={text} />
+  <InItem image={image} text={text} color={constants.ORANGE} />
   </TouchableOpacity>
 <AnimatedModal upPercent="30%" bgcolor="#FFD700" visible={eggModalOpen} fade={false} close={()=>{setEggModalOpen(false)}} content={<View style={{height: 40}}>
   <View style={{borderWidth: 1, borderColor: 'yellow', width: '60%', alignSelf: 'center', padding: 10, justifyContent: 'center', alignItems: 'center'}}>
@@ -119,7 +119,7 @@ const AddItem = ({image, text, navigation, route}) => {
   );
 };
 
-const InItem = ({image, text, focused}) => {
+const InItem = ({image, text, focused, color=constants.ICONGREY}) => {
   return (
     <>
       <Image
@@ -130,7 +130,7 @@ const InItem = ({image, text, focused}) => {
           width: 50,
           marginTop: -5,
           resizeMode: 'contain',
-          tintColor: focused ? constants.PURPLE : constants.ICONGREY,
+          tintColor: focused ? constants.PURPLE : color,
         }}
       />
       <Text
