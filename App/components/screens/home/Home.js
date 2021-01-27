@@ -509,17 +509,17 @@ const TopBar = ({descriptors, state, navigation}) => {
           padding: 10, borderRadius: 30, borderWidth: 1,justifyContent: 'center', alignItems: 'center'}}>
             <Text>{route.name}</Text>
             </LinearGradient> */}
-            <View style={{borderRadius: 40, shadowOpacity: isFocused?1:0, shadowRadius: 5, shadowColor: tabColors[index][0], shadowOffset: {height: 5}}}>
+            <View style={{borderRadius: 40, shadowOpacity: isFocused?0:0, shadowRadius: 5, shadowColor: tabColors[index][0], shadowOffset: {height: 5}}}>
             <LinearGradient 
-          colors={[tabColors[index][0], tabColors[index][1]]}
+          colors={[isFocused?tabColors[index][0]:'white', isFocused?tabColors[index][1]:'white']}
           style={{width: '100%',   borderRadius: 40,
           }}>
                       <View
-          style={{borderWidth: isFocused?0:0, width: '100%', height: 42, borderColor: "#ff9966",
+          style={{borderWidth: isFocused?0:2, width: '100%', height: 42, borderColor: constants.GREY,
           
           padding: 10, borderRadius: 30, justifyContent: 'center', alignItems: 'center'}}>
             
-            <Text style={{color: 'white'}}>{route.name}</Text>
+            <Text style={{color: isFocused?'white':'black'}}>{route.name}</Text>
             
             </View>
 
@@ -528,15 +528,15 @@ const TopBar = ({descriptors, state, navigation}) => {
             </TouchableOpacity>
 
       })}
-      <Animated.View style={{alignSelf: 'center',height: 25, position: 'absolute',  width: tabWidth - 50,
+      {/* <Animated.View style={{alignSelf: 'center',height: 25, position: 'absolute',  width: tabWidth - 50,
       borderRadius: 40, zIndex: -10, left: 30, backgroundColor: 'blue',
     transform: [{scale: tabScale },{ translateX: left}, ],
-     }} >
+     }} > */}
       {/* <LinearGradient 
           colors={[constants.PURPLE, 'white']}
           style={{width: '100%', height: '100%',   borderRadius: 40,
           }} /> */}
-     </Animated.View>
+     {/* </Animated.View> */}
     </LinearGradient>
   );
 };
