@@ -65,14 +65,14 @@ const FeedList= ({navigation, route, feedItem=null, productBlurb=null, KeyContex
     return album.map((al) => {
       var type = "";
       var color = 'black';
-      if (al.type == 'rec') {
-        color= constants.PURPLEBORDER;
+      if (al.type == 'rec') { // pin
+        color= constants.BLUEBORDER;
         type = "rec";
-      } else if (al.completed) {
-        color = constants.BLUEBORDER;
+      } else if (al.completed) { // borrow
+        color = constants.PURPLEBORDER;
         type="rent";
-      } else if (al.completed==false) {
-        color = constants.ORANGE;
+      } else if (al.completed==false) { // flock
+        color = constants.GREYORANGE;
         type="flock";
       }
       if (false) {
