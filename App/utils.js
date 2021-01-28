@@ -49,6 +49,8 @@ import {useDispatch} from 'react-redux';
 import {ShareDialog, LoginButton, AccessToken} from 'react-native-fbsdk';
 import { AppInstalledChecker, CheckPackageInstallation } from 'react-native-check-app-install';
 import CameraRoll from '@react-native-community/cameraroll';
+const cheerio = require('react-native-cheerio')
+const stringSimilarity = require("string-similarity");
 
 var lastVisible = null;
 
@@ -454,6 +456,177 @@ const shuffle = (array) => {
   }
   return array;
 }
+
+
+const pinLocalFunc = (htmlBody) => {
+  const imageDownloader = {
+    // Source: https://support.google.com/webmasters/answer/2598805?hl=en
+    imageRegex: /(?:([^:\/?#]+):)?(?:\/\/([^\/?#]*))?([^?#]*\.(?:bmp|gif|jpe?g|png|svg|webp))(?:\?([^#]*))?(?:#(.*))?/i,
+  
+    extractImagesFromTags(dol) {
+      return imageDownloader.removeDuplicateOrEmpty(
+        [].slice
+          .apply(dol("img, a, [style]"))
+          .map(imageDownloader.extractImageFromElement)
+      );
+    },
+  
+    extractImageFromElement(element) {
+      if (element.name.toLowerCase() === "img") {
+        let src = element.attribs.src || element.attribs["data-src"];
+        if (src !== undefined && src !== "") {
+          const hashIndex = src.indexOf("#");
+          if (hashIndex >= 0) {
+            src = src.substr(0, hashIndex);
+          }
+        }
+        return { img: src || "", desc: element.attribs.alt || "" };
+      }
+  
+      return "";
+    },
+  
+    extractURLFromStyle(url) {
+      return url.replace(/^url\(["']?/, "").replace(/["']?\)$/, "");
+    },
+  
+    isImageURL(url) {
+      return (
+        url.indexOf("data:image") === 0 || imageDownloader.imageRegex.test(url)
+      );
+    },
+  
+    relativeUrlToAbsolute(url) {
+      if (url.indexOf("/") === 0) {
+        const index = global.notBaseURL.indexOf(".com") + 4;
+        return global.notBaseURL.substring(0, index).concat(url);
+      } else if (!url.includes('http')){
+        const index = global.notBaseURL.indexOf(".com") + 4;
+        return global.notBaseURL.substring(0, index).concat("/"+url);
+      }
+      else {
+        return url;
+      }
+    },
+  
+    removeDuplicateOrEmpty(images) {
+      let hash = new Map();
+      for (let i = 0; i < images.length; i++) {
+        hash.set(images[i].img, images[i].desc);
+      }
+      //console.log(hash);
+      const result = [];
+      for (let [key, val] of hash) {
+        //console.log(key, val);
+        if (key !== "") {
+          result.push({ img: key, desc: val || "" });
+        }
+      }
+      //console.log(result.length);
+  
+      return result;
+    },
+  };
+  
+  const getImageUrl = ($, title) => {
+    var imageUrl = $('meta[property="og:image:secure_url"]').attr("content");
+    if (!imageUrl && title) {
+      const images = imageDownloader.extractImagesFromTags($);
+      const best = stringSimilarity.findBestMatch(
+        title,
+        images.map(function (element) {
+          return element.desc || "";
+        })
+      );
+      if (best.rating == 0) {
+        imageUrl = images[0].img;
+      } else {
+        imageUrl = images[best.bestMatchIndex].img;
+      }
+    }
+    return imageUrl;
+  };
+  const getPriceTitleImage = ($) => {
+    var imageUrl;
+  var price;
+  var title;
+
+  price = $("meta")
+    .filter(function () {
+      return (
+        $(this).attr("property") != null &&
+        $(this).attr("property").endsWith("price:amount")
+      );
+    })
+    .attr("content");
+  // console.log("Price: ", price);
+  if (!price) {
+    price = $("span:contains($), div:contains($)")
+      .filter(function () {
+        const lengthBool =
+          $(this).text().length > 2 && $(this).text().length < 20;
+        const element = $(this)[0];
+        const maxDepth = 6;
+        const recurse = (el, depth = 0) => {
+          if (el?.parent === null || el?.parent === undefined) {
+            return true;
+          } else {
+            if (el.parent.name === "a") {
+              return false;
+            } else {
+              return recurse(el?.parent, depth + 1);
+            }
+          }
+        };
+
+        return lengthBool && recurse(element);
+      })
+      .text()
+      .trim();
+  }
+  const prices = price.split('$');
+  if (prices[0] === "" && prices.length > 1) {
+    price = prices[1];
+  }
+
+  title =
+    $("meta")
+      .filter(function () {
+        return (
+          ($(this).attr("property") != null &&
+            $(this).attr("property").endsWith("title")) ||
+          ($(this).attr("name") != null &&
+            $(this).attr("name").endsWith("title"))
+        );
+      })
+      .attr("content") ||
+    $("meta[property='og:title']").attr("content") ||
+    $("title").text() ||
+    $('meta[name="keywords"]').attr("content");
+
+    imageUrl = getImageUrl($, title);
+    imageUrl = imageDownloader.relativeUrlToAbsolute(imageUrl.trim());
+    if (imageUrl.startsWith('data')) {
+      //imageUrl = "too big";
+    }
+
+
+    return {image: imageUrl, price: price, title: title};
+}
+  var $ = cheerio.load(htmlBody);
+  
+  // console.log("STUFFFFFFF", $("title").text())
+const {price: price, image: imageUrl, title: title } = getPriceTitleImage($);
+const data = {
+  url: global.notBaseURL,
+  title: title.trim().split(/[^/\S ]/)[0],
+  image: imageUrl,
+  price: price.split("\n")[0],
+};
+// console.log(data);
+return data;
+}
+
 export {
   fetchStreamableSource,
   fetchAlbums,
@@ -473,4 +646,5 @@ export {
   shareActions,
   generateUserObject,
   shuffle,
+  pinLocalFunc
 };

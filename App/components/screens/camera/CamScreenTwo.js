@@ -16,6 +16,7 @@ import {
   KeyboardAvoidingView,
   ScrollView,
 } from 'react-native';
+const cheerio = require('react-native-cheerio')
 import ResizeableImage from 'App/components/ResizeableImage';
 import {constants} from 'App/constants';
 import ProgressHeader from 'App/components/ProgressHeader';
@@ -23,13 +24,27 @@ import {firebase, db} from 'App/firebase/config';
 import { CommonActions } from '@react-navigation/native';
 import AnimatedModal from 'App/components/AnimatedModal';
 import LinearGradient from 'react-native-linear-gradient';
+import {pinLocalFunc} from 'App/utils';
+
+
+const jsCode = 'window.ReactNativeWebView.postMessage(document.documentElement.innerHTML)'
 
 const CamScreenTwo = ({navigation, route}) => {
   const [modalOpen, setModalOpen] = useState(false);
   route.params.data['hello2'] ='twp';
   const [fade, setFade] = useState(new Animated.Value(1));
+  const [loading, setLoading] = useState(false);
+  var urlResult = "";
+  const [htmlBody, setHtml] = useState("");
+
+  
+
+  
 
  const pinFunc=() => {
+   urlResult = urlState;
+   console.log("urlResult", urlState);
+   setLoading(true);
   console.log('pinned');
   fetch(
     'https://powerful-everglades-32172.herokuapp.com/find_product/' +
@@ -37,21 +52,32 @@ const CamScreenTwo = ({navigation, route}) => {
   )
     .then((response) => response.json())
     .then((data) => {
-      setTitleState(data.title);
-      setPriceState(data.price);
+      setTitleState(data.title || "");
+      setPriceState((data.price || "").replace("-","").trim());
       dataUrl = data.url;
-      var ar = data.image.split('//');
+      var ar = [""];
+      if (data?.image) {
+        var ar = data.image.split('//');
+        setImageState('https://' + ar[ar.length - 1]);
+      } else {
+      
+      }
+      
 
-      setImageState('https://' + ar[ar.length - 1]);
+      
       // setTimeout(() => {
       //   setEnlarge(false);
       // }, 500);
       // Keyboard.dismiss();
       console.log(data);
+      setTimeout(() => {
+        setModalOpen(false);
+      }, 500);
+      setLoading(false);
+    }).catch((err) =>{
+      console.log(err);
     });
-  setTimeout(() => {
-    setModalOpen(false);
-  }, 500);
+
   Keyboard.dismiss();
 };
   const searchFunc = () => {
@@ -337,6 +363,7 @@ const CamScreenTwo = ({navigation, route}) => {
           {renderForm()}
         </View>
       </View>
+      <View style={{position: 'absolute', zIndex: 10000, height:loading?50:0, width: loading?50:0, backgroundColor: 'black'}} />
     </KeyboardAvoidingView>
     <AnimatedModal colored = {true} colors={['#ff7009', '#ff9966']} behind={false} upPercent={"90%"} visible={modalOpen} close={()=>setModalOpen(false)} content={
       
@@ -370,13 +397,28 @@ const CamScreenTwo = ({navigation, route}) => {
       />
               <TouchableOpacity 
         style={{marginRight: 10, marginLeft: 10, paddingLeft: 15, paddingRight: 15, height: 40, justifyContent:'center', alignItems:'center', backgroundColor:constants.ORANGE, borderRadius: 50,}}
-        onPress={pinFunc}>
+        onPress={()=>{
+          const result = pinLocalFunc(htmlBody);
+          setImageState(result.image);
+          setTitleState(result.title);
+          setPriceState(result.price);
+          setModalOpen(false);
+          }}>
           <Text style={{color: 'white'}}>import</Text>
           </TouchableOpacity>
                 </View>
                 <LinearGradient style={{flex: 1, height: '100%', width: '100%'}} colors={[constants.PINK_BACKGROUND, constants.TRANSLUCENT]}>
                 <View style={{flex: 1}}>
                 <WebView
+                injectedJavaScript={jsCode}
+                onMessage={event => {
+                  setHtml(event.nativeEvent.data);
+                  // console.log('Received: ', event.nativeEvent.data)
+                  // const $ = cheerio.load(event.nativeEvent.data);
+                  // const result = $("title").text();
+                  // console.log(result);
+                  // pinLocalFunc(event.nativeEvent.data);
+              }}
                 onNavigationStateChange={(webViewState) => {
                   setUrlState(webViewState.url);
                   setSearchUrl(webViewState.url);
