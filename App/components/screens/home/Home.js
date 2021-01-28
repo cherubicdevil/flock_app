@@ -343,7 +343,7 @@ const Home = ({route, navigation, lastVisible = null}) => {
 
   }, []);
   return (
-    <Fragment><SafeAreaView style={{ flex: 0, backgroundColor: constants.TRANSLUCENT }} /><SafeAreaView style={{ flex: 1, backgroundColor: constants.PINK_BACKGROUND }}>
+    <Fragment><SafeAreaView style={{ flex: 0, backgroundColor: constants.TRANSLUCENT }} /><SafeAreaView style={{ flex: 1, backgroundColor: constants.PINK_BACKGROUND_OPAQUE }}>
     {/* <SafeAreaView style={[styles.wrapperAll,{backgroundColor: constants.PINK_BACKGROUND}]}> */}
         {/* <ImageBackground
           imageStyle={{borderRadius: 25}}

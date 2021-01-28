@@ -211,7 +211,7 @@ useEffect(()=>{
       <View
         style={{
           height: '100%',
-          backgroundColor: constants.PINK_BACKGROUND,
+          backgroundColor: constants.PINK_BACKGROUND_OPAQUE,
           justifyContent: 'flex-start',
 
         }}>
