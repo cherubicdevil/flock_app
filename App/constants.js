@@ -24,6 +24,8 @@
 import {Dimensions} from 'react-native';
 
 export const constants = {
+  BLUEBORDER: "#2E79AB",
+  PURPLEBORDER: "#C09BAE",
   NAVBARHEIGHT: 60,
   LIGHTORANGE: '#ff9100',
   YELLOW: '#ffb700',

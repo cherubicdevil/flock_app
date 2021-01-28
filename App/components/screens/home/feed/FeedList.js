@@ -66,10 +66,10 @@ const FeedList= ({navigation, route, feedItem=null, productBlurb=null, KeyContex
       var type = "";
       var color = 'black';
       if (al.type == 'rec') {
-        color= 'purple';
+        color= constants.PURPLEBORDER;
         type = "rec";
       } else if (al.completed) {
-        color = 'blue';
+        color = constants.BLUEBORDER;
         type="rent";
       } else if (al.completed==false) {
         color = constants.ORANGE;

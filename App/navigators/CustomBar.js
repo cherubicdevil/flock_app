@@ -52,9 +52,11 @@ const EggItem = ({image, text}) => {
   const dispatch = useDispatch();
   const [eggModalOpen, setEggModalOpen] = useState(false);
   return <>
+  <View style={{marginBottom:-1, marginTop: 1,}}>
   <TouchableOpacity style={{flex: 1}} onPress={()=>setEggModalOpen(true)}>
-  <InItem image={image} text={text} color={constants.ORANGE} />
+  <InItem image={image} text={text} color={constants.GREYORANGE} />
   </TouchableOpacity>
+  </View>
 <AnimatedModal upPercent="30%" bgcolor="#FFD700" visible={eggModalOpen} fade={false} close={()=>{setEggModalOpen(false)}} content={<View style={{height: 40}}>
   <View style={{borderWidth: 1, borderColor: 'yellow', width: '60%', alignSelf: 'center', padding: 10, justifyContent: 'center', alignItems: 'center'}}>
   <Text style={{color: 'white', alignSelf: 'center'}}>You've got this many eggs.{select.userInfo.eggCoins}</Text>
@@ -130,13 +132,13 @@ const InItem = ({image, text, focused, color=constants.ICONGREY}) => {
           width: 50,
           marginTop: -5,
           resizeMode: 'contain',
-          tintColor: focused ? constants.PURPLE : color,
+          tintColor: focused ? constants.ORANGE : color,
         }}
       />
       <Text
         style={{
           fontFamily: constants.FONT,
-          color: focused ? constants.PURPLE : constants.ICONGREY,
+          color: focused ? constants.ORANGE : constants.ICONGREY,
           textAlign: 'center',
         }}>
         {text}
