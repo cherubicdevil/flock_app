@@ -263,8 +263,9 @@ useEffect(()=>{
         <View pointerEvents="none">
 
           {renderProduct(navigation, data)}
-          <View style={{height: (100-percentage)+"%", zIndex: 2000,}} ><TouchableWithoutFeedback style={{width:'100%', height: '100%', backgroundColor: 'yellow'}} onPress={()=>setModalVisible(true)}>{firstComment === undefined || Object.keys(firstComment).length==0?<></>:<View style={{flexDirection: 'row', marginLeft: 30, marginTop: 20}}><Text style={{fontWeight: 'bold'}}>{firstComment.user.name}:</Text><Text style={{marginLeft: 20}}>{firstComment.text}</Text></View>}</TouchableWithoutFeedback></View>
+          {/* <View style={{height: (100-percentage)+"%", position: 'absolute', bottom: -50, zIndex: 2000, backgroundColor: 'black'}} ><TouchableWithoutFeedback style={{width:'100%', height: '100%', backgroundColor: 'yellow'}} onPress={()=>setModalVisible(true)}>{firstComment === undefined || Object.keys(firstComment).length==0?<></>:<View style={{marginLeft: 30}}><View style={{flexDirection: 'row', marginTop: 10}}><Text style={{fontWeight: 'bold'}}>@{firstComment.user.name}</Text><Text style={{marginLeft: 5}}>{firstComment.text}</Text></View><TouchableOpacity onPress={()=>setModalVisible(true)}><Text style={{color: 'grey', fontSize: 12, marginTop: 5}}>View all comments</Text></TouchableOpacity></View>}</TouchableWithoutFeedback></View> */}
         </View>
+        <View style={{height: (100-percentage)+"%",  zIndex: 2000}} ><TouchableWithoutFeedback style={{width:'100%', height: '100%', backgroundColor: 'yellow'}} onPress={()=>setModalVisible(true)}>{firstComment === undefined || Object.keys(firstComment).length==0?<></>:<View style={{marginLeft: 30}}><View style={{flexDirection: 'row', marginTop: 10}}><Text style={{fontWeight: 'bold'}}>@{firstComment.user.name}</Text><Text style={{marginLeft: 5}}>{firstComment.text}</Text></View><TouchableOpacity onPress={()=>setModalVisible(true)}><Text style={{color: 'grey', fontSize: 12, marginTop: 5}}>View all comments</Text></TouchableOpacity></View>}</TouchableWithoutFeedback></View>
         {/* {renderClose(navigation)} */}
         
         
