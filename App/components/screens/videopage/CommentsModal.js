@@ -14,6 +14,7 @@ import {
   TextInput,
   TouchableWithoutFeedback,
 } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import LinearGradient from 'react-native-linear-gradient';
 import {firebase} from 'App/firebase/config';
 import {useDispatch, useSelector} from 'react-redux';
@@ -534,7 +535,7 @@ const CommentsModal = ({modalVisible, data, toggleFunc}) => {
               toggleFunc();
               //setModalVis(false);
             }}>
-            <Text style={styles.textStyle}>X</Text>
+            <Icon name="times" size={20} color="#555" />
           </TouchableOpacity>
         </View>
       </KeyboardAvoidingView>
@@ -573,12 +574,7 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   openButton: {
-    backgroundColor: '#999',
     marginRight: 4,
-    borderRadius: 20,
-    padding: 5,
-    paddingTop: 3,
-    paddingBottom: 3,
     position: 'absolute',
     right: 5,
     top: 5,
