@@ -49,7 +49,7 @@ const AppNavigator5 = () => {
           options={{
             tabBarVisible: true,
             title: 'Carousel',
-            cap: 'play',
+            cap: 'home',
             image: require('App/Assets/Images/Home_Icon.png'),
           }}
           initialParams={{vidVisible: true, scrollIndex: 0}}
@@ -60,7 +60,7 @@ const AppNavigator5 = () => {
           component={SearchPage}
           options={{
             title: 'VideoMasonry',
-            cap: 'shop',
+            cap: 'search',
             image: require('App/Assets/Images/Magnifying_Glass.png'),
           }}
           initialParams={{vidVisible: false}}
@@ -136,7 +136,7 @@ const AppNavigator5 = () => {
           options={{
             tabBarVisible: false,
             title: 'Chat',
-            cap: 'flocks',
+            cap: 'eggs',
             image: require('App/Assets/Images/Goose_Egg_White.png'),
           }}
         />
