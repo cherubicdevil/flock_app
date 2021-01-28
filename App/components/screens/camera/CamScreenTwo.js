@@ -27,6 +27,7 @@ const CamScreenTwo = ({navigation, route}) => {
   const [modalOpen, setModalOpen] = useState(true);
   route.params.data['hello2'] ='twp';
   const [fade, setFade] = useState(new Animated.Value(1));
+  const textInputRef = useRef();
  const pinFunc=() => {
   console.log('pinned');
   fetch(
@@ -296,14 +297,14 @@ const CamScreenTwo = ({navigation, route}) => {
         
         <View style={{flex: 1, zIndex: -100}}>
           <View style={{paddingLeft: 20, paddingTop: 10}}>
-            <Text
-              style={{fontFamily: 'Nunito-Light', color: constants.LIGHTGREY}}>
-              Find the product you recommended. Import it below.
-            </Text>
             
-            <Button title="test" onPress={()=> {
+            <TouchableOpacity style={{padding: 5, borderRadius: 50, borderWidth: 1, borderOpacity: 0.2,}} value={""} onPress={()=>{
               setModalOpen(true);
-            }}/>
+            }}>
+              <Text style={{fontFamily: constants.FONT, color: constants.LIGHTGREY}}>
+                Search for product on the internet
+              </Text>
+            </TouchableOpacity>
           </View>
           {renderForm()}
         </View>
@@ -325,6 +326,7 @@ const CamScreenTwo = ({navigation, route}) => {
       <TextInput
       onSubmitEditing={searchFunc}
                   placeholder="Enter link or search by keyword"
+                  ref={textInputRef}
                   selectTextOnFocus
                   value={searchUrl}
                   onChangeText={(text) => {
