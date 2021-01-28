@@ -16,6 +16,7 @@ import {
   KeyboardAvoidingView,
   ScrollView,
 } from 'react-native';
+import ResizeableImage from 'App/components/ResizeableImage';
 import {constants} from 'App/constants';
 import ProgressHeader from 'App/components/ProgressHeader';
 import {firebase, db} from 'App/firebase/config';
@@ -93,7 +94,7 @@ const CamScreenTwo = ({navigation, route}) => {
   const [foundProduct, setFoundProduct] = useState(true);
   const [titleState, setTitleState] = useState(null);
   const [descState, setDescState] = useState(null);
-  const [priceState, setPriceState] = useState("");
+  const [priceState, setPriceState] = useState(0);
   var dataUrl = "";
   const [enlarge, setEnlarge] = useState(false);
   const animation = useRef(new Animated.Value(90));
@@ -113,24 +114,83 @@ const CamScreenTwo = ({navigation, route}) => {
             paddingLeft: 20,
             paddingRight: 20,
             zIndex: 100,
-            paddingBottom: 40,
-            borderBottomLeftRadius: 70,
-            borderBottomRightRadius: 70,
+            paddingTop: 10,
+            paddingBottom: 10,
+            borderBottomLeftRadius: 50,
+            borderBottomRightRadius: 50,
           }}>
-            <Image
-              style={{
-                tintColor:'black',
-                alignSelf: 'flex-start',
-                width: 150,
-                height: 150,
+
+            <View style={{flexDirection: 'row'}}>
+              <View style={{alignSelf: 'flex-start',
+                // width: 150,
+                // height: 150,
                 resizeMode: 'contain',
+                marginRight: 15,
                 marginVertical: 10,
-              }}
+                overflow: 'hidden',
+                borderRadius: 40,
+                borderTopLeftRadius: 0,
+                borderTopRightRadius: 0,
+                }}>
+            <ResizeableImage
               defaultSource={require('App/Assets/Images/Blank_Photo_Icon.png')}
               source={
                 {uri: imageState}
               }
+              horizontalLimit={false}
+              limitHorizontal={false}
+              hLimit={150}
             />
+            </View>
+            <View style={{justifyContent: 'flex-start', flex: 1, marginTop: 10,}}>
+            <View style={{marginBottom: 10}}>
+              <Text style={{marginLeft: 15, color: constants.DARKGREY}}>Title</Text>
+              <TextInput
+                placeholder="Describe the product"
+                style={styles.descriptionStyle}
+                placeholderTextColor={constants.DARKGREY}
+                onChangeText={(text) => {
+                  setTitleState(text);
+                }}
+                value={titleState}
+              />
+            </View>
+            {/* <View style={{marginTop: 5, marginBottom: 10}}>
+              <Text>Description</Text>
+              <TextInput
+              numberOfLines={3}
+              multiline
+              style={[styles.descriptionStyle, {height: 50, paddingLeft: 15}]}
+                placeholder="Tell flockers what's so special"
+                onChangeText={(text) => {
+                  setDescState(text);
+                }}
+                placeholderTextColor={constants.DARKGREY}
+                value={descState}
+              />
+            </View> */}
+            <View style={{marginTop: 5, paddingRight: 10}}>
+              <Text style={{marginLeft: 15, color:constants.DARKGREY}}>Price</Text>
+              <View style={[styles.descriptionStyle, {flexDirection: 'row', width: 100, alignItems: 'center'}]}>
+                <Text>$</Text>
+              <TextInput
+              keyboardType="numeric"
+                placeholder="0.00"
+                onChangeText={(text) => {
+                  if (text === "") {
+                    setPriceState("");
+                } else {
+                    setPriceState(parseInt(text.replace(".","").replace("$",""))/100);
+                    console.log(parseInt(text.replace(".","").replace("$",""))/100);
+                }
+                }}
+                placeholderTextColor={constants.DARKGREY}
+                value={(typeof priceState)==="string"?priceState:priceState.toFixed(2)}
+              />
+              </View>
+            </View>
+          </View>
+            </View>
             {/* <View style={{flex: 2}}>
               <View
                 style={{
@@ -181,54 +241,7 @@ const CamScreenTwo = ({navigation, route}) => {
                 />
               </View>
             </View> */}
-          <View style={{justifyContent: 'flex-start'}}>
-            <View style={{marginBottom: 10}}>
-              <Text>Title</Text>
-              <TextInput
-                placeholder="Describe the product"
-                style={styles.descriptionStyle}
-                placeholderTextColor={constants.DARKGREY}
-                onChangeText={(text) => {
-                  setTitleState(text);
-                }}
-                value={titleState}
-              />
-            </View>
-            <View style={{marginTop: 5, marginBottom: 10}}>
-              <Text>Description</Text>
-              <TextInput
-              numberOfLines={3}
-              multiline
-              style={[styles.descriptionStyle, {height: 50, paddingLeft: 15}]}
-                placeholder="Give more details about the product"
-                onChangeText={(text) => {
-                  setDescState(text);
-                }}
-                placeholderTextColor={constants.DARKGREY}
-                value={descState}
-              />
-            </View>
-            <View style={{marginTop: 5, paddingRight: 10}}>
-              <Text>Price</Text>
-              <View style={[styles.descriptionStyle, {flexDirection: 'row', width: 100, alignItems: 'center'}]}>
-                <Text>$</Text>
-              <TextInput
-              keyboardType="numeric"
-                placeholder="0.00"
-                onChangeText={(text) => {
-                  if (text === "") {
-                    setPriceState("");
-                } else {
-                    setPriceState(parseInt(text.replace(".","").replace("$",""))/100);
-                    console.log(parseInt(text.replace(".","").replace("$",""))/100);
-                }
-                }}
-                placeholderTextColor={constants.DARKGREY}
-                value={priceState.toFixed(2)}
-              />
-              </View>
-            </View>
-          </View>
+          
         </View>
       );
     } else {
