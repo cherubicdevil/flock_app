@@ -1,6 +1,7 @@
 import React from 'react';
 import {View, Image, Text} from 'react-native';
 import {constants} from 'App/constants';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 const ProductBlurb = ({data}) => {
   // Possible FLOCK_BUG
@@ -47,7 +48,10 @@ const ProductBlurb = ({data}) => {
       width: '100%'
     }}>
       <Text numberOfLines={1} style={{flex: 1, color: 'black', fontWeight:'bold'}}>{data?.product?.title}</Text>
-      <Text style={{color: constants.ORANGE, fontWeight: 'bold'}}>${data?.product?.price}</Text>
+      <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+      <Text>@{data.username}</Text>
+      <View style={{justifyContent: 'center', alignItems: 'center', marginRight: 5,}}><Icon color={"white"} size={20} name="heart" style={{position: 'absolute'}} /><Text style={{color: 'black', position: 'absolute', fontSize: 10}}>{data.likes}</Text></View>
+      </View>
     </View>;
   }
   return (

@@ -118,7 +118,8 @@ const FeedList= ({navigation, route, feedItem=null, productBlurb=null, KeyContex
       var {limitKey, setLimitKey, limitKeyRent, setLimitKeyRent} = useContext(KeyContext);
     }
     return (
-      <><Button style={{position: 'absolute', bottom: 0, zIndex: 500}} title="GET MORE" onPress={()=> {
+      <>
+      {/* <Button style={{position: 'absolute', bottom: 0, zIndex: 500}} title="GET MORE" onPress={()=> {
         if (flockOrNot == "flockData") {
         setLimitKey(limitKey + 2);
         } else {
@@ -126,10 +127,10 @@ const FeedList= ({navigation, route, feedItem=null, productBlurb=null, KeyContex
         }
       console.log('get more');
       }
-    }/>
+    }/> */}
       <View>
         
-        <LinearGradient
+        {/* <LinearGradient
           colors={[constants.LIGHTGREY, 'rgba(0,0,0,0)']}
           style={{
             height: 70,
@@ -137,7 +138,7 @@ const FeedList= ({navigation, route, feedItem=null, productBlurb=null, KeyContex
             position: 'absolute',
             top: 0,
             zIndex: 40,
-          }}></LinearGradient>
+          }}></LinearGradient> */}
                       
         <ScrollView
           style={{
