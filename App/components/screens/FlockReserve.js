@@ -14,6 +14,7 @@ const FlockReserve = ({navigation, route}) => {
     const [myMarkedDates, setMyMarkedDates] = useState({});
 
       useEffect(()=> {
+        console.log(route.params.data.id, "DATA ID");
         db.collection("chatGroups").doc(route.params.data.id)
     .onSnapshot(function(doc) {
         console.log("Current dates: ", doc.data().markedDates);

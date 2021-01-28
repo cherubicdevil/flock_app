@@ -174,6 +174,7 @@ const HomeTabSwipe = ({videoData, navigation, route}) => {
         //   source: key,
         // });
         setKeyArrFlock(flock);
+        // console.log("KEY FLOCK", flock)
         // navigation.dispatch({
         //   ...CommonActions.setParams({videoData: [], rentData: rent, flockData: flock}),
         //   source: key1,
@@ -224,9 +225,9 @@ const HomeTabSwipe = ({videoData, navigation, route}) => {
         const flock = [];
         querySnapshot.forEach(function(doc) {
           if (doc.data().completed === false) {
-          flock.push(doc.data());
+          flock.push({...doc.data(), id: doc.id});
           } else {
-            rent.push(doc.data());
+            rent.push({...doc.data(), id: doc.id});
           }
         });
         // navigation.dispatch({
@@ -238,6 +239,7 @@ const HomeTabSwipe = ({videoData, navigation, route}) => {
         //   source: key1,
         // });
         setKeyArrRent(rent);
+        console.log("RENTTTTTTTTTTTTTTTTTTTTTTTTT", rent,"RENT");
         // setFlockData(flock);
         // setRentData(rent);
       });
@@ -292,8 +294,9 @@ const HomeTabSwipe = ({videoData, navigation, route}) => {
   
   tabBar= {(props)=><TopBar {...props} />}
   >
+       <Tab.Screen name="for you" component = {MiniCarousel}/>
     <Tab.Screen name="flocking" component={DataList} initialParams={{value: 'hello world', videoData:[], flockData: [], rentData: [], dataType: 'flockData'}} />
-    <Tab.Screen name="for you" component = {MiniCarousel}/>
+ 
     <Tab.Screen name="borrow" component={DataList} initialParams={{value: 'hello world', videoData:[], flockData: [], rentData: [], dataType: 'rentData'}} />
   <Tab.Screen name="posts" component={DataList} initialParams={{videoData: keyVideoData, dataType:'videoData'}} />
 

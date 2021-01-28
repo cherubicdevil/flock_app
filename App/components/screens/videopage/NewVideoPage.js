@@ -245,6 +245,7 @@ useEffect(()=>{
                   console.log('pressing')
               navigation.navigate("Product", {album: data.product, video: {video}})
               } else if (dataType==="rent") {
+                  
                   navigation.navigate("FlockReserve", {data: data});
               }
           }}><View style={{flexDirection: 'row',alignItems: 'center', backgroundColor: 'rgba(255,255,255,1)', marginTop: 20, marginLeft: 10, marginRight: 10, marginBottom: 10, padding: 10, paddingLeft: 30, borderRadius: 100, borderWidth: 3, borderColor: constants.GREYORANGE}} >

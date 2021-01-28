@@ -150,7 +150,8 @@ class Product extends Component {
   };
 
   renderContactHeader = () => {
-    console.log(this.props.route.params.album.image);
+    // console.log(this.props.route.params.album.image);
+    console.log("PRODUCt", this.props.route.params.album)
     return (
       <View style={styles.headerContainer}>
         <View style={styles.coverContainer}>
