@@ -33,7 +33,7 @@ import {fetchAlbums, fetchProducts, mergeArrays} from 'App/utils';
 import LinearGradient from 'react-native-linear-gradient';
 import ProductBlurb from 'App/components/screens/home/feed/ProductBlurb';
 const width = Dimensions.get('window').width / 2 - 30;
-const FeedList= ({navigation, route, feedItem=null, productBlurb=null, KeyContext, flockOrNot}) => {
+const FeedList= ({navigation, route, videoData, feedItem=null, productBlurb=null, KeyContext, flockOrNot}) => {
   const [myAr, setMyAr] = useState([]);
 
   const renderProductBlurb = (product) => {
@@ -50,7 +50,7 @@ const FeedList= ({navigation, route, feedItem=null, productBlurb=null, KeyContex
     mute={true}
     repeat={true}
     ar={myAr}
-    videoAr={route.params.videoData}
+    videoAr={videoData}
     index={myAr.indexOf(al)}
     navigation={navigation}
     data={al}
@@ -107,7 +107,7 @@ const FeedList= ({navigation, route, feedItem=null, productBlurb=null, KeyContex
     // console.log("FL DATA", this.props.route.params);
 
 
-    const ar = mergeArrays(route.params.videoData, []);
+    const ar = mergeArrays(videoData, []);
     const album1 = ar.slice(0, ar.length / 2);
     const album2 = ar.slice(ar.length / 2, ar.length);
 
