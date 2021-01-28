@@ -24,10 +24,10 @@ import AnimatedModal from 'App/components/AnimatedModal';
 import LinearGradient from 'react-native-linear-gradient';
 
 const CamScreenTwo = ({navigation, route}) => {
-  const [modalOpen, setModalOpen] = useState(true);
+  const [modalOpen, setModalOpen] = useState(false);
   route.params.data['hello2'] ='twp';
   const [fade, setFade] = useState(new Animated.Value(1));
-  const textInputRef = useRef();
+
  const pinFunc=() => {
   console.log('pinned');
   fetch(
@@ -93,7 +93,7 @@ const CamScreenTwo = ({navigation, route}) => {
   const [foundProduct, setFoundProduct] = useState(true);
   const [titleState, setTitleState] = useState(null);
   const [descState, setDescState] = useState(null);
-  const [priceState, setPriceState] = useState(null);
+  const [priceState, setPriceState] = useState("");
   var dataUrl = "";
   const [enlarge, setEnlarge] = useState(false);
   const animation = useRef(new Animated.Value(90));
@@ -108,20 +108,23 @@ const CamScreenTwo = ({navigation, route}) => {
       return (
         <View
           style={{
-            flex: 10,
-            backgroundColor: constants.BGGREY,
+            backgroundColor: 'white',
             width: '100%',
-            paddingLeft: 30,
-            paddingRight: 30,
+            paddingLeft: 20,
+            paddingRight: 20,
             zIndex: 100,
+            paddingBottom: 40,
+            borderBottomLeftRadius: 70,
+            borderBottomRightRadius: 70,
           }}>
-          <View style={{height: 200, flexDirection: 'row'}}>
             <Image
               style={{
+                tintColor:'black',
                 alignSelf: 'flex-start',
                 width: 150,
-                height: 200,
+                height: 150,
                 resizeMode: 'contain',
+                marginVertical: 10,
               }}
               defaultSource={require('App/Assets/Images/Blank_Photo_Icon.png')}
               source={
@@ -178,12 +181,12 @@ const CamScreenTwo = ({navigation, route}) => {
                 />
               </View>
             </View> */}
-          </View>
-          <View style={{flex: 2, justifyContent: 'flex-start'}}>
-            <View style={{paddingRight: 10, marginBottom: 20}}>
+          <View style={{justifyContent: 'flex-start'}}>
+            <View style={{marginBottom: 10}}>
               <Text>Title</Text>
               <TextInput
                 placeholder="Describe the product"
+                style={styles.descriptionStyle}
                 placeholderTextColor={constants.DARKGREY}
                 onChangeText={(text) => {
                   setTitleState(text);
@@ -191,9 +194,12 @@ const CamScreenTwo = ({navigation, route}) => {
                 value={titleState}
               />
             </View>
-            <View style={{marginTop: 10, paddingRight: 10, marginBottom: 20}}>
+            <View style={{marginTop: 5, marginBottom: 10}}>
               <Text>Description</Text>
               <TextInput
+              numberOfLines={3}
+              multiline
+              style={[styles.descriptionStyle, {height: 50, paddingLeft: 15}]}
                 placeholder="Give more details about the product"
                 onChangeText={(text) => {
                   setDescState(text);
@@ -202,16 +208,25 @@ const CamScreenTwo = ({navigation, route}) => {
                 value={descState}
               />
             </View>
-            <View style={{marginTop: 10, paddingRight: 10}}>
+            <View style={{marginTop: 5, paddingRight: 10}}>
               <Text>Price</Text>
+              <View style={[styles.descriptionStyle, {flexDirection: 'row', width: 100, alignItems: 'center'}]}>
+                <Text>$</Text>
               <TextInput
-                placeholder="$"
+              keyboardType="numeric"
+                placeholder="0.00"
                 onChangeText={(text) => {
-                  setPriceState(text);
+                  if (text === "") {
+                    setPriceState("");
+                } else {
+                    setPriceState(parseInt(text.replace(".","").replace("$",""))/100);
+                    console.log(parseInt(text.replace(".","").replace("$",""))/100);
+                }
                 }}
                 placeholderTextColor={constants.DARKGREY}
-                value={priceState}
+                value={priceState.toFixed(2)}
               />
+              </View>
             </View>
           </View>
         </View>
@@ -225,7 +240,7 @@ const CamScreenTwo = ({navigation, route}) => {
   return (
     <>
     <KeyboardAvoidingView
-      style={{flex: 1}}
+      style={{flex: 1, backgroundColor: constants.PINK_BACKGROUND}}
       behavior="padding"
       keyboardVerticalOffset={100}>
         
@@ -295,14 +310,14 @@ const CamScreenTwo = ({navigation, route}) => {
           }}
         />
         
-        <View style={{flex: 1, zIndex: -100}}>
-          <View style={{paddingLeft: 20, paddingTop: 10}}>
+        <View style={{flex: 1, zIndex: -100, backgroundColor: constants.PINK_BACKGROUND}}>
+          <View style={{paddingLeft: 20, paddingTop: 10, paddingRight: 20, backgroundColor: 'white'}}>
             
-            <TouchableOpacity style={{padding: 5, borderRadius: 50, borderWidth: 1, borderOpacity: 0.2,}} value={""} onPress={()=>{
+            <TouchableOpacity style={[{padding: 10, backgroundColor: 'white', borderRadius: 50, borderWidth: 1, borderColor: constants.DARKGREY}]} value={""} onPress={()=>{
               setModalOpen(true);
             }}>
               <Text style={{fontFamily: constants.FONT, color: constants.LIGHTGREY}}>
-                Search for product on the internet
+                Search for a product on the internet
               </Text>
             </TouchableOpacity>
           </View>
@@ -326,7 +341,6 @@ const CamScreenTwo = ({navigation, route}) => {
       <TextInput
       onSubmitEditing={searchFunc}
                   placeholder="Enter link or search by keyword"
-                  ref={textInputRef}
                   selectTextOnFocus
                   value={searchUrl}
                   onChangeText={(text) => {
@@ -384,8 +398,9 @@ const styles = StyleSheet.create({
     width: '50%',
     borderRadius: 50,
     borderWidth: 1,
-    borderColor: constants.GREY,
+    borderColor: constants.DARKGREY,
   },
+  descriptionStyle: {padding: 5, paddingLeft: 15, borderRadius: 30, borderWidth: 1, borderColor: constants.DARKGREY,},
 });
 
 export default CamScreenTwo;

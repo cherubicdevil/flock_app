@@ -53,6 +53,11 @@ const ProductBlurb = ({data}) => {
       <View style={{justifyContent: 'center', alignItems: 'center', marginRight: 5,}}><Icon color={"white"} size={20} name="heart" style={{position: 'absolute'}} /><Text style={{color: 'black', position: 'absolute', fontSize: 10}}>{data.likes}</Text></View>
       </View>
     </View>;
+  } else if (data.objectID) { // a search result
+    return <View>
+      <Text numberOfLines={1} style={{color: 'black', fontWeight:'bold'}}>{data?.product?.title}</Text>
+    <Text>${data?.product?.price}</Text>
+    </View>;
   }
   return (
     <View

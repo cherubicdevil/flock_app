@@ -1,11 +1,12 @@
 import React, {useState, Fragment, useContext, createContext} from 'react';
-import {SafeAreaView, View, Text, TextInput,Image, TouchableOpacity} from 'react-native';
+import {SafeAreaView, View, Text, TextInput,Image, TouchableOpacity, Dimensions} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import FeedList from 'App/components/screens/home/feed/FeedList';
 import algoliasearch from 'algoliasearch';
 import {constants} from "App/constants";
-import { Touchable } from 'react-native';
+// import { Touchable } from 'react-native';
+import ResizeableImage from 'App/components/ResizeableImage';
 const KeyContext = createContext();
 
 const SearchPage = ({navigation, route}) => {
@@ -75,10 +76,24 @@ const SearchPage = ({navigation, route}) => {
             </TouchableOpacity>
         </View>
     })} */}
-    <FeedList videoData={results} navigation={navigation} route={route} />
+    <FeedList videoData={results} navigation={navigation} route={route} 
+    feedItem={(item)=>{
+        return <FeedItemTemp image={item.product.image} />;
+    }}
+    />
     </View>
 
     </SafeAreaView></Fragment>
 };
+
+const FeedItemTemp = ({image}) => {
+    const [width, setWidth] = useState(0);
+    return <View onLayout={(event)=>{
+        setWidth(event.nativeEvent.layout.width);
+    }}
+    style={{resizeMode: 'cover', width: '100%'}}>
+    <ResizeableImage source={{uri: image}} wLimit = {width} />
+    </View>
+}
 
 export default SearchPage;

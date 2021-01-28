@@ -61,7 +61,7 @@ const ProgressHeader = ({
           style={{
             flexDirection: 'row',
             position: 'absolute',
-            left: 10,
+            left: 20,
             bottom: 8,
           }}
           onPress={() => {
@@ -125,7 +125,7 @@ const ProgressHeader = ({
       <TouchableOpacity
         style={{
           position: 'absolute',
-          right: 10,
+          right: 20,
           bottom: 5,
         }}
         onPress={() => {
