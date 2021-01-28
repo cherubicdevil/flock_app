@@ -23,6 +23,7 @@
  */
 
 import React, {useState, useEffect, useRef, useContext} from 'react';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import {
   KeyboardAvoidingView,
   ScrollView,
@@ -107,7 +108,7 @@ const NewVideoPage = ({navigation, route, array, index, data, currIndex, viewHei
 
   const [flockCountdowns, setFlockCountdowns] = useState([]);
 
-  const percentage = 60;
+  const percentage= 75;
 
   var lastVisible = null;
   const select = useSelector(state=>state);
@@ -152,20 +153,23 @@ useEffect(()=>{
     return (
       <View
         style={{
-          alignItems: 'center',
-          position: 'absolute',
+          alignItems: 'flex-end',
+          alignSelf: 'flex-end',
+          // position: 'absolute',
           right: 10,
-          width: 50,
-          bottom: 45,
+          width: 100,
+          // bottom: 105,
           zIndex: 25,
-          shadowOpacity:0.5,
-          shadowRadius: 10,
-          shadowOffset: {height: 0, width: 0}
+
+          shadowOpacity:0.2,
+          shadowRadius: 4,
+          shadowOffset: {height: 2, width: 0}
         }}>
+          <View style={{alignItems: 'center'}}>
         <View style={{marginTop: 10}}>
           <HeartButton  data={data} />
         </View>
-        <View style={{marginTop: 10}}>
+        <View style={{marginTop: 5}}>
           <TouchableOpacity
             onPress={function () {
               dispatch({type: 'toggle'});
@@ -178,6 +182,7 @@ useEffect(()=>{
           </TouchableOpacity>
           <Text style={styles.buttonText}></Text>
         </View>
+        <View style={{alignItems: 'center'}}>
         <TouchableWithoutFeedback
           onPress={() => {
             Share.share({
@@ -191,7 +196,11 @@ useEffect(()=>{
             source={require('App/Assets/Images/Share_Icon_White.png')}
           />
         </TouchableWithoutFeedback>
-        <Text style={styles.buttonText}>share</Text>
+        <View style={{padding: 0, backgroundColor: "#fb9b37", borderRadius: 20,alignItems: 'center', marginTop: -5, alignSelf: 'center'}}>
+        <Text style={{marginLeft: 5, marginRight: 5,color: 'white', paddingTop: 5, paddingBottom: 5,  fontSize: 10, fontWeight: 'bold'}}>Earn $</Text>
+        </View>
+        </View>
+        </View>
       </View>
     );
   };
@@ -212,21 +221,23 @@ useEffect(()=>{
             width: '100%',
             //justifyContent: 'center',
             zIndex: -10,
-            borderRadius: 40,
+            borderRadius: 60,
             borderTopLeftRadius: 0,
             borderTopRightRadius: 0,
             overflow: 'hidden',
             backgroundColor: 'white',
           }}>
-              <Image source = {{uri: data?.poster || data?.product?.image || ''}} style={{position: 'absolute', zIndex: -10, top: 0, width: '100%', height: '100%' }} blurRadius={100} />
-              <View style={{alignItems: 'center'}}>
+              {/* <Image source = {{uri: data?.poster || data?.product?.image || ''}} style={{position: 'absolute', zIndex: -10, top: 0, width: '100%', height: '100%' }} blurRadius={100} /> */}
+              <View style={{alignSelf: 'center'}}>
+              <ResizeableImage source={{uri: data?.product?.image || ''}} limitHorizontal={false} hLimit={viewHeight * percentage/100} />
+              </View>
+              <View style={{width: '100%', position: 'absolute', bottom: 0}}>
               {renderIcons()}
               
           {/* <ResizeableImage source={{uri: data?.poster || data?.product?.image || ''}} limitHorizontal={false} hLimit={viewHeight * percentage/100} /> */}
-          <ResizeableImage source={{uri: data?.product?.image || ''}} limitHorizontal={false} hLimit={viewHeight * percentage/100} />
+          
           {/* <ConditionalVideo index={index} data={data} viewHeight={viewHeight * percentage/100} /> */}
           {(select.videopage.carIndex==index && select.videopage.leave==false)?<ScrollCount data={flockCountdowns} />:<></>}
-          </View>
           <TouchableOpacity onPress={()=>{
               const video = data.video;
               console.log(dataType);
@@ -236,10 +247,18 @@ useEffect(()=>{
               } else if (dataType==="rent") {
                   navigation.navigate("FlockReserve", {data: data});
               }
-          }}><View style={{backgroundColor: 'rgba(255,255,255,0.6)', marginTop: 4, marginLeft: 10, marginRight: 10, marginBottom: 10, padding: 20, paddingLeft: 30, borderRadius: 40, borderWidth: 3, borderColor: constants.ORANGE}} >
-              <Text>{data?.product?.title}</Text>
+          }}><View style={{flexDirection: 'row',alignItems: 'center', backgroundColor: 'rgba(255,255,255,1)', marginTop: 20, marginLeft: 10, marginRight: 10, marginBottom: 10, padding: 10, paddingLeft: 30, borderRadius: 100, borderWidth: 3, borderColor: constants.GREYORANGE}} >
+              <View style={{flex: 1}}>
+              <Text numberOfLines={2}>{data?.product?.title}</Text>
+              <Text></Text>
+              <Text style={{color: constants.GREYORANGE}}>${data?.product && data?.members?data?.product?.price / (data?.members.length+1) + " or less when you split with flockers":""}</Text>
+              <Text style={{color: "grey"}}>${data?.product?.price} original</Text>
+              </View>
+              <Icon color={constants.GREYORANGE} name="chevron-right" size={30} />
           </View>
           </TouchableOpacity>
+          </View>
+
         </View>
         <View pointerEvents="none">
 

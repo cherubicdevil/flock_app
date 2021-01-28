@@ -460,7 +460,7 @@ const MiniCarousel = ({navigation, route}) => {
 
   var res = [];
   for (const item of finalAr) {
-    res.push(<View style={{height: '100%', width: '100%', borderWidth: 1, borderOpacity: 0.1,borderBottomWidth: 0,}}>
+    res.push(<View style={{height: '100%', width: '100%', borderWidth: 0, borderOpacity: 0.1,borderBottomWidth: 0, shadowOffset:{height: -10, width: 0}, shadowColor:'black', shadowOpacity: 0.5, shadowRadius: 5, backgroundColor:"#000"}}>
     {/* <Text>{item?.product?.title || item.flock}</Text> */}
     <NewVideoPage route={route} navigation={navigation} data={item} index={finalAr.indexOf(item)} currIndex={finalAr.indexOf(item)} viewHeight={viewHeight} />
     </View>);
@@ -519,10 +519,10 @@ const TopBar = ({descriptors, state, navigation}) => {
       flexDirection: 'row',
       justifyContent: 'space-around',
       alignItems: 'flex-end',
-      paddingTop: 20,
+      paddingTop: 10,
       paddingBottom: 20,
-      // borderBottomRightRadius:20,
-      // borderBottomLeftRadius: 20,
+      borderBottomRightRadius:20,
+      borderBottomLeftRadius: 20,
       //shadowColor: "#ff7009", shadowOffset: {height: 10, width: 0}, shadowOpacity: 0.39, elevation: 13, shadowRadius: 28.30,
       //alignItems: 'center',
     }}>

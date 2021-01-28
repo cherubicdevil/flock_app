@@ -310,18 +310,18 @@ const CamScreenTwo = ({navigation, route}) => {
         </View>
       </View>
     </KeyboardAvoidingView>
-    <AnimatedModal upPercent={"90%"} visible={modalOpen} close={()=>setModalOpen(false)} content={
+    <AnimatedModal colored = {true} colors={['#ff7009', '#ff9966']} behind={false} upPercent={"90%"} visible={modalOpen} close={()=>setModalOpen(false)} content={
       
     <View style={{height:"100%"}}>
       <View style={{alignItems: 'center', width: '100%', height: 50, flexDirection: 'row'}}>
 
         <TouchableOpacity 
-        style={{marginRight: 10, marginLeft: 10, paddingLeft: 15, paddingRight: 15, height: 40, justifyContent:'center', alignItems:'center', backgroundColor:constants.RED, borderRadius: 50,}}
+        style={{marginRight: 10, marginLeft: 10, paddingLeft: 15, paddingRight: 15, height: 40, justifyContent:'center', alignItems:'center', backgroundColor: "#d8d8d8", borderRadius: 50,}}
         onPress={()=> {
           Keyboard.dismiss();
           setModalOpen(false);
         }}>
-          <Text style={{color: 'white'}}>close</Text>
+          <Text style={{color: 'black'}}>close</Text>
           </TouchableOpacity>
       <TextInput
       onSubmitEditing={searchFunc}
@@ -342,7 +342,7 @@ const CamScreenTwo = ({navigation, route}) => {
                   // }}
       />
               <TouchableOpacity 
-        style={{marginRight: 10, marginLeft: 10, paddingLeft: 15, paddingRight: 15, height: 40, justifyContent:'center', alignItems:'center', backgroundColor:constants.BLUE, borderRadius: 50,}}
+        style={{marginRight: 10, marginLeft: 10, paddingLeft: 15, paddingRight: 15, height: 40, justifyContent:'center', alignItems:'center', backgroundColor:constants.ORANGE, borderRadius: 50,}}
         onPress={pinFunc}>
           <Text style={{color: 'white'}}>import</Text>
           </TouchableOpacity>
@@ -384,6 +384,7 @@ const styles = StyleSheet.create({
     width: '50%',
     borderRadius: 50,
     borderWidth: 1,
+    borderColor: constants.GREY,
   },
 });
 
