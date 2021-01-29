@@ -10,7 +10,11 @@ import {
   SafeAreaView,
   Button,
   Linking,
+  Dimensions,
+  Animated
 } from 'react-native';
+import { CommonActions } from '@react-navigation/native';
+import {useFocusEffect} from '@react-navigation/native';
 import {firebase} from 'App/firebase/config';
 import {WebView} from 'react-native-webview';
 import {constants} from 'App/constants';
@@ -23,7 +27,9 @@ import productData from './product.json';
 import PhotoButton from './PhotoButton';
 import ProductStyles from './ProductStyle';
 import ModalSelector from 'react-native-modal-selector';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import ResizeableImage from 'App/components/ResizeableImage';
+import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
 const styles = StyleSheet.create({...ProductStyles});
 
@@ -78,29 +84,41 @@ const Flockit = () => {
   );
 };
 
-class Product extends Component {
-  static propTypes = {
-    // img: PropTypes.string.isRequired,
-    // detail: PropTypes.string.isRequired,
-    // containerStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.number]),
-  };
+const Product = ({route, navigation}) => {
+  const [tutorialScreen, setTutorialScreen] = useState(route.params.tutorial);
+  const arrowMargin = new Animated.Value(0);
 
-  static defaultProps = {
-    containerStyle: {},
-  };
+  useEffect(()=>{
 
-  componentDidMount () {
+  }, []);
+  useFocusEffect(()=>{
+    // const animateArrow = Animated.spring(arrowMargin, {
+    //   velocity: 5,
+    //   useNativeDriver: false,
+    //   toValue: 20,
+    // });
+    // const animateArrowUp = Animated.spring(arrowMargin, {
+    //   velocity: 5,
+    //   useNativeDriver: false,
+    //   toValue: 20,
+    // })
 
+    // var interval = setInterval(()=>{
+    //   Animated.sequence([animateArrow, animateArrowUp]).start();
+    // }, 2000);
+    return () => {
+      // clearInterval(interval);
+      setTutorialScreen(false);
+    };
+  },[]);
 
-  }
-
-  renderDetail = () => {
+  const renderDetail = () => {
     return (
       
       <TouchableOpacity style={{flexDirection:'row', justifyContent:'space-between'}} onPress={() => {
         Linking.openURL(
           'https://shopwithflock.com/redirect/?url=' +
-            this.props.route.params.album.url,
+            route.params.album.url,
         );
       }}>
         <Text style={{fontFamily: constants.FONTBOLD, fontSize: 14, color: 'black'}}>
@@ -111,15 +129,15 @@ class Product extends Component {
     );
   };
 
-  renderDescription = () => {
+  const renderDescription = () => {
     return (
       <View>
         <Text style={{fontSize: 14, fontWeight: 'bold', marginBottom: 5,}}>
-          {this.props.route.params.album.title}
+          {route.params.album.title}
         </Text>
         <View style={{flexDirection:'row', justifyContent: 'space-between'}}>
         <Text style={{alignSelf: 'center', fontFamily: constants.FONTBOLD, color: constants.ORANGE, fontSize: 16}}>
-          ${this.props.route.params.album.price}
+          ${route.params.album.price}
         </Text>
         {/*<Text style={styles.descriptionText}>50 flockers have bought</Text>*/}
         {/*<Text style={styles.descriptionText}>Recommended by username</Text>*/}
@@ -129,14 +147,14 @@ class Product extends Component {
           style={{
             borderRadius: 30,
             zIndex: 40,
-          }}><TouchableOpacity style={{borderRadius: 30, color: 'white', justifyContent: 'center', alignItems:'center', paddingBottom: 5, paddingTop: 3,paddingLeft: 10, paddingRight: 10}}><Text style={{color: 'white', fontSize: 14, fontFamily: constants.FONTBOLD}}>{"$" + Math.round(this.props.route.params.album.price / 7) + " or less when you split with flockers"}</Text></TouchableOpacity>
+          }}><TouchableOpacity style={{borderRadius: 30, color: 'white', justifyContent: 'center', alignItems:'center', paddingBottom: 5, paddingTop: 3,paddingLeft: 10, paddingRight: 10}}><Text style={{color: 'white', fontSize: 14, fontFamily: constants.FONTBOLD}}>{"$" + Math.round(route.params.album.price / 7) + " or less when you split with flockers"}</Text></TouchableOpacity>
 </LinearGradient>
         </View>
       </View>
     );
   };
 
-  renderNavigator = () => {
+   const renderNavigator = () => {
     return (
       <View style={{flexDirection: 'column'}}>
         <TouchableOpacity style={[styles.navigatorButton, {flex: 2}]}>
@@ -149,14 +167,31 @@ class Product extends Component {
     );
   };
 
-  renderContactHeader = () => {
+  const renderContactHeader = () => {
     // console.log(this.props.route.params.album.image);
-    console.log("PRODUCt", this.props.route.params.album)
+    // console.log("PRODUCt", this.props.route.params.album)
+      const renderBackOrClose = () => {
+        if (!route.params.tutorial) { //  means its from startflock
+          return <TouchableOpacity style={{resizeMode: 'cover', zIndex: 50, height: 30, width: 50,position: 'absolute', top: 40, left: 30}} onPress={navigation.goBack}><Image style={{width: 35, height: 35, tintColor: constants.LIGHTGREY}} source = {require('App/Assets/Images/Back_Icon.png')} /></TouchableOpacity>
+        } else {
+          return <TouchableOpacity style={{resizeMode: 'cover', zIndex: 50, height: 30, width: 50,position: 'absolute', top: 40, left: 30}} onPress={()=>{
+                      navigation.dispatch(
+            CommonActions.reset({
+              index: 0,
+              routes: [
+                { name: 'Home' },
+              ],
+            })
+                      );
+          }}><Icon name="times" size={35} color={constants.LIGHTGREY} /></TouchableOpacity>
+        }
+      }
+
     return (
       <View style={styles.headerContainer}>
         <View style={styles.coverContainer}>
           <View style={styles.coverImage}>
-            <TouchableOpacity style={{resizeMode: 'cover', zIndex: 50, height: 30, width: 50,position: 'absolute', top: 40, left: 30}} onPress={this.props.navigation.goBack}><Image style={{width: 35, height: 35, tintColor: constants.LIGHTGREY}} source = {require('App/Assets/Images/Back_Icon.png')} /></TouchableOpacity>
+            {renderBackOrClose()}
             <View style={{resizeMode: 'cover'}}>
             <Image
               style={{
@@ -167,14 +202,14 @@ class Product extends Component {
                 //height: 200,
                 alignSelf: 'center',
               }}
-              source={{uri: this.props.route.params.album.image}}
+              source={{uri: route.params.album.image}}
             />
             </View>
             <Video
           repeat={true}
           muted={true}
           source={{
-            uri: this.props.route.params.video?.video || "",
+            uri: route.params.video?.video || "",
           }}
           style={{
             height: 150,
@@ -190,7 +225,6 @@ class Product extends Component {
     );
   };
 
-  render() {
 
     return (
       <>
@@ -219,7 +253,7 @@ class Product extends Component {
         {/* </LinearGradient> */}
 
         <View style={styles.scroll}>
-              {this.renderContactHeader()}
+              {renderContactHeader()}
           <View
             style={{
               flex: 1,
@@ -232,9 +266,9 @@ class Product extends Component {
               //backgroundColor: 'white',
               borderRadius: 10,
             }}>
-            <View style={styles.productRow}>{this.renderDescription()}</View>
-            <FlockList navigation = {this.props.navigation} product = {this.props.route.params.album} />
-            <View style={styles.productRow}>{this.renderDetail()}</View>
+            <View style={styles.productRow}>{renderDescription()}</View>
+            <FlockList navigation = {navigation} product = {route.params.album} />
+            <View style={styles.productRow}>{renderDetail()}</View>
           </View>
           {/* <View style={styles.productRow}>{this.renderNavigator()}</View> */}
           {/*   <View style={styles.productRow}>{this.renderDetail()}</View> */}
@@ -251,8 +285,21 @@ class Product extends Component {
             <Text style={styles.textFooter}>Cluck</Text>
           </TouchableOpacity>
         </View> */}
-
+      
       </ScrollView>
+      <TouchableOpacity style = {{position: 'absolute',bottom: 0,}} onPress={()=>{
+        setTutorialScreen(false);
+      }}>
+      <View style={{backgroundColor: "rgba(0,0,0,0.5)", height: tutorialScreen?Dimensions.get('window').height:0, width: tutorialScreen?Dimensions.get('window').width:0}} >
+        <View style={{resizeMode: 'contain', position: 'absolute', bottom: 100, right: 70}}>
+        {/* <Icon name="arrow-down" size={30} color={'white'}  /> */}
+        <Image source = {require('App/Assets/Images/handarrow.png')}  style={{tintColor: 'white', height: 180,width: 150}} />
+        <TouchableWithoutFeedback style={{width: '100%', height: '100%',}} onPress={()=> {
+          setTutorialScreen(false);
+        }} />
+        </View>
+      </View>
+      </TouchableOpacity>
                 <View style={{flexDirection: 'row', height: 40, marginBottom: 30, marginRight: 10, marginLeft:20, justifyContent: 'space-between', alignItems: 'center', }}>
 
             
@@ -279,8 +326,8 @@ class Product extends Component {
                 <View style={{flex: 1, height: '100%', justifyContent:'center'}}>
                   <TouchableOpacity onPress={()=>{Linking.openURL(
               'https://shopwithflock.com/redirect/?url=' +
-                this.props.route.params.album.url,
-            );} }><Text style={{textAlign: 'center', color: 'white', fontWeight: 'bold',  fontSize: 13}}>Buy Now ${this.props.route.params.album.price}</Text></TouchableOpacity>
+                route.params.album.url,
+            );} }><Text style={{textAlign: 'center', color: 'white', fontWeight: 'bold',  fontSize: 13}}>Buy Now ${route.params.album.price}</Text></TouchableOpacity>
                 </View>
               </LinearGradient>
               <LinearGradient
@@ -296,7 +343,7 @@ class Product extends Component {
               <View style={{flex:1, height: '100%', justifyContent: 'center'}}>
                 <TouchableOpacity style={{height: "100%", justifyContent: 'center'}} onPress= {() => {
 
-                  this.props.navigation.navigate('StartFlock', {index: 0, product: this.props.route.params.album, data:{}});
+                  navigation.navigate('StartFlock', {index: 0, product: route.params.album, data:{}});
     
                 }}
     
@@ -309,7 +356,7 @@ class Product extends Component {
                 </View></>
     );
   }
-}
+
 
 
 

@@ -338,14 +338,15 @@ const CamScreenTwo = ({navigation, route}) => {
               console.error("Error adding document: ", error);
           });
   
-          navigation.dispatch(
-            CommonActions.reset({
-              index: 0,
-              routes: [
-                { name: 'Home' },
-              ],
-            })
-          );
+          // navigation.dispatch(
+          //   CommonActions.reset({
+          //     index: 0,
+          //     routes: [
+          //       { name: 'Home' },
+          //     ],
+          //   })
+          // );
+          navigation.navigate("Product", {album: route.params.data.product, tutorial: true});
           }}
         />
         
