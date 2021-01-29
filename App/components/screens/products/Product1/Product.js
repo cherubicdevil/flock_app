@@ -262,7 +262,7 @@ const Product = ({route, navigation}) => {
 
     return (
       <>
-      <ScrollView style={styles.mainViewStyle}>
+      <ScrollView showsVerticalScrollIndicator style={styles.mainViewStyle}>
         {/* <LinearGradient
           colors={['rgba(0,0,0,0)', 'rgba(40,60,81, 0.4)']}
           style={{
@@ -489,7 +489,7 @@ const FlockList = ({product, navigation, ar, limited = true}) => {
       </View>
     );
   }
-  return <ScrollView style={{padding:0, paddingBottom: 10, height: limited?100:'100%'}}>
+  return <ScrollView showsVerticalScrollIndicator={false} style={{padding:0, paddingBottom: 10, height: limited?100:'100%'}}>
   {result.length > 0?result:(<View style={{height: 60}}>
     <View style={{borderTopWidth: 1, paddingTop: 15, paddingLeft:20, marginTop: 10, alignItems: 'center', flexDirection: 'row'}}>
     <Text>No current flocks.</Text>
