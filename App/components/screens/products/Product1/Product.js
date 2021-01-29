@@ -30,6 +30,7 @@ import ModalSelector from 'react-native-modal-selector';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import ResizeableImage from 'App/components/ResizeableImage';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import AnimatedModal from 'App/components/AnimatedModal';
 
 const styles = StyleSheet.create({...ProductStyles});
 
@@ -87,10 +88,43 @@ const Flockit = () => {
 const Product = ({route, navigation}) => {
   const [tutorialScreen, setTutorialScreen] = useState(route.params.tutorial);
   const arrowMargin = new Animated.Value(0);
+  const [flockAr, setFlockAr] = useState([]);
+  const [modalOpen, setModalOpen] = useState(false);
 
   useEffect(()=>{
 
-  }, []);
+    var citiesRef = firebase.firestore().collection("chatGroups");
+    // console.log(route.parm.title);
+    // Create a query against the collection.
+    var query = citiesRef.where("productTitle", "==", route.params.album.title);
+    var unsubscribe = query
+    .onSnapshot(function(querySnapshot) {
+      const arr = [];
+      querySnapshot.forEach(function(doc) {
+        console.log("FOUNDDDDDD");
+        if (doc.data().completed === false) {
+        arr.push({...doc.data(), id:doc.id});
+
+          // doc.data() is never undefined for query doc snapshots
+          console.log(doc.id, " => ", doc.data());
+        }
+      });
+      setFlockAr(arr);
+    });
+    // query.get()
+    // .then(function(querySnapshot) {
+    //   const arr = [];
+    //     querySnapshot.forEach(function(doc) {
+    //       console.log("FOUNDDDDDD");
+    //       arr.push(doc.data());
+    //         // doc.data() is never undefined for query doc snapshots
+    //         console.log(doc.id, " => ", doc.data());
+    //     });
+    //     setAr(arr);
+    // })
+
+    return () => {unsubscribe()};
+  }, [route.params.album]);
   useFocusEffect(()=>{
     // const animateArrow = Animated.spring(arrowMargin, {
     //   velocity: 5,
@@ -266,8 +300,12 @@ const Product = ({route, navigation}) => {
               //backgroundColor: 'white',
               borderRadius: 10,
             }}>
+            
             <View style={styles.productRow}>{renderDescription()}</View>
-            <FlockList navigation = {navigation} product = {route.params.album} />
+            <View style={[styles.productRow, {backgroundColor: 'white', borderTopEndRadius: 20, borderTopStartRadius: 20}]}>
+            <Text style={{marginTop: 10,paddingLeft: 20, fontWeight: 'bold'}}>Over {flockAr.reduce((total, item)=>total + item.members.length, 0)} people are currently flocking.</Text>
+            <FlockList navigation = {navigation} product = {route.params.album} ar = {flockAr} />
+            </View>
             <View style={styles.productRow}>{renderDetail()}</View>
           </View>
           {/* <View style={styles.productRow}>{this.renderNavigator()}</View> */}
@@ -312,8 +350,8 @@ const Product = ({route, navigation}) => {
                 <Image source={require('App/Assets/Images/Share_Icon_White.png') } style={{shadowOpacity: 0.4, shadowOffset:{height:2, width:0},  width: 30, aspectRatio:1}}/>
               
               
-              <View style={{shadowOpacity: 1, shadowColor: '#555', shadowOffset: {height: 2, width: 0}, borderRadius: 30, flex: 0.8, flexDirection: 'row', backgroundColor: constants.ORANGE, height: 50, alignItems: 'center', marginRight: 10,}}>
-              <LinearGradient
+              <View style={{shadowOpacity: 1, shadowColor: '#555', shadowOffset: {height: 2, width: 0}, borderRadius: 30, overflow: 'hidden', flex: 0.8, flexDirection: 'row', backgroundColor: constants.ORANGE, height: 50, alignItems: 'center', marginRight: 10,}}>
+              {flockAr.length > 0?<LinearGradient
               colors={[constants.YELLOW, constants.LIGHTORANGE]}
               start={{ x: 0, y: 1 }} end={{ x: 1, y: 1 }}
               style={{
@@ -324,12 +362,15 @@ const Product = ({route, navigation}) => {
                 flex: 1,
               }}>
                 <View style={{flex: 1, height: '100%', justifyContent:'center'}}>
-                  <TouchableOpacity onPress={()=>{Linking.openURL(
-              'https://shopwithflock.com/redirect/?url=' +
-                route.params.album.url,
-            );} }><Text style={{textAlign: 'center', color: 'white', fontWeight: 'bold',  fontSize: 13}}>Buy Now ${route.params.album.price}</Text></TouchableOpacity>
+                  <TouchableOpacity onPress={()=>{
+            //         Linking.openURL(
+            //   'https://shopwithflock.com/redirect/?url=' +
+            //     route.params.album.url,
+            // );
+                    setModalOpen(true);
+            } }><Text style={{textAlign: 'center', color: 'white', fontWeight: 'bold',  fontSize: 13}}>Join a Flock</Text></TouchableOpacity>
                 </View>
-              </LinearGradient>
+              </LinearGradient>:<></>}
               <LinearGradient
               colors={['#ff8000', '#ff4d00']}
               start={{ x: 0, y: 1 }} end={{ x: 1, y: 1 }}
@@ -353,7 +394,9 @@ const Product = ({route, navigation}) => {
                 </View>
                 </LinearGradient>
                 </View>
-                </View></>
+                </View>
+                <AnimatedModal visible={modalOpen} close={()=>{setModalOpen(false)}} content={<FlockList navigation={navigation} product = {route.params.album} ar={flockAr} />} />
+                </>
     );
   }
 
@@ -379,44 +422,44 @@ const Countdown = ({dateObj}) => {
   <View style={{flexDirection: 'row', justifyContent:'space-between', fontSize: 10}}><Text style={{fontSize:10, alignSelf: 'stretch'}}>days</Text><Text style={{fontSize:10, alignSelf: 'stretch'}}>hrs</Text><Text style={{fontSize:10, alignSelf: 'stretch'}}>min</Text><Text style={{fontSize:10, alignSelf: 'stretch'}}>left</Text></View></>
 }
 
-const FlockList = ({product, navigation}) => {
-  const [ar, setAr] = useState([]);
-  useEffect(()=>{
+const FlockList = ({product, navigation, ar, limited = true}) => {
+  // const [ar, setAr] = useState([]);
+  // useEffect(()=>{
 
-    var citiesRef = firebase.firestore().collection("chatGroups");
-    console.log(product.title);
-    // Create a query against the collection.
-    var query = citiesRef.where("productTitle", "==", product.title);
-    var unsubscribe = query
-    .onSnapshot(function(querySnapshot) {
-      const arr = [];
-      querySnapshot.forEach(function(doc) {
-        console.log("FOUNDDDDDD");
-        if (doc.data().completed === false) {
-        arr.push({...doc.data(), id:doc.id});
+  //   var citiesRef = firebase.firestore().collection("chatGroups");
+  //   console.log(product.title);
+  //   // Create a query against the collection.
+  //   var query = citiesRef.where("productTitle", "==", product.title);
+  //   var unsubscribe = query
+  //   .onSnapshot(function(querySnapshot) {
+  //     const arr = [];
+  //     querySnapshot.forEach(function(doc) {
+  //       console.log("FOUNDDDDDD");
+  //       if (doc.data().completed === false) {
+  //       arr.push({...doc.data(), id:doc.id});
 
-          // doc.data() is never undefined for query doc snapshots
-          console.log(doc.id, " => ", doc.data());
-        }
-      });
-      setAr(arr);
-    });
-    // query.get()
-    // .then(function(querySnapshot) {
-    //   const arr = [];
-    //     querySnapshot.forEach(function(doc) {
-    //       console.log("FOUNDDDDDD");
-    //       arr.push(doc.data());
-    //         // doc.data() is never undefined for query doc snapshots
-    //         console.log(doc.id, " => ", doc.data());
-    //     });
-    //     setAr(arr);
-    // })
+  //         // doc.data() is never undefined for query doc snapshots
+  //         console.log(doc.id, " => ", doc.data());
+  //       }
+  //     });
+  //     setAr(arr);
+  //   });
+  //   // query.get()
+  //   // .then(function(querySnapshot) {
+  //   //   const arr = [];
+  //   //     querySnapshot.forEach(function(doc) {
+  //   //       console.log("FOUNDDDDDD");
+  //   //       arr.push(doc.data());
+  //   //         // doc.data() is never undefined for query doc snapshots
+  //   //         console.log(doc.id, " => ", doc.data());
+  //   //     });
+  //   //     setAr(arr);
+  //   // })
 
-    return () => {unsubscribe()};
-  }, [product]);
+  //   return () => {unsubscribe()};
+  // }, [product]);
   const result = [];
-  for (i = 0; i < Math.min(ar.length,2); i++) {
+  for (i = 0; i < Math.min(ar.length); i++) {
     console.log("index", i);
     const dat = ar[i];
     const tempFunc = ()=>{
@@ -428,7 +471,7 @@ const FlockList = ({product, navigation}) => {
     };
     console.log(result.length);
     result.push(  
-      <View style={{flexDirection: 'row', justifyContent: 'space-between', paddingTop: 10, borderTopWidth:2, borderColor: constants.GREY, paddingLeft: 20, paddingBottom:3}}>
+      <View style={{flexDirection: 'row', justifyContent: 'space-between', paddingTop: 10, borderTopWidth:i==0?0:2, borderColor: constants.GREY, paddingLeft: 20, paddingBottom:3}}>
       <View style={{flex: 1}}>
     <Text numberOfLines = {1} style={{fontWeight: 'bold', fontSize:15,width: 80, height: 20, }}>@{ar[i].members[0].name}</Text>
       <Text>and {ar[i].members.length-1} others</Text>
@@ -446,7 +489,7 @@ const FlockList = ({product, navigation}) => {
       </View>
     );
   }
-  return <View style={[styles.productRow, {padding:0, paddingBottom: 10}]}><Text style={{marginTop: 10,paddingLeft: 20, fontWeight: 'bold'}}>Over 36 have flock'ed. 9 are currently flock'ing.</Text>
+  return <ScrollView style={{padding:0, paddingBottom: 10, height: limited?100:'100%'}}>
   {result.length > 0?result:(<View style={{height: 60}}>
     <View style={{borderTopWidth: 1, paddingTop: 15, paddingLeft:20, marginTop: 10, alignItems: 'center', flexDirection: 'row'}}>
     <Text>No current flocks.</Text>
@@ -462,14 +505,14 @@ const FlockList = ({product, navigation}) => {
             marginRight: 20,
             marginLeft: 60,
             alignSelf: 'center',
-            borderRadius: 10,
+            borderRadius: 40,
             flex: 1,
           }}>
   <TouchableOpacity onPress= {() => {
     navigation.navigate('StartFlock', {index: 0, product: product});
 
-  }}><Text style={{textAlign: 'center', color: 'white', fontWeight: 'bold', fontSize: 13}}>Start Your Own</Text>
-  </TouchableOpacity></View></View></View>)}</View>;
+  }}><Text style={{textAlign: 'center', color: 'white', fontWeight: 'bold', fontSize: 13}}>Start Your Flock</Text>
+  </TouchableOpacity></View></View></View>)}</ScrollView>;
 
 
 

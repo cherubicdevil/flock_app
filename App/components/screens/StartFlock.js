@@ -135,7 +135,7 @@ const BasicInputText = ({numLines=1, numeric, data, placeholder, label, title, d
         console.log("BLUR", e.nativeEvent.text);
         data[title] = e.nativeEvent.text;
     }} 
-    value={dataValue.toFixed(2) || ""}
+    value={(typeof dataValue)==="string"?dataValue:dataValue.toFixed(2)}
     onChangeText={(text)=>{
         if (numeric) {
             console.log("THis is undefined?", parseInt(text.replace(".",""))/100);
