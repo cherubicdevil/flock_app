@@ -352,6 +352,8 @@ const Home = ({route, navigation, lastVisible = null}) => {
 
   }, []);
   return (
+    <View style={{backgroundColor: 'white', flex: 1}}>
+    <View style={{borderBottomEndRadius: 80, borderBottomLeftRadius: 80, overflow: 'hidden', height: Dimensions.get('window').height - constants.NAVBARHEIGHT}}>
     <Fragment><SafeAreaView style={{ flex: 0, backgroundColor: constants.TRANSLUCENT }} />
     {/* <SafeAreaView style={{ flex: 1, backgroundColor: 'transparent' }}> */}
     {/* <SafeAreaView style={[styles.wrapperAll,{backgroundColor: constants.PINK_BACKGROUND}]}> */}
@@ -386,6 +388,8 @@ const Home = ({route, navigation, lastVisible = null}) => {
     {/* </SafeAreaView> */}
     
     </Fragment>
+    </View>
+    </View>
   );
 };
 
@@ -420,7 +424,7 @@ const MiniCarouselRenting = ({navigation, route}) => {
   // var finalAr = keyArrRent;
   var res = [];
   for (const item of finalAr) {
-    res.push(<View style={{height: '100%', width: '100%', borderWidth: 1, borderOpacity: 0.1,borderBottomWidth: 0,}}>
+    res.push(<View style={{height: '100%', width: '100%', borderWidth: 0, borderOpacity: 0.1,borderBottomWidth: 0,}}>
     {/* <Text>{item?.product?.title || item.flock}</Text> */}
     <NewVideoPage route={route} navigation={navigation} data={item} index={finalAr.indexOf(item)} currIndex={finalAr.indexOf(item)} viewHeight={viewHeight} />
     </View>);
@@ -483,7 +487,7 @@ const MiniCarouselFlocking = ({navigation, route}) => {
 
   var res = [];
   for (const item of finalAr) {
-    res.push(<View style={{height: '100%', width: '100%', borderWidth: 1, borderOpacity: 0.1,borderBottomWidth: 0,}}>
+    res.push(<View style={{height: '100%', width: '100%', borderWidth: 0, borderOpacity: 0.1,borderBottomWidth: 0,}}>
     {/* <Text>{item?.product?.title || item.flock}</Text> */}
     <NewVideoPage route={route} navigation={navigation} data={item} index={finalAr.indexOf(item)} currIndex={finalAr.indexOf(item)} viewHeight={viewHeight} />
     </View>);

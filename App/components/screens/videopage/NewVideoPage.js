@@ -212,6 +212,7 @@ useEffect(()=>{
         style={{
           height: '100%',
           backgroundColor: constants.PINK_BACKGROUND_OPAQUE,
+          borderWidth: 0,
           justifyContent: 'flex-start',
 
         }}>
