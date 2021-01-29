@@ -9,8 +9,7 @@ import { useFocusEffect } from '@react-navigation/native';
 const data = ["hello",'world', 'data', 'i', 'am', 'so', 'sad'];
 
 
-const FeatherList = ({navigation, route, data=data, viewHeight, KeyContext}) => {
-    const {indexKey, setIndexKey} = useContext(KeyContext);
+const FeatherList = ({navigation, route, data=data, viewHeight}) => {
     const store = useStore();
     const dispatch = useDispatch();
     // const select = useSelector(state=>state.videopage);
@@ -38,13 +37,12 @@ const FeatherList = ({navigation, route, data=data, viewHeight, KeyContext}) => 
         React.useCallback(() => {
             dispatch({type: 'leave', payload: false});
             //setCurrentIndex()
-            // const carIndex = store.getState().videopage.carIndex;
-            const carIndex = indexKey;
+            const carIndex = store.getState().videopage.carIndex;
             setTimeout(()=>setCurrentIndex({curr: carIndex, prev: carIndex+1}), 0);
-            // console.log("CARINDEX:", carIndex);
+            console.log("CARINDEX:", carIndex);
           return ()=>{
               dispatch({type: 'leave', payload: true});
-            //   console.log(store.getState().videopage.carIndex);
+              console.log(store.getState().videopage.carIndex);
         };
         }, [])
       );
@@ -248,11 +246,11 @@ const FeatherPanResponder = ({index, positions, currIndex, setCurrentIndex, cont
                 outofwayAnimation();
                 setTimeout(()=>{
                     setCurrentIndex({curr:currentIndex - 1, prev: currentIndex});
+                    // dispatch({type: 'sendCarouselIndex', payload: currentIndex - 1});
                 }, 200);
                 //setCurrentIndex(currentIndex - 1);
                 
-                // dispatch({type: 'sendCarouselIndex', payload: currentIndex - 1});
-                setIndexKey(currentIndex - 1);
+                dispatch({type: 'sendCarouselIndex', payload: currentIndex - 1});
                 console.log("changing carindex", currentIndex - 1);
             } else if (gesture.dy < 0) {
                 if (!isTop) {
@@ -267,8 +265,7 @@ const FeatherPanResponder = ({index, positions, currIndex, setCurrentIndex, cont
                         setCurrentIndex({curr:currentIndex + 1, prev: currentIndex});
                         // dispatch({type: 'sendCarouselIndex', payload: currentIndex + 1});
                     }, 200);
-                    //   dispatch({type: 'sendCarouselIndex', payload: currentIndex + 1});
-                    setIndexKey(currentIndex + 1);
+                      dispatch({type: 'sendCarouselIndex', payload: currentIndex + 1});
                       console.log("changing carindex", currentIndex + 1);
                 }
             }
