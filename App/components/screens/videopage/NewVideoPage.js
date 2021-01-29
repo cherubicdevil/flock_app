@@ -85,7 +85,8 @@ var renderProduct = (navigation, data) => {
   // );
 };
 
-const NewVideoPage = ({navigation, route, array, index, data, currIndex, viewHeight}) => {
+const NewVideoPage = ({navigation, route, array, index, data, currIndex, viewHeight, KeyContext}) => {
+  const {indexKey, setIndexKey} = useContext(KeyContext);
     var dataType = "initial";
     if (data.video) {
         dataType = "video";

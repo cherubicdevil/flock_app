@@ -294,12 +294,12 @@ const HomeTabSwipe = ({videoData, navigation, route}) => {
   
   tabBar= {(props)=><TopBar {...props} />}
   >
-       <Tab.Screen name="for you" component = {MiniCarousel}/>
+       {/* <Tab.Screen name="for you" component = {MiniCarousel}/> */}
     <Tab.Screen name="flocking" component={DataList} initialParams={{value: 'hello world', videoData:[], flockData: [], rentData: [], dataType: 'flockData'}} />
  
     <Tab.Screen name="borrow" component={DataList} initialParams={{value: 'hello world', videoData:[], flockData: [], rentData: [], dataType: 'rentData'}} />
   <Tab.Screen name="posts" component={DataList} initialParams={{videoData: keyVideoData, dataType:'videoData'}} />
-
+  <Tab.Screen name="for you2" component = {MiniCarouselFlocking}/>
   {/* <Tab.Screen name="Popular" component={FeedList} initialParams={{videoData: []}} /> */}
   
   
@@ -384,21 +384,22 @@ const MiniCarouselFlocking = ({navigation, route}) => {
 
   const dispatch = useDispatch();
   const [viewHeight, setViewHeight] = useState(800);
-  const {keyArrFlock, keyVideoData, setKeyVideoData, setKeyFinishedLoading} = useContext(KeyContext);
+  const {keyArrFlock, keyVideoData, setKeyFinishedLoading, keyArrRent} = useContext(KeyContext);
+  const [localKeyFinishedLoading, setLocalKeyFinishedLoading] = useState(false);
   // return <View><Text>Hi</Text></View>;
   const [finalAr, setFinalAr] = useState([]);
   var testAr = [];
   useEffect(()=> {
-    setFinalAr(shuffle([...keyArrRent, ...keyArrFlock,...keyVideoData]));
+    setFinalAr(shuffle([...keyArrRent]));
     
-  }, [keyArrRent, keyArrFlock, keyVideoData]);
+  }, [keyArrRent]);
 
   useEffect(()=>{
     
     fetchAlbums().then((ar) => {
-      setKeyVideoData(ar.ar);
-      dispatch({type:'sendCarouselIndex', payload: ar.ar.length - 1});
+      dispatch({type:'sendCarouselIndex', payload: 0});
       setTimeout(()=>{
+        // setLocalKeyFinishedLoading(true);
         setKeyFinishedLoading(true);
       }, 2000);
 
@@ -406,6 +407,19 @@ const MiniCarouselFlocking = ({navigation, route}) => {
   }, []);
 
 
+  const KeyContextCarousel = createContext();
+const KeyContextCarouselProvider = (props) => {
+  const [index, setIndex] = useState(null);
+  
+  return (
+    <KeyContextCarousel.Provider
+      value={{indexKey: index, 
+      setIndexKey: (value) => setRouteKey(value), 
+      }}>
+      {props.children}
+    </KeyContextCarousel.Provider>
+  );
+};
 
   var res = [];
   for (const item of finalAr) {
@@ -429,9 +443,12 @@ const MiniCarouselFlocking = ({navigation, route}) => {
   //       {res}
   //     </ScrollView>
   // </View>
-  return <View onLayout = {(event) => {
+  console.log("RES", res);
+  return <KeyContextCarouselProvider>
+  <View onLayout = {(event) => {
     setViewHeight(event.nativeEvent.layout.height);
-  }}><FeatherPanResponder navigation={navigation} route={route} data={res} viewHeight={viewHeight} /></View>;
+  }}><FeatherPanResponder navigation={navigation} route={route} data={res} viewHeight={viewHeight} KeyContext={KeyContextCarousel} /></View>
+  </KeyContextCarouselProvider>;
 
 };
 const MiniCarousel = ({navigation, route}) => {
@@ -512,7 +529,7 @@ const TopBar = ({descriptors, state, navigation}) => {
     outputRange: [constants.PURPLE, constants.ORANGE, constants.RED, constants.GREY]
 });
 
-  const tabColors = [["#c09bae", "#ff9966"], ["#6989af", "#c09bae"], ["#c09bae","#e1cbd7"], ['black',"#ffffff"]];
+  const tabColors = [["#c09bae", "#ff9966"], ["#6989af", "#c09bae"], ["#c09bae","#e1cbd7"], ['black',"#ffffff"], ['black',"#ffffff"], ['black',"#ffffff"], ['black',"#ffffff"]];
   console.log('route', state.routes);
   return (
     <LinearGradient
