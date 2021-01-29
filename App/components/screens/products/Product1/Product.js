@@ -1,4 +1,4 @@
-import React, {Component, useState, useEffect} from 'react';
+import React, {Component, useState, useEffect, useRef} from 'react';
 import {
   ImageBackground,
   ScrollView,
@@ -395,7 +395,7 @@ const Product = ({route, navigation}) => {
                 </LinearGradient>
                 </View>
                 </View>
-                <AnimatedModal visible={modalOpen} close={()=>{setModalOpen(false)}} content={<FlockList navigation={navigation} product = {route.params.album} ar={flockAr} />} />
+                <AnimatedModal visible={modalOpen} close={()=>{setModalOpen(false)}} content={<View style={{paddingLeft: 20, paddingRight: 20}}><FlockList limited = {false} navigation={navigation} product = {route.params.album} ar={flockAr} /></View>} />
                 </>
     );
   }
@@ -423,6 +423,32 @@ const Countdown = ({dateObj}) => {
 }
 
 const FlockList = ({product, navigation, ar, limited = true}) => {
+  const scrollRef = useRef();
+  var offset = 0;
+
+  const callback = ()=>{
+      offset+=50;
+      if (offset/50 + 1> ar.length) {
+        console.log(offset/50, ar.length);
+          scrollRef.current.scrollTo({y:0});
+          offset = 0;
+      } else {
+      scrollRef.current.scrollTo({y:offset});
+      //console.log('scrolling', offset);
+      }
+  };
+  useEffect(()=>{
+    var interval;
+      if (data !== null && data.length > 2) {
+      interval = setInterval(callback, 3500);
+      }
+      return ()=>{
+        if (interval) {
+          clearInterval(interval);
+        }
+      }
+  },[])
+
   // const [ar, setAr] = useState([]);
   // useEffect(()=>{
 
@@ -489,8 +515,8 @@ const FlockList = ({product, navigation, ar, limited = true}) => {
       </View>
     );
   }
-  return <ScrollView showsVerticalScrollIndicator={false} style={{padding:0, paddingBottom: 10, height: limited?100:'100%'}}>
-  {result.length > 0?result:(<View style={{height: 60}}>
+  return <ScrollView decelerationRate={0.5} ref={scrollRef} pagingEnabled={limited} showsVerticalScrollIndicator={false} style={{padding:0, paddingBottom: 10, height: limited?100:'100%'}}>
+  {result.length > 0?<>{result}<View style={{height: 50}} /></>:(<View style={{height: 60}}>
     <View style={{borderTopWidth: 1, paddingTop: 15, paddingLeft:20, marginTop: 10, alignItems: 'center', flexDirection: 'row'}}>
     <Text>No current flocks.</Text>
     <View
