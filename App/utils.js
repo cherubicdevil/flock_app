@@ -51,6 +51,8 @@ import { AppInstalledChecker, CheckPackageInstallation } from 'react-native-chec
 import CameraRoll from '@react-native-community/cameraroll';
 const cheerio = require('react-native-cheerio')
 const stringSimilarity = require("string-similarity");
+// var sizeOf = require('image-size');
+
 
 var lastVisible = null;
 
@@ -458,7 +460,7 @@ const shuffle = (array) => {
 }
 
 
-const pinLocalFunc = (htmlBody) => {
+const pinLocalFunc = (htmlBody, notBaseURL) => {
   const imageDownloader = {
     // Source: https://support.google.com/webmasters/answer/2598805?hl=en
     imageRegex: /(?:([^:\/?#]+):)?(?:\/\/([^\/?#]*))?([^?#]*\.(?:bmp|gif|jpe?g|png|svg|webp))(?:\?([^#]*))?(?:#(.*))?/i,
@@ -498,11 +500,13 @@ const pinLocalFunc = (htmlBody) => {
   
     relativeUrlToAbsolute(url) {
       if (url.indexOf("/") === 0) {
-        const index = global.notBaseURL.indexOf(".com") + 4;
-        return global.notBaseURL.substring(0, index).concat(url);
+        // const index = global.notBaseURL.indexOf(".com") + 4;
+        const index = notBaseURL.indexOf(".com") + 4;
+        // return global.notBaseURL.substring(0, index).concat(url);
+        return notBaseURL.substring(0, index).concat(url);
       } else if (!url.includes('http')){
-        const index = global.notBaseURL.indexOf(".com") + 4;
-        return global.notBaseURL.substring(0, index).concat("/"+url);
+        const index = notBaseURL.indexOf(".com") + 4;
+        return notBaseURL.substring(0, index).concat("/"+url);
       }
       else {
         return url;
@@ -531,7 +535,16 @@ const pinLocalFunc = (htmlBody) => {
   const getImageUrl = ($, title) => {
     var imageUrl = $('meta[property="og:image:secure_url"]').attr("content");
     if (!imageUrl && title) {
-      const images = imageDownloader.extractImagesFromTags($);
+      var images = imageDownloader.extractImagesFromTags($);
+      // const newImages = [];
+      // for (const i = 0; i < images.length; i++) {
+      //   sizeOf(images[i].img, function (err, dimensions) {
+      //     if (dimensions.width * dimensions.height > 40000) {
+      //       newImages.push(images[i]);
+      //     }
+      //   });
+      // }
+      // var images = newImages;
       const best = stringSimilarity.findBestMatch(
         title,
         images.map(function (element) {
@@ -618,7 +631,7 @@ const pinLocalFunc = (htmlBody) => {
   // console.log("STUFFFFFFF", $("title").text())
 const {price: price, image: imageUrl, title: title } = getPriceTitleImage($);
 const data = {
-  url: global.notBaseURL,
+  url: notBaseURL,
   title: title.trim().split(/[^/\S ]/)[0],
   image: imageUrl,
   price: price.split("\n")[0],

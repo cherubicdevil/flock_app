@@ -398,7 +398,7 @@ const CamScreenTwo = ({navigation, route}) => {
               <TouchableOpacity 
         style={{marginRight: 10, marginLeft: 10, paddingLeft: 15, paddingRight: 15, height: 40, justifyContent:'center', alignItems:'center', backgroundColor:constants.ORANGE, borderRadius: 50,}}
         onPress={()=>{
-          const result = pinLocalFunc(htmlBody);
+          const result = pinLocalFunc(htmlBody, urlState);
           setImageState(result.image);
           setTitleState(result.title);
           setPriceState(result.price);
