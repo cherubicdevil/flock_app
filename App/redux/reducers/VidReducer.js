@@ -5,6 +5,8 @@ export default function setVidVisible(
 		vidData: [],
 		vidIndex: true,
 		carIndex: 0,
+		carIndexRent: 0,
+		carIndexFlock: 0,
 		leave: false,
 	},
 	action,
@@ -21,6 +23,10 @@ export default function setVidVisible(
 			return {...state, vidIndex: false};
 		case 'sendCarouselIndex':
 			return {...state, carIndex: action.payload};
+		case 'sendCarouselRentIndex':
+			return {...state, carIndexRent: action.payload};
+		case 'sendCarouselFlockIndex':
+			return {...state, carIndexFlock: action.payload};
 		case 'leave':
 			return {...state, leave: action.payload};
 		default:

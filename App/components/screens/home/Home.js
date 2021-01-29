@@ -294,11 +294,14 @@ const HomeTabSwipe = ({videoData, navigation, route}) => {
   
   tabBar= {(props)=><TopBar {...props} />}
   >
-       <Tab.Screen name="for you" component = {MiniCarousel}/>
-    <Tab.Screen name="flocking" component={DataList} initialParams={{value: 'hello world', videoData:[], flockData: [], rentData: [], dataType: 'flockData'}} />
- 
-    <Tab.Screen name="borrow" component={DataList} initialParams={{value: 'hello world', videoData:[], flockData: [], rentData: [], dataType: 'rentData'}} />
-  <Tab.Screen name="posts" component={DataList} initialParams={{videoData: keyVideoData, dataType:'videoData'}} />
+       {/* <Tab.Screen name="for you" component = {MiniCarousel}/> */}
+
+    {/* <Tab.Screen name="flocking" component={DataList} initialParams={{value: 'hello world', videoData:[], flockData: [], rentData: [], dataType: 'flockData'}} /> */}
+    <Tab.Screen name="flocking" component = {MiniCarouselFlocking}/>
+    <Tab.Screen name="borrow" component = {MiniCarouselRenting}/>
+    <Tab.Screen name="posts" component={DataList} initialParams={{videoData: keyVideoData, dataType:'videoData'}} />
+    {/* <Tab.Screen name="borrow" component={DataList} initialParams={{value: 'hello world', videoData:[], flockData: [], rentData: [], dataType: 'rentData'}} /> */}
+  
 
   {/* <Tab.Screen name="Popular" component={FeedList} initialParams={{videoData: []}} /> */}
   
@@ -380,33 +383,68 @@ const Home = ({route, navigation, lastVisible = null}) => {
 };
 
 
-const MiniCarouselFlocking = ({navigation, route}) => {
+const MiniCarouselRenting = ({navigation, route}) => {
 
   const dispatch = useDispatch();
   const [viewHeight, setViewHeight] = useState(800);
-  const {keyArrFlock, keyVideoData, setKeyVideoData, setKeyFinishedLoading} = useContext(KeyContext);
-  // return <View><Text>Hi</Text></View>;
-  const [finalAr, setFinalAr] = useState([]);
-  var testAr = [];
-  useEffect(()=> {
-    setFinalAr(shuffle([...keyArrRent, ...keyArrFlock,...keyVideoData]));
-    
-  }, [keyArrRent, keyArrFlock, keyVideoData]);
+  const {key, key1, keyArrRent, setKeyArrRent, limitKeyRent, keyArrFlock, setKeyArrFlock, keyVideoData, setKeyVideoData, setKeyFinishedLoading} = useContext(KeyContext);
+  var unsubscribeCurrentRent;
+  React.useEffect(() => {
+    // this should make it so that on creating new listener with new limit, the previous one is gone.
+      if (unsubscribeCurrentRent) {
+        console.log('unsubscribing rent');
+        unsubscribeCurrentRent();
+      }
 
-  useEffect(()=>{
-    
-    fetchAlbums().then((ar) => {
-      setKeyVideoData(ar.ar);
-      dispatch({type:'sendCarouselIndex', payload: ar.ar.length - 1});
-      setTimeout(()=>{
-        setKeyFinishedLoading(true);
-      }, 2000);
+    if (key && key1) {
+      // getMessages(navigation, key, key1);
+      var citiesRef = db.collection("chatGroups");
+      // this filter is kind of inefficient; gets the entire table
+      console.log('subscribing rent');
+      var query = citiesRef;
+      unsubscribeCurrentRent = query
+      .where('completed', '==',true)
+      .limit(limitKeyRent)
+      .onSnapshot(function(querySnapshot) {
+        const rent = [];
+        querySnapshot.forEach(function(doc) {
+            rent.push({...doc.data(), id: doc.id});
+        });
+        // navigation.dispatch({
+        //   ...CommonActions.setParams({videoData: [], rentData: rent, flockData: flock}),
+        //   source: key,
+        // });
+        // navigation.dispatch({
+        //   ...CommonActions.setParams({videoData: [], rentData: rent, flockData: flock}),
+        //   source: key1,
+        // });
+        setKeyArrRent(rent);
+        if (rent.length > 0) {
+        dispatch({type:'sendCarouselRentIndex', payload: rent.length - 1});
+        } else {
+          dispatch({type:'sendCarouselRentIndex', payload: 0});
+        }
+        console.log("RENTTTTTTTTTTTTTTTTTTTTTTTTT", rent,"RENT");
+        // setFlockData(flock);
+        // setRentData(rent);
+      });
+  
 
-    })
-  }, []);
+      // this breaks something v
+      //return () => {unsubscribe()};
+    }
 
 
+    return () => {
+      if (unsubscribeCurrentRent) {
+        console.log('unsubscribing rent')
+        unsubscribeCurrentRent();
+      }
+    };
+  }, [key1, limitKeyRent]);
 
+
+  var finalAr = keyArrRent;
   var res = [];
   for (const item of finalAr) {
     res.push(<View style={{height: '100%', width: '100%', borderWidth: 1, borderOpacity: 0.1,borderBottomWidth: 0,}}>
@@ -431,9 +469,97 @@ const MiniCarouselFlocking = ({navigation, route}) => {
   // </View>
   return <View onLayout = {(event) => {
     setViewHeight(event.nativeEvent.layout.height);
-  }}><FeatherPanResponder navigation={navigation} route={route} data={res} viewHeight={viewHeight} /></View>;
+  }}><FeatherPanResponder navigation={navigation} route={route} data={res} viewHeight={viewHeight} type="rent" /></View>;
 
 };
+
+const MiniCarouselFlocking = ({navigation, route}) => {
+
+  const dispatch = useDispatch();
+  const [viewHeight, setViewHeight] = useState(800);
+  const {key, key1, keyArrRent, setKeyArrRent, limitKey, keyArrFlock, setKeyArrFlock, keyVideoData, setKeyVideoData, setKeyFinishedLoading} = useContext(KeyContext);
+  var unsubscribeCurrentFlock;
+  React.useEffect(() => {
+    // this should make it so that on creating new listener with new limit, the previous one is gone.
+      if (unsubscribeCurrentFlock) {
+        console.log('unsubscribing flock');
+        unsubscribeCurrentFlock();
+      }
+
+    if (key && key1) {
+      var citiesRef = db.collection("chatGroups");
+      console.log('subscribing flock');
+      var query = citiesRef;
+      unsubscribeCurrentFlock = query
+      .where('completed', '==',true)
+      .limit(limitKey)
+      .onSnapshot(function(querySnapshot) {
+        const flock = [];
+        querySnapshot.forEach(function(doc) {
+            flock.push({...doc.data(), id: doc.id});
+        });
+        // navigation.dispatch({
+        //   ...CommonActions.setParams({videoData: [], rentData: rent, flockData: flock}),
+        //   source: key,
+        // });
+        // navigation.dispatch({
+        //   ...CommonActions.setParams({videoData: [], rentData: rent, flockData: flock}),
+        //   source: key1,
+        // });
+        setKeyArrFlock(flock);
+        if (flock.length > 0) {
+        dispatch({type:'sendCarouselFlockIndex', payload: flock.length - 1});
+        } else {
+          dispatch({type:'sendCarouselFlockIndex', payload: 0});
+        }
+        // setFlockData(flock);
+        // setRentData(rent);
+      });
+  
+
+      // this breaks something v
+      //return () => {unsubscribe()};
+    }
+
+
+    return () => {
+      if (unsubscribeCurrentFlock) {
+        console.log('unsubscribing flock')
+        unsubscribeCurrentFlock();
+      }
+    };
+  }, [key, limitKey]);
+
+
+  var finalAr = keyArrFlock;
+  var res = [];
+  for (const item of finalAr) {
+    res.push(<View style={{height: '100%', width: '100%', borderWidth: 1, borderOpacity: 0.1,borderBottomWidth: 0,}}>
+    {/* <Text>{item?.product?.title || item.flock}</Text> */}
+    <NewVideoPage route={route} navigation={navigation} data={item} index={finalAr.indexOf(item)} currIndex={finalAr.indexOf(item)} viewHeight={viewHeight} />
+    </View>);
+  }
+  // return <View onLayout = {(event) => {
+  //   setViewHeight(event.nativeEvent.layout.height);
+  // }} style={{height: '100%'}}>
+  //   <ScrollView horizontal={false} showsVerticalScrollIndicator={false}
+  //   onMomentumScrollEnd={(event)=>{
+  //     console.log(event.nativeEvent.contentOffset)
+  //     dispatch({type:'sendCarouselIndex', payload: Math.floor(event.nativeEvent.contentOffset.y / viewHeight)});
+  //   }}
+  //   // onScroll ={(event)=>{
+  //   //   dispatch({type:'sendCarouselIndex', payoad: Math.floor()});
+  //   // }}
+  //     pagingEnabled={true}>
+  //       {res}
+  //     </ScrollView>
+  // </View>
+  return <View onLayout = {(event) => {
+    setViewHeight(event.nativeEvent.layout.height);
+  }}><FeatherPanResponder navigation={navigation} route={route} data={res} viewHeight={viewHeight} type="flock" /></View>;
+
+};
+
 const MiniCarousel = ({navigation, route}) => {
 
   const dispatch = useDispatch();
@@ -512,7 +638,7 @@ const TopBar = ({descriptors, state, navigation}) => {
     outputRange: [constants.PURPLE, constants.ORANGE, constants.RED, constants.GREY]
 });
 
-  const tabColors = [["#c09bae", "#ff9966"], ["#6989af", "#c09bae"], ["#c09bae","#e1cbd7"], ['black',"#ffffff"]];
+  const tabColors = [["#c09bae", "#ff9966"], ["#6989af", "#c09bae"], ["#c09bae","#e1cbd7"], ['black',"#ffffff"],['black',"#ffffff"],['black',"#ffffff"]];
   console.log('route', state.routes);
   return (
     <LinearGradient

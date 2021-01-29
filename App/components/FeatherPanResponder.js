@@ -9,7 +9,7 @@ import { useFocusEffect } from '@react-navigation/native';
 const data = ["hello",'world', 'data', 'i', 'am', 'so', 'sad'];
 
 
-const FeatherList = ({navigation, route, data=data, viewHeight}) => {
+const FeatherList = ({navigation, route, data=data, viewHeight, type="flock"}) => {
     const store = useStore();
     const dispatch = useDispatch();
     // const select = useSelector(state=>state.videopage);
@@ -37,12 +37,20 @@ const FeatherList = ({navigation, route, data=data, viewHeight}) => {
         React.useCallback(() => {
             dispatch({type: 'leave', payload: false});
             //setCurrentIndex()
-            const carIndex = store.getState().videopage.carIndex;
+            var carIndex;
+            if (type==="rent") {
+                carIndex = store.getState().videopage.carIndexRent;
+            } else if (type === "flock") {
+                carIndex = store.getState().videopage.carIndexFlock;
+            } else {
+                carIndex = store.getState().videopage.carIndex;
+            }
+            // const carIndex = store.getState().videopage.carIndex;
             setTimeout(()=>setCurrentIndex({curr: carIndex, prev: carIndex+1}), 0);
-            console.log("CARINDEX:", carIndex);
+            // console.log("CARINDEX:", carIndex);
           return ()=>{
               dispatch({type: 'leave', payload: true});
-              console.log(store.getState().videopage.carIndex);
+            //   console.log(store.getState().videopage.carIndex);
         };
         }, [])
       );
