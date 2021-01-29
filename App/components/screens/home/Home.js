@@ -36,7 +36,7 @@ import Carousel from 'App/components/screens/videopage/Carousel'
 import VideoPage from 'App/components/screens/videopage/VideoPage';
 import NewVideoPage from 'App/components/screens/videopage/NewVideoPage';
 import {useDispatch, } from 'react-redux';
-import { fetchAlbums, shuffle } from '../../../utils';
+import { fetchAlbums, fetchFlockables, fetchRentables, shuffle } from '../../../utils';
 import FeatherPanResponder from 'App/components/FeatherPanResponder';
 import ResizeableImage from 'App/components/ResizeableImage';
 
@@ -294,7 +294,7 @@ const HomeTabSwipe = ({videoData, navigation, route}) => {
   
   tabBar= {(props)=><TopBar {...props} />}
   >
-       <Tab.Screen name="for you" component = {MiniCarousel}/>
+       {/* <Tab.Screen name="for you" component = {MiniCarousel}/> */}
 
     {/* <Tab.Screen name="flocking" component={DataList} initialParams={{value: 'hello world', videoData:[], flockData: [], rentData: [], dataType: 'flockData'}} /> */}
     <Tab.Screen name="flocking" component = {MiniCarouselFlocking}/>
@@ -315,12 +315,12 @@ const HomeTabSwipe = ({videoData, navigation, route}) => {
 
 
 return <>
-<Animated.View style={{backgroundColor: 'white', position: 'absolute', left: 0, bottom: 0, width:'100%', height: coverheight, opacity: coverfade, zIndex: 10000}} ><View style={{
+{/* <Animated.View style={{backgroundColor: 'white', position: 'absolute', left: 0, bottom: 0, width:'100%', height: coverheight, opacity: coverfade, zIndex: 10000}} ><View style={{
     backgroundColor: constants.PINK_BACKGROUND, height: '100%', width: '100%',
     justifyContent: 'center', alignItems: 'center',
 }}/>
 <Image source={require('App/Assets/Images/flock-anim.gif')} style={{width: 200, height: 200, position: 'absolute', top: '30%', left: '30%'}} />
-</Animated.View>
+</Animated.View> */}
 {navigator}</>;
 
 
@@ -390,63 +390,20 @@ const MiniCarouselRenting = ({navigation, route}) => {
   const [viewHeight, setViewHeight] = useState(800);
   const {key, key1, keyArrRent, setKeyArrRent, limitKeyRent, keyArrFlock, setKeyArrFlock, keyVideoData, setKeyVideoData, setKeyFinishedLoading} = useContext(KeyContext);
   var unsubscribeCurrentRent;
-  React.useEffect(() => {
-    // this should make it so that on creating new listener with new limit, the previous one is gone.
-      if (unsubscribeCurrentRent) {
-        console.log('unsubscribing rent');
-        unsubscribeCurrentRent();
-      }
+  const [cover, setCover] = useState(false);
 
-    if (key && key1) {
-      // getMessages(navigation, key, key1);
-      var citiesRef = db.collection("chatGroups");
-      // this filter is kind of inefficient; gets the entire table
-      console.log('subscribing rent');
-      var query = citiesRef;
-      unsubscribeCurrentRent = query
-      .where('completed', '==',true)
-      .limit(limitKeyRent)
-      .onSnapshot(function(querySnapshot) {
-        const rent = [];
-        querySnapshot.forEach(function(doc) {
-            rent.push({...doc.data(), id: doc.id});
-        });
-        // navigation.dispatch({
-        //   ...CommonActions.setParams({videoData: [], rentData: rent, flockData: flock}),
-        //   source: key,
-        // });
-        // navigation.dispatch({
-        //   ...CommonActions.setParams({videoData: [], rentData: rent, flockData: flock}),
-        //   source: key1,
-        // });
-        setKeyArrRent(rent);
-        if (rent.length > 0) {
-        dispatch({type:'sendCarouselRentIndex', payload: rent.length - 1});
-        } else {
-          dispatch({type:'sendCarouselRentIndex', payload: 0});
-        }
-        console.log("RENTTTTTTTTTTTTTTTTTTTTTTTTT", rent,"RENT");
-        setKeyFinishedLoading(true);
-        // setFlockData(flock);
-        // setRentData(rent);
-      });
-  
-
-      // this breaks something v
-      //return () => {unsubscribe()};
-    }
+  const [finalAr, setFinalAr] = useState([]);
+  useEffect(()=>{
+    fetchRentables().then((ar) => {
+      setFinalAr(ar);
+      // setKeyFinishedLoading(false);
+      dispatch({type:'sendCarouselFlockIndex', payload: ar.length - 1});
+      setCover(false);
+    });
+  },[]);
 
 
-    return () => {
-      if (unsubscribeCurrentRent) {
-        console.log('unsubscribing rent')
-        unsubscribeCurrentRent();
-      }
-    };
-  }, [key1, limitKeyRent]);
-
-
-  var finalAr = keyArrRent;
+  // var finalAr = keyArrRent;
   var res = [];
   for (const item of finalAr) {
     res.push(<View style={{height: '100%', width: '100%', borderWidth: 1, borderOpacity: 0.1,borderBottomWidth: 0,}}>
@@ -469,9 +426,17 @@ const MiniCarouselRenting = ({navigation, route}) => {
   //       {res}
   //     </ScrollView>
   // </View>
-  return <View onLayout = {(event) => {
+  return <>
+  <Animated.View style={{backgroundColor: 'white', position: 'absolute', left: 0, bottom: 0, width:'100%', height: cover?"100%":0, opacity: 1, zIndex: 10000}} ><View style={{
+    backgroundColor: constants.PINK_BACKGROUND, height: '100%', width: '100%',
+    justifyContent: 'center', alignItems: 'center',
+}}/>
+<Image source={require('App/Assets/Images/flock-anim.gif')} style={{width: 200, height: 200, position: 'absolute', top: '30%', left: '30%'}} />
+</Animated.View>
+  <View onLayout = {(event) => {
     setViewHeight(event.nativeEvent.layout.height);
-  }}><FeatherPanResponder navigation={navigation} route={route} data={res} viewHeight={viewHeight} type="rent" /></View>;
+  }}><FeatherPanResponder navigation={navigation} route={route} data={res} viewHeight={viewHeight} type="rent" /></View>
+  </>;
 
 };
 
@@ -481,59 +446,19 @@ const MiniCarouselFlocking = ({navigation, route}) => {
   const [viewHeight, setViewHeight] = useState(800);
   const {key, key1, keyArrRent, setKeyArrRent, limitKey, keyArrFlock, setKeyArrFlock, keyVideoData, setKeyVideoData, setKeyFinishedLoading} = useContext(KeyContext);
   var unsubscribeCurrentFlock;
-  React.useEffect(() => {
-    // this should make it so that on creating new listener with new limit, the previous one is gone.
-      if (unsubscribeCurrentFlock) {
-        console.log('unsubscribing flock');
-        unsubscribeCurrentFlock();
-      }
+  const [cover, setCover] = useState(true);
 
-    if (key && key1) {
-      var citiesRef = db.collection("chatGroups");
-      console.log('subscribing flock');
-      var query = citiesRef;
-      unsubscribeCurrentFlock = query
-      .where('completed', '==',true)
-      .limit(limitKey)
-      .onSnapshot(function(querySnapshot) {
-        const flock = [];
-        querySnapshot.forEach(function(doc) {
-            flock.push({...doc.data(), id: doc.id});
-        });
-        // navigation.dispatch({
-        //   ...CommonActions.setParams({videoData: [], rentData: rent, flockData: flock}),
-        //   source: key,
-        // });
-        // navigation.dispatch({
-        //   ...CommonActions.setParams({videoData: [], rentData: rent, flockData: flock}),
-        //   source: key1,
-        // });
-        setKeyArrFlock(flock);
-        if (flock.length > 0) {
-        dispatch({type:'sendCarouselFlockIndex', payload: flock.length - 1});
-        } else {
-          dispatch({type:'sendCarouselFlockIndex', payload: 0});
-        }
-        // setFlockData(flock);
-        // setRentData(rent);
-      });
-  
-
-      // this breaks something v
-      //return () => {unsubscribe()};
-    }
+  const [finalAr, setFinalAr] = useState([]);
+  useEffect(()=>{
+    fetchFlockables().then((ar) => {
+      setFinalAr(ar);
+      dispatch({type:'sendCarouselFlockIndex', payload: ar.length - 1});
+      // setKeyFinishedLoading(false);
+      setCover(false);
+    });
+  },[]);
 
 
-    return () => {
-      if (unsubscribeCurrentFlock) {
-        console.log('unsubscribing flock')
-        unsubscribeCurrentFlock();
-      }
-    };
-  }, [key, limitKey]);
-
-
-  var finalAr = keyArrFlock;
   var res = [];
   for (const item of finalAr) {
     res.push(<View style={{height: '100%', width: '100%', borderWidth: 1, borderOpacity: 0.1,borderBottomWidth: 0,}}>
@@ -556,10 +481,16 @@ const MiniCarouselFlocking = ({navigation, route}) => {
   //       {res}
   //     </ScrollView>
   // </View>
-  return <View onLayout = {(event) => {
+  return <>
+    <Animated.View style={{backgroundColor: 'white', position: 'absolute', left: 0, bottom: 0, width:'100%', height: cover?"100%":0, opacity: 1, zIndex: 10000}} ><View style={{
+    backgroundColor: constants.PINK_BACKGROUND, height: '100%', width: '100%',
+    justifyContent: 'center', alignItems: 'center',
+}}/>
+<Image source={require('App/Assets/Images/flock-anim.gif')} style={{width: 200, height: 200, position: 'absolute', top: '30%', left: '30%'}} />
+</Animated.View><View onLayout = {(event) => {
     setViewHeight(event.nativeEvent.layout.height);
-  }}><FeatherPanResponder navigation={navigation} route={route} data={res} viewHeight={viewHeight} type="flock" /></View>;
-
+  }}><FeatherPanResponder navigation={navigation} route={route} data={res} viewHeight={viewHeight} type="flock" /></View>
+</>
 };
 
 const MiniCarousel = ({navigation, route}) => {

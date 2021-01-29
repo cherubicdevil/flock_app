@@ -282,7 +282,7 @@ const fetchFlockables = async () => {
   return new Promise((resolve) => {
     db.collection('chatGroups')
       .limit(10)
-      .where('completed', '==', 'false')
+      .where('completed', '==', false)
       .get()
       .then((querySnapshot) => {
         var counter = 0;
@@ -304,7 +304,7 @@ const fetchRentables = async () => {
   return new Promise((resolve) => {
     db.collection('chatGroups')
       .limit(10)
-      .where('completed', '==', 'true')
+      .where('completed', '==', true)
       .get()
       .then((querySnapshot) => {
         var counter = 0;

@@ -65,11 +65,11 @@ const FeatherList = ({navigation, route, data=data, viewHeight, type="flock"}) =
 
     return <View 
         style={{alignItems: 'center', height: '100%', width: '100%', backgroundColor: constants.PINK_BACKGROUND}}>
-            {data.map((item)=> <FeatherPanResponder viewHeight={viewHeight} index = {data.indexOf(item)} currIndex = {currentIndex} setCurrentIndex={setCurrentIndex} positions = {positions} content={item} />)}
+            {data.map((item)=> <FeatherPanResponder type={type} viewHeight={viewHeight} index = {data.indexOf(item)} currIndex = {currentIndex} setCurrentIndex={setCurrentIndex} positions = {positions} content={item} />)}
     </View>
 
 }
-const FeatherPanResponder = ({index, positions, currIndex, setCurrentIndex, content, viewHeight}) => {
+const FeatherPanResponder = ({index, positions, currIndex, setCurrentIndex, content, viewHeight, type}) => {
     
     const dispatch = useDispatch();
     
@@ -254,11 +254,19 @@ const FeatherPanResponder = ({index, positions, currIndex, setCurrentIndex, cont
                 outofwayAnimation();
                 setTimeout(()=>{
                     setCurrentIndex({curr:currentIndex - 1, prev: currentIndex});
+
                     // dispatch({type: 'sendCarouselIndex', payload: currentIndex - 1});
                 }, 200);
                 //setCurrentIndex(currentIndex - 1);
                 
-                dispatch({type: 'sendCarouselIndex', payload: currentIndex - 1});
+                // dispatch({type: 'sendCarouselIndex', payload: currentIndex - 1});
+                if (type === "flock") {
+                    dispatch({type: 'sendCarouselFlockIndex', payload: currentIndex - 1});
+                } else if (type === "rent") {
+                    dispatch({type: 'sendCarouselRentIndex', payload: currentIndex - 1});
+                } else {
+                    dispatch({type: 'sendCarouselIndex', payload: currentIndex - 1});
+                }
                 console.log("changing carindex", currentIndex - 1);
             } else if (gesture.dy < 0) {
                 if (!isTop) {
@@ -273,7 +281,14 @@ const FeatherPanResponder = ({index, positions, currIndex, setCurrentIndex, cont
                         setCurrentIndex({curr:currentIndex + 1, prev: currentIndex});
                         // dispatch({type: 'sendCarouselIndex', payload: currentIndex + 1});
                     }, 200);
-                      dispatch({type: 'sendCarouselIndex', payload: currentIndex + 1});
+                    //   dispatch({type: 'sendCarouselIndex', payload: currentIndex + 1});
+                    if (type === "flock") {
+                        dispatch({type: 'sendCarouselFlockIndex', payload: currentIndex + 1});
+                    } else if (type === "rent") {
+                        dispatch({type: 'sendCarouselRentIndex', payload: currentIndex + 1});
+                    } else {
+                        dispatch({type: 'sendCarouselIndex', payload: currentIndex + 1});
+                    }
                       console.log("changing carindex", currentIndex + 1);
                 }
             }
