@@ -294,7 +294,7 @@ const HomeTabSwipe = ({videoData, navigation, route}) => {
   
   tabBar= {(props)=><TopBar {...props} />}
   >
-       {/* <Tab.Screen name="for you" component = {MiniCarousel}/> */}
+       <Tab.Screen name="for you" component = {MiniCarousel}/>
 
     {/* <Tab.Screen name="flocking" component={DataList} initialParams={{value: 'hello world', videoData:[], flockData: [], rentData: [], dataType: 'flockData'}} /> */}
     <Tab.Screen name="flocking" component = {MiniCarouselFlocking}/>
@@ -346,7 +346,8 @@ const Home = ({route, navigation, lastVisible = null}) => {
 
   }, []);
   return (
-    <Fragment><SafeAreaView style={{ flex: 0, backgroundColor: constants.TRANSLUCENT }} /><SafeAreaView style={{ flex: 1, backgroundColor: constants.PINK_BACKGROUND_OPAQUE }}>
+    <Fragment><SafeAreaView style={{ flex: 0, backgroundColor: constants.TRANSLUCENT }} />
+    {/* <SafeAreaView style={{ flex: 1, backgroundColor: 'transparent' }}> */}
     {/* <SafeAreaView style={[styles.wrapperAll,{backgroundColor: constants.PINK_BACKGROUND}]}> */}
         {/* <ImageBackground
           imageStyle={{borderRadius: 25}}
@@ -376,7 +377,7 @@ const Home = ({route, navigation, lastVisible = null}) => {
         <HomeTabSwipe navigation={navigation} route= {route} videoData={route.params.videoData} />
         </KeyContextProvider>
       {/* </View> */}
-    </SafeAreaView>
+    {/* </SafeAreaView> */}
     
     </Fragment>
   );
@@ -425,6 +426,7 @@ const MiniCarouselRenting = ({navigation, route}) => {
           dispatch({type:'sendCarouselRentIndex', payload: 0});
         }
         console.log("RENTTTTTTTTTTTTTTTTTTTTTTTTT", rent,"RENT");
+        setKeyFinishedLoading(true);
         // setFlockData(flock);
         // setRentData(rent);
       });
