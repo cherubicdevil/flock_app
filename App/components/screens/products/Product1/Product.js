@@ -303,7 +303,7 @@ const Product = ({route, navigation}) => {
             
             <View style={styles.productRow}>{renderDescription()}</View>
             <View style={[styles.productRow, {backgroundColor: 'white', borderTopEndRadius: 20, borderTopStartRadius: 20}]}>
-            <Text style={{marginTop: 10,paddingLeft: 20, fontWeight: 'bold'}}>Over {flockAr.reduce((total, item)=>total + item.members.length, 0)} people are currently flocking.</Text>
+            <Text style={{marginTop: 10,fontWeight: 'bold'}}>Over {flockAr.reduce((total, item)=>total + item.members.length, 0)} people are currently flocking.</Text>
             <FlockList navigation = {navigation} product = {route.params.album} ar = {flockAr} />
             </View>
             <View style={styles.productRow}>{renderDetail()}</View>
@@ -471,7 +471,7 @@ const FlockList = ({product, navigation, ar, limited = true}) => {
     };
     console.log(result.length);
     result.push(  
-      <View style={{flexDirection: 'row', justifyContent: 'space-between', paddingTop: 10, borderTopWidth:i==0?0:2, borderColor: constants.GREY, paddingLeft: 20, paddingBottom:3}}>
+      <View style={{flexDirection: 'row', justifyContent: 'space-between', paddingTop: 10, borderTopWidth:i==0?0:2, borderColor: constants.GREY, paddingBottom:3}}>
       <View style={{flex: 1}}>
     <Text numberOfLines = {1} style={{fontWeight: 'bold', fontSize:15,width: 80, height: 20, }}>@{ar[i].members[0].name}</Text>
       <Text>and {ar[i].members.length-1} others</Text>
@@ -480,7 +480,7 @@ const FlockList = ({product, navigation, ar, limited = true}) => {
       <View style={{flex:1, marginRight: 15}}>
       <Countdown dateObj = {ar[i].time} />
       </View>
-      <View style={{borderRadius: 30, backgroundColor: constants.ORANGE, justifyContent:'center', paddingLeft: 10, paddingRight: 10, marginRight: 20}}>
+      <View style={{borderRadius: 30, backgroundColor: constants.ORANGE, justifyContent:'center', paddingLeft: 10, paddingRight: 10}}>
       <TouchableOpacity onPress={tempFunc}>
       <Text style={{color: 'white', fontFamily: constants.FONT, fontWeight: 'bold', fontSize: 13}}>${Math.round(ar[i].product.price/(ar[i].members.length + 1))} or less</Text>
       </TouchableOpacity>
