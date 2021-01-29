@@ -130,133 +130,139 @@ const DataList = ({navigation, route}) => {
 
 const HomeTabSwipe = ({videoData, navigation, route}) => {
   const {key, key1, limitKey, unsubscribeKey, limitKeyRent} = useContext(KeyContext);
-  const {keyArrFlock, setKeyArrFlock, keyArrRent, setKeyArrRent, keyVideoData} = useContext(KeyContext);
+  const {keyArrFlock, setKeyArrFlock, keyArrRent, setKeyArrRent, keyVideoData, setKeyVideoData} = useContext(KeyContext);
   var unsubscribeCurrent;
   var unsubscribeCurrentRent;
 
   const [coverfade, setCoverFade] = useState(new Animated.Value(1));
   const [coverheight, setCoverHeight] = useState(new Animated.Value(Dimensions.get('window').height));
-  React.useEffect(() => {
-    // this should make it so that on creating new listener with new limit, the previous one is gone.
-      if (unsubscribeCurrent) {
-        console.log('unsubscribing flock');
-        unsubscribeCurrent();
-      }
+  // React.useEffect(() => {
+  //   // this should make it so that on creating new listener with new limit, the previous one is gone.
+  //     if (unsubscribeCurrent) {
+  //       console.log('unsubscribing flock');
+  //       unsubscribeCurrent();
+  //     }
 
-    if (key && key1) {
-      setTimeout(() => {
-        navigation.dispatch({
-          ...CommonActions.setParams({value: 'Updated state'}),
-          source: key,
-        });
-      }, 10000);
+  //   if (key && key1) {
+  //     setTimeout(() => {
+  //       navigation.dispatch({
+  //         ...CommonActions.setParams({value: 'Updated state'}),
+  //         source: key,
+  //       });
+  //     }, 10000);
 
-      // getMessages(navigation, key, key1);
-      console.log('subscribing flock');
-      var citiesRef = db.collection("chatGroups");
-      // this filter is kind of inefficient; gets the entire table
-      var query = citiesRef;
-      unsubscribeCurrent = query
-      .where('completed', '==', false)
-      .limit(limitKey)
-      .onSnapshot(function(querySnapshot) {
-        const rent = [];
-        const flock = [];
-        querySnapshot.forEach(function(doc) {
-          if (doc.data().completed === false) {
-          flock.push({...doc.data(), id: doc.id});
-          } else {
-            rent.push(doc.data({...doc.data(), id: doc.id}));
-          }
-        });
-        // navigation.dispatch({
-        //   ...CommonActions.setParams({videoData: [], rentData: rent, flockData: flock}),
-        //   source: key,
-        // });
-        setKeyArrFlock(flock);
-        // console.log("KEY FLOCK", flock)
-        // navigation.dispatch({
-        //   ...CommonActions.setParams({videoData: [], rentData: rent, flockData: flock}),
-        //   source: key1,
-        // });
-        // setFlockData(flock);
-        // setRentData(rent);
-      });
+  //     // getMessages(navigation, key, key1);
+  //     console.log('subscribing flock');
+  //     var citiesRef = db.collection("chatGroups");
+  //     // this filter is kind of inefficient; gets the entire table
+  //     var query = citiesRef;
+  //     unsubscribeCurrent = query
+  //     .where('completed', '==', false)
+  //     .limit(limitKey)
+  //     .onSnapshot(function(querySnapshot) {
+  //       const rent = [];
+  //       const flock = [];
+  //       querySnapshot.forEach(function(doc) {
+  //         if (doc.data().completed === false) {
+  //         flock.push({...doc.data(), id: doc.id});
+  //         } else {
+  //           rent.push(doc.data({...doc.data(), id: doc.id}));
+  //         }
+  //       });
+  //       // navigation.dispatch({
+  //       //   ...CommonActions.setParams({videoData: [], rentData: rent, flockData: flock}),
+  //       //   source: key,
+  //       // });
+  //       setKeyArrFlock(flock);
+  //       // console.log("KEY FLOCK", flock)
+  //       // navigation.dispatch({
+  //       //   ...CommonActions.setParams({videoData: [], rentData: rent, flockData: flock}),
+  //       //   source: key1,
+  //       // });
+  //       // setFlockData(flock);
+  //       // setRentData(rent);
+  //     });
   
 
-      // this breaks something v
-      //return () => {unsubscribe()};
-    }
+  //     // this breaks something v
+  //     //return () => {unsubscribe()};
+  //   }
 
 
-    return () => {
-      if (unsubscribeCurrent) {
-        console.log("unsubscribing flock");
-        unsubscribeCurrent();
-      }
-    };
-  }, [key, limitKey]);
+  //   return () => {
+  //     if (unsubscribeCurrent) {
+  //       console.log("unsubscribing flock");
+  //       unsubscribeCurrent();
+  //     }
+  //   };
+  // }, [key, limitKey]);
 
-  React.useEffect(() => {
-    // this should make it so that on creating new listener with new limit, the previous one is gone.
-      if (unsubscribeCurrentRent) {
-        console.log('unsubscribing rent');
-        unsubscribeCurrentRent();
-      }
+  // React.useEffect(() => {
+  //   // this should make it so that on creating new listener with new limit, the previous one is gone.
+  //     if (unsubscribeCurrentRent) {
+  //       console.log('unsubscribing rent');
+  //       unsubscribeCurrentRent();
+  //     }
 
-    if (key && key1) {
-      setTimeout(() => {
-        navigation.dispatch({
-          ...CommonActions.setParams({value: 'Updated state'}),
-          source: key,
-        });
-      }, 10000);
+  //   if (key && key1) {
+  //     setTimeout(() => {
+  //       navigation.dispatch({
+  //         ...CommonActions.setParams({value: 'Updated state'}),
+  //         source: key,
+  //       });
+  //     }, 10000);
 
-      // getMessages(navigation, key, key1);
-      var citiesRef = db.collection("chatGroups");
-      // this filter is kind of inefficient; gets the entire table
-      console.log('subscribing rent');
-      var query = citiesRef;
-      unsubscribeCurrentRent = query
-      .where('completed', '==',true)
-      .limit(limitKeyRent)
-      .onSnapshot(function(querySnapshot) {
-        const rent = [];
-        const flock = [];
-        querySnapshot.forEach(function(doc) {
-          if (doc.data().completed === false) {
-          flock.push({...doc.data(), id: doc.id});
-          } else {
-            rent.push({...doc.data(), id: doc.id});
-          }
-        });
-        // navigation.dispatch({
-        //   ...CommonActions.setParams({videoData: [], rentData: rent, flockData: flock}),
-        //   source: key,
-        // });
-        // navigation.dispatch({
-        //   ...CommonActions.setParams({videoData: [], rentData: rent, flockData: flock}),
-        //   source: key1,
-        // });
-        setKeyArrRent(rent);
-        console.log("RENTTTTTTTTTTTTTTTTTTTTTTTTT", rent,"RENT");
-        // setFlockData(flock);
-        // setRentData(rent);
-      });
+  //     // getMessages(navigation, key, key1);
+  //     var citiesRef = db.collection("chatGroups");
+  //     // this filter is kind of inefficient; gets the entire table
+  //     console.log('subscribing rent');
+  //     var query = citiesRef;
+  //     unsubscribeCurrentRent = query
+  //     .where('completed', '==',true)
+  //     .limit(limitKeyRent)
+  //     .onSnapshot(function(querySnapshot) {
+  //       const rent = [];
+  //       const flock = [];
+  //       querySnapshot.forEach(function(doc) {
+  //         if (doc.data().completed === false) {
+  //         flock.push({...doc.data(), id: doc.id});
+  //         } else {
+  //           rent.push({...doc.data(), id: doc.id});
+  //         }
+  //       });
+  //       // navigation.dispatch({
+  //       //   ...CommonActions.setParams({videoData: [], rentData: rent, flockData: flock}),
+  //       //   source: key,
+  //       // });
+  //       // navigation.dispatch({
+  //       //   ...CommonActions.setParams({videoData: [], rentData: rent, flockData: flock}),
+  //       //   source: key1,
+  //       // });
+  //       setKeyArrRent(rent);
+  //       console.log("RENTTTTTTTTTTTTTTTTTTTTTTTTT", rent,"RENT");
+  //       // setFlockData(flock);
+  //       // setRentData(rent);
+  //     });
   
 
-      // this breaks something v
-      //return () => {unsubscribe()};
-    }
+  //     // this breaks something v
+  //     //return () => {unsubscribe()};
+  //   }
 
 
-    return () => {
-      if (unsubscribeCurrentRent) {
-        console.log('unsubscribing rent')
-        unsubscribeCurrentRent();
-      }
-    };
-  }, [key1, limitKeyRent]);
+  //   return () => {
+  //     if (unsubscribeCurrentRent) {
+  //       console.log('unsubscribing rent')
+  //       unsubscribeCurrentRent();
+  //     }
+  //   };
+  // }, [key1, limitKeyRent]);
+
+  useEffect(()=>{
+    fetchAlbums().then((ar) => {
+      setKeyVideoData(ar.ar);
+    });
+  }, []);
 
   const {keyFinishedLoading} = useContext(KeyContext);
   useEffect(()=>{
@@ -391,14 +397,22 @@ const MiniCarouselRenting = ({navigation, route}) => {
   const {key, key1, keyArrRent, setKeyArrRent, limitKeyRent, keyArrFlock, setKeyArrFlock, keyVideoData, setKeyVideoData, setKeyFinishedLoading} = useContext(KeyContext);
   var unsubscribeCurrentRent;
   const [cover, setCover] = useState(false);
+  const [coverFade, setCoverFade] = useState(new Animated.Value(1));
 
   const [finalAr, setFinalAr] = useState([]);
   useEffect(()=>{
     fetchRentables().then((ar) => {
       setFinalAr(ar);
+      setKeyArrRent(ar);
       // setKeyFinishedLoading(false);
-      dispatch({type:'sendCarouselFlockIndex', payload: ar.length - 1});
-      setCover(false);
+      dispatch({type:'sendCarouselRentIndex', payload: ar.length - 1});
+      Animated.timing(coverFade, {
+        toValue: 0,
+        duration: 500,
+        delay: 2000,
+        useNativeDriver: false,
+      }).start();
+      setTimeout(()=>setCover(false), 2500);
     });
   },[]);
 
@@ -427,7 +441,7 @@ const MiniCarouselRenting = ({navigation, route}) => {
   //     </ScrollView>
   // </View>
   return <>
-  <Animated.View style={{backgroundColor: 'white', position: 'absolute', left: 0, bottom: 0, width:'100%', height: cover?"100%":0, opacity: 1, zIndex: 10000}} ><View style={{
+  <Animated.View style={{backgroundColor: 'white', position: 'absolute', left: 0, bottom: 0, width:'100%', height: cover?"100%":0, opacity: coverFade, zIndex: 10000}} ><View style={{
     backgroundColor: constants.PINK_BACKGROUND, height: '100%', width: '100%',
     justifyContent: 'center', alignItems: 'center',
 }}/>
@@ -447,14 +461,22 @@ const MiniCarouselFlocking = ({navigation, route}) => {
   const {key, key1, keyArrRent, setKeyArrRent, limitKey, keyArrFlock, setKeyArrFlock, keyVideoData, setKeyVideoData, setKeyFinishedLoading} = useContext(KeyContext);
   var unsubscribeCurrentFlock;
   const [cover, setCover] = useState(true);
+  const [coverFade, setCoverFade] = useState(new Animated.Value(1));
 
   const [finalAr, setFinalAr] = useState([]);
   useEffect(()=>{
     fetchFlockables().then((ar) => {
       setFinalAr(ar);
+      setKeyArrFlock(ar);
       dispatch({type:'sendCarouselFlockIndex', payload: ar.length - 1});
       // setKeyFinishedLoading(false);
-      setCover(false);
+      Animated.timing(coverFade, {
+        toValue: 0,
+        duration: 500,
+        delay: 2000,
+        useNativeDriver: false,
+      }).start();
+      setTimeout(()=>setCover(false), 2500);
     });
   },[]);
 
@@ -482,7 +504,7 @@ const MiniCarouselFlocking = ({navigation, route}) => {
   //     </ScrollView>
   // </View>
   return <>
-    <Animated.View style={{backgroundColor: 'white', position: 'absolute', left: 0, bottom: 0, width:'100%', height: cover?"100%":0, opacity: 1, zIndex: 10000}} ><View style={{
+    <Animated.View style={{backgroundColor: 'white', position: 'absolute', left: 0, bottom: 0, width:'100%', height: cover?"100%":0, opacity: coverFade, zIndex: 10000}} ><View style={{
     backgroundColor: constants.PINK_BACKGROUND, height: '100%', width: '100%',
     justifyContent: 'center', alignItems: 'center',
 }}/>
@@ -510,7 +532,7 @@ const MiniCarousel = ({navigation, route}) => {
     
     fetchAlbums().then((ar) => {
       setKeyVideoData(ar.ar);
-      dispatch({type:'sendCarouselIndex', payload: ar.ar.length - 1});
+      dispatch({type:'sendCarouselIndex', payload: ar.length - 1});
       setTimeout(()=>{
         setKeyFinishedLoading(true);
       }, 2000);
