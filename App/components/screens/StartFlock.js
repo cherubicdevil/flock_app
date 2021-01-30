@@ -134,9 +134,9 @@ const PageThree = ({product, data, flockId}) => {
 
     <ViewShot ref={img} options={{ format: "jpg", quality: 0.9 }}>
         <Image style = {{height: 250,}} source = {{uri: product.image}} />
-        <View style={{position:'absolute', bottom: 20, right: 20, }}>
-        <Image style={{height: 50, width: 50}} source={require('App/Assets/Images/flock_logo_purple.png')}/>
-        <Text style={{fontFamily: 'Nunito', fontWeight: 'bold', fontSize: 12}}>%{flockId.padStart(5,'0')}</Text>
+        <View style={{position:'absolute', bottom: 20, right: 20, justifyContent: 'center', }}>
+        <Image style={{height: 55, width: 150}} source={require('App/Assets/Images/Flock_Watermark.png')}/>
+<Text style={{marginTop: -15, alignSelf: 'flex-end', width: 85, shadowColor: 'white', shadowOpacity: 1, shadowOffset:{height:0}, fontFamily: 'Nunito', fontWeight: 'bold', fontSize: 8}}>search {<Text style={{color: 'black'}}>%{flockId.padStart(5,'0')}</Text>} in app</Text>
         </View>
       </ViewShot>
     </>
