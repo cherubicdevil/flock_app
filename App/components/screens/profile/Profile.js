@@ -75,7 +75,8 @@ const ProfilePicture = () => {
       />
       <View
         style={{
-          alignSelf: 'center',
+          // alignSelf: 'flex-start',
+          marginLeft: 30,
           width: 120,
           height: 120,
           borderRadius: 60,
@@ -90,7 +91,7 @@ const ProfilePicture = () => {
             //ImagePicker.showImagePicker(options, getResponse);
           }}>
           <Text style={{textAlign: 'center', color: constants.RED}}>
-            Change Profile Picture
+            Change
           </Text>
         </TouchableOpacity>
       </View>
@@ -215,27 +216,31 @@ const Profile = ({navigation}) => {
   //settings.username.ref.current = user.displayName;
   console.log('my ref', settings.username.ref.current);
   //console.log('photoURL', user.photoURL);
-  const renderFormBox = (flex, label, defaultValue, placeholder, state, setState) => {
+  const renderFormBox = (flex, label, defaultValue, placeholder, state, setState, numberOfLines=1) => {
     return (
       <View
         style={{
           //borderBottomWidth: 1,
+          marginRight: 20,
           borderColor: constants.GREY,
           alignItems: 'center',
-          height: 40,
-          flexDirection: 'row',
-          backgroundColor: constants.BGGREY,
+          // height: 80,
+          // flexDirection: 'row',
+          // backgroundColor: constants.BGGREY,
         }}>
         <Text
           style={{
             //fontVariant: ['tabular-nums'],
             fontFamily: 'Nunito-Light',
-
+            alignSelf: 'flex-start',
+            marginLeft: 10,
+            marginTop: 10,
             flex: flex,
           }}>
           {label}
         </Text>
         <TextInput
+        numberOfLines={numberOfLines}
           defaultValue={defaultValue}
           placeholder={placeholder}
           value = {state}
@@ -244,12 +249,13 @@ const Profile = ({navigation}) => {
           }}
           style={{
             //margin: 10,
+            width: '100%',
             paddingTop: 8,
             paddingBottom: 8,
             flex: 1,
             paddingLeft: 10,
-            borderRadius: 10,
-            backgroundColor: constants.GREY,
+            borderRadius: 40,
+            backgroundColor: 'white',
           }}
         />
       </View>
@@ -299,48 +305,40 @@ const Profile = ({navigation}) => {
   };
   useEffect(() => {}, []);
   return (
-    <SafeAreaView style={{flex: 1, marginLeft: 30, marginRight: 20}}>
-      <Image
-        source={require('App/Assets/Images/Orange_Gradient_Small.png')}
-        style={{
-          position: 'absolute',
-          marginLeft: -50,
-          marginRight: -50,
-          width: '150%',
-          top: 0,
-          height: 200,
-        }}
-      />
+    <SafeAreaView style={{flex: 1, paddingLeft: 30, paddingRight: 20, backgroundColor: constants.PINK_BACKGROUND}}>
       <ScrollView style={{paddingTop: 20}}>
         <Text style={{fontSize: 24, textAlign: 'center', marginBottom: 20}}>
-          Update Info
+          Edit Profile
         </Text>
+        <View style={{flexDirection: 'row'}}>
         <ProfilePicture />
 
-        <View style={{marginTop: 50, justifyContent: 'flex-start'}}>
+        <View style={{flex: 1, marginLeft: 20, justifyContent: 'flex-start'}}>
           {/* {renderFormBoxes()} */}
-          {renderFormBox(0.5, "test", "test", "test", username, setUserName)}
-          {renderFormBox(0.5, "test", "test", "test", email, setEmail)}
-          {renderFormBox(0.5, "test", "test", "test", bio, setBio)}
+          {renderFormBox(0.5, "Username", "username", "username", username, setUserName)}
+          {/* {renderFormBox(0.5, "email", "test", "test", email, setEmail)} */}
+          {renderFormBox(0.5, "Bio", "bio", "bio", bio, setBio, 2)}
+        </View>
         </View>
         <View style={{flex: 1}} />
-        <View style={{justifyContent: 'center', flexDirection: 'row'}}>
+        <View style={{justifyContent: 'center', flexDirection: 'row', marginTop: 50}}>
           <TouchableOpacity
             style={{
               width: 80,
               margin: 10,
               borderRadius: 20,
-              borderWidth: 2,
+
               padding: 5,
-              borderWidth: 2,
+              // borderWidth: 2,
               paddingTop: 3,
-              borderColor: '#aaa',
+              // borderColor: '#aaa',
+              backgroundColor: '#d8d8d8',
             }}
             onPress={() => navigation.goBack()}
             title="logout">
             <Text
               style={{
-                color: '#bbb',
+                color: '#000',
                 textAlign: 'center',
                 fontFamily: 'Nunito-Bold',
               }}>

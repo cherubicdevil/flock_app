@@ -11,13 +11,19 @@ import Animation from 'lottie-react-native';
 import {firebase, db} from 'App/firebase/config';
 
 const StartFlock = ({navigation, route}) => {
-    const flockId = (Math.random() * 100000).toFixed(0);
+    var flockId;
+    if (!route.params.flockId) {
+    var flockId = (Math.random() * 100000).toFixed(0);
+    } else {
+        flockId = route.params.flockId;
+    }
     const dispatch = useDispatch();
     const [canNext, setCanNext] = useState(true);
     const Tab = createMaterialTopTabNavigator();
     console.log('start flock index is', route.params);
     var ar = [<PageOne product = {route.params.product} data = {route.params.data} />, <PageTwo product = {route.params.product} data = {route.params.data} setCanNext={setCanNext} />, <PageThree product = {route.params.product} data = {route.params.data} flockId={flockId} />, <PageFour product = {route.params.product} data = {route.params.data} />];
     return <ScrollView scrollEnabled={false} keyboardShouldPersistTaps="never"><ProgressHeader
+    idText={"%"+flockId}
     nextRoute="StartFlock"
     backRoute="StartFlock"
     headerText="Start a Flock"
