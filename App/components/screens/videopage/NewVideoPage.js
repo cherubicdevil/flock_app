@@ -108,7 +108,7 @@ const NewVideoPage = ({navigation, route, array, index, data, currIndex, viewHei
 
   const [flockCountdowns, setFlockCountdowns] = useState([]);
 
-  const percentage= 75;
+  const percentage= 100;
 
   var lastVisible = null;
   const select = useSelector(state=>state);
@@ -229,8 +229,13 @@ useEffect(()=>{
             backgroundColor: 'white',
           }}>
               {/* <Image source = {{uri: data?.poster || data?.product?.image || ''}} style={{position: 'absolute', zIndex: -10, top: 0, width: '100%', height: '100%' }} blurRadius={100} /> */}
-              <View style={{alignSelf: 'center'}}>
-              <ResizeableImage source={{uri: data?.product?.image || ''}} limitHorizontal={false} hLimit={viewHeight * percentage/100} />
+              <View style={{alignSelf: 'center', height: '100%'}}>
+                <View style={{height: '100%', justifyContent: 'center'}}>
+              <ResizeableImage aspectRatio={0.5} optimize={true} source={{uri: data?.product?.image || ''}} limitHorizontal={false} wLimit = {Dimensions.get('window').width} hLimit={viewHeight * percentage/100} />
+              </View>
+              <View style={{position: 'absolute', bottom: 0, zIndex: -30}}>
+              <ResizeableImage blurred={true} source={{uri: data?.product?.image || ''}} limitHorizontal={false} hLimit={viewHeight} />
+              </View>
               </View>
               <View style={{width: '100%', position: 'absolute', bottom: 0}}>
               {renderIcons()}
@@ -311,7 +316,7 @@ const ConditionalVideo = ({index, data, viewHeight, route}) => {
     }
 }
 
-const ResizeableImage = ({source, limitHorizontal=true, hLimit, wLimit}) => {
+const ResizeableImage = ({source, limitHorizontal=true, hLimit, wLimit, optimize=false, blurred=false}) => {
   const [width, setWidth] = useState(0);
   const [height, setHeight] = useState(0);
 
@@ -324,9 +329,15 @@ const ResizeableImage = ({source, limitHorizontal=true, hLimit, wLimit}) => {
     setHeight(h * ratio);
     setWidth(maxWidth);
     } else {
-      const ratio = maxHeight / h;
+      var ratio = maxHeight / h;
+      if (optimize && w/h > .75) {
+          var ratio = maxWidth / w;
+          setHeight(h * ratio);
+          setWidth(maxWidth);
+      } else {
       setWidth(w * ratio);
       setHeight(maxHeight);
+      }
     }
   });
 }
@@ -335,6 +346,7 @@ const ResizeableImage = ({source, limitHorizontal=true, hLimit, wLimit}) => {
   }
   return (
     <Image
+    blurRadius={blurred?50: 0}
       source={source?.uri === ''?require('App/Assets/Images/flock_logo_white.png'):source}
       style={{
         //position: 'absolute',

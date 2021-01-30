@@ -24,6 +24,7 @@
 import {Dimensions} from 'react-native';
 
 export const constants = {
+  MENU_COLOR: 'rgba(239, 232, 237,1)',
   BLUEBORDER: "#7791b0",
   PURPLEBORDER: "#C09BAE",
   NAVBARHEIGHT: 75,

@@ -352,8 +352,8 @@ const Home = ({route, navigation, lastVisible = null}) => {
 
   }, []);
   return (
-    <View style={{backgroundColor: 'white', flex: 1}}>
-    <View style={{borderBottomEndRadius: 80, borderBottomLeftRadius: 80, overflow: 'hidden', height: Dimensions.get('window').height - constants.NAVBARHEIGHT}}>
+    <View style={{backgroundColor: constants.MENU_COLOR, flex: 1}}>
+    <View style={{borderBottomEndRadius: 50, borderBottomLeftRadius: 50, overflow: 'hidden', height: Dimensions.get('window').height - constants.NAVBARHEIGHT}}>
     <Fragment><SafeAreaView style={{ flex: 0, backgroundColor: constants.TRANSLUCENT }} />
     {/* <SafeAreaView style={{ flex: 1, backgroundColor: 'transparent' }}> */}
     {/* <SafeAreaView style={[styles.wrapperAll,{backgroundColor: constants.PINK_BACKGROUND}]}> */}

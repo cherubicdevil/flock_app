@@ -174,7 +174,7 @@ const styles = {
     paddingTop: 5,
     alignSelf: 'center',
     //backgroundColor: '#ff9933',
-    backgroundColor: '#fff',
+    backgroundColor: constants.MENU_COLOR,
     borderRadius: 100,
     width: '100%',
     height: constants.NAVBARHEIGHT,
