@@ -85,7 +85,7 @@ const ProfileMain = ({navigation}) => {
   const Test1 = () => {
     console.log("flockData length", flockData.length);
     const defaultView = <View
-        style={{marginTop: 30, alignSelf: 'center', justifyContent: 'center'}}>
+        style={{marginTop: 30, alignSelf: 'center', justifyContent: 'center',}}>
         <Image source={constants.PLACEHOLDER_IMAGE} />
         <Text
           style={{
@@ -100,13 +100,13 @@ const ProfileMain = ({navigation}) => {
       </View>;
 
       return (
-        <>
+        <View style={{backgroundColor: "rgba(166,184,205,0.5)", flex: 1}}>
           <FlatList
             //contentContainerStyle={{flexDirection: 'row', flexWrap: 'wrap'}}
             numColumns={3}
             data={flockData}
             renderItem={(el) => {
-              return <TouchableOpacity onPress={()=>{navigation.navigate("ChatInterface", {data: el.item})}}><View style={{width: Dimensions.get('window').width/3 - 10, margin: 5, paddingBottom: 30, borderBottomRightRadius: 40, borderBottomLeftRadius: 40, backgroundColor: 'white', resizeMode: 'contain'}} >
+              return <TouchableOpacity onPress={()=>{navigation.navigate("ChatInterface", {data: el.item})}}><View style={{borderWidth: 3, borderColor: constants.GREYORANGE, width: Dimensions.get('window').width/3 - 10, margin: 5, paddingBottom: 30, borderBottomRightRadius: 40, borderBottomLeftRadius: 40, backgroundColor: 'white', resizeMode: 'contain'}} >
                 <Text>Current Price: ${(el.item.product.price/el.item.members.length).toFixed(2)} </Text>
               <Text>Your Maximum: ${(el.item.maximums[firebase.auth().currentUser.uid])}</Text>
               <ResizeableImage limitHorizontal={false} hLimit={50} source={{uri: el.item.product.image}} style={{width:'100%', height: 50}} />
@@ -114,7 +114,7 @@ const ProfileMain = ({navigation}) => {
               </TouchableOpacity>
             }}
           />
-        </>
+        </View>
       );
   };
 
@@ -122,20 +122,20 @@ const ProfileMain = ({navigation}) => {
     console.log("RENTDATA length", rentData.length);
     console.log(rentData);
     return (
-      <>
+      <View style={{backgroundColor: "rgba(166,184,205,0.5)", flex: 1}}>
         <FlatList
           //contentContainerStyle={{flexDirection: 'row', flexWrap: 'wrap'}}
           numColumns={3}
           data={rentData}
           renderItem={(el) => {
-            return <TouchableOpacity onPress={()=>{navigation.navigate('FlockChatComplete', {data: el.item})}}><View style={{backgroundColor: 'black', width: Dimensions.get('window').width/3, height: 150, borderBottomRightRadius: 40, borderBottomLeftRadius: 40, backgroundColor: 'white'}} >
+            return <TouchableOpacity onPress={()=>{navigation.navigate('FlockChatComplete', {data: el.item})}}><View style={{backgroundColor: 'black', width: Dimensions.get('window').width/3- 10, margin: 5, height: 150, borderBottomRightRadius: 40, borderBottomLeftRadius: 40, backgroundColor: 'white'}} >
               <Image style={{width: '100%', height: 110}} source={{uri: el.item.product.image}} />
           <Text>{el.item.members.length} flockers</Text>
             </View>
             </TouchableOpacity>
           }}
         />
-      </>
+      </View>
     );
   }
   const Test2 = () => {
@@ -220,7 +220,9 @@ const ProfileMain = ({navigation}) => {
 
   console.log("MY USERNAME IS:", auth.currentUser.displayName);
   return (
-    <Fragment><SafeAreaView style={{ flex: 0, backgroundColor: constants.TRANSLUCENT }} /><SafeAreaView style={{flex: 1, backgroundColor: constants.PINK_BACKGROUND}}>
+    <View style={{backgroundColor: constants.PINK_BACKGROUND_OPAQUE, flex: 1}}>
+      <View style={{borderBottomLeftRadius: 50, borderBottomEndRadius: 50, overflow: 'hidden', height: Dimensions.get('window').height - constants.NAVBARHEIGHT}}>
+    <Fragment><SafeAreaView style={{ flex: 0, backgroundColor: constants.TRANSLUCENT }} /><SafeAreaView style={{flex: 1, backgroundColor: "rgba(166,184,205,0.5)"}}>
       <AnimatedModal fade={false} upPercent="35%" visible={modalOpen} close={()=>setModalOpen(false)} content={<View>
         <TouchableOpacity
           onPress={() => {
@@ -323,13 +325,24 @@ const ProfileMain = ({navigation}) => {
         </View>
       {/* </ImageBackground> */}
       <View style={{flex: 4}}>
-        <Tab.Navigator>
+        <Tab.Navigator tabBarOptions={{
+       activeTintColor: '#fff',
+       inactiveTintColor: 'lightgray',
+       activeBackgroundColor: '#c4461c',
+       inactiveBackgroundColor: '#b55031',
+           style: {
+                 backgroundColor: constants.BLUE_FADE,
+                 paddingBottom: 3
+           }
+    }} >
           <Tab.Screen name="flocking" component={Test1} />
           <Tab.Screen name="flocked" component={Test3} />
         </Tab.Navigator>
       </View>
     </SafeAreaView>
     </Fragment>
+    </View>
+    </View>
   );
 };
 

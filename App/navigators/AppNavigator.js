@@ -179,7 +179,7 @@ const AppNavigator5 = () => {
           name="Egg"
           component={ProfileMain}
           options={{
-            title: 'Egg',
+            title: 'ProfileMain',
             cap: 'you',
             image: require('App/Assets/Images/cute_duck_silhouette.png'),
           }}
