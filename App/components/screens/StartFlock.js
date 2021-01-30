@@ -12,14 +12,16 @@ import {firebase, db} from 'App/firebase/config';
 
 const StartFlock = ({navigation, route}) => {
     const dispatch = useDispatch();
+    const [canNext, setCanNext] = useState(true);
     const Tab = createMaterialTopTabNavigator();
     console.log('start flock index is', route.params);
-    var ar = [<PageOne product = {route.params.product} data = {route.params.data} />, <PageTwo product = {route.params.product} data = {route.params.data} />, <PageThree product = {route.params.product} data = {route.params.data} />, <PageFour product = {route.params.product} data = {route.params.data} />];
+    var ar = [<PageOne product = {route.params.product} data = {route.params.data} />, <PageTwo product = {route.params.product} data = {route.params.data} setCanNext={setCanNext} />, <PageThree product = {route.params.product} data = {route.params.data} />, <PageFour product = {route.params.product} data = {route.params.data} />];
     return <ScrollView scrollEnabled={false} keyboardShouldPersistTaps="never"><ProgressHeader
     nextRoute="StartFlock"
     backRoute="StartFlock"
     headerText="Start a Flock"
     goBack={true}
+    canGoNext={canNext}
     navigation={navigation}
     index={route.params.index}
     number={3}
@@ -69,18 +71,37 @@ const PageOne = ({product, data}) => {
     </View>;
 }
 
-const PageTwo = ({product, data}) => {
+const PageTwo = ({product, data, setCanNext}) => {
+    const [errorMessage, setErrorMessage] = useState("");
+    const [priceValue, setPriceValue] = useState((product.price / 2).toFixed(2));
     return <View style={styles.container}>
-    <Text style={{fontWeight: 'bold', marginBottom: 20}}>Enter the maximum you are willing to pay.</Text>
-    <View style={[{flexDirection: 'row', width: 150, height: 25, alignItems: 'center'}]}>
+        <Text style={{color: 'red'}}>{errorMessage}</Text>
+    <Text style={{fontWeight: 'bold', marginBottom: 20}}>Enter your price. Minimum: ${(product.price/40).toFixed(2)}.</Text>
+    <View style={[{flexDirection: 'row', height: 25, alignItems: 'center'}]}>
         <Text style={{color:constants.DARKGREY, marginRight: 5, marginTop:1, fontWeight: 'bold'}}>USD</Text>
     <View style={[styles.inputBox,{flex: 1, height: 35, paddingLeft: 5, marginLeft: 1, flexDirection: 'row', alignItems: 'center', borderWidth: 2, borderColor: constants.DARKGREY}]}>
     <Text style={{color: constants.DARKGREY}}>$</Text>
-    <BasicInputText numeric = {true} data={data} title="maxPrice" defaultValue = {(product.price / 2).toFixed(2)} style={[styles.inputBox,{flex: 1, paddingLeft: 0, marginLeft: 3, borderWidth: 0}]} />
+    <View style={{width: 100}}>
+    <BasicInputText setOutsideValue={setPriceValue} numeric = {true} data={data} title="maxPrice" defaultValue = {(product.price / 2).toFixed(2)} style={[styles.inputBox,{flex: 1, paddingLeft: 0, marginLeft: 3, borderWidth: 0}]} 
+    setFunc={(numString)=>{
+        if (numString === "") {
+            setErrorMessage("Please insert a price.");
+            setCanNext(false);
+        } else if (parseInt(numString.replace(".","")) < product.price/40 * 100) {
+            setErrorMessage("Please insert a price greater than the minimum");
+            setCanNext(false);
+        } else {
+            setErrorMessage("");
+            setCanNext(true);
+        }
+    }}
+    /></View>
     </View>
+    <Text style={{color: constants.GREYORANGE, marginLeft: 30, width: 150}}>{(parseInt(priceValue.replace(".","")) / product.price)>100?"100%":(parseInt(priceValue.replace(".","")) / product.price).toFixed(0) + "%"} ownership</Text>
     </View>
+    
 
-    <Text style={{marginTop: 20, marginBottom: 20, }}>The price of the item is split evenly amongst the flock. The sale will go through as soon as the split price meets two or more flockers’ maximum limit. So don’t set your maximum too low because your flock may take off without you!</Text>
+    <Text style={{marginTop: 20, marginBottom: 20, }}>The more you pay, the more you own, and the more frequently you can use this item compared to your co-flockers.</Text>
     <ProductPreview product = { product } />
     </View>
 }
@@ -122,7 +143,7 @@ const InputText = ({numLines, data, title, placeholder, label, defaultValue=""})
     }} /></View>
 }
 
-const BasicInputText = ({numLines=1, numeric, data, placeholder, label, title, defaultValue=""}) => {
+const BasicInputText = ({setOutsideValue=()=>{},numLines=1, numeric, data, placeholder, label, title, defaultValue="", setFunc=()=>{}}) => {
     
     console.log(data[label]);
     data[title] = defaultValue;
@@ -144,6 +165,8 @@ const BasicInputText = ({numLines=1, numeric, data, placeholder, label, title, d
             } else {
                 setDataValue(parseInt(text.replace(".",""))/100);
             }
+            setFunc(text);
+            setOutsideValue(text);
         } else {
             setDataValue(text);
         }

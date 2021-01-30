@@ -122,7 +122,7 @@ const ProfileMain = ({navigation}) => {
     console.log("RENTDATA length", rentData.length);
     console.log(rentData);
     return (
-      <View style={{backgroundColor: "rgba(166,184,205,0.5)", flex: 1}}>
+      <View style={{backgroundColor: constants.GREYORANGE, flex: 1}}>
         <FlatList
           //contentContainerStyle={{flexDirection: 'row', flexWrap: 'wrap'}}
           numColumns={3}
@@ -221,7 +221,7 @@ const ProfileMain = ({navigation}) => {
   console.log("MY USERNAME IS:", auth.currentUser.displayName);
   return (
     <View style={{backgroundColor: constants.PINK_BACKGROUND_OPAQUE, flex: 1}}>
-      <View style={{borderBottomLeftRadius: 50, borderBottomEndRadius: 50, overflow: 'hidden', height: Dimensions.get('window').height - constants.NAVBARHEIGHT}}>
+      <View style={{borderBottomLeftRadius: 50, borderBottomEndRadius: 50, overflow: 'hidden', height: Dimensions.get('window').height - constants.NAVBARHEIGHT, backgroundColor: 'white'}}>
     <Fragment><SafeAreaView style={{ flex: 0, backgroundColor: constants.TRANSLUCENT }} /><SafeAreaView style={{flex: 1, backgroundColor: "rgba(166,184,205,0.5)"}}>
       <AnimatedModal fade={false} upPercent="35%" visible={modalOpen} close={()=>setModalOpen(false)} content={<View>
         <TouchableOpacity
@@ -327,9 +327,9 @@ const ProfileMain = ({navigation}) => {
       <View style={{flex: 4}}>
         <Tab.Navigator tabBarOptions={{
        activeTintColor: '#fff',
-       inactiveTintColor: 'lightgray',
-       activeBackgroundColor: '#c4461c',
-       inactiveBackgroundColor: '#b55031',
+      //  inactiveTintColor: 'lightgray',
+      //  activeBackgroundColor: '#c4461c',
+      //  inactiveBackgroundColor: '#b55031',
            style: {
                  backgroundColor: constants.BLUE_FADE,
                  paddingBottom: 3

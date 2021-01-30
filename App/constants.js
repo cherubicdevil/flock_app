@@ -63,6 +63,7 @@ export const constants = {
   BRIGHT_BLUE: '#22a7f0',
   PINK_BACKGROUND: 'rgba(223, 210, 220,0.5)',
   PINK_BACKGROUND_OPAQUE: 'rgba(239, 232, 237,1)',
+  PINK_BACKGROUND_OPAQUE_LIGHT: 'rgba(247, 244, 246, 1)',
   TRANSLUCENT: '#f2f2f7',
   PEACH: '#ff9966',
   GREYBLUE: '#8291b0',
