@@ -333,6 +333,7 @@ const fetchRentables = async () => {
     db.collection('chatGroups')
       .limit(10)
       .where('completed', '==', true)
+      .startAfter(lastVisibleRent)
       .get()
       .then((querySnapshot) => {
         var counter = 0;
@@ -344,6 +345,30 @@ const fetchRentables = async () => {
           counter = counter + 1;
           if (counter === n) {
             resolve(ar);
+            lastVisibleRent = doc;
+          }
+        });
+      });
+  });
+};
+
+const fetchRentablesFirst = async () => {
+  return new Promise((resolve) => {
+    db.collection('chatGroups')
+      .limit(10)
+      .where('completed', '==', true)
+      .get()
+      .then((querySnapshot) => {
+        var counter = 0;
+        const n = querySnapshot.size;
+        const ar = [];
+        querySnapshot.forEach((doc) => {
+          const entity = doc.data();
+          ar.push(entity);
+          counter = counter + 1;
+          if (counter === n) {
+            resolve(ar);
+            lastVisibleRent = doc;
           }
         });
       });
@@ -675,6 +700,7 @@ export {
   fetchFlockables,
   fetchFlockablesFirst,
   fetchRentables,
+  fetchRentablesFirst,
   mergeArrays,
   pickVideo,
   fadeIn,

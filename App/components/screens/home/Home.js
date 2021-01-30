@@ -36,7 +36,7 @@ import Carousel from 'App/components/screens/videopage/Carousel'
 import VideoPage from 'App/components/screens/videopage/VideoPage';
 import NewVideoPage from 'App/components/screens/videopage/NewVideoPage';
 import {useDispatch, useSelector, useStore} from 'react-redux';
-import { fetchAlbums, fetchFlockables, fetchRentables, shuffle, fetchFlockablesFirst } from '../../../utils';
+import { fetchAlbums, fetchFlockables, fetchRentables, shuffle, fetchFlockablesFirst, fetchRentablesFirst } from '../../../utils';
 import FeatherPanResponder from 'App/components/FeatherPanResponder';
 import ResizeableImage from 'App/components/ResizeableImage';
 
@@ -395,7 +395,7 @@ const Home = ({route, navigation, lastVisible = null}) => {
 
 
 const MiniCarouselRenting = ({navigation, route}) => {
-
+  const select = useSelector(state=>state.videopage);
   const dispatch = useDispatch();
   const [viewHeight, setViewHeight] = useState(800);
   const {key, key1, keyArrRent, setKeyArrRent, limitKeyRent, keyArrFlock, setKeyArrFlock, keyVideoData, setKeyVideoData, setKeyFinishedLoading} = useContext(KeyContext);
@@ -405,7 +405,7 @@ const MiniCarouselRenting = ({navigation, route}) => {
 
   const [finalAr, setFinalAr] = useState([]);
   useEffect(()=>{
-    fetchRentables().then((ar) => {
+    fetchRentablesFirst().then((ar) => {
       setFinalAr(ar);
       setKeyArrRent(ar);
       // setKeyFinishedLoading(false);
@@ -419,6 +419,26 @@ const MiniCarouselRenting = ({navigation, route}) => {
       setTimeout(()=>setCover(false), 2500);
     });
   },[]);
+
+  if (select.carIndexRent < 0) {
+    console.log('reached the end');
+    
+    fetchRentables().then((ar) => {
+      setKeyArrRent([...ar,...keyArrRent]);
+      setFinalAr([...ar,...keyArrRent, ]);
+      dispatch({type:'sendCarouselRentIndex', payload: ar.length});
+      console.log('done');
+      // setFinishedLoading(true);
+      // Animated.timing(coverFade, {
+      //   toValue: 0,
+      //   duration: 500,
+      //   delay: 2000,
+      //   useNativeDriver: false,
+      // }).start();
+      // setTimeout(()=>setCover(false), 2500);
+
+    })
+  }
 
 
   // var finalAr = keyArrRent;
@@ -486,13 +506,13 @@ const MiniCarouselFlocking = ({navigation, route}) => {
     });
   },[]);
   // console.log(store.getState().videopage.carIndex);
-  if (select.videopage.carIndexFlock <= 0) {
+  if (select.videopage.carIndexFlock < 0) {
     console.log('reached the end');
     
     fetchFlockables().then((ar) => {
       setKeyArrFlock([...keyArrFlock, ...ar]);
       setFinalAr([...ar,...keyArrFlock, ]);
-      dispatch({type:'sendCarouselFlockIndex', payload: 9});
+      dispatch({type:'sendCarouselFlockIndex', payload: ar.length});
       console.log('done');
       // setFinishedLoading(true);
       // Animated.timing(coverFade, {
