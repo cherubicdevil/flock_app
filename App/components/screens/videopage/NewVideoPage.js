@@ -120,7 +120,8 @@ const comments = [{user: {name: 'Hellowrld'}, content: "this is a message", time
 const [firstComment, setFirstComment] = useState({});
 
 useEffect(()=>{
-    if (dataType === "product" || dataType === "video") {
+
+    if (dataType==="flock" || dataType==="product") {
     db.collection("chatGroups")
     .where("productTitle", "==", data?.product?.title || "")
     .get().then(function(querySnapshot) {
@@ -131,10 +132,11 @@ useEffect(()=>{
         }
       });
       setFlockCountdowns(arr);
+      // console.log(arr, 'countdowns');
     });
     }
 
-    console.log("DATAID", data.id);
+    // console.log("DATAID", data.id);
     db.collection('comments')
     .where('cluck', '==', `${data.id}`)
     .orderBy('date', 'desc')
@@ -238,12 +240,16 @@ useEffect(()=>{
               </View>
               </View>
               <View style={{width: '100%', position: 'absolute', bottom: 0}}>
+                <View>
               {renderIcons()}
               
           {/* <ResizeableImage source={{uri: data?.poster || data?.product?.image || ''}} limitHorizontal={false} hLimit={viewHeight * percentage/100} /> */}
           
           {/* <ConditionalVideo index={index} data={data} viewHeight={viewHeight * percentage/100} /> */}
-          {(select.videopage.carIndex==index && select.videopage.leave==false)?<ScrollCount data={flockCountdowns} />:<></>}
+          {(dataType !=="rent")?
+          <ScrollCount data={flockCountdowns} />
+           :<></>}
+</View>
           <TouchableOpacity onPress={()=>{
               const video = data.video;
               console.log(dataType);
@@ -365,17 +371,19 @@ const ScrollCount = ({data}) => {
 
     const callback = ()=>{
         offset+=50;
-        if (offset/50 > data.length) {
+        // console.log('repeat');
+        if (offset/50 +1 > data.length) {
             scrollRef.current.scrollTo({y:0});
-            offset = 50;
+            offset = 0;
+          
         } else {
         scrollRef.current.scrollTo({y:offset});
-        //console.log('scrolling', offset);
         }
     };
-    useEffect(()=>{
+    useFocusEffect(()=>{
       var interval;
-        if (data !== null && data.length > 2) {
+        if (data !== null && data.length >= 2) {
+          console.log('setp')
         interval = setInterval(callback, 2000);
         }
         return ()=>{
@@ -384,13 +392,18 @@ const ScrollCount = ({data}) => {
           }
         }
     },[])
-    return <ScrollView ref = {scrollRef} pagingEnabled={true} horizontal={false} style={{position: 'absolute', bottom: 0, backgroundColor: 'yellow', zIndex: 300, height: 100}}>
+    return <ScrollView ref = {scrollRef} pagingEnabled={true} horizontal={false} style={{left: 10, position: 'absolute', bottom: 0, zIndex: 300, height: 100}}>
     {data.map((item)=> {
-        return <View style={{flexDirection: 'row', height: 50}}>
+        return <View style={{flexDirection: 'row', height: 40, borderRadius: 40, backgroundColor: 'rgba(255,220,200,0.4)',alignItems:'center',justifyContent:'space-around', margin:5}}>
+            <Text>{item.members.length} flocking</Text>
+            <View style={{marginTop: 10}}>
             <Countdown dateObj={item.time} />
-            <Text>price {item?.product?.price / (item?.members?.length+1)}</Text>
+            </View>
+            <Text>left</Text>
+            
             </View>
     })}
+    <View style={{height: 50}} />
   </ScrollView>
 }
 
