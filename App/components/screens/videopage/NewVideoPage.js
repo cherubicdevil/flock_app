@@ -112,7 +112,7 @@ const NewVideoPage = ({navigation, route, array, index, data, currIndex, viewHei
 
   var lastVisible = null;
   const select = useSelector(state=>state);
-    console.log(select.videopage.carIndexRent, select.videopage.carIndexFlock, select.videopage.carIndex, data );
+    // console.log(select.videopage.carIndexRent, select.videopage.carIndexFlock, select.videopage.carIndex, data );
 
 //   return <Text>hi</Text>
 

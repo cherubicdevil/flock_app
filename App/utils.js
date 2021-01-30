@@ -55,6 +55,8 @@ const stringSimilarity = require("string-similarity");
 
 
 var lastVisible = null;
+var lastVisibleFlock = null;
+var lastVisibleRent = null;
 
 const fetchStreamableSource = async (src) => {
   if (src === null || src === undefined) {
@@ -98,7 +100,7 @@ const fetchUserData = (user) => {
 
 const fetchAlbums = () => {
   return new Promise(async (resolve) => {
-    console.log("LAST VISIBLE", lastVisible);
+
     var counter = 0;
     firebase
       .firestore()
@@ -278,7 +280,7 @@ const fetchGlobalFlocks = async () => {
   });
 };
 
-const fetchFlockables = async () => {
+const fetchFlockablesFirst = async () => {
   return new Promise((resolve) => {
     db.collection('chatGroups')
       .limit(10)
@@ -294,6 +296,32 @@ const fetchFlockables = async () => {
           counter = counter + 1;
           if (counter === n) {
             resolve(ar);
+            lastVisibleFlock = doc;
+            
+          }
+        });
+      });
+  });
+};
+const fetchFlockables = async () => {
+  return new Promise((resolve) => {
+    db.collection('chatGroups')
+      .limit(10)
+      .where('completed', '==', false)
+      .startAfter(lastVisibleFlock)
+      .get()
+      .then((querySnapshot) => {
+        var counter = 0;
+        const n = querySnapshot.size;
+        const ar = [];
+        querySnapshot.forEach((doc) => {
+          const entity = doc.data();
+          ar.push(entity);
+          counter = counter + 1;
+          if (counter === n) {
+            resolve(ar);
+            lastVisibleFlock = doc;
+            console.log("last", lastVisibleFlock);
           }
         });
       });
@@ -645,6 +673,7 @@ export {
   fetchAlbums,
   fetchProducts,
   fetchFlockables,
+  fetchFlockablesFirst,
   fetchRentables,
   mergeArrays,
   pickVideo,

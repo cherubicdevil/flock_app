@@ -36,7 +36,7 @@ import Carousel from 'App/components/screens/videopage/Carousel'
 import VideoPage from 'App/components/screens/videopage/VideoPage';
 import NewVideoPage from 'App/components/screens/videopage/NewVideoPage';
 import {useDispatch, useSelector, useStore} from 'react-redux';
-import { fetchAlbums, fetchFlockables, fetchRentables, shuffle } from '../../../utils';
+import { fetchAlbums, fetchFlockables, fetchRentables, shuffle, fetchFlockablesFirst } from '../../../utils';
 import FeatherPanResponder from 'App/components/FeatherPanResponder';
 import ResizeableImage from 'App/components/ResizeableImage';
 
@@ -459,18 +459,19 @@ const MiniCarouselRenting = ({navigation, route}) => {
 };
 
 const MiniCarouselFlocking = ({navigation, route}) => {
-  const store = useStore();
+  // const store = useStore();
+  const select = useSelector(state => state);
 
   const dispatch = useDispatch();
   const [viewHeight, setViewHeight] = useState(800);
   const {key, key1, keyArrRent, setKeyArrRent, limitKey, keyArrFlock, setKeyArrFlock, keyVideoData, setKeyVideoData, setKeyFinishedLoading} = useContext(KeyContext);
   var unsubscribeCurrentFlock;
   const [cover, setCover] = useState(true);
-  const [coverFade, setCoverFade] = useState(new Animated.Value(1));
+  const [coverFade, setCoverFade] = useState(new Animated.Value(.1));
 
   const [finalAr, setFinalAr] = useState([]);
   useEffect(()=>{
-    fetchFlockables().then((ar) => {
+    fetchFlockablesFirst().then((ar) => {
       setFinalAr(ar);
       setKeyArrFlock(ar);
       dispatch({type:'sendCarouselFlockIndex', payload: ar.length - 1});
@@ -484,9 +485,25 @@ const MiniCarouselFlocking = ({navigation, route}) => {
       setTimeout(()=>setCover(false), 2500);
     });
   },[]);
-  console.log(store.getState().videopage.carIndex);
-  if (store.getState().videopage.carIndexFlock <= 0) {
+  // console.log(store.getState().videopage.carIndex);
+  if (select.videopage.carIndexFlock <= 0) {
     console.log('reached the end');
+    
+    fetchFlockables().then((ar) => {
+      setKeyArrFlock([...keyArrFlock, ...ar]);
+      setFinalAr([...ar,...keyArrFlock, ]);
+      dispatch({type:'sendCarouselFlockIndex', payload: 9});
+      console.log('done');
+      // setFinishedLoading(true);
+      // Animated.timing(coverFade, {
+      //   toValue: 0,
+      //   duration: 500,
+      //   delay: 2000,
+      //   useNativeDriver: false,
+      // }).start();
+      // setTimeout(()=>setCover(false), 2500);
+
+    })
   }
 
   var res = [];

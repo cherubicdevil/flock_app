@@ -19,7 +19,7 @@ const FeatherList = ({navigation, route, data=data, viewHeight, type="flock"}) =
     useEffect(()=>{
         setCurrentIndex({curr:data.length - 1, prev:data.length});
         dispatch({type:'sendCarouselIndex', payload: data.length - 1});
-        console.log('changingSHIt');
+
     }, [data.length]);
 
 
@@ -267,7 +267,7 @@ const FeatherPanResponder = ({index, positions, currIndex, setCurrentIndex, cont
                 } else {
                     dispatch({type: 'sendCarouselIndex', payload: currentIndex - 1});
                 }
-                console.log("changing carindex", currentIndex - 1);
+                console.log("changing flock carindex", currentIndex - 1);
             } else if (gesture.dy < 0) {
                 if (!isTop) {
                     Animated.timing(positions[index+1], {
