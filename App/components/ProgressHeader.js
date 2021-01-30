@@ -47,6 +47,7 @@ const ProgressHeader = ({
   data,
   nextText="next",
   closeText="close",
+  idText="",
   nextFunc=() => {
   },
   closeFunc = ()=>{
@@ -101,7 +102,7 @@ const ProgressHeader = ({
       <Text style={{fontFamily: 'Nunito-Bold', fontSize: 14, marginTop: 17}}>
         {headerText}
       </Text>
-      <Text style={{marginBottom: 5,fontFamily:constants.FONT}}>%12345</Text>
+      <Text style={{marginBottom: 5,fontFamily:constants.FONT}}>{idText}</Text>
 
       <View
         style={{
@@ -136,7 +137,7 @@ const ProgressHeader = ({
           }
           if (canGoNext) {
             nextFunc();
-            navigation.navigate(nextRoute, {index: index+1, data: data});
+            navigation.navigate(nextRoute, {index: index+1, data: data, flockId: idText.replace("%","")});
           }
         }}>
         {/* <ImageBackground

@@ -179,9 +179,10 @@ const Product = ({route, navigation}) => {
           colors={[constants.YELLOW, constants.ORANGE]}
           start={{ x: 0, y: 1 }} end={{ x: 1, y: 1 }}
           style={{
+            marginLeft: 10, 
             borderRadius: 30,
             zIndex: 40,
-          }}><TouchableOpacity style={{borderRadius: 30, color: 'white', justifyContent: 'center', alignItems:'center', paddingBottom: 5, paddingTop: 3,paddingLeft: 10, paddingRight: 10}}><Text style={{color: 'white', fontSize: 14, fontFamily: constants.FONTBOLD}}>{"$" + Math.round(route.params.album.price / 7) + " or less when you split with flockers"}</Text></TouchableOpacity>
+          }}><TouchableOpacity style={{borderRadius: 30, color: 'white', justifyContent: 'center', alignItems:'center', paddingBottom: 5, paddingTop: 3,paddingLeft: 10, paddingRight: 10}}><Text style={{color: 'white', fontSize: 14, fontFamily: constants.FONTBOLD}}>{"As low as $" + Math.round(route.params.album.price / 25 * 1.35) + " when you flock"}</Text></TouchableOpacity>
 </LinearGradient>
         </View>
       </View>
@@ -303,7 +304,7 @@ const Product = ({route, navigation}) => {
             
             <View style={styles.productRow}>{renderDescription()}</View>
             <View style={[styles.productRow, {backgroundColor: 'white', borderTopEndRadius: 20, borderTopStartRadius: 20}]}>
-            <Text style={{marginTop: 10,fontWeight: 'bold'}}>Over {flockAr.reduce((total, item)=>total + item.members.length, 0)} people are currently flocking.</Text>
+            <Text style={{marginTop: 10,fontWeight: 'bold'}}>{flockAr.reduce((total, item)=>total + item.members.length, 0)} people are currently flocking.</Text>
             <FlockList navigation = {navigation} product = {route.params.album} ar = {flockAr} />
             </View>
             <View style={styles.productRow}>{renderDetail()}</View>
@@ -406,8 +407,12 @@ const Product = ({route, navigation}) => {
 const Countdown = ({dateObj}) => {
   const [now, setNow] = useState(Math.round(Date.now()/1000));
   var diff = dateObj - now + 3600*24*7;
-  useEffect(()=> {
-    setInterval(()=> setNow(Math.round(Date.now()/1000)), 1000);
+  useFocusEffect(()=> {
+   var interval = setInterval(()=> setNow(Math.round(Date.now()/1000)), 1000);
+
+   return ()=>{
+     clearInterval(interval);
+   }
   }, []);
 
   const days = Math.round(diff / (3600*24));
@@ -437,7 +442,7 @@ const FlockList = ({product, navigation, ar, limited = true}) => {
       //console.log('scrolling', offset);
       }
   };
-  useEffect(()=>{
+  useFocusEffect(()=>{
     var interval;
       if (data !== null && data.length > 2) {
       interval = setInterval(callback, 3500);

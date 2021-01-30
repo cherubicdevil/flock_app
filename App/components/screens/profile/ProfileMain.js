@@ -244,8 +244,8 @@ const ProfileMain = ({navigation}) => {
           </TouchableOpacity>
       </View>}/>
 
-      <View style={{height: 50, backgroundColor: constants.TRANSLUCENT}}>
-      <View style={{justifyContent: 'center', position: 'absolute', left: 10, top: 0, zIndex: 400}}>
+      <View style={{height: 50, backgroundColor: constants.TRANSLUCENT, borderBottomLeftRadius: 30, borderBottomRightRadius: 30}}>
+      <View style={{justifyContent: 'center', position: 'absolute', left: 10, top: 0, zIndex: 400, }}>
         <TouchableOpacity
           onPress={() => {
             navigation.goBack();
