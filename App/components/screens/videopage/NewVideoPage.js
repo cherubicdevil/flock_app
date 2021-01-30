@@ -392,14 +392,11 @@ const ScrollCount = ({data}) => {
           }
         }
     },[])
-    return <ScrollView ref = {scrollRef} pagingEnabled={true} horizontal={false} style={{left: 10, position: 'absolute', bottom: 0, zIndex: 300, height: 100}}>
+    return <ScrollView ref = {scrollRef} pagingEnabled={true} horizontal={false} style={{left: 10, position: 'absolute', bottom: 0, zIndex: 300, height: 100,width: 250}}>
     {data.map((item)=> {
         return <View style={{flexDirection: 'row', height: 40, borderRadius: 40, backgroundColor: 'rgba(255,220,200,0.4)',alignItems:'center',justifyContent:'space-around', margin:5}}>
             <Text>{item.members.length} flocking</Text>
-            <View style={{marginTop: 10}}>
             <Countdown dateObj={item.time} />
-            </View>
-            <Text>left</Text>
             
             </View>
     })}
