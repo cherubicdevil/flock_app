@@ -35,7 +35,7 @@ import {CommonActions, NavigationContainer} from '@react-navigation/native';
 import Carousel from 'App/components/screens/videopage/Carousel'
 import VideoPage from 'App/components/screens/videopage/VideoPage';
 import NewVideoPage from 'App/components/screens/videopage/NewVideoPage';
-import {useDispatch, } from 'react-redux';
+import {useDispatch, useSelector, useStore} from 'react-redux';
 import { fetchAlbums, fetchFlockables, fetchRentables, shuffle } from '../../../utils';
 import FeatherPanResponder from 'App/components/FeatherPanResponder';
 import ResizeableImage from 'App/components/ResizeableImage';
@@ -459,6 +459,7 @@ const MiniCarouselRenting = ({navigation, route}) => {
 };
 
 const MiniCarouselFlocking = ({navigation, route}) => {
+  const store = useStore();
 
   const dispatch = useDispatch();
   const [viewHeight, setViewHeight] = useState(800);
@@ -483,7 +484,10 @@ const MiniCarouselFlocking = ({navigation, route}) => {
       setTimeout(()=>setCover(false), 2500);
     });
   },[]);
-
+  console.log(store.getState().videopage.carIndex);
+  if (store.getState().videopage.carIndexFlock <= 0) {
+    console.log('reached the end');
+  }
 
   var res = [];
   for (const item of finalAr) {
