@@ -11,11 +11,12 @@ import Animation from 'lottie-react-native';
 import {firebase, db} from 'App/firebase/config';
 
 const StartFlock = ({navigation, route}) => {
+    const flockId = (Math.random() * 100000).toFixed(0);
     const dispatch = useDispatch();
     const [canNext, setCanNext] = useState(true);
     const Tab = createMaterialTopTabNavigator();
     console.log('start flock index is', route.params);
-    var ar = [<PageOne product = {route.params.product} data = {route.params.data} />, <PageTwo product = {route.params.product} data = {route.params.data} setCanNext={setCanNext} />, <PageThree product = {route.params.product} data = {route.params.data} />, <PageFour product = {route.params.product} data = {route.params.data} />];
+    var ar = [<PageOne product = {route.params.product} data = {route.params.data} />, <PageTwo product = {route.params.product} data = {route.params.data} setCanNext={setCanNext} />, <PageThree product = {route.params.product} data = {route.params.data} flockId={flockId} />, <PageFour product = {route.params.product} data = {route.params.data} />];
     return <ScrollView scrollEnabled={false} keyboardShouldPersistTaps="never"><ProgressHeader
     nextRoute="StartFlock"
     backRoute="StartFlock"
@@ -45,7 +46,16 @@ const StartFlock = ({navigation, route}) => {
         const maximums = [{}];
         maximums[0][user.uid] = route.params.data.maxPrice;
         data["maximums"] = maximums;
-        firebase.firestore().collection("chatGroups").add(data).then((docRef)=>{
+        // firebase.firestore().collection("chatGroups").add(data).then((docRef)=>{
+        //     data["id"] = docRef.id;
+        //     db.collection('users').doc(firebase.auth().currentUser.uid).update({
+        //         chatIds: firebase.firestore.FieldValue.arrayUnion(docRef.id)
+        //       });
+        //     dispatch({type: "UPDATE_DATA", payload: ["chatIds", "add", "array", docRef.id]});
+        //     dispatch({type: "UPDATE_DATA", payload: ["chatGroups", "add", "array", data]});
+        // });
+        //navigation.navigate("Carousel");
+        firebase.firestore().collection("chatGroups").doc(flockId).set(data).then((docRef)=>{
             data["id"] = docRef.id;
             db.collection('users').doc(firebase.auth().currentUser.uid).update({
                 chatIds: firebase.firestore.FieldValue.arrayUnion(docRef.id)
@@ -53,7 +63,6 @@ const StartFlock = ({navigation, route}) => {
             dispatch({type: "UPDATE_DATA", payload: ["chatIds", "add", "array", docRef.id]});
             dispatch({type: "UPDATE_DATA", payload: ["chatGroups", "add", "array", data]});
         });
-        //navigation.navigate("Carousel");
 
         navigation.goBack();
     }}
@@ -106,7 +115,7 @@ const PageTwo = ({product, data, setCanNext}) => {
     </View>
 }
 
-const PageThree = ({product, data}) => {
+const PageThree = ({product, data, flockId}) => {
     const img = useRef();
 
     data['imgRef'] = img;
@@ -125,6 +134,10 @@ const PageThree = ({product, data}) => {
 
     <ViewShot ref={img} options={{ format: "jpg", quality: 0.9 }}>
         <Image style = {{height: 250,}} source = {{uri: product.image}} />
+        <View style={{position:'absolute', bottom: 20, right: 20, }}>
+        <Image style={{height: 50, width: 50}} source={require('App/Assets/Images/flock_logo_purple.png')}/>
+        <Text style={{fontFamily: 'Nunito', fontWeight: 'bold', fontSize: 12}}>%{flockId.padStart(5,'0')}</Text>
+        </View>
       </ViewShot>
     </>
 }
