@@ -407,8 +407,12 @@ const Product = ({route, navigation}) => {
 const Countdown = ({dateObj}) => {
   const [now, setNow] = useState(Math.round(Date.now()/1000));
   var diff = dateObj - now + 3600*24*7;
-  useEffect(()=> {
-    setInterval(()=> setNow(Math.round(Date.now()/1000)), 1000);
+  useFocusEffect(()=> {
+   var interval = setInterval(()=> setNow(Math.round(Date.now()/1000)), 1000);
+
+   return ()=>{
+     clearInterval(interval);
+   }
   }, []);
 
   const days = Math.round(diff / (3600*24));
@@ -438,7 +442,7 @@ const FlockList = ({product, navigation, ar, limited = true}) => {
       //console.log('scrolling', offset);
       }
   };
-  useEffect(()=>{
+  useFocusEffect(()=>{
     var interval;
       if (data !== null && data.length > 2) {
       interval = setInterval(callback, 3500);
