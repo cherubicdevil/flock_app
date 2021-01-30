@@ -29,7 +29,7 @@ import {Dimensions, ScrollView, View, Button} from 'react-native';
 import FeedItem from './FeedItem';
 import HalfProduct from './HalfProduct';
 import {constants} from 'App/constants';
-import {fetchAlbums, fetchProducts, mergeArrays} from 'App/utils';
+import {fetchAlbums, fetchProducts, mergeArrays, fetchFlockables, fetchRentables} from 'App/utils';
 import LinearGradient from 'react-native-linear-gradient';
 import ProductBlurb from 'App/components/screens/home/feed/ProductBlurb';
 const width = Dimensions.get('window').width / 2 - 30;
@@ -117,6 +117,7 @@ const FeedList= ({navigation, route, videoData, feedItem=null, productBlurb=null
 
       var {limitKey, setLimitKey, limitKeyRent, setLimitKeyRent} = useContext(KeyContext);
     }
+    var {keyArrRent, keyArrFlock, setKeyArrRent, setKeyArrFlock} = useContext(KeyContext);
     return (
       <>
       {/* <Button style={{position: 'absolute', bottom: 0, zIndex: 500}} title="GET MORE" onPress={()=> {
@@ -158,6 +159,7 @@ const FeedList= ({navigation, route, videoData, feedItem=null, productBlurb=null
               0.8 * event.nativeEvent.contentSize.height
             ) {
               console.log('should be fetching albums');
+              
               //this.props.fetchAlbums();
             }
 
