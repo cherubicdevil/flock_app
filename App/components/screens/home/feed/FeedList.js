@@ -35,6 +35,7 @@ import ProductBlurb from 'App/components/screens/home/feed/ProductBlurb';
 const width = Dimensions.get('window').width / 2 - 30;
 const FeedList= ({navigation, route, videoData, feedItem=null, productBlurb=null, KeyContext, flockOrNot}) => {
   const [myAr, setMyAr] = useState([]);
+  // const [localAr, setLocalAr] = useState(videoData);
 
   const renderProductBlurb = (product) => {
     if (productBlurb) {
@@ -159,6 +160,12 @@ const FeedList= ({navigation, route, videoData, feedItem=null, productBlurb=null
               0.8 * event.nativeEvent.contentSize.height
             ) {
               console.log('should be fetching albums');
+              fetchRentables().then((ar)=>{
+                setKeyArrRent([...keyArrRent,...ar]);
+              })
+              fetchFlockables().then((ar)=>{
+                setKeyArrFlock([...keyArrFlock,...ar]);
+              })
               
               //this.props.fetchAlbums();
             }
