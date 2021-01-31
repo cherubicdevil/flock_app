@@ -513,9 +513,10 @@ const FlockList = ({product, navigation, ar, limited = true}) => {
       const resuPrice = parseFloat(Object.entries(item)[0][1]);
       paidFor += resuPrice;
     }
-    var paidFor = Math.round(100 * paidFor/ar[i].product.price);
+    paidFor = paidFor.toFixed(2);
+    var paidForPercent = Math.round(100 * paidFor/ar[i].product.price);
     result.push(  
-      <View style={{flexDirection: 'row', justifyContent: 'space-between', paddingTop: 10, borderTopWidth:i==0?0:2, borderColor: constants.GREY, paddingBottom:3}}>
+      <View style={{flexDirection: 'row', height: 50, justifyContent: 'space-between', paddingTop: 10, borderTopWidth:i==0?0:2, borderColor: constants.GREY, paddingBottom:3}}>
       <View style={{flex: 1}}>
     <Text numberOfLines = {1} style={{fontWeight: 'bold', fontSize:15,width: 80, height: 20, }}>@{ar[i].members[0].name}</Text>
       {ar[i].members.length>1?<Text>and {ar[i].members.length-1} others</Text>:<></>}
@@ -524,9 +525,12 @@ const FlockList = ({product, navigation, ar, limited = true}) => {
       <View style={{flex:1, marginRight: 15}}>
       <Countdown dateObj = {ar[i].time} />
       </View>
-      <View style={{borderRadius: 30, backgroundColor: constants.ORANGE, justifyContent:'center', paddingLeft: 10, paddingRight: 10}}>
-      <TouchableOpacity onPress={tempFunc}>
-      <Text style={{color: 'white', fontFamily: constants.FONT, fontWeight: 'bold', fontSize: 13}}>{paidFor}% paid for</Text>
+      <View style={{borderRadius: 30, justifyContent:'center',  overflow: 'hidden', borderColor: constants.ORANGE, borderWidth: 2}}>
+      <View style={{position: 'absolute', width: paidForPercent + "%", height: '100%', backgroundColor: constants.ORANGE, opacity: 0.8, borderRadius: 40, transform: [{ scaleX: 1 }, { scaleY: 1.2 }] }} />
+      <TouchableOpacity style={{paddingLeft: 10, paddingRight: 10,}}
+      onPress={tempFunc}>
+        
+      <Text style={{color: 'black', fontFamily: constants.FONT, fontWeight: 'bold', fontSize: 13}}>${paidFor} to go</Text>
       </TouchableOpacity>
       </View>
       </View>
