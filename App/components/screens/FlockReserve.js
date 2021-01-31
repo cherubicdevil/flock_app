@@ -9,6 +9,7 @@ import {constants} from 'App/constants';
 import LinearGradient from 'react-native-linear-gradient';
 import { rentPrice } from '../../utils';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import HeaderGradient from '../HeaderGradient';
 
 
 const FlockReserve = ({navigation, route}) => {
@@ -43,17 +44,21 @@ const FlockReserve = ({navigation, route}) => {
     return <SafeAreaView style={{flex: 1, backgroundColor: constants.PINK_BACKGROUND}}>
       {/* <Text>{requestTypeIsRent?"Borrow":"Flock"}</Text> */}
         {/* <Button title="back" onPress={()=>navigation.goBack()} style={{position: 'absolute', top: '10'}}/> */}
+        {/* <View style={{height: 100, width: '100%', position: 'absolute', top: 0, zIndex: 400, backgroundColor: constants.TRANSLUCENT, borderBottomRightRadius: 30, borderBottomLeftRadius: 30}}> */}
+        <HeaderGradient>
         <Icon name="chevron-left" size={24} color="grey" style={{position: 'absolute', zIndex: 200, top: 50, left: 20}} />
+        </HeaderGradient>
+        {/* </View> */}
         <View style={{backgroundColor: 'white', borderBottomLeftRadius: 60, borderBottomRightRadius: 60}}>
         <View style={{width: '100%', height: percent, borderBottomRightRadius: 60, borderBottomLeftRadius: 60, overflow: 'hidden'}}>
-        <Image blurRadius={50} style = {{position: 'absolute', width: '100%', height: '100%', zIndex: -20}} source = {{uri: route.params.data.product.image}} />
+        <Image blurRadius={5} style = {{position: 'absolute', width: '100%', height: '100%', zIndex: -20}} source = {{uri: route.params.data.product.image}} />
         <Image style = {{width: '100%', height: '100%', resizeMode: 'contain'}} source = {{uri: route.params.data.product.image}} />
         
         </View>
          <View style={{paddingHorizontal: 20, paddingVertical:10, backgroundColor: 'white'}}>
-        <Text>{route.params.data.product.title}</Text>
-    <Text>${route.params.data.product.price}</Text>
-    <Text>${rentPrice(route.params.data.product.price)}</Text>
+        <Text style={{fontFamily: constants.FONT, fontWeight: 'bold'}}>{route.params.data.product.title}</Text>
+        <Text>Price: ${route.params.data.product.price}</Text>
+    {requestTypeIsRent?<Text>Rent Price: ${rentPrice(route.params.data.product.price)}</Text>:<Text>Use Price for Flocker: $0.00 + shipping</Text>}
         </View>
         </View>
         
