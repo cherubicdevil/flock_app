@@ -639,7 +639,7 @@ const TopBar = ({descriptors, state, navigation}) => {
 });
 
   const tabColors = [["#c09bae", "#ff9966"], ["#6989af", "#c09bae"], ["#c09bae","#e1cbd7"], ['black',"#ffffff"],['black',"#ffffff"],['black',"#ffffff"]];
-  console.log('route', state.routes);
+
   return (
     <LinearGradient
     colors={[constants.TRANSLUCENT, 'white']}
