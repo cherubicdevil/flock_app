@@ -1,14 +1,18 @@
 import React, {useState, useRef, useEffect} from 'react';
-import {View, Text, SafeAreaView, Image, Modal, Button} from 'react-native';
+import {View, Text, SafeAreaView, Image, Modal, Button, TouchableOpacity} from 'react-native';
 import {Calendar} from 'react-native-calendars';
 import moment from 'moment';
 import {firebase, db, auth} from 'App/firebase/config';
 var seedrandom = require('seedrandom');
 import AnimatedModal from 'App/components/AnimatedModal';
 import {constants} from 'App/constants';
+import LinearGradient from 'react-native-linear-gradient';
+import { rentPrice } from '../../utils';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 
 const FlockReserve = ({navigation, route}) => {
+  const percent = '80%';
     
     const [othersMarkedDates, setOthersMarkedDates] = useState({});
     const [myMarkedDates, setMyMarkedDates] = useState({});
@@ -36,14 +40,49 @@ const FlockReserve = ({navigation, route}) => {
     console.log(route.params);
     const requestTypeIsRent = route.params.data.members.includes({name: auth.currentUser.displayName, uid: auth.currentUser.uid});
     const colors = (requestTypeIsRent)?[constants.PURPLE, constants.RED]:['#ff4d00', constants.PEACH];
-    return <SafeAreaView>
-      <Text>{requestTypeIsRent?"Borrow":"Flock"}</Text>
-        <Button title="back" onPress={()=>navigation.goBack()} style={{position: 'absolute', top: '10'}}/>
-        <Image style = {{width: '100%', height: '80%', resizeMode: 'contain'}} source = {{uri: route.params.data.product.image}} />
+    return <SafeAreaView style={{flex: 1, backgroundColor: constants.PINK_BACKGROUND}}>
+      {/* <Text>{requestTypeIsRent?"Borrow":"Flock"}</Text> */}
+        {/* <Button title="back" onPress={()=>navigation.goBack()} style={{position: 'absolute', top: '10'}}/> */}
+        <Icon name="chevron-left" size={24} color="grey" style={{position: 'absolute', zIndex: 200, top: 50, left: 20}} />
+        <View style={{backgroundColor: 'white', borderBottomLeftRadius: 60, borderBottomRightRadius: 60}}>
+        <View style={{width: '100%', height: percent, borderBottomRightRadius: 60, borderBottomLeftRadius: 60, overflow: 'hidden'}}>
+        <Image blurRadius={50} style = {{position: 'absolute', width: '100%', height: '100%', zIndex: -20}} source = {{uri: route.params.data.product.image}} />
+        <Image style = {{width: '100%', height: '100%', resizeMode: 'contain'}} source = {{uri: route.params.data.product.image}} />
+        
+        </View>
+         <View style={{paddingHorizontal: 20, paddingVertical:10, backgroundColor: 'white'}}>
         <Text>{route.params.data.product.title}</Text>
-        <Button title="reserve" onPress={()=>{
-          setModalOpen(!modalOpen);
-          }}/>
+    <Text>${route.params.data.product.price}</Text>
+    <Text>${rentPrice(route.params.data.product.price)}</Text>
+        </View>
+        </View>
+        
+        <View style={{position: 'absolute', bottom: 30,width: '100%', flexDirection: 'row', marginBottom: 0, justifyContent: 'space-between', paddingLeft: 20, paddingRight: 20, alignItems: 'center', }}>
+
+            <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+{/* <Image source={constants.PLACEHOLDER_IMAGE } style={{width: 30, aspectRatio:1, marginRight: 10,}}/> */}
+
+<View style={{justifyContent: 'center', alignItems: 'center', marginRight: 10,}}><Image source = {require('App/Assets/Images/heart.png')} style={{width: 35, height: 35,  shadowOpacity: 0.2, shadowOffset: {height:1 , width: 0}}} />
+<Text style={{position: 'absolute', top: 10,fontSize: 16}}>34</Text>
+</View>
+
+<TouchableOpacity  onPress={()=>{
+  navigation.navigate('ShareSocial', {product:route.params.data.product, data:{}, flockId: route.params.data.id})
+}}>
+<Image 
+style={{shadowOpacity: 0.4, shadowOffset:{height:2, width:0},  width: 40, height: 40, aspectRatio:1}}
+source={require('App/Assets/Images/Share_Icon_White_Earn.png') } />
+</TouchableOpacity>
+
+</View>
+        <TouchableOpacity style={{justifyContent: 'center', alignItems: 'center', width: 150, height: 50, backgroundColor: constants.ORANGE, borderRadius: 40, overflow: 'hidden'}} onPress={()=>{
+          setModalOpen(true);
+        }}>
+          <LinearGradient style={{width: '100%', padding: 15, height: '100%', justifyContent: 'center'}} colors={[constants.ORANGE, constants.YELLOW]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} >
+          <Text style={{fontWeight: 'bold', color: 'white', fontSize: 14, fontFamily: constants.FONT}}>Check Availability</Text>
+        </LinearGradient>
+        </TouchableOpacity>
+        </View>
         <AnimatedModal colored={true} colors={colors} visible={modalOpen} close={()=>setModalOpen(false)} content={<ReserveCalendar navigation = {navigation} close={()=>{setModalOpen(false)}} route={route} myMarkedDates={myMarkedDates} setMyMarkedDates={setMyMarkedDates} othersMarkedDates={othersMarkedDates} />} />
         </SafeAreaView>;
 }

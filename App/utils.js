@@ -693,7 +693,12 @@ const data = {
 return data;
 }
 
+const rentPrice = (totalPrice) => {
+return (totalPrice /25 * 1.4 + 23.99).toFixed(2);
+}
+
 export {
+  rentPrice,
   fetchStreamableSource,
   fetchAlbums,
   fetchProducts,
