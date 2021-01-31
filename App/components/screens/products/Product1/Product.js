@@ -505,11 +505,20 @@ const FlockList = ({product, navigation, ar, limited = true}) => {
       navigation.navigate("ChatInterface", {data: dat});
     };
     console.log(result.length);
+    var leftover = parseFloat(ar[i].product.price);
+    var paidFor = 0;
+    for (const item of ar[i].maximums) {
+      console.log(leftover, item);
+      // leftover -= parseFloat(value[0]);
+      const resuPrice = parseFloat(Object.entries(item)[0][1]);
+      paidFor += resuPrice;
+    }
+    var paidFor = Math.round(100 * paidFor/ar[i].product.price);
     result.push(  
       <View style={{flexDirection: 'row', justifyContent: 'space-between', paddingTop: 10, borderTopWidth:i==0?0:2, borderColor: constants.GREY, paddingBottom:3}}>
       <View style={{flex: 1}}>
     <Text numberOfLines = {1} style={{fontWeight: 'bold', fontSize:15,width: 80, height: 20, }}>@{ar[i].members[0].name}</Text>
-      <Text>and {ar[i].members.length-1} others</Text>
+      {ar[i].members.length>1?<Text>and {ar[i].members.length-1} others</Text>:<></>}
       </View>
       <View style={{flex: 1.75, flexDirection:'row', justifyContent: 'space-between'}}>
       <View style={{flex:1, marginRight: 15}}>
@@ -517,7 +526,7 @@ const FlockList = ({product, navigation, ar, limited = true}) => {
       </View>
       <View style={{borderRadius: 30, backgroundColor: constants.ORANGE, justifyContent:'center', paddingLeft: 10, paddingRight: 10}}>
       <TouchableOpacity onPress={tempFunc}>
-      <Text style={{color: 'white', fontFamily: constants.FONT, fontWeight: 'bold', fontSize: 13}}>${Math.round(ar[i].product.price/(ar[i].members.length + 1))} or less</Text>
+      <Text style={{color: 'white', fontFamily: constants.FONT, fontWeight: 'bold', fontSize: 13}}>{paidFor}% paid for</Text>
       </TouchableOpacity>
       </View>
       </View>
