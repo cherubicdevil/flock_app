@@ -169,8 +169,8 @@ const Product = ({route, navigation}) => {
         <Text style={{fontSize: 14, fontWeight: 'bold', marginBottom: 5,}}>
           {route.params.album.title}
         </Text>
-        <View style={{flexDirection:'row', justifyContent: 'space-between'}}>
-        <Text style={{alignSelf: 'center', fontFamily: constants.FONTBOLD, color: constants.ORANGE, fontSize: 16}}>
+        <View style={{flexDirection:'row'}}>
+        <Text style={{textDecorationLine: 'line-through', alignSelf: 'center', fontFamily: constants.FONTBOLD, color: constants.ORANGE, fontSize: 16}}>
           ${route.params.album.price}
         </Text>
         {/*<Text style={styles.descriptionText}>50 flockers have bought</Text>*/}
@@ -262,8 +262,8 @@ const Product = ({route, navigation}) => {
 
 
     return (
-      <>
-      <ScrollView showsVerticalScrollIndicator style={styles.mainViewStyle}>
+      <View style={{flex: 1, backgroundColor: constants.PINK_BACKGROUND}}>
+      <ScrollView pagingEnabled={true} showsVerticalScrollIndicator style={styles.mainViewStyle}>
         {/* <LinearGradient
           colors={['rgba(0,0,0,0)', 'rgba(40,60,81, 0.4)']}
           style={{
@@ -295,16 +295,15 @@ const Product = ({route, navigation}) => {
               height: '100%',
               //borderWidth: 1,
               //borderColor: 'rgba(0,0,0,0.2)',
-
-              marginRight: 5,
-              marginLeft: 5,
+              borderBottomLeftRadius: 40,
+              borderBottomRightRadius: 40,
+              overflow: 'hidden',
               //backgroundColor: 'white',
-              borderRadius: 10,
             }}>
             
             <View style={styles.productRow}>{renderDescription()}</View>
-            <View style={[styles.productRow, {backgroundColor: 'white', borderTopEndRadius: 20, borderTopStartRadius: 20}]}>
-            <Text style={{marginTop: 10,fontWeight: 'bold'}}>{flockAr.reduce((total, item)=>total + item.members.length, 0)} people are currently flocking.</Text>
+            <View style={[styles.productRow, {backgroundColor: 'white'}]}>
+            <Text style={{fontWeight: 'bold'}}>{flockAr.reduce((total, item)=>total + item.members.length, 0)} people are currently flocking.</Text>
             <FlockList navigation = {navigation} product = {route.params.album} ar = {flockAr} />
             </View>
             <View style={styles.productRow}>{renderDetail()}</View>
@@ -325,7 +324,16 @@ const Product = ({route, navigation}) => {
           </TouchableOpacity>
         </View> */}
       
+      <View style={{fontFamily: constants.FONT, paddingLeft: 10, paddingRight: 15}}>
+      <Text style={{alignSelf: 'center', marginTop: 20, fontSize: 16}}>How Flock Works</Text>
+      <Text style={{fontFamily: constants.FONT, marginTop: 10}}>Step 1: Drooling over an item but sobbing at the price? Add it onto our app!</Text>
+      <Text style={{fontFamily: constants.FONT, marginTop: 10}}>Step 2: You can split the cost with other flockers who also want it. </Text>
+      <Text style={{fontFamily: constants.FONT, marginTop: 10}}>Step 3: You co-own the item and store it with us. We’ll take care of the cleaning too.</Text>
+      <Text style={{fontFamily: constants.FONT, marginTop: 10}}>Step 4: Whenever you want, we’ll send it to you. </Text>
+      <Text style={{fontFamily: constants.FONT, marginTop: 10}}>Anything you want at a fraction of the cost, that is the magic of Flock!</Text>
+      </View>
       </ScrollView>
+      
       <TouchableOpacity style = {{position: 'absolute',bottom: 0,}} onPress={()=>{
         setTutorialScreen(false);
       }}>
@@ -401,7 +409,7 @@ const Product = ({route, navigation}) => {
                 </View>
                 </View>
                 <AnimatedModal visible={modalOpen} close={()=>{setModalOpen(false)}} content={<View style={{paddingLeft: 20, paddingRight: 20}}><FlockList limited = {false} navigation={navigation} product = {route.params.album} ar={flockAr} /></View>} />
-                </>
+                </View>
     );
   }
 

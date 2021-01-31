@@ -76,11 +76,12 @@ function ChatInterface({route, navigation}) {
     // condition
     // FLOCK_UPDATE
 
-    const res = splitAlgorithm(route.params.data.members, route.params.data.maximums, route.params.data.product.price)
-    if (res.length > 0) {
+    // const res = splitAlgorithm(route.params.data.members, route.params.data.maximums, route.params.data.product.price)
+    const flockTookOff = didFlockTakeOff(route.params.data.members, route.params.data.maximums, route.params.data.product.price);
+    if (flockTookOff) {
     socket.current.emit('complete', route.params.data.id);
     db.collection('chatGroups').doc(route.params.data.id).update({
-      members: res,
+      // members: res,
       completed: true,
       
       // rentPrice: ((route.params.data.product.price * .15 + route.params.data.product.price / route.params.data.members.length) / 2).toFixed(2),
@@ -88,7 +89,9 @@ function ChatInterface({route, navigation}) {
       
     });
     //purchase order addd
-    route.params.data.members = res;
+    // route.params.data.members = res;
+
+    //purchase order added by backend
     // db.collection('purchaseOrders').doc().set({
     //   product: route.params.data,
     //   user: {name: auth.currentUser.displayName, uid: auth.currentUser.uid},
@@ -440,7 +443,15 @@ const data = {
   },
 };
 
-
+var didFlockTakeOff = (members, maximums, totalPrice) => {
+  var sumTotal = 0;
+  for (const item of maximums) {
+    var entry = Object.entries(item)[0][1];
+    entry = entry.replace("$","").replace("-","");
+    sumTotal += parseFloat(entry);
+  }
+  return sumTotal >= totalPrice;
+}
 var splitAlgorithm = (members, maximums, totalPrice) => {
 
 
