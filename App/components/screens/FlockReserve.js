@@ -27,9 +27,9 @@ const FlockReserve = ({navigation, route}) => {
         const dates = doc.data().markedDates || {};
         for (var el in dates) {
           if (dates[el].user !== auth.currentUser.uid){
-            dates[el] = {...dates[el], color: 'red', type: 'otherReserved'}
+            dates[el] = {...dates[el], color: 'red', type: 'otherReserved', tentative: false}
           } else {
-            dates[el] = {...dates[el], color:  'green', type: 'meReserved'}
+            dates[el] = {...dates[el], color:  'green', type: 'meReserved', tentative: false}
           }
           
         }
@@ -105,10 +105,11 @@ const ReserveCalendar = ({navigation, route, close, myMarkedDates, othersMarkedD
       marked[moment(start.dateString).add(i, 'days').format('YYYY-MM-DD')] = options;
   }
     marked[start.dateString] = {
-      startingDay: true,...options
+      startingDay: true,...options,
+      tentative: true,
     };
     console.log(start);
-    marked[moment(start.dateString).add(duration-1, 'days').format('YYYY-MM-DD')] = {endingDay: true, ...options};
+    marked[moment(start.dateString).add(duration-1, 'days').format('YYYY-MM-DD')] = {endingDay: true, ...options, tentative: true};
     setMyMarkedDates(marked);
 } 
 
@@ -146,6 +147,9 @@ const handleDayPress = (day) => {
         var color = requestTypeIsRent?constants.PURPLE:constants.ORANGE;
         var fadedColor = "rgba(255, 221, 214, 1)";
         var isAfter = moment(date.dateString).isAfter(moment(new Date()));
+        // add two months/four months is also disqualified...
+        var disqualified = Object.entries(marking).length === 0 || !isAfter;
+        var isTentative = marking['tentative'];
         // console.log(moment(date.dateString), moment(new Date()));
 
         const circleStyle = {
@@ -159,13 +163,13 @@ const handleDayPress = (day) => {
           overflow: 'hidden',
           borderWidth: 7,
           borderColor: fadedColor,
-          backgroundColor: color,
+          backgroundColor: isTentative?'white':color,
+
         };
         var textStyle = {
           position: 'absolute',
           zIndex: 300,
           textAlign: 'center',
-          textDecorationColor: 'pink',
            textDecorationLine: isAfter?null:'line-through', color: state === 'disabled' ? 'grey' : 'black', 
         };
         var markStyle = {
@@ -175,7 +179,7 @@ const handleDayPress = (day) => {
           alignItems: 'center',
           justifyContent: 'center',
         };
-        if ((Object.entries(marking).length === 0 || !isAfter)) {
+        if (disqualified) {
           markStyle.backgroundColor = 'transparent';
         } else {
           if (marking['type'] === 'meReserved') {
@@ -186,11 +190,8 @@ const handleDayPress = (day) => {
               // height: '100%',
               width: '50%',
               overflow: 'hidden',
-              
-              
-             
             }
-            textStyle['color'] = 'white';
+            textStyle['color'] = isTentative?'black':'white';
           }
           console.log('day of week', moment(date.dateString).day());
           if (!marking['endingDay'] && moment(date.dateString).day() == 6) {
@@ -231,7 +232,7 @@ const handleDayPress = (day) => {
           <TouchableOpacity style={{width: '100%', alignItems: 'center', height: 40, justifyContent: 'center'}} onPress={()=>{
             handleDayPress(date);
           }}>
-            {startOrEnd?<View style={circleStyle} />:<></>}
+            {startOrEnd && !disqualified?<View style={circleStyle} />:<></>}
             <View style={markStyle}>
             
 
