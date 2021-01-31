@@ -487,7 +487,7 @@ const MiniCarouselFlocking = ({navigation, route}) => {
   const {key, key1, keyArrRent, setKeyArrRent, limitKey, keyArrFlock, setKeyArrFlock, keyVideoData, setKeyVideoData, setKeyFinishedLoading} = useContext(KeyContext);
   var unsubscribeCurrentFlock;
   const [cover, setCover] = useState(true);
-  const [coverFade, setCoverFade] = useState(new Animated.Value(.1));
+  const [coverFade, setCoverFade] = useState(new Animated.Value(1));
 
   const [finalAr, setFinalAr] = useState([]);
   useEffect(()=>{

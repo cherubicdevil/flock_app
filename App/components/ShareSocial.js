@@ -10,34 +10,36 @@ import ViewShot from 'react-native-view-shot';
 import Animation from 'lottie-react-native';
 import {firebase, db} from 'App/firebase/config';
 
-const ShareSocial = ({product, data={}, flockId}) => {
+const ShareSocial = ({product, data={}, flockId, shareApp=false}) => {
     const img = useRef();
 
     data['imgRef'] = img;
     return <><View style={[styles.container, {marginBottom: -2,}]}>
         <Text style={{fontWeight:'bold'}}>Want to pay less? Get more people to join, and earn eggs when you share!</Text>
     </View>
-    <ShareRow label="Tag a flocker"  product = {product} data={data} toggle={false} egg={false} />
-    <ShareRow label="Share on Facebook" app="facebook" product = {product} data={data} toggle={true} egg={true} />
-    <ShareRow label="Share on Instagram" app="instagram" product = {product} data={data} toggle={true} egg={true} />
-    <ShareRow label="Share on Snapchat" app="snapchat" product = {product} data={data} toggle={true} egg={true} />
-    {/* <ShareRow label="Share on Tiktok" app="tiktok" product = {product} data={data} toggle={true} egg={true} /> */}
-    <ShareRow label="Share on Twitter" app="twitter" product = {product} data={data} toggle={true} egg={true} />
-    <ShareRow label="Share on Whatsapp" app="whatsapp" product = {product} data={data} toggle={true} egg={true} />
-    {/* <ShareRow label="Text" app="text" product = {product} data={data} toggle={false} egg={true} /> */}
-    {/* <ShareRow label="Email" app="email" product = {product} data={data} toggle={false} egg={true} /> */}
+    <ShareRow label="Tag a flocker"  product = {product} data={data} toggle={false} egg={false} shareApp={shareApp}/>
+    <ShareRow label="Share on Facebook" app="facebook" product = {product} data={data} toggle={true} egg={true} shareApp={shareApp} />
+    <ShareRow label="Share on Instagram" app="instagram" product = {product} data={data} toggle={true} egg={true} shareApp={shareApp} />
+    <ShareRow label="Share on Snapchat" app="snapchat" product = {product} data={data} toggle={true} egg={true} shareApp={shareApp} />
+    {/* <ShareRow label="Share on Tiktok" app="tiktok" product = {product} data={data} toggle={true} egg={true} shareApp={shareApp} /> */}
+    <ShareRow label="Share on Twitter" app="twitter" product = {product} data={data} toggle={true} egg={true} shareApp={shareApp} />
+    <ShareRow label="Share on Whatsapp" app="whatsapp" product = {product} data={data} toggle={true} egg={true} shareApp={shareApp} />
+    {/* <ShareRow label="Text" app="text" product = {product} data={data} toggle={false} egg={true} shareApp={shareApp} /> */}
+    {/* <ShareRow label="Email" app="email" product = {product} data={data} toggle={false} egg={true} shareApp={shareApp} /> */}
 
     <ViewShot ref={img} options={{ format: "jpg", quality: 0.9 }}>
+        {product?.image?
+        <>
         <Image style = {{height: 250,}} source = {{uri: product.image}} />
         <View style={{position:'absolute', bottom: 20, right: 20, justifyContent: 'center', }}>
         <Image style={{height: 55, width: 150}} source={require('App/Assets/Images/Flock_Watermark.png')}/>
 <Text style={{marginTop: -15, alignSelf: 'flex-end', width: 85, shadowColor: 'white', shadowOpacity: 1, shadowOffset:{height:0}, fontFamily: 'Nunito', fontWeight: 'bold', fontSize: 8}}>search {<Text style={{color: 'black'}}>%{flockId.padStart(5,'0')}</Text>} in app</Text>
-        </View>
+        </View></>:<></>}
       </ViewShot>
     </>
 }
 
-const ShareRow = ({toggle, label, app, egg, product, data={}}) => { 
+const ShareRow = ({toggle, label, app, egg, product, data={}, shareApp}) => { 
     const animation = useRef();
     const onFailure = () => {
         setToggle(false);
@@ -46,7 +48,12 @@ const ShareRow = ({toggle, label, app, egg, product, data={}}) => {
     const toggleFunc = () => {
         setToggle(!tog);
         //animation.play();
-        const content = {product: product, data: data};
+        var content;
+        if (shareApp) {
+            var content = {product: product, shareApp: true, data: data};
+        } else {
+        var content = {product: product, data: data};
+        }
       shareActions[app](content, onFailure);
 
     }

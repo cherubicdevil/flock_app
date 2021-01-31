@@ -1,9 +1,10 @@
 import React, {useState} from 'react';
-import {View, Text, TouchableOpacity, Image, Button} from 'react-native';
+import {View, Text, TouchableOpacity, Image, Button, Dimensions} from 'react-native';
 import OptionsModal from './OptionsModal';
 import {constants} from 'App/constants';
 import AnimatedModal from 'App/components/AnimatedModal';
 import {useSelector, useDispatch} from 'react-redux';
+import ShareSocial from 'App/components/ShareSocial';
 
 const CustomBar = ({descriptors, state, navigation}) => {
   const focusedOptions = descriptors[state.routes[state.index].key].options;
@@ -57,16 +58,36 @@ const EggItem = ({image, text}) => {
   <InItem image={image} text={text} color={constants.GREYORANGE} />
   </TouchableOpacity>
   </View>
-<AnimatedModal upPercent="30%" bgcolor="#FFD700" visible={eggModalOpen} fade={false} close={()=>{setEggModalOpen(false)}} content={<View style={{height: 40}}>
-  <View style={{borderWidth: 1, borderColor: 'yellow', width: '60%', alignSelf: 'center', padding: 10, justifyContent: 'center', alignItems: 'center'}}>
-  <Text style={{color: 'white', alignSelf: 'center'}}>You've got this many eggs.{select.userInfo.eggCoins}</Text>
+<AnimatedModal 
+contentTop={
+  <View style={{width: '80%', alignSelf: 'center', padding: 10, justifyContent: 'center', alignItems: 'center'}}>
+  <View style={{flexDirection: 'row', justifyContent:'space-between', marginTop: 10,}}>
+<View style={{flex: 1}}>
+  <Text style={{color: 'white', alignSelf: 'center'}}>Nest Eggs</Text>
+<Text style={{color: 'white', alignSelf: 'center', fontWeight: 'bold', fontSize: 32}}>{select.userInfo.eggCoins}</Text>
+
+</View>
+<View style={{flex: 1}}>
+  <Text style={{color: 'white', alignSelf: 'center'}}>Value</Text>
+<Text style={{color: 'white', alignSelf: 'center', fontWeight: 'bold', fontSize: 32}}>${(select.userInfo.eggCoins/40).toFixed(2)}</Text>
+
+</View>
+
+</View>
+<Text style={{color: 'white', alignSelf: 'center', marginTop: 20}}>You can apply your earned eggs at checkout.</Text>
+<Text style={{color: 'white', alignSelf: 'center', marginTop: 20}}>Get more eggs by using the app: share, post, flock, and add products.</Text>
   </View>
-  <Button title="spend" onPress={()=>{
+}
+viewParams={{bottom: 0, height: Dimensions.get('window').height, width:Dimensions.get('window').width + 300, left: -400}}
+colored={true} colors={[constants.ORANGE, constants.GREYORANGE]} behind={false} upPercent="60%" visible={eggModalOpen} fade={false} close={()=>{setEggModalOpen(false)}} content={<View style={{flex: 1}}>
+
+  <ShareSocial flockId="1234" product={null} shareApp={true} />
+  {/* <Button title="spend" onPress={()=>{
     dispatch({type:'spendEggs', payload: 50});
 }} />
     <Button title="get" onPress={()=>{
     dispatch({type:'getEggs', payload: 25});
-}} />
+}} /> */}
   </View>} />
   </>;
 }

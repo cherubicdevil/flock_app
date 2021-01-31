@@ -43,7 +43,8 @@ const AnimatedModal = ({
   fade=true,
   curve = true,
   behind=true,
-  viewParams={bottom: 0, height: Dimensions.get('window').height, width:Dimensions.get('window').width, left: 0}
+  viewParams={bottom: 0, height: Dimensions.get('window').height, width:Dimensions.get('window').width, left: 0},
+  contentTop=<></>
 }) => {
   const animation = useRef(new Animated.Value(0));
   const startAnimation = () => {
@@ -105,6 +106,9 @@ const AnimatedModal = ({
             
             {behind?<View style={{position: 'absolute', bottom: 15, height: upPercent, width: '84%', backgroundColor: bgcolor, opacity: 0.5, alignSelf: 'center', borderRadius: curve?50:0,}} />:<></>}
             {behind?<View style={{position: 'absolute', bottom: 8, height: upPercent, width: '90%', backgroundColor: bgcolor, opacity: 0.5, alignSelf: 'center', borderRadius: curve?50:0,}} />:<></>}
+            <View style={{zIndex: -40, justifyContent: 'center', alignItems: 'center', position: 'absolute', top: 0, width: '100%', height: (100-parseInt(upPercent.replace("%",""))) + "%", backgroundColor:"rgba(255,255,255,0)"}}>
+              {contentTop}
+            </View>
             <View style={{position: 'absolute', bottom: 0, width: '100%', height: upPercent, borderRadius: curve?60:0, borderBottomRightRadius: 0, borderBottomLeftRadius: 0, backgroundColor: bgcolor, paddingTop: 40, overflow: 'hidden'}}>
               
               {content}
