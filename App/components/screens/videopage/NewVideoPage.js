@@ -187,11 +187,12 @@ useEffect(()=>{
         <View style={{alignItems: 'center'}}>
         <TouchableWithoutFeedback
           onPress={() => {
-            Share.share({
-              message: data.title,
-              title: 'Flock Content',
-              url: 'https://www.shopwithflock.com/videos/?id=' + data.id,
-            });
+            // Share.share({
+            //   message: data.title,
+            //   title: 'Flock Content',
+            //   url: 'https://www.shopwithflock.com/videos/?id=' + data.id,
+            // });
+            navigation.navigate("ShareSocial", {data: data, product: data.product, flockId: data.id || data.flockId})
           }}>
           <Image
             style={{height: ICON_SIZE, width: ICON_SIZE}}

@@ -292,7 +292,7 @@ const fetchFlockablesFirst = async () => {
         const ar = [];
         querySnapshot.forEach((doc) => {
           const entity = doc.data();
-          ar.push(entity);
+          ar.push({...entity, id:doc.id});
           counter = counter + 1;
           if (counter === n) {
             resolve(ar);
@@ -316,7 +316,7 @@ const fetchFlockables = async () => {
         const ar = [];
         querySnapshot.forEach((doc) => {
           const entity = doc.data();
-          ar.push(entity);
+          ar.push({...entity, id:doc.id});
           counter = counter + 1;
           if (counter === n) {
             resolve(ar);
@@ -341,7 +341,7 @@ const fetchRentables = async () => {
         const ar = [];
         querySnapshot.forEach((doc) => {
           const entity = doc.data();
-          ar.push(entity);
+          ar.push({...entity, id:doc.id});
           counter = counter + 1;
           if (counter === n) {
             resolve(ar);
@@ -364,7 +364,7 @@ const fetchRentablesFirst = async () => {
         const ar = [];
         querySnapshot.forEach((doc) => {
           const entity = doc.data();
-          ar.push(entity);
+          ar.push({...entity, id:doc.id});
           counter = counter + 1;
           if (counter === n) {
             resolve(ar);

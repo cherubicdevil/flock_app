@@ -10,6 +10,7 @@ import Home from 'App/components/screens/home/Home';
 import CamNavigator from './CamNavigator';
 import Chat from 'App/components/screens/chat/Chat';
 import Egg from 'App/components/screens/Egg';
+import ShareScreen from 'App/components/screens/videopage/ShareScreen';
 
 import Profile from 'App/components/screens/profile/Profile';
 
@@ -99,6 +100,11 @@ const AppNavigator5 = () => {
           name="ProfileMain"
           component={ProfileMain}
           initialParams={{vidVisible: false}}
+        />
+        <Tab.Screen
+          name="ShareSocial"
+          component={ShareScreen}
+          // initialParams={{vidVisible: false}}
         />
         <Tab.Screen
           name="Products"

@@ -13,7 +13,7 @@ import ShareSocial from 'App/components/ShareSocial';
 
 const StartFlock = ({navigation, route}) => {
     var flockId;
-    if (!route.params.flockId) {
+    if (!route.params.flockId && !route.params?.data?.id) {
     var flockId = (Math.random() * 100000).toFixed(0);
     } else {
         flockId = route.params.flockId;
