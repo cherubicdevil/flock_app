@@ -64,6 +64,9 @@ const FlockReserve = ({navigation, route}) => {
         <Text style={{fontFamily: constants.FONT, fontWeight: 'bold'}}>{route.params.data.product.title}</Text>
         <Text>Price: ${route.params.data.product.price}</Text>
     {requestTypeIsRent?<Text>Rent Price: ${rentPrice(route.params.data.product.price)}</Text>:<Text>Use Price for Flocker: $0.00 + shipping</Text>}
+    {requestTypeIsRent?<></>:<Text>You are in this flock. Go to chat. <Button title="Chat" onPress={()=>{
+      navigation.navigate("FlockChatComplete",{data:route.params.data})
+    }} /></Text>}
         </View>
         </View>
         
