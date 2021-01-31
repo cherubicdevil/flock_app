@@ -347,9 +347,13 @@ const Product = ({route, navigation}) => {
                 <View style={{justifyContent: 'center', alignItems: 'center'}}><Image source = {require('App/Assets/Images/heart.png')} style={{width: 25, height: 25,  shadowOpacity: 0.2, shadowOffset: {height:1 , width: 0}}} />
                 <Text style={{position: 'absolute', top: 5,fontSize: 12}}>34</Text>
                 </View>
-                
-                <Image source={require('App/Assets/Images/Share_Icon_White.png') } style={{shadowOpacity: 0.4, shadowOffset:{height:2, width:0},  width: 30, aspectRatio:1}}/>
-              
+                <TouchableOpacity  onPress={()=>{
+                  navigation.navigate('ShareSocial', {product:route.params.album, data:{}, flockId: route.params.id})
+                }}>
+                <Image 
+                style={{shadowOpacity: 0.4, shadowOffset:{height:2, width:0},  width: 30, height: 30, aspectRatio:1}}
+                source={require('App/Assets/Images/Share_Icon_White.png') } />
+              </TouchableOpacity>
               
               <View style={{shadowOpacity: 1, shadowColor: '#555', shadowOffset: {height: 2, width: 0}, borderRadius: 30, overflow: 'hidden', flex: 0.8, flexDirection: 'row', backgroundColor: constants.ORANGE, height: 50, alignItems: 'center', marginRight: 10,}}>
               {flockAr.length > 0?<LinearGradient

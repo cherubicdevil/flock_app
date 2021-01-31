@@ -10,7 +10,7 @@ import ViewShot from 'react-native-view-shot';
 import Animation from 'lottie-react-native';
 import {firebase, db} from 'App/firebase/config';
 
-const ShareSocial = ({product, data, flockId}) => {
+const ShareSocial = ({product, data={}, flockId}) => {
     const img = useRef();
 
     data['imgRef'] = img;
@@ -37,7 +37,7 @@ const ShareSocial = ({product, data, flockId}) => {
     </>
 }
 
-const ShareRow = ({toggle, label, app, egg, product, data}) => { 
+const ShareRow = ({toggle, label, app, egg, product, data={}}) => { 
     const animation = useRef();
     const onFailure = () => {
         setToggle(false);
