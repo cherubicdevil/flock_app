@@ -22,8 +22,9 @@ const FlockReserve = ({navigation, route}) => {
         console.log(route.params.data.id, "DATA ID");
         db.collection("chatGroups").doc(route.params.data.id)
     .onSnapshot(function(doc) {
-        console.log("Current dates: ", doc.data().markedDates);
-        const dates = doc.data().markedDates;
+        // console.log("Current dates: ", doc.data().markedDates);
+
+        const dates = doc.data().markedDates || {};
         for (var el in dates) {
           if (dates[el].user !== auth.currentUser.uid){
             dates[el] = {...dates[el], color: 'red'}
@@ -34,7 +35,7 @@ const FlockReserve = ({navigation, route}) => {
         }
         setOthersMarkedDates(dates);
     });
-      },[]);
+      },[route.params.data.id]);
 
 
     const [modalOpen, setModalOpen] = useState(false);
@@ -46,7 +47,11 @@ const FlockReserve = ({navigation, route}) => {
         {/* <Button title="back" onPress={()=>navigation.goBack()} style={{position: 'absolute', top: '10'}}/> */}
         {/* <View style={{height: 100, width: '100%', position: 'absolute', top: 0, zIndex: 400, backgroundColor: constants.TRANSLUCENT, borderBottomRightRadius: 30, borderBottomLeftRadius: 30}}> */}
         <HeaderGradient>
-        <Icon name="chevron-left" size={24} color="grey" style={{position: 'absolute', zIndex: 200, top: 50, left: 20}} />
+          <TouchableOpacity style={{position: 'absolute', zIndex: 800, top: 50, left: 20}} onPress={()=>{
+            navigation.goBack();
+          }}>
+        <Icon name="chevron-left" size={24} color="grey" />
+        </TouchableOpacity>
         </HeaderGradient>
         {/* </View> */}
         <View style={{backgroundColor: 'white', borderBottomLeftRadius: 60, borderBottomRightRadius: 60}}>

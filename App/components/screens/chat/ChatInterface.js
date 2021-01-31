@@ -83,6 +83,7 @@ function ChatInterface({route, navigation}) {
     db.collection('chatGroups').doc(route.params.data.id).update({
       // members: res,
       completed: true,
+      markedDates: {},
       
       // rentPrice: ((route.params.data.product.price * .15 + route.params.data.product.price / route.params.data.members.length) / 2).toFixed(2),
       // FLOCK_UPDATE this should go in the backend so that prices can be adjusted easily
