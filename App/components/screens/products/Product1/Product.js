@@ -205,28 +205,14 @@ const Product = ({route, navigation}) => {
   const renderContactHeader = () => {
     // console.log(this.props.route.params.album.image);
     // console.log("PRODUCt", this.props.route.params.album)
-      const renderBackOrClose = () => {
-        if (!route.params.tutorial) { //  means its from startflock
-          return <TouchableOpacity style={{resizeMode: 'cover', zIndex: 50, height: 30, width: 50,position: 'absolute', top: 40, left: 30}} onPress={navigation.goBack}><Image style={{width: 35, height: 35, tintColor: constants.LIGHTGREY}} source = {require('App/Assets/Images/Back_Icon.png')} /></TouchableOpacity>
-        } else {
-          return <TouchableOpacity style={{resizeMode: 'cover', zIndex: 50, height: 30, width: 50,position: 'absolute', top: 40, left: 30}} onPress={()=>{
-                      navigation.dispatch(
-            CommonActions.reset({
-              index: 0,
-              routes: [
-                { name: 'Home' },
-              ],
-            })
-                      );
-          }}><Icon name="times" size={35} color={constants.LIGHTGREY} /></TouchableOpacity>
-        }
-      }
+
 
     return (
       <View style={styles.headerContainer}>
+
         <View style={styles.coverContainer}>
           <View style={styles.coverImage}>
-            {renderBackOrClose()}
+
             <View style={{resizeMode: 'cover'}}>
             <Image
               style={{
@@ -260,9 +246,25 @@ const Product = ({route, navigation}) => {
     );
   };
 
-
+  const renderBackOrClose = () => {
+    if (!route.params.tutorial) { //  means its from startflock
+      return <TouchableOpacity style={{resizeMode: 'cover', zIndex: 50, height: 30, width: 50,position: 'absolute', top: 40, left: 30}} onPress={navigation.goBack}><Image style={{width: 35, height: 35, tintColor: constants.LIGHTGREY}} source = {require('App/Assets/Images/Back_Icon.png')} /></TouchableOpacity>
+    } else {
+      return <TouchableOpacity style={{resizeMode: 'cover', zIndex: 50, height: 30, width: 50,position: 'absolute', top: 40, left: 30}} onPress={()=>{
+                  navigation.dispatch(
+        CommonActions.reset({
+          index: 0,
+          routes: [
+            { name: 'Home' },
+          ],
+        })
+                  );
+      }}><Icon name="times" size={35} color={constants.LIGHTGREY} /></TouchableOpacity>
+    }
+  }
     return (
       <View style={{flex: 1, backgroundColor: constants.PINK_BACKGROUND}}>
+                            {renderBackOrClose()}
       <ScrollView pagingEnabled={true} showsVerticalScrollIndicator style={styles.mainViewStyle}>
         {/* <LinearGradient
           colors={['rgba(0,0,0,0)', 'rgba(40,60,81, 0.4)']}
