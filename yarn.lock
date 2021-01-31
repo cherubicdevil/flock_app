@@ -7495,7 +7495,7 @@ mkdirp@^0.5.1, mkdirp@~0.5.1:
   dependencies:
     minimist "^1.2.5"
 
-moment@^2.24.0, moment@^2.29.1:
+moment@>=2.10.3, moment@^2.24.0, moment@^2.29.1:
   version "2.29.1"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.29.1.tgz#b2be769fa31940be9eeea6469c075e35006fa3d3"
   integrity sha512-kHmoybcPV8Sqy59DwNDY3Jefr64lK/by/da0ViFcuA4DH0vQg5Q6Ze5VimxkfQNSC+Mls/Kx53s7TjP1RhFEDQ==
@@ -8381,10 +8381,17 @@ react-native-bubble-input@^1.0.1:
   resolved "https://registry.yarnpkg.com/react-native-bubble-input/-/react-native-bubble-input-1.0.1.tgz#066fa549c95bc2807c0acdb2abe0df53acdf5dc0"
   integrity sha512-lXcUClDOZwd9Lh2wrXzvQm4iu2U9yEgP0qfALqX2BKCh5SXC30T76HCOGDPVSWLn3+WgCdXpNGoBiXSeZiEfSw==
 
-react-native-calendars@^1.1129.0:
-  version "1.1129.0"
-  resolved "https://registry.yarnpkg.com/react-native-calendars/-/react-native-calendars-1.1129.0.tgz#871fcb20af98507f77ac687365f0473d7357e274"
-  integrity sha512-F5z8v/oWshtqyuZC+enBADuo/pETZNO/acX3TKcp4j4fU043Mh804tqJWw61y6eU+N4e8Z8r0GRqvUd42XCgQA==
+react-native-calendar@^0.13.1:
+  version "0.13.1"
+  resolved "https://registry.yarnpkg.com/react-native-calendar/-/react-native-calendar-0.13.1.tgz#c3fb4b7dfb47adbf6f5f2d7313a88f99916b0fee"
+  integrity sha1-w/tLfftHrb9vXy1zE6iPmZFrD+4=
+  dependencies:
+    moment ">=2.10.3"
+
+react-native-calendars@1.829.0:
+  version "1.829.0"
+  resolved "https://registry.yarnpkg.com/react-native-calendars/-/react-native-calendars-1.829.0.tgz#ebd3e07c1e3d3c32e9034539e3d658b02bd6aca2"
+  integrity sha512-9Di2WmCms+rDgs5Gbg/z3QJknogCJyf7CcJhGFJSAWZzOP6d0M88du8A6BQBbLB82FQPkVT+YFluSxXMf3hdjg==
   dependencies:
     hoist-non-react-statics "^3.3.1"
     immutable "^4.0.0-rc.12"

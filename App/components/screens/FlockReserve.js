@@ -27,9 +27,9 @@ const FlockReserve = ({navigation, route}) => {
         const dates = doc.data().markedDates || {};
         for (var el in dates) {
           if (dates[el].user !== auth.currentUser.uid){
-            dates[el] = {...dates[el], color: 'red'}
+            dates[el] = {...dates[el], color: 'red', type: 'otherReserved'}
           } else {
-            dates[el] = {...dates[el], color: 'green'}
+            dates[el] = {...dates[el], color:  'green', type: 'meReserved'}
           }
           
         }
@@ -125,7 +125,7 @@ const handleDayPress = (day) => {
     return;
   }
   setPicked(true);
-  markPeriod(start=day, duration=numDays, options={color: 'rgba(100,255,50,0.5)', user: auth.currentUser.uid});
+  markPeriod(start=day, duration=numDays, options={type: 'meReserved', color: 'rgba(100,255,50,0.5)', user: auth.currentUser.uid});
   console.log(myMarkedDates);
   
 }
@@ -134,10 +134,114 @@ const handleDayPress = (day) => {
             <Text style={{alignSelf: 'center'}}>You can {requestTypeIsRent?"borrow":"flock"} the item for {numDays} days</Text>
             <Text style={{alignSelf: 'center'}}>Choose a start date 2 days before you intend to use it.</Text>
             <Calendar
+            minDate={moment(new Date()).format("YYYY-MM-DD")}
+            // hideExtraDays={true}
             style={{ width: '90%', alignSelf: 'center'}}
       markedDates={{...myMarkedDates, ...othersMarkedDates }}
       markingType={'period'}
       onDayPress={handleDayPress}
+      dayComponent={({date, state, marking}) => {
+        var startOrEnd = marking['startingDay'] || marking['endingDay'];
+        console.log(date);
+        var color = requestTypeIsRent?constants.PURPLE:constants.ORANGE;
+        var fadedColor = "rgba(255, 221, 214, 1)";
+        var isAfter = moment(date.dateString).isAfter(moment(new Date()));
+        // console.log(moment(date.dateString), moment(new Date()));
+
+        const circleStyle = {
+          // height: '100%',
+          width: '75%',
+          borderRadius: 120,
+          zIndex: 100,
+          position: 'absolute',
+          alignSelf: 'center' , 
+          height: '95%',
+          overflow: 'hidden',
+          borderWidth: 7,
+          borderColor: fadedColor,
+          backgroundColor: color,
+        };
+        var textStyle = {
+          position: 'absolute',
+          zIndex: 300,
+          textAlign: 'center',
+          textDecorationColor: 'pink',
+           textDecorationLine: isAfter?null:'line-through', color: state === 'disabled' ? 'grey' : 'black', 
+        };
+        var markStyle = {
+          backgroundColor: 'transparent',
+          width: '135%',
+          height: '50%',
+          alignItems: 'center',
+          justifyContent: 'center',
+        };
+        if ((Object.entries(marking).length === 0 || !isAfter)) {
+          markStyle.backgroundColor = 'transparent';
+        } else {
+          if (marking['type'] === 'meReserved') {
+            markStyle.backgroundColor = fadedColor;
+
+          if (marking['startingDay'] || marking['endingDay']) {
+            markStyle={...markStyle,
+              // height: '100%',
+              width: '50%',
+              overflow: 'hidden',
+              
+              
+             
+            }
+            textStyle['color'] = 'white';
+          }
+          console.log('day of week', moment(date.dateString).day());
+          if (!marking['endingDay'] && moment(date.dateString).day() == 6) {
+            markStyle['alignSelf'] = "flex-start";
+            markStyle['marginLeft'] = "-25%";
+            markStyle['paddingLeft'] = "40%";
+            markStyle['paddingRight'] = "200%";
+
+            markStyle['width'] = '300%';
+          }
+
+          if (!marking['startingDay'] && moment(date.dateString).day() == 0) {
+            markStyle['alignSelf'] = "flex-end";
+            markStyle['marginRight'] = "-25%";
+            markStyle['paddingRight'] = "40%";
+            markStyle['paddingLeft'] = "200%";
+
+            markStyle['width'] = '300%';
+          }
+          if (marking['endingDay'] && moment(date.dateString).day() == 0) {
+            markStyle['alignSelf'] = "flex-end";
+            markStyle['marginRight'] = "50%";
+            markStyle['width'] = '300%';
+          }
+          if (marking['startingDay'] && moment(date.dateString).day() == 6) {
+            markStyle['alignSelf'] = "flex-start";
+            markStyle['marginLeft'] = "50%";
+            markStyle['width'] = '300%';
+          }
+        } else if (marking['type'] === 'otherReserved') {
+          textStyle['textDecorationLineColor'] = color;
+        }
+        }
+
+
+
+        return (
+          <TouchableOpacity style={{width: '100%', alignItems: 'center', height: 40, justifyContent: 'center'}} onPress={()=>{
+            handleDayPress(date);
+          }}>
+            {startOrEnd?<View style={circleStyle} />:<></>}
+            <View style={markStyle}>
+            
+
+          </View>
+          <Text style={textStyle}>
+              {date.day}
+            </Text>
+          </TouchableOpacity>
+        );
+      }}
     />
     <Button style={{color: picked?'blue':'grey'}} title="rent" onPress={()=>{
       // db.collection("chatGroups").doc(route.params.data.id).update({[`markedDates.${auth.currentUser.uid}`]: markedDates});
