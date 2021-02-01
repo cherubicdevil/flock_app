@@ -50,9 +50,14 @@ const StartFlock = ({navigation, route}) => {
           time: Math.round(Date.now() / 1000),
           members: [{name: user.displayName, uid: user.uid}]
         };
-        const maximums = [{}];
-        maximums[0][user.uid] = route.params.data.maxPrice;
+        // const maximums = [{}];
+        // maximums[0][user.uid] = route.params.data.maxPrice;
+        // data["maximums"] = maximums;
+
+        const maximums = {};
+        maximums[user.uid] = route.params.data.maxPrice;
         data["maximums"] = maximums;
+
         // firebase.firestore().collection("chatGroups").add(data).then((docRef)=>{
         //     data["id"] = docRef.id;
         //     db.collection('users').doc(firebase.auth().currentUser.uid).update({

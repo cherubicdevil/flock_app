@@ -14,13 +14,16 @@ import {
   View,
   Modal,
   TouchableWithoutFeedback,
+  TextInput
 } from 'react-native';
+import Dialog from 'react-native-dialog';
 import {firebase, db, auth} from 'App/firebase/config';
 import io from 'socket.io-client';
 import NavBar from 'App/components/common/NavBar';
 import {GiftedChat} from 'react-native-gifted-chat';
 import AnimatedModal from 'App/components/AnimatedModal';
 import Checkout from 'App/components/Checkout';
+// import NumericTextInput from 'App/components'
 import {
   DrawerContentScrollView,
   DrawerItemList,
@@ -52,25 +55,6 @@ function ChatInterface({route, navigation}) {
   const [creditModal, setCreditModal] = useState(false);
 
   const completeFunc = (customerId) => {
-    const memberInfo = {name: auth.currentUser.displayName, uid: auth.currentUser.uid, max: 50};
-    // check if the flock is completed
-    // make user enter credit card information
-    db.collection('users').doc(auth.currentUser.uid).update({
-      chatIds: firebase.firestore.FieldValue.arrayUnion(route.params.data.id)
-    });
-    const maxi = {};
-    
-    // TODO: change to data maxPrice
-    maxi[firebase.auth().currentUser.uid] = 100;
-    console.log(maxi, "IS THIS WHERE IT GOES WRONG");
-    db.collection('chatGroups').doc(route.params.data.id).update({
-      members: firebase.firestore.FieldValue.arrayUnion(memberInfo),
-      maximums: firebase.firestore.FieldValue.arrayUnion(maxi)
-    });
-    setPartOf(true);
-  dispatch({type: "UPDATE_DATA", payload: ["chatIds", "add", "array", route.params.data.id]});
-  dispatch({type: "UPDATE_DATA", payload: ["chatGroups", "add", "array", route.params.data]});
-    route.params.data.members.push(memberInfo);
     // send to socket, which pushes a broadcast
     // test signal, send test, on receive, console log "RECEIVED"
     // condition
@@ -119,7 +103,7 @@ function ChatInterface({route, navigation}) {
   const socket = useRef(null);
   const [recvMessages, setRecvMessages] = useState(route.params.data.messages);
   //const [recvMessages, setRecvMessages] = useState([testSystemMessage]);
-  const [dummyState, setDummyState] = useState(false);
+  const [dummyState, setDummyState] = useState(0);
   const dispatch = useDispatch();
   //firebase.firestore().collection("posts").get();
   useEffect(function () {
@@ -189,6 +173,7 @@ function ChatInterface({route, navigation}) {
 
   const convertArrayToDict = (arr) => {
     // format [{"dadsfa": "ADFadsf"},{"asdfadsf":"adsfasdfa"}]
+    if (typeof arr === "Object") return arr;
     const dicti = {};
     for (const item of arr) {
       var obj = Object.entries(item);
@@ -196,16 +181,67 @@ function ChatInterface({route, navigation}) {
     }
     return dicti;
   }
+  console.log('changing price');
   const yourPrice = convertArrayToDict(route.params.data.maximums)[user.uid];
-
+  const ChangePayment = ({data, setState}) => {
+  const NumericTextInput = ({data=0}) => {
+    const [dataValue, setDataValue] = useState(data);
+    const [dialVisible, setDialVisible] = useState(false);
+    const dial = <Dialog.Container visible={dialVisible}>
+    <Dialog.Title>Confirm Change</Dialog.Title>
+    <Dialog.Description>
+      You will not be charged immediately, only if and when the flock completes.
+    </Dialog.Description>
+    <Dialog.Button label="Cancel" onPress={()=>{
+      setDataValue(data);
+      setDialVisible(false);
+    }}/>
+    <Dialog.Button label="Confirm" onPress={()=>{
+      route.params.data.maximums[auth.currentUser.uid] = dataValue;
+      // setState(69);
+      completeFunc(select.userInfo.customerId);
+      // setDataValue()
+      setDialVisible(false);
+    }}/>
+  </Dialog.Container>;
+    return <><TextInput
+    // contextMenuHidden={numeric}
+    keyboardType={"numeric"}
+    blurOnSubmit placeholder={"0.00"} onBlur = {(e)=> {
+      if (dataValue !== data) {
+        setDialVisible(true);
+      }
+        // console.log("BLUR", e.nativeEvent.text);
+    }} 
+    value={(typeof dataValue)==="string"?dataValue:dataValue.toFixed(2)}
+    onChangeText={(text)=>{
+            if (text === "") {
+                setDataValue("");
+            } else {
+                setDataValue(parseInt(text.replace(".",""))/100);
+            }
+    }}
+    
+    />
+    {dial}
+    </>;
+}
+return <ScrollView style={{backgroundColor: 'yellow'}} keyboardShouldPersistTaps="never">
+  <NumericTextInput data={data} />
+  </ScrollView>
+  }
   const priceText = () => {
     if (part) {
       return <>
       <Text style={{color:'white', marginBottom: 10}}>Your are paying: ${yourPrice} ({(parseFloat(yourPrice)/parseFloat(route.params.data.product.price) *100).toFixed(0)}% ownership)</Text>
       <Text style={{color:'white', marginBottom: 10}}>Increase to own more and use more of the item once this flock takes off.</Text>
+      <View style={{flexDirection: 'row'}}>
       <Text style={{color:'white', marginBottom: 10}}>Change your payment:</Text>
-      <Text style={{color:'white', marginBottom: 10, fontWeight: 'bold'}}>Have it now if you  ${(route.params.data.product.price / route.params.data.members.length).toFixed(2)}.</Text>
-      <Text style={{color:'white', marginBottom: 10, fontWeight: 'bold'}}>Want to pay less? Get more people to join!</Text></>;
+      <ChangePayment data={yourPrice} setState={setDummyState}/>
+      </View>
+      {/* <Text style={{color:'white', marginBottom: 10, fontWeight: 'bold'}}>Have it now if you  ${(route.params.data.product.price / route.params.data.members.length).toFixed(2)}.</Text>
+      <Text style={{color:'white', marginBottom: 10, fontWeight: 'bold'}}>Want to pay less? Get more people to join!</Text> */}
+      </>;
 
     } else {
       return <><Text style={{color:'white', marginBottom: 10, fontWeight: 'bold'}}>You can have it now if you join for ${(route.params.data.product.price / (route.params.data.members.length+1)).toFixed(2)}.</Text>
@@ -220,6 +256,7 @@ function ChatInterface({route, navigation}) {
 <HeaderView navigation={navigation} route={route} />
       <View style={{ position: 'absolute', zIndex: 200, top: 100, width: '100%', borderRadius: 0, borderBottomRightRadius: 70, borderBottomLeftRadius: 70}}>
       <View style={{shadowColor: "#ff7009", shadowOffset: {height: 0, width: 0}, shadowOpacity: 0.42, elevation: 13, shadowRadius: 28.30, borderBottomLeftRadius: 70, borderBottomRightRadius: 70}}>
+      <ScrollView scrollEnabled={false} keyboardShouldPersistTaps="never" >
       <LinearGradient
           colors={[constants.ORANGE, constants.PEACH]}
           start={{ x: 0, y: 0 }} end={{ x: 0, y: 1 }}
@@ -247,6 +284,7 @@ function ChatInterface({route, navigation}) {
             </View>
             </TouchableOpacity>
           </LinearGradient>
+          </ScrollView>
         </View>
         {route.params.data.product.description?
       <View style={{marginTop: 20, flexDirection: 'row'}}>
@@ -303,7 +341,20 @@ function ChatInterface({route, navigation}) {
 
 
           if (store.getState().userInfo.customerId !== "none") {
-            completeFunc(sore.getState().userInfo.customerId);
+            const memberInfo = {name: auth.currentUser.displayName, uid: auth.currentUser.uid, max: 50};
+            db.collection('users').doc(auth.currentUser.uid).update({
+              chatIds: firebase.firestore.FieldValue.arrayUnion(route.params.data.id)
+            });
+            route.params.data.maximums[firebase.auth().currentUser.uid] = 100;
+            db.collection('chatGroups').doc(route.params.data.id).update({
+              members: firebase.firestore.FieldValue.arrayUnion(memberInfo),
+              maximums: route.params.data.maximums,
+            });
+            setPartOf(true);
+          dispatch({type: "UPDATE_DATA", payload: ["chatIds", "add", "array", route.params.data.id]});
+          dispatch({type: "UPDATE_DATA", payload: ["chatGroups", "add", "array", route.params.data]});
+            route.params.data.members.push(memberInfo);
+            completeFunc(store.getState().userInfo.customerId);
           } else {
             setCreditModal(true);
           }
@@ -313,7 +364,23 @@ function ChatInterface({route, navigation}) {
         console.log(res.id, "customerid");
         dispatch({type: "UPDATE_DATA", payload: ['customerId',null, null,res.id]})
         db.collection('users').doc(auth.currentUser.uid).update({customerId: res.id});
-        completeFunc();
+
+        const memberInfo = {name: auth.currentUser.displayName, uid: auth.currentUser.uid, max: 50};
+        db.collection('users').doc(auth.currentUser.uid).update({
+          chatIds: firebase.firestore.FieldValue.arrayUnion(route.params.data.id)
+        });
+        route.params.data.maximums[firebase.auth().currentUser.uid] = 100;
+        db.collection('chatGroups').doc(route.params.data.id).update({
+          members: firebase.firestore.FieldValue.arrayUnion(memberInfo),
+          maximums: route.params.data.maximums,
+        });
+        setPartOf(true);
+      dispatch({type: "UPDATE_DATA", payload: ["chatIds", "add", "array", route.params.data.id]});
+      dispatch({type: "UPDATE_DATA", payload: ["chatGroups", "add", "array", route.params.data]});
+        route.params.data.members.push(memberInfo);
+
+
+        completeFunc(res.id);
         setCreditModal(false);
       }).catch((err)=>{
         console.log(err);
@@ -460,9 +527,10 @@ const data = {
 
 var didFlockTakeOff = (members, maximums, totalPrice) => {
   var sumTotal = 0;
-  for (const item of maximums) {
-    var entry = Object.entries(item)[0][1];
-    entry = entry.replace("$","").replace("-","");
+  var ar = Object.entries(maximums);
+  for (const item of ar) {
+    var entry = item[1];
+    // entry = entry.replace("$","").replace("-","");
     sumTotal += parseFloat(entry);
   }
   return sumTotal >= totalPrice;
