@@ -73,10 +73,18 @@ const Checkout = ({navigation, route}) => {
 
             //create customer if no customerid
             var createCustomerEndpoint = constants.CUSTOMER_ENDPOINT + "?token=" + token;
-            if (hasId) {
+            if (!hasId) {
             var cId = await fetch(createCustomerEndpoint);
-            var chargeCustomer
-            await fetch()
+            var chargeCustomerEndpoint = constants.CHARGE_CUSTOMER + "?id="+cId+"&amount="+ 500;
+            await fetch(chargeCustomerEndpoint);
+            } else {
+                await fetch(constants.UPDATE_CUST, {
+                    method: 'POST',
+                    body: JSON.stringify({info: info, id: customerId}),
+                    headers: { 'Content-Type': 'application/json' }
+                });
+                var chargeCustomerEndpoint = constants.CHARGE_CUSTOMER + "?id="+customerId+"&amount="+ 450;
+            await fetch(chargeCustomerEndpoint);
             }
 
             // charge customer
