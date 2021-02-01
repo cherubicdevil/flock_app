@@ -7,18 +7,26 @@ import {constants} from 'App/constants';
 import HeaderGradient from '../HeaderGradient';
 import {useStore} from 'react-redux';
 
+const fetchCustomerInfo = (customerId) =>{
+    fetch(constants.RETR_CUST).then((resp)=> {
+        resp.json().then((res) =>{
+            return res.id;
+        })
+    })
+};
 const Checkout = ({navigation, route}) => {
     const [shipModal, setShipModal] = useState(false);
     const [billModal, setBillModal] = useState(false);
 
     const store = useStore();
-    const fetchCustomerInfo = () =>{
+    const fetchCustomerInfo = (id) =>{
+        setCustom
 
     };
     useEffect(()=>{
         const customerId = store.getState().userInfo.customerId;
         if (customerId !== undefined && customerId !== null && customerId !== "none") {
-            fetchCustomerInfo();
+            fetchCustomerInfo(customerId);
         }
     },[]);
 
