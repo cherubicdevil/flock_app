@@ -8,9 +8,9 @@ import HeaderGradient from '../HeaderGradient';
 import {useStore} from 'react-redux';
 
 const fetchCustomerInfo = (customerId) =>{
-    fetch(constants.RETR_CUST).then((resp)=> {
+    fetch(constants.RETR_CUST+`?id=${customerId}`).then((resp)=> {
         resp.json().then((res) =>{
-            return res.id;
+            return res;
         })
     })
 };
@@ -19,14 +19,13 @@ const Checkout = ({navigation, route}) => {
     const [billModal, setBillModal] = useState(false);
 
     const store = useStore();
-    const fetchCustomerInfo = (id) =>{
-        setCustom
 
-    };
     useEffect(()=>{
         const customerId = store.getState().userInfo.customerId;
         if (customerId !== undefined && customerId !== null && customerId !== "none") {
-            fetchCustomerInfo(customerId);
+            fetchCustomerInfo(customerId).then((info) =>{
+                setInfo(info);
+            });
         }
     },[]);
 
