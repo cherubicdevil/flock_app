@@ -56,6 +56,9 @@ function ChatInterface({route, navigation}) {
   const [priceShare, setPriceShare] = useState(route.params.data.maximums[auth.currentUser.uid] || 0);
   const [initialDialog, setInitialDialog] = useState(false);
 
+  useEffect(()=>{
+    setPriceShare(route.params.data.maximums[auth.currentUser.uid]);
+  }, route.params.data)
   const completeFunc = (customerId) => {
     // send to socket, which pushes a broadcast
     // test signal, send test, on receive, console log "RECEIVED"
@@ -97,7 +100,7 @@ function ChatInterface({route, navigation}) {
 }).then(res => res.json())
   .then(json => console.log(json));
     
-    navigation.navigate('FlockChatComplete', {data: route.params.data})
+    navigation.navigate('FlockSuccess', {data: route.params.data})
     }
   };
   const store = useStore();
@@ -124,7 +127,7 @@ function ChatInterface({route, navigation}) {
     });
     socket.current.on('complete', () => {
       console.log('completingggg');
-      navigation.navigate('FlockChatComplete', {data: route.params.data});
+      navigation.navigate('FlockSuccess', {data: route.params.data});
     });
     console.log("MESSAGES");
     setRecvMessages(route.params.data.messages);

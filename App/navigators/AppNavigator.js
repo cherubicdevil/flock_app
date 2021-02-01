@@ -29,6 +29,7 @@ import Info from 'App/components/screens/chat/info/Info';
 import FlockChatComplete from 'App/components/screens/FlockChatComplete';
 import FlockReserve from 'App/components/screens/FlockReserve';
 import Checkout from 'App/components/screens/Checkout';
+import FlockSuccess from '../components/screens/FlockSuccess';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -91,6 +92,14 @@ const AppNavigator5 = () => {
         <Tab.Screen
           name="Profile"
           component={Profile}
+          initialParams={{vidVisible: false}}
+          options={{
+            tabBarVisible: false,
+          }}
+        />
+          <Tab.Screen
+          name="FlockSuccess"
+          component={FlockSuccess}
           initialParams={{vidVisible: false}}
           options={{
             tabBarVisible: false,

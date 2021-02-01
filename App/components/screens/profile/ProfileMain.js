@@ -128,7 +128,7 @@ const ProfileMain = ({navigation}) => {
           numColumns={3}
           data={rentData}
           renderItem={(el) => {
-            return <TouchableOpacity onPress={()=>{navigation.navigate('FlockChatComplete', {data: el.item})}}><View style={{backgroundColor: 'black', width: Dimensions.get('window').width/3- 10, margin: 5, height: 150, borderBottomRightRadius: 40, borderBottomLeftRadius: 40, backgroundColor: 'white'}} >
+            return <TouchableOpacity onPress={()=>{navigation.navigate('FlockReserve', {data: el.item})}}><View style={{backgroundColor: 'black', width: Dimensions.get('window').width/3- 10, margin: 5, height: 150, borderBottomRightRadius: 40, borderBottomLeftRadius: 40, backgroundColor: 'white'}} >
               <Image style={{width: '100%', height: 110}} source={{uri: el.item.product.image}} />
           <Text>{el.item.members.length} flockers</Text>
             </View>
