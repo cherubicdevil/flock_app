@@ -271,7 +271,7 @@ const handleDayPress = (day) => {
     // }).then(res => res.json())
     //   .then(json => console.log(json));
     //     console.log('payment done!');
-      }, extra: <Text>{start} to {end}</Text>}, );
+      }, start: start, end:end}, );
       close();
     }} >
       <Text style={{color: 'white'}}>

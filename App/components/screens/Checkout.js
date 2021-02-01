@@ -9,6 +9,7 @@ import {useStore, useDispatch, useSelector} from 'react-redux';
 import {firebase, auth, db} from 'App/firebase/config';
 import {useFocusEffect} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import moment from 'moment';
 import LinearGradient from 'react-native-linear-gradient';
 
 const fetchCustomerInfo = (customerId) =>{
@@ -69,7 +70,7 @@ const Checkout = ({navigation, route}) => {
             <View style={{backgroundColor: 'white', paddingVertical: 10, borderBottomLeftRadius: 30, borderBottomRightRadius: 30, alignItems: "flex-end"}}>
             <View style={styles.row}>
             <Text style={{marginVertical: 15}}>
-    {<Text style={{fontWeight: 'bold'}}>Period: </Text>}{route.params.extra}
+    {<Text style={{fontWeight: 'bold'}}>Period: </Text>}{route.params.start} to {route.params.end}
         </Text>
         </View>
         <View style={[styles.row, {justifyContent: 'space-between'}]}>
@@ -77,22 +78,44 @@ const Checkout = ({navigation, route}) => {
             style={{marginRight: 10, width: '100%', justifyContent: 'space-between', flexDirection:'row'}}
             onPress={()=>{
                 setShipModal(true);
-            }}><Text>Shipping information</Text>
+            }}><Text style={{fontWeight:'bold'}}>Shipping information</Text>
             <Icon name="chevron-right" size={20} />
             </TouchableOpacity>
             
         </View>
-        <Text></Text>
         <View style={[styles.row, {justifyContent: 'space-between'}]}>
             <TouchableOpacity 
             style={{marginRight: 10,width: '100%', justifyContent: 'space-between', flexDirection:'row'}}
             onPress={()=>{
                 setBillModal(true);
-            }}><Text>Billing information</Text>
+            }}><Text style={{fontWeight: 'bold'}}>Billing information</Text>
             <Icon name="chevron-right" size={20} />
             </TouchableOpacity>
+
+
             
         </View>
+
+        <View style={styles.row}>
+                <Text style={{fontWeight: 'bold'}}>Summary</Text>
+        <Text>Arriving {["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"][moment(route.params.start).day()]} {route.params.start}</Text>
+
+        <View style={{flexDirection: 'row', width: '100%', marginVertical: 15, justifyContent: 'space-between'}}>
+            <Text>Subtotal</Text>
+            <Text>$0.00</Text>
+            </View>
+        <View style={{flexDirection: 'row', width: '100%', marginVertical: 15, justifyContent: 'space-between'}}>
+            <Text>Shipping and Maintenance</Text>
+            <Text>$0.00</Text>
+            </View>
+            <View style={{flexDirection: 'row', width: '100%',  justifyContent: 'space-between', borderTopWidth: 1, borderColor: constants.PINK_BACKGROUND, paddingTop: 10}}>
+            <Text style={{fontWeight: 'bold', }}>Total</Text>
+            <Text>$0.00</Text>
+            </View>
+            </View>
+            <View style={{flexDirection: 'row', width: '100%', marginVertical: 15, justifyContent: 'space-between'}}>
+ 
+            </View>
                 <Button title="done" onPress={async ()=>{
             // route.params.doneFunc();
             const token = await stripe.createTokenWithCard(info);
@@ -324,7 +347,7 @@ const ShippingModal = ({state, setState, close, setChanged}) => {
 
 const styles = {
     textbox: {borderWidth: 1, borderColor: constants.DARKGREY, borderRadius: 30, padding: 10, paddingBottom: 10, paddingTop: 10, fontSize: 18},
-    row: {width: '100%', borderBottomWidth: 2, borderColor: constants.PINK_BACKGROUND,paddingHorizontal:20, flexDirection: 'row', paddingVertical:20},
+    row: {width: '100%', borderBottomWidth: 2, borderColor: constants.PINK_BACKGROUND,paddingHorizontal:20, paddingVertical:20},
 }
 
 export default Checkout;
