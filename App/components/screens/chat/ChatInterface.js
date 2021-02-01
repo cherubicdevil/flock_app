@@ -295,12 +295,18 @@ return <ScrollView  style={{marginLeft: 15}} keyboardShouldPersistTaps="never">
           </LinearGradient>
           </ScrollView>
         </View>
-        {route.params.data.product.description?
       <View style={{marginTop: 20, flexDirection: 'row'}}>
         <Image style = {{width: 40, height: 40}} source ={constants.PLACEHOLDER_IMAGE } />
-        <View style={{borderRadius: 30, flex: 1, backgroundColor: constants.GREYBLUE, padding: 20, marginRight: 20, shadowColor: constants.GREYBLUE, shadowOffset: {height: 10, width: 0}, shadowOpacity: 0.82, elevation: 13, shadowRadius: 18.30,}}><Text>Description Hello world</Text></View>
-      </View>:<></>
-}
+        <View style={{borderRadius: 30, flex: 1, backgroundColor: constants.GREYBLUE, padding: 20, marginRight: 20, shadowColor: constants.GREYBLUE, shadowOffset: {height: 10, width: 0}, shadowOpacity: 0.82, elevation: 13, shadowRadius: 18.30,}}>
+          <View>
+            <Text>Important Size and Specification requirements:</Text>
+            <View style={{borderWidth: 1}}>
+              <Text>{route.params.data.specifications}</Text>
+            </View>
+          {/* <Text>{route.params.data.description}</Text> */}
+          </View>
+          </View>
+      </View>
       </View>
       
       <View style={{backgroundColor: constants.PINK_BACKGROUND, flex: 1}}>

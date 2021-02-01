@@ -1,4 +1,4 @@
-import React, {useState, useRef} from 'react';
+import React, {useState, useRef, useEffect} from 'react';
 import {View, ScrollView, Text, Switch, TextInput, Image,} from 'react-native';
 import ProgressHeader from 'App/components/ProgressHeader';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
@@ -10,19 +10,21 @@ import ViewShot from 'react-native-view-shot';
 import Animation from 'lottie-react-native';
 import {firebase, db} from 'App/firebase/config';
 import ShareSocial from 'App/components/ShareSocial';
+import { set } from 'react-native-reanimated';
+import {CommonActions} from '@react-navigation/native';
 
 const StartFlock = ({navigation, route}) => {
-    var flockId;
-    if (!route.params.flockId && !route.params?.data?.id) {
-    var flockId = (Math.random() * 100000).toFixed(0);
-    } else {
-        flockId = route.params.flockId;
-    }
+    const [flockId, setFlockId] = useState(route.params.flockId);
+    useEffect(()=>{
+        if (flockId === undefined) {
+            setFlockId((Math.random()*10000).toFixed(0));
+        }
+    },[]);
     const dispatch = useDispatch();
     const [canNext, setCanNext] = useState(true);
     const Tab = createMaterialTopTabNavigator();
     console.log('start flock index is', route.params);
-    var ar = [<PageOne product = {route.params.product} data = {route.params.data} />, <PageTwo product = {route.params.product} data = {route.params.data} setCanNext={setCanNext} />, <ShareSocial product = {route.params.product} data = {route.params.data} flockId={flockId} />, <PageFour product = {route.params.product} data = {route.params.data} />];
+    var ar = [<PageOne product = {route.params.product} data = {route.params.data} setCanNext={setCanNext} />, <PageTwo product = {route.params.product} data = {route.params.data} setCanNext={setCanNext} />, <ShareSocial product = {route.params.product} data = {route.params.data} flockId={flockId} />, <PageFour product = {route.params.product} data = {route.params.data} />];
     return <ScrollView scrollEnabled={false} keyboardShouldPersistTaps="never"><ProgressHeader
     idText={"%"+flockId}
     nextRoute="StartFlock"
@@ -36,9 +38,12 @@ const StartFlock = ({navigation, route}) => {
     data={route.params.data}
     closeText="done"
     closeFunc={()=> {
+        
         const user  = firebase.auth().currentUser;
         const salt = Math.random(100).toFixed(10);
         const data = {
+            specifications: route.params.data.specifications,
+            description: route.params.data.description,
           name: 'testNew'+salt,
           flock: 'testNew'+salt,
           product: route.params.product,
@@ -58,6 +63,7 @@ const StartFlock = ({navigation, route}) => {
         maximums[user.uid] = route.params.data.maxPrice;
         data["maximums"] = maximums;
 
+
         // firebase.firestore().collection("chatGroups").add(data).then((docRef)=>{
         //     data["id"] = docRef.id;
         //     db.collection('users').doc(firebase.auth().currentUser.uid).update({
@@ -76,17 +82,30 @@ const StartFlock = ({navigation, route}) => {
             dispatch({type: "UPDATE_DATA", payload: ["chatGroups", "add", "array", data]});
         });
 
-        navigation.goBack();
+        navigation.dispatch(
+            CommonActions.reset({
+              index: 0,
+              routes: [
+                { name: 'Product', params:{album: route.params.product, id: route.params.data.id} },
+              ],
+            })
+          );
     }}
   />
     {ar[route.params.index]}
   </ScrollView>
 }
 
-const PageOne = ({product, data}) => {
+const PageOne = ({product, data, setCanNext}) => {
+    const [can1, setCan1] = useState(false);
+    const [can2, setCan2] = useState(false);
+    useEffect(()=>{
+        setCanNext(can1 && can2);
+    }, [can1, can2]);
+
     return <View style={{width:'100%', backgroundColor: 'white', marginTop: 5, padding: 20}}>
-        <InputText data = {data} title = "specifications" numLines = {2} placeholder = "Size 4? Size 10? Red? Green?" label="List specifications like size and color if applicable."/>
-        <InputText data = {data} title = "description" numLines = {4} placeholder = "What do you want others to know about this product? Hype it up so they join your flock and lower your price!" label="Message" defaultValue = "Hey! What do you think of this? Want to flock it with me? Together we split the cost and share the item."/>
+        <InputText data = {data} title = "specifications" numLines = {2} setCanNext={setCan1} placeholder = "Size 4? Size 10? Red? Green?" label="List specifications like size and color if applicable." />
+        <InputText data = {data} title = "description" numLines = {4}  setCanNext={setCan2}  placeholder = "What do you want others to know about this product? Hype it up so they join your flock and lower your price!" label="Message" defaultValue = "Hey! What do you think of this? Want to flock it with me? Together we split the cost and share the item."/>
         <ProductPreview product = {product} toggle={true} egg={true} />
 
     </View>;
@@ -133,13 +152,16 @@ const PageFour = () => {
     return <Text>Test 4</Text>
 }
 
-const InputText = ({numLines, data, title, placeholder, label, defaultValue=""}) => {
+const InputText = ({numLines, data, title, placeholder, label, setCanNext, defaultValue=""}) => {
     console.log(data[label]);
     data[title] = defaultValue;
     return <View style={{marginBottom: 10}}><Text style={{fontWeight: 'bold'}}>{label}</Text>
     <TextInput defaultValue={data[title] || defaultValue} blurOnSubmit placeholder={placeholder} style={{marginTop: 5, borderColor: "grey", paddingLeft: 15, borderRadius: 10, borderWidth: 1, height: numLines * 25}} multiline numberOfLines = {numLines} onBlur = {(e)=> {
         console.log("BLUR", e.nativeEvent.text);
         data[title] = e.nativeEvent.text;
+        if (e.nativeEvent.text !== "") {
+            setCanNext(true);
+        }
     }} /></View>
 }
 
