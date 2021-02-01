@@ -35,7 +35,9 @@ const HeaderGradient = ({navigation, children, absolute=true, closeX = false}) =
           }}>
         <Icon name="chevron-left" size={24} color="grey" />
         </TouchableOpacity>}
+
         {children}
+
         </LinearGradient>
     </View>
 }
