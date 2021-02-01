@@ -5,25 +5,30 @@ import {PaymentCardTextField} from 'tipsi-stripe';
 import AnimatedModal from 'App/components/AnimatedModal';
 import {constants} from 'App/constants';
 import HeaderGradient from '../HeaderGradient';
-import {useStore} from 'react-redux';
-import {firebase, auth, db} from 'App/firebase';
+import {useStore, useDispatch, useSelector} from 'react-redux';
+import {firebase, auth, db} from 'App/firebase/config';
+
 
 const fetchCustomerInfo = (customerId) =>{
-    fetch(constants.RETR_CUST+`?id=${customerId}`).then((resp)=> {
+    return new Promise((resolve) => {
+        fetch(constants.RETR_CUST+`?id=${customerId}`).then((resp)=> {
         resp.json().then((res) =>{
-            return res;
+                resolve(res);
         })
     })
+});
 };
 const Checkout = ({navigation, route}) => {
     const [shipModal, setShipModal] = useState(false);
     const [billModal, setBillModal] = useState(false);
 
-    const store = useStore();
-    const customerId = store.getState().userInfo.customerId;
+    // const store = useStore();
+    const select = useSelector(state=>state.userInfo);
+    const dispatch = useDispatch();
+    // const customerId = store.getState().userInfo.customerId;
+    const customerId = select.customerId;
     var hasId = customerId !== undefined && customerId !== null && customerId !== "none"
     useEffect(()=>{
-        const customerId = store.getState().userInfo.customerId;
         if (hasId) {
             fetchCustomerInfo(customerId).then((info) =>{
                 setInfo(info);
@@ -32,7 +37,7 @@ const Checkout = ({navigation, route}) => {
     },[]);
 
 
-    console.log(store.getState().userInfo.customerId);
+    console.log(customerId);
     const [info, setInfo] = useState({
         // mandatory
         number: '4000000000000077',
@@ -79,8 +84,11 @@ const Checkout = ({navigation, route}) => {
             var cId;
             fetch(createCustomerEndpoint).then(resp=>{
                 resp.json().then((cid)=>{
-                    dispatch({type: "UPDATE_DATA", payload: {membertype: 'customerId',data: cid.id}})
-                    db.collection('users').doc(auth.currentUser.uid).update({customerId: res.id});
+                    console.log("CUSTOMERID", cid.id);
+                    dispatch({type: "UPDATE_DATA", payload: ['customerId',null, null,res.id]})
+                    db.collection('users').doc(auth.currentUser.uid).update({customerId: cid.id}).catch(err=>{
+                        console.log(err);
+                    });
                     var chargeCustomerEndpoint = constants.CHARGE_CUSTOMER + "?id="+cid.id+"&amount="+ 500;
                     fetch(chargeCustomerEndpoint).then(()=>{
                         console.log('done');
