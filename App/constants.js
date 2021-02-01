@@ -78,5 +78,6 @@ export const constants = {
   CUSTOMER_ENDPOINT: 'https://protected-thicket-47492.herokuapp.com/createCustomer/', // ?token=
   // CUSTOMER_ENDPOINT: 'http://localhost:5000/createCustomer/',
   ALGOLIA_SEARCH: '3a59c3ff5dd5ec3b1fc14e11a2044115',
-  ALGOLIA_ID: 'QDYS7569GL'
+  ALGOLIA_ID: 'QDYS7569GL',
+  EGG_RATIO: 40,
 };

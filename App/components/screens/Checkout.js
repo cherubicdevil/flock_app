@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, SafeAreaView, TouchableOpacity, Button, Modal, TextInput} from 'react-native';
+import {View, Text, SafeAreaView, TouchableOpacity, Button, Modal, TextInput, Switch} from 'react-native';
 import stripe from 'tipsi-stripe';
 import {PaymentCardTextField} from 'tipsi-stripe';
 import AnimatedModal from 'App/components/AnimatedModal';
@@ -25,6 +25,10 @@ const Checkout = ({navigation, route}) => {
     const [shipModal, setShipModal] = useState(false);
     const [billModal, setBillModal] = useState(false);
     const [changed, setChanged] = useState(false);
+    const [tog, setToggle] = useState(false);
+    const toggleFunc = () => {
+        setToggle(!tog);
+    }
 
     // const store = useStore();
     const select = useSelector(state=>state.userInfo);
@@ -60,9 +64,16 @@ const Checkout = ({navigation, route}) => {
         addressZip: '55555',
       });
     
+      const shipMain = 23.99;
+      const dollars = parseFloat((select.eggCoins / constants.EGG_RATIO).toFixed(2));
+      const reductionDollars = Math.min(dollars, route.params.subtotal+shipMain);
+      const reductionEggs = Math.round(reductionDollars * constants.EGG_RATIO);
+      const amount = tog?(shipMain + route.params.subtotal - reductionDollars).toFixed(2):(shipMain + route.params.subtotal).toFixed(2);
     return <>
     <SafeAreaView style={{flex: 1,backgroundColor: constants.TRANSLUCENT}}>
-        <HeaderGradient navigation={navigation} absolute={false} />
+        <HeaderGradient title="Checkout" navigation={navigation} absolute={false} >
+        <Text style={{fontFamily: constants.FONT, fontSize: 18, marginTop: -10}}>Checkout</Text>
+        </HeaderGradient>
 
         <View style={{flex: 1, backgroundColor: constants.PINK_BACKGROUND,}}>
 
@@ -96,22 +107,33 @@ const Checkout = ({navigation, route}) => {
             
         </View>
 
-        <View style={styles.row}>
+        <View style={[styles.row, {borderBottomWidth: 0}]}>
                 <Text style={{fontWeight: 'bold'}}>Summary</Text>
         <Text>Arriving {["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"][moment(route.params.start).day()]} {route.params.start}</Text>
 
         <View style={{flexDirection: 'row', width: '100%', marginVertical: 15, justifyContent: 'space-between'}}>
             <Text>Subtotal</Text>
-            <Text>$0.00</Text>
+            <Text>${route.params.subtotal.toFixed(2)}</Text>
             </View>
         <View style={{flexDirection: 'row', width: '100%', marginVertical: 15, justifyContent: 'space-between'}}>
             <Text>Shipping and Maintenance</Text>
-            <Text>$0.00</Text>
+            <Text>${shipMain}</Text>
             </View>
             <View style={{flexDirection: 'row', width: '100%',  justifyContent: 'space-between', borderTopWidth: 1, borderColor: constants.PINK_BACKGROUND, paddingTop: 10}}>
             <Text style={{fontWeight: 'bold', }}>Total</Text>
-            <Text>$0.00</Text>
+            <Text style={{color: tog?constants.ORANGE:'black'}}>${amount}</Text>
+            {/* {tog?<Text style={{alignSelf: 'flex-end', color: constants.ORANGE}}>${(shipMain + route.params.subtotal - reductionDollars).toFixed(2)}</Text>:<></>} */}
             </View>
+            <View style={{alignSelf:'flex-end', flexDirection:'row', alignItems:'center', marginTop: 10, marginRight: -5, justifyContent: 'space-between'}}>
+                <View style={{flex: 1}}>
+        <Text>You have {<Text style={{color: constants.ORANGE}}>{select.eggCoins}</Text>} nest eggs to redeem.</Text>
+        <Text>Use {reductionEggs} to save ${reductionDollars.toFixed(2)}</Text>
+        </View>
+            <Switch value={tog}
+    onValueChange={toggleFunc}
+    trackColor={{ false: constants.DARKGREY, true: constants.ORANGE }}
+    style={{ transform: [{ scaleX: .8 }, { scaleY: .8 }] }} />
+    </View>
             </View>
             <View style={{flexDirection: 'row', width: '100%', marginVertical: 15, justifyContent: 'space-between'}}>
  
@@ -135,7 +157,7 @@ const Checkout = ({navigation, route}) => {
                     db.collection('users').doc(auth.currentUser.uid).update({customerId: cid.id}).catch(err=>{
                         console.log(err);
                     });
-                    var chargeCustomerEndpoint = constants.CHARGE_CUSTOMER + "?id="+cid.id+"&amount="+ 500;
+                    var chargeCustomerEndpoint = constants.CHARGE_CUSTOMER + "?id="+cid.id+"&amount="+ amount*100;
                     fetch(chargeCustomerEndpoint).then(()=>{
                         console.log('done');
                     }).catch(err=>{
@@ -154,7 +176,7 @@ const Checkout = ({navigation, route}) => {
                     headers: { 'Content-Type': 'application/json' }
                 });
             }
-                var chargeCustomerEndpoint = constants.CHARGE_CUSTOMER + "?id="+customerId+"&amount="+ 450;
+                var chargeCustomerEndpoint = constants.CHARGE_CUSTOMER + "?id="+customerId+"&amount="+ amount*100;
             await fetch(chargeCustomerEndpoint);
             }
 

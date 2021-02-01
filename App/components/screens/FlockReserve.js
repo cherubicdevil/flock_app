@@ -40,6 +40,7 @@ const FlockReserve = ({navigation, route}) => {
 
     const [modalOpen, setModalOpen] = useState(false);
     console.log(route.params);
+    const subtotal = requestTypeIsRent?rentPrice(route.params.data.product.price):"0.00"
     const requestTypeIsRent = route.params.data.members.includes({name: auth.currentUser.displayName, uid: auth.currentUser.uid});
     const colors = (requestTypeIsRent)?[constants.LAVENDER, constants.PURPINK]:['#ff4d00', constants.PEACH];
     return <SafeAreaView style={{flex: 1, backgroundColor: constants.PINK_BACKGROUND}}>
@@ -57,7 +58,7 @@ const FlockReserve = ({navigation, route}) => {
          <View style={{paddingHorizontal: 20, paddingVertical:10, backgroundColor: 'white'}}>
         <Text style={{fontFamily: constants.FONT, fontWeight: 'bold'}}>{route.params.data.product.title}</Text>
         <Text>Price: ${route.params.data.product.price}</Text>
-    {requestTypeIsRent?<Text>Rent Price: ${rentPrice(route.params.data.product.price)}</Text>:<Text>Use Price for Flocker: $0.00 + shipping</Text>}
+    {requestTypeIsRent?<Text>Rent Price: ${subtotal}</Text>:<Text>Use Price for Flocker: ${subtotal} + shipping</Text>}
     {requestTypeIsRent?<></>:<Text>You are in this flock. Go to chat. <Button title="Chat" onPress={()=>{
       navigation.navigate("FlockChatComplete",{data:route.params.data})
     }} /></Text>}
@@ -90,11 +91,11 @@ source={require('App/Assets/Images/Share_Icon_White_Earn.png') } />
         </LinearGradient>
         </TouchableOpacity>
         </View>
-        <AnimatedModal upPercent={"50%"} colored={true} colors={colors} visible={modalOpen} behind={true} close={()=>setModalOpen(false)} content={<ReserveCalendar navigation = {navigation} close={()=>{setModalOpen(false)}} route={route} myMarkedDates={myMarkedDates} setMyMarkedDates={setMyMarkedDates} othersMarkedDates={othersMarkedDates} />} />
+        <AnimatedModal upPercent={"50%"} colored={true} colors={colors} visible={modalOpen} behind={true} close={()=>setModalOpen(false)} content={<ReserveCalendar navigation = {navigation} close={()=>{setModalOpen(false)}} route={route} myMarkedDates={myMarkedDates} setMyMarkedDates={setMyMarkedDates} othersMarkedDates={othersMarkedDates} subtotal={subtotal} />} />
         </SafeAreaView>;
 }
 
-const ReserveCalendar = ({navigation, route, close, myMarkedDates, othersMarkedDates, setMyMarkedDates}) => {
+const ReserveCalendar = ({navigation, route, close, myMarkedDates, othersMarkedDates, setMyMarkedDates, subtotal}) => {
   const [picked, setPicked] = useState(false);
   const markPeriod = (start, duration=4, options) => {
     const marked = {};
@@ -271,7 +272,7 @@ const handleDayPress = (day) => {
     // }).then(res => res.json())
     //   .then(json => console.log(json));
     //     console.log('payment done!');
-      }, start: start, end:end}, );
+      }, start: start, end:end, subtotal: parseFloat(subtotal)}, );
       close();
     }} >
       <Text style={{color: 'white'}}>
