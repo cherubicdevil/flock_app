@@ -522,8 +522,9 @@ const FlockList = ({product, navigation, ar, limited = true}) => {
     if (typeof ar[i].maximums==="object") {
       var obj = Object.entries(ar[i].maximums);
       for (const item of obj) {
-        paidFor += obj[1];
+        paidFor += parseFloat(item[1]);
       }
+
     } else {
     for (const item of obj) {
       console.log(leftover, item);
@@ -549,7 +550,7 @@ const FlockList = ({product, navigation, ar, limited = true}) => {
       <TouchableOpacity style={{paddingLeft: 10, paddingRight: 10,}}
       onPress={tempFunc}>
         
-      <Text style={{color: 'black', fontFamily: constants.FONT, fontWeight: 'bold', fontSize: 13}}>${paidFor} to go</Text>
+      <Text style={{color: 'black', fontFamily: constants.FONT, fontWeight: 'bold', fontSize: 13}}>${ar[i].product.price - paidFor} to go</Text>
       </TouchableOpacity>
       </View>
       </View>
