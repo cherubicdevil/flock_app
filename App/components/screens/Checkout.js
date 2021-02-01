@@ -72,12 +72,23 @@ const Checkout = ({navigation, route}) => {
             // fetch(endpoint);
 
             //create customer if no customerid
-            var createCustomerEndpoint = constants.CUSTOMER_ENDPOINT + "?token=" + token;
+            var createCustomerEndpoint = constants.CUSTOMER_ENDPOINT + "?token=" + token.tokenId;
             if (!hasId) {
-            var cId = await fetch(createCustomerEndpoint);
-            var chargeCustomerEndpoint = constants.CHARGE_CUSTOMER + "?id="+cId+"&amount="+ 500;
-            await fetch(chargeCustomerEndpoint);
+                console.log('credit card make');;
+            var cId;
+            fetch(createCustomerEndpoint).then(resp=>{
+                resp.json().then((cid)=>{
+                    var chargeCustomerEndpoint = constants.CHARGE_CUSTOMER + "?id="+cid.id+"&amount="+ 500;
+                    fetch(chargeCustomerEndpoint).then(()=>{
+                        console.log('done');
+                    }).catch(err=>{
+                        console.log(err);
+                    });
+                })
+            });
+            
             } else {
+                console.log('already had');
                 await fetch(constants.UPDATE_CUST, {
                     method: 'POST',
                     body: JSON.stringify({info: info, id: customerId}),

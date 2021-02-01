@@ -70,7 +70,7 @@ export const constants = {
   CHAT_ENDPOINT: 'https://enigmatic-bastion-86695.herokuapp.com/',
   PAY_ENDPOINT: 'https://protected-thicket-47492.herokuapp.com/', // ?price=&token=
   RETR_CUST: 'https://protected-thicket-47492.herokuapp.com/retrieveCustomer', // ?id=
-  CHARGE_CUSTOMER: 'https://protected-thicket-47492.herokuapp.com/updateCustomer', // ?id=&amount=
+  CHARGE_CUSTOMER: 'https://protected-thicket-47492.herokuapp.com/chargeCustomer', // ?id=&amount=
   UPDATE_CUST: 'https://protected-thicket-47492.herokuapp.com/updateCustomer', // post query
   CHARGE_FLOCK_COMPLETE_ENDPOINT: 'https://protected-thicket-47492.herokuapp.com/chargeCustomerFlockComplete/',
   CUSTOMER_ENDPOINT: 'https://protected-thicket-47492.herokuapp.com/createCustomer/', // ?token=

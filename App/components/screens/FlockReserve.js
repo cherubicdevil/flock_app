@@ -252,20 +252,20 @@ const handleDayPress = (day) => {
       navigation.navigate('Checkout', {doneFunc: (customerId)=> {
         db.collection("chatGroups").doc(route.params.data.id).update({'markedDates': {...othersMarkedDates, ...myMarkedDates}});
         const myDates = Object.entries({...othersMarkedDates, ...myMarkedDates});
-        let postData = {
-          ...route.params.data,
-          customerId: customerId,
-          chatId: route.params.data.id,
-          userId: auth.currentUser.uid,
-          dates: myDates[0] + "-" + myDates[myDates.length - 1],
-        }
-        fetch(constants.CHARGE_FLOCK_COMPLETE_ENDPOINT, {
-        method: 'POST',
-        body: JSON.stringify(postData),
-        headers: { 'Content-Type': 'application/json' }
-    }).then(res => res.json())
-      .then(json => console.log(json));
-        console.log('payment done!');
+    //     let postData = {
+    //       ...route.params.data,
+    //       customerId: customerId,
+    //       chatId: route.params.data.id,
+    //       userId: auth.currentUser.uid,
+    //       dates: myDates[0] + "-" + myDates[myDates.length - 1],
+    //     }
+    //     fetch(constants.CHARGE_FLOCK_COMPLETE_ENDPOINT, {
+    //     method: 'POST',
+    //     body: JSON.stringify(postData),
+    //     headers: { 'Content-Type': 'application/json' }
+    // }).then(res => res.json())
+    //   .then(json => console.log(json));
+    //     console.log('payment done!');
       }, extra: <Text>Use from {start} to {end}</Text>}, );
       close();
     }} />
