@@ -19,10 +19,11 @@ const Checkout = ({navigation, route}) => {
     const [billModal, setBillModal] = useState(false);
 
     const store = useStore();
-
+    const customerId = store.getState().userInfo.customerId;
+    var hasId = customerId !== undefined && customerId !== null && customerId !== "none"
     useEffect(()=>{
         const customerId = store.getState().userInfo.customerId;
-        if (customerId !== undefined && customerId !== null && customerId !== "none") {
+        if (hasId) {
             fetchCustomerInfo(customerId).then((info) =>{
                 setInfo(info);
             });
@@ -67,8 +68,18 @@ const Checkout = ({navigation, route}) => {
             // route.params.doneFunc();
             const token = await stripe.createTokenWithCard(info);
             console.log("token", token);
-            const endpoint = constants.PAY_ENDPOINT + `?price=${100}&token=${token.tokenId}`;
-            fetch(endpoint);
+            // const endpoint = constants.PAY_ENDPOINT + `?price=${100}&token=${token.tokenId}`;
+            // fetch(endpoint);
+
+            //create customer if no customerid
+            var createCustomerEndpoint = constants.CUSTOMER_ENDPOINT + "?token=" + token;
+            if (hasId) {
+            var cId = await fetch(createCustomerEndpoint);
+            var chargeCustomer
+            await fetch()
+            }
+
+            // charge customer
             console.log(token);
             if (route.params.doneFunc) {
                 route.params.doneFunc();

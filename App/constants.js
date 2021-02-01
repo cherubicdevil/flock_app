@@ -70,10 +70,11 @@ export const constants = {
   CHAT_ENDPOINT: 'https://enigmatic-bastion-86695.herokuapp.com/',
   PAY_ENDPOINT: 'https://protected-thicket-47492.herokuapp.com/', // ?price=&token=
   RETR_CUST: 'https://protected-thicket-47492.herokuapp.com/retrieveCustomer', // ?id=
+  CHARGE_CUSTOMER: 'https://protected-thicket-47492.herokuapp.com/updateCustomer',
   UPDATE_CUST: 'https://protected-thicket-47492.herokuapp.com/updateCustomer', // post query
   CHARGE_FLOCK_COMPLETE_ENDPOINT: 'https://protected-thicket-47492.herokuapp.com/chargeCustomerFlockComplete/',
-  // CUSTOMER_ENDPOINT: 'https://protected-thicket-47492.herokuapp.com/createCustomer/', // ?token=
-  CUSTOMER_ENDPOINT: 'http://localhost:5000/createCustomer/',
+  CUSTOMER_ENDPOINT: 'https://protected-thicket-47492.herokuapp.com/createCustomer/', // ?token=
+  // CUSTOMER_ENDPOINT: 'http://localhost:5000/createCustomer/',
   ALGOLIA_SEARCH: '3a59c3ff5dd5ec3b1fc14e11a2044115',
   ALGOLIA_ID: 'QDYS7569GL'
 };
