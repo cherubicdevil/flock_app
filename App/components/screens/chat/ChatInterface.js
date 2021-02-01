@@ -53,6 +53,8 @@ const systemMessages = [];
 function ChatInterface({route, navigation}) {
 
   const [creditModal, setCreditModal] = useState(false);
+  const [priceShare, setPriceShare] = useState(route.params.data.maximums[auth.currentUser.uid] || 0);
+  const [initialDialog, setInitialDialog] = useState(false);
 
   const completeFunc = (customerId) => {
     // send to socket, which pushes a broadcast
@@ -169,7 +171,7 @@ function ChatInterface({route, navigation}) {
     }
   }
   const [partOf, setPartOf] = useState(part);
-  console.log(route.params.data.maximums, user.uid);
+  // console.log(route.params.data.maximums, user.uid);
 
   const convertArrayToDict = (arr) => {
     // format [{"dadsfa": "ADFadsf"},{"asdfadsf":"adsfasdfa"}]
@@ -182,7 +184,8 @@ function ChatInterface({route, navigation}) {
     return dicti;
   }
   console.log('changing price');
-  const yourPrice = convertArrayToDict(route.params.data.maximums)[user.uid];
+  const yourPrice = route.params.data.maximums[user.uid];
+  console.log('your price', route.params.data.maximums);
   const ChangePayment = ({data, setState}) => {
   const NumericTextInput = ({data=0}) => {
     const [dataValue, setDataValue] = useState(data);
@@ -198,7 +201,7 @@ function ChatInterface({route, navigation}) {
     }}/>
     <Dialog.Button label="Confirm" onPress={()=>{
       route.params.data.maximums[auth.currentUser.uid] = dataValue;
-      // setState(69);
+      setState(dataValue);
       completeFunc(select.userInfo.customerId);
       // setDataValue()
       setDialVisible(false);
@@ -206,6 +209,7 @@ function ChatInterface({route, navigation}) {
   </Dialog.Container>;
     return <><TextInput
     // contextMenuHidden={numeric}
+    style={{width: 75, backgroundColor: 'white', borderRadius: 40, paddingLeft: 20}}
     keyboardType={"numeric"}
     blurOnSubmit placeholder={"0.00"} onBlur = {(e)=> {
       if (dataValue !== data) {
@@ -214,6 +218,7 @@ function ChatInterface({route, navigation}) {
         // console.log("BLUR", e.nativeEvent.text);
     }} 
     value={(typeof dataValue)==="string"?dataValue:dataValue.toFixed(2)}
+    defaultValue={data}
     onChangeText={(text)=>{
             if (text === "") {
                 setDataValue("");
@@ -226,18 +231,19 @@ function ChatInterface({route, navigation}) {
     {dial}
     </>;
 }
-return <ScrollView style={{backgroundColor: 'yellow'}} keyboardShouldPersistTaps="never">
+return <ScrollView  style={{marginLeft: 15}} keyboardShouldPersistTaps="never">
   <NumericTextInput data={data} />
   </ScrollView>
   }
   const priceText = () => {
     if (part) {
+      console.log(priceShare, "priceShare");
       return <>
-      <Text style={{color:'white', marginBottom: 10}}>Your are paying: ${yourPrice} ({(parseFloat(yourPrice)/parseFloat(route.params.data.product.price) *100).toFixed(0)}% ownership)</Text>
+      <Text style={{color:'white', marginBottom: 10}}>You are paying: ${(typeof priceShare === "string")?priceShare:priceShare.toFixed(2)} ({(parseFloat(priceShare)/parseFloat(route.params.data.product.price) *100).toFixed(0)}% ownership)</Text>
       <Text style={{color:'white', marginBottom: 10}}>Increase to own more and use more of the item once this flock takes off.</Text>
       <View style={{flexDirection: 'row'}}>
       <Text style={{color:'white', marginBottom: 10}}>Change your payment:</Text>
-      <ChangePayment data={yourPrice} setState={setDummyState}/>
+      <ChangePayment data={priceShare} setState={setPriceShare}/>
       </View>
       {/* <Text style={{color:'white', marginBottom: 10, fontWeight: 'bold'}}>Have it now if you  ${(route.params.data.product.price / route.params.data.members.length).toFixed(2)}.</Text>
       <Text style={{color:'white', marginBottom: 10, fontWeight: 'bold'}}>Want to pay less? Get more people to join!</Text> */}
@@ -335,29 +341,39 @@ return <ScrollView style={{backgroundColor: 'yellow'}} keyboardShouldPersistTaps
         onSend={onSend}
         user={{_id: 1}}
       /></View>
-      
+      <Dialog.Container visible={initialDialog}>
+    <Dialog.Title>Set Your Price</Dialog.Title>
+    <Dialog.Description>
+      You will not be charged immediately, only if and when the flock completes.
+    </Dialog.Description>
+    <Dialog.Button label="Cancel" onPress={()=>{
+      setInitialDialog(false);
+    }}/>
+    <Dialog.Button label="Confirm" onPress={()=>{
+      if (store.getState().userInfo.customerId !== "none") {
+        const memberInfo = {name: auth.currentUser.displayName, uid: auth.currentUser.uid, max: priceShare};
+        db.collection('users').doc(auth.currentUser.uid).update({
+          chatIds: firebase.firestore.FieldValue.arrayUnion(route.params.data.id)
+        });
+        route.params.data.maximums[firebase.auth().currentUser.uid] = 100;
+        db.collection('chatGroups').doc(route.params.data.id).update({
+          members: firebase.firestore.FieldValue.arrayUnion(memberInfo),
+          maximums: route.params.data.maximums,
+        });
+        setPartOf(true);
+      dispatch({type: "UPDATE_DATA", payload: ["chatIds", "add", "array", route.params.data.id]});
+      dispatch({type: "UPDATE_DATA", payload: ["chatGroups", "add", "array", route.params.data]});
+        route.params.data.members.push(memberInfo);
+        completeFunc(store.getState().userInfo.customerId);
+      } else {
+        setCreditModal(true);
+      }
+      setInitialDialog(false);
+    }}/>
+  </Dialog.Container>
       {partOf?<></>:<View style={{position: 'absolute', bottom: 0, width: '100%', height: 100, backgroundColor: 'white'}}><View style={{height: '100%', backgroundColor: constants.PINK_BACKGROUND }}>
         <TouchableOpacity style={{width: '90%', height: 50, backgroundColor: constants.ORANGE, alignSelf: 'center', borderRadius: 30, justifyContent: 'center'}} onPress={()=>{
-
-
-          if (store.getState().userInfo.customerId !== "none") {
-            const memberInfo = {name: auth.currentUser.displayName, uid: auth.currentUser.uid, max: 50};
-            db.collection('users').doc(auth.currentUser.uid).update({
-              chatIds: firebase.firestore.FieldValue.arrayUnion(route.params.data.id)
-            });
-            route.params.data.maximums[firebase.auth().currentUser.uid] = 100;
-            db.collection('chatGroups').doc(route.params.data.id).update({
-              members: firebase.firestore.FieldValue.arrayUnion(memberInfo),
-              maximums: route.params.data.maximums,
-            });
-            setPartOf(true);
-          dispatch({type: "UPDATE_DATA", payload: ["chatIds", "add", "array", route.params.data.id]});
-          dispatch({type: "UPDATE_DATA", payload: ["chatGroups", "add", "array", route.params.data]});
-            route.params.data.members.push(memberInfo);
-            completeFunc(store.getState().userInfo.customerId);
-          } else {
-            setCreditModal(true);
-          }
+          setInitialDialog(true);
       }}><Text style={{color: 'white', alignSelf: 'center', fontWeight: 'bold'}}>JOIN</Text></TouchableOpacity></View></View>}
     <AnimatedModal visible={creditModal} close={()=>setCreditModal(false)} navigation={navigation} content={<Checkout navigation={navigation} route={route} doneFunc={(token)=> {
       fetch(constants.CUSTOMER_ENDPOINT + "?token=" + token).then((response)=>response.json().then((res)=> {
@@ -365,11 +381,11 @@ return <ScrollView style={{backgroundColor: 'yellow'}} keyboardShouldPersistTaps
         dispatch({type: "UPDATE_DATA", payload: ['customerId',null, null,res.id]})
         db.collection('users').doc(auth.currentUser.uid).update({customerId: res.id});
 
-        const memberInfo = {name: auth.currentUser.displayName, uid: auth.currentUser.uid, max: 50};
+        const memberInfo = {name: auth.currentUser.displayName, uid: auth.currentUser.uid};
         db.collection('users').doc(auth.currentUser.uid).update({
           chatIds: firebase.firestore.FieldValue.arrayUnion(route.params.data.id)
         });
-        route.params.data.maximums[firebase.auth().currentUser.uid] = 100;
+        route.params.data.maximums[firebase.auth().currentUser.uid] = priceShare;
         db.collection('chatGroups').doc(route.params.data.id).update({
           members: firebase.firestore.FieldValue.arrayUnion(memberInfo),
           maximums: route.params.data.maximums,

@@ -517,12 +517,21 @@ const FlockList = ({product, navigation, ar, limited = true}) => {
     console.log(result.length);
     var leftover = parseFloat(ar[i].product.price);
     var paidFor = 0;
-    for (const item of ar[i].maximums) {
+    var obj = ar[i].maximums;
+    console.log(typeof ar[i].maximums);
+    if (typeof ar[i].maximums==="object") {
+      var obj = Object.entries(ar[i].maximums);
+      for (const item of obj) {
+        paidFor += obj[1];
+      }
+    } else {
+    for (const item of obj) {
       console.log(leftover, item);
       // leftover -= parseFloat(value[0]);
       const resuPrice = parseFloat(Object.entries(item)[0][1]);
       paidFor += resuPrice;
     }
+  }
     paidFor = paidFor.toFixed(2);
     var paidForPercent = Math.round(100 * paidFor/ar[i].product.price);
     result.push(  
