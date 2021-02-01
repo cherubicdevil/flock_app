@@ -27,7 +27,8 @@ const Checkout = ({navigation, route}) => {
         addressZip: '55555',
       });
     
-    return <SafeAreaView style={{flex: 1,backgroundColor: constants.TRANSLUCENT}}>
+    return <>
+    <SafeAreaView style={{flex: 1,backgroundColor: constants.TRANSLUCENT}}>
         <HeaderGradient navigation={navigation} absolute={false} />
 
         <View style={{flex: 1, backgroundColor: constants.PINK_BACKGROUND, padding: 30,}}>
@@ -57,10 +58,13 @@ const Checkout = ({navigation, route}) => {
         <Button title="back" onPress = {()=>{navigation.goBack()}}/>
         
         </View>
-        <AnimatedModal visible={billModal} close={()=>setBillModal(false)} state={info} setState={setInfo} content={<BillingModal state={info} setState={setInfo} close={()=>setBillModal(false)}/>}/>
-        <AnimatedModal visible={shipModal} close={()=>setShipModal(false)} state={info} setState={setInfo} content={<ShippingModal state={info} setState={setInfo} close={()=>setShipModal(false)}/>}/>
+
 </View>
+
     </SafeAreaView>
+    <AnimatedModal visible={billModal} close={()=>setBillModal(false)} state={info} setState={setInfo} content={<BillingModal state={info} setState={setInfo} close={()=>setBillModal(false)}/>}/>
+        <AnimatedModal visible={shipModal} close={()=>setShipModal(false)} state={info} setState={setInfo} content={<ShippingModal state={info} setState={setInfo} close={()=>setShipModal(false)}/>}/>
+    </>
 };
 
 const validateCard = (cardNumber) => {
@@ -106,7 +110,7 @@ const BillingModal = ({state, setState, close}) => {
     const placeholderColor = localState.number === ''?'grey':'black';
     const numberPlaceholder= localState.number=== ''?'4242424242424242':localState.number;
     const expirationPlaceholder = localState.expMonth === ''?"MM/YY":localState.expMonth+"/"+localState.expYear;
-    return <View style={{position: 'absolute', bottom: 0, width: '100%', height: '50%', paddingLeft: 30, paddingRight: 30, borderTopLeftRadius: 40, borderTopRightRadius: 40, backgroundColor:'white', zIndex: 50}}>
+    return <View style={{position: 'absolute', top: 0, width: '100%', height: '50%', paddingLeft: 30, paddingRight: 30, borderTopLeftRadius: 40, borderTopRightRadius: 40, backgroundColor:'white', zIndex: 50}}>
            <Text style={{color: 'red', opacity: error?1:0}}>Please review your information for errors</Text>
             <Text style={{marginLeft: 10}}>Card</Text>
             <PaymentCardTextField style={{color: 'black', borderWidth: 1, borderRadius: 30}} 
@@ -155,7 +159,7 @@ const ShippingModal = ({state, setState, close}) => {
     // const [name, setName] = useState('');
     var valid = false;
     const [error, setError] = useState(false);
-    return <View style={{position: 'absolute', bottom: 0, width: '100%', height: '50%', paddingLeft: 30, paddingRight: 30, borderTopLeftRadius: 40, borderTopRightRadius: 40, backgroundColor:'white', zIndex: 50}}>
+    return <View style={{position: 'absolute', top: 0, width: '100%', height: '50%', paddingLeft: 30, paddingRight: 30, borderTopLeftRadius: 40, borderTopRightRadius: 40, backgroundColor:'white', zIndex: 50}}>
             <Text style={{color: 'red', opacity: error?1:0}}>Please review your information for errors</Text>
             <Text style={{marginLeft: 10}}>Full Name</Text>
             <TextInput defaultValue={localState.name} onChangeText={(text)=> {
