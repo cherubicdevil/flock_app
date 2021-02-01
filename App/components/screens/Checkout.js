@@ -7,7 +7,7 @@ import {constants} from 'App/constants';
 import HeaderGradient from '../HeaderGradient';
 import {useStore, useDispatch, useSelector} from 'react-redux';
 import {firebase, auth, db} from 'App/firebase/config';
-
+import {useFocusEffect} from '@react-navigation/native';
 
 const fetchCustomerInfo = (customerId) =>{
     return new Promise((resolve) => {
@@ -21,6 +21,7 @@ const fetchCustomerInfo = (customerId) =>{
 const Checkout = ({navigation, route}) => {
     const [shipModal, setShipModal] = useState(false);
     const [billModal, setBillModal] = useState(false);
+    const [changed, setChanged] = useState(false);
 
     // const store = useStore();
     const select = useSelector(state=>state.userInfo);
@@ -30,11 +31,12 @@ const Checkout = ({navigation, route}) => {
     var hasId = customerId !== undefined && customerId !== null && customerId !== "none"
     useEffect(()=>{
         if (hasId) {
-            fetchCustomerInfo(customerId).then((info) =>{
-                setInfo(info);
+            fetchCustomerInfo(customerId).then((customerInfo) =>{
+                setInfo({...info, ...customerInfo});
             });
         }
     },[]);
+
 
 
     console.log(customerId);
@@ -68,6 +70,7 @@ const Checkout = ({navigation, route}) => {
                 setShipModal(true);
             }}><Text>Shipping information</Text></TouchableOpacity>
             <TouchableOpacity onPress={()=>{
+                console.log(changed);
                 setBillModal(true);
             }}><Text>Billing information</Text></TouchableOpacity>
                 <Button title="done" onPress={async ()=>{
@@ -100,11 +103,14 @@ const Checkout = ({navigation, route}) => {
             
             } else {
                 console.log('already had');
+                console.log(customerId);
+                if (changed) {
                 await fetch(constants.UPDATE_CUST, {
                     method: 'POST',
                     body: JSON.stringify({info: info, id: customerId}),
                     headers: { 'Content-Type': 'application/json' }
                 });
+            }
                 var chargeCustomerEndpoint = constants.CHARGE_CUSTOMER + "?id="+customerId+"&amount="+ 450;
             await fetch(chargeCustomerEndpoint);
             }
@@ -124,8 +130,8 @@ const Checkout = ({navigation, route}) => {
 </View>
 
     </SafeAreaView>
-    <AnimatedModal visible={billModal} close={()=>setBillModal(false)} state={info} setState={setInfo} content={<BillingModal state={info} setState={setInfo} close={()=>setBillModal(false)}/>}/>
-        <AnimatedModal visible={shipModal} close={()=>setShipModal(false)} state={info} setState={setInfo} content={<ShippingModal state={info} setState={setInfo} close={()=>setShipModal(false)}/>}/>
+    <AnimatedModal visible={billModal} close={()=>setBillModal(false)} state={info} setState={setInfo} content={<BillingModal state={info} setState={setInfo} setChanged={setChanged} close={()=>setBillModal(false)}/>}/>
+        <AnimatedModal visible={shipModal} close={()=>setShipModal(false)} state={info} setState={setInfo} content={<ShippingModal state={info} setState={setInfo} setChanged={setChanged} close={()=>setShipModal(false)}/>}/>
     </>
 };
 
@@ -158,7 +164,7 @@ const validateCard = (cardNumber) => {
     return result == last;
 }
 
-const BillingModal = ({state, setState, close}) => {
+const BillingModal = ({state, setState, close, setChanged}) => {
     const [localState, setLocalState] = useState(state);
     // const [cardNumber, setCardNumber] = useState('');
     // const [expMonth, setExpMonth] = useState('');
@@ -204,6 +210,7 @@ const BillingModal = ({state, setState, close}) => {
                     return;
                 }
                 setState(localState);
+                setChanged(true);
                 close();
                 }}><Text>done</Text></TouchableOpacity>
                 
@@ -211,7 +218,7 @@ const BillingModal = ({state, setState, close}) => {
             
 }
 
-const ShippingModal = ({state, setState, close}) => {
+const ShippingModal = ({state, setState, close, setChanged}) => {
     const [localState, setLocalState] = useState(state);
     // const [cardNumber, setCardNumber] = useState('');
     // const [expMonth, setExpMonth] = useState('');
@@ -266,6 +273,7 @@ const ShippingModal = ({state, setState, close}) => {
                     return;
                 }
                 setState(localState);
+                setChanged(true);
                 close();
                 }}><Text>done</Text></TouchableOpacity>
                 
