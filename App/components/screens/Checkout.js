@@ -116,7 +116,7 @@ const Checkout = ({navigation, route}) => {
             <View style={{flexDirection: 'row', width: '100%', marginVertical: 15, justifyContent: 'space-between'}}>
  
             </View>
-                <Button title="done" onPress={async ()=>{
+                <TouchableOpacity style={{width: '90%',height: 40, overflow: 'hidden', borderRadius: 40, marginHorizontal:20,}} onPress={async ()=>{
             // route.params.doneFunc();
             const token = await stripe.createTokenWithCard(info);
             console.log("token", token);
@@ -165,7 +165,15 @@ const Checkout = ({navigation, route}) => {
             }
             console.log('done');
             navigation.navigate('Success');
-        }} />
+        }} >
+                                <LinearGradient style={{width: '100%', height: '100%',
+                    justifyContent: 'center', alignItems: 'center',}}
+                    colors={[constants.YELLOW, constants.ORANGE]}
+                    start={{ x: 0, y: 1 }} end={{ x: 1, y: 1 }}
+                    >
+                    <Text style={{color: 'white'}}>confirm</Text>
+                    </LinearGradient>
+            </TouchableOpacity>
         </View>
         
         
