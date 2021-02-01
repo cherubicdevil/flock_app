@@ -104,12 +104,12 @@ const AnimatedModal = ({
             resetAnimation();
               }} style={{position: 'absolute', top:0, height: '100%', width: '100%', zIndex: -30}} />
             
-            {behind?<View style={{position: 'absolute', bottom: 15, height: upPercent, width: '84%', backgroundColor: bgcolor, opacity: 0.5, alignSelf: 'center', borderRadius: curve?50:0,}} />:<></>}
-            {behind?<View style={{position: 'absolute', bottom: 8, height: upPercent, width: '90%', backgroundColor: bgcolor, opacity: 0.5, alignSelf: 'center', borderRadius: curve?50:0,}} />:<></>}
+            {behind?<View style={{position: 'absolute', bottom: 15, height: upPercent, width: '88%', backgroundColor: bgcolor, opacity: 0.5, alignSelf: 'center', borderRadius: curve?90:0,}} />:<></>}
+            {behind?<View style={{position: 'absolute', bottom: 8, height: upPercent, width: '90%', backgroundColor: bgcolor, opacity: 0.5, alignSelf: 'center', borderRadius: curve?80:0,}} />:<></>}
             <View style={{zIndex: -40, justifyContent: 'center', alignItems: 'center', position: 'absolute', top: 0, width: '100%', height: (100-parseInt(upPercent.replace("%",""))) + "%", backgroundColor:"rgba(255,255,255,0)"}}>
               {contentTop}
             </View>
-            <View style={{position: 'absolute', bottom: 0, width: '100%', height: upPercent, borderRadius: curve?60:0, borderBottomRightRadius: 0, borderBottomLeftRadius: 0, backgroundColor: bgcolor, paddingTop: 40, overflow: 'hidden'}}>
+            <View style={{position: 'absolute', bottom: 0, width: '100%', height: upPercent, borderRadius: curve?100:0, borderBottomRightRadius: 0, borderBottomLeftRadius: 0, backgroundColor: bgcolor, paddingTop: 40, overflow: 'hidden'}}>
               
               {content}
               </View>

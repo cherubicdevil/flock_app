@@ -41,7 +41,7 @@ const FlockReserve = ({navigation, route}) => {
     const [modalOpen, setModalOpen] = useState(false);
     console.log(route.params);
     const requestTypeIsRent = route.params.data.members.includes({name: auth.currentUser.displayName, uid: auth.currentUser.uid});
-    const colors = (requestTypeIsRent)?[constants.PURPLE, constants.RED]:['#ff4d00', constants.PEACH];
+    const colors = (requestTypeIsRent)?[constants.LAVENDER, constants.PURPINK]:['#ff4d00', constants.PEACH];
     return <SafeAreaView style={{flex: 1, backgroundColor: constants.PINK_BACKGROUND}}>
       {/* <Text>{requestTypeIsRent?"Borrow":"Flock"}</Text> */}
         {/* <Button title="back" onPress={()=>navigation.goBack()} style={{position: 'absolute', top: '10'}}/> */}
@@ -90,7 +90,7 @@ source={require('App/Assets/Images/Share_Icon_White_Earn.png') } />
         </LinearGradient>
         </TouchableOpacity>
         </View>
-        <AnimatedModal colored={true} colors={colors} visible={modalOpen} behind={true} close={()=>setModalOpen(false)} content={<ReserveCalendar navigation = {navigation} close={()=>{setModalOpen(false)}} route={route} myMarkedDates={myMarkedDates} setMyMarkedDates={setMyMarkedDates} othersMarkedDates={othersMarkedDates} />} />
+        <AnimatedModal upPercent={"50%"} colored={true} colors={colors} visible={modalOpen} behind={true} close={()=>setModalOpen(false)} content={<ReserveCalendar navigation = {navigation} close={()=>{setModalOpen(false)}} route={route} myMarkedDates={myMarkedDates} setMyMarkedDates={setMyMarkedDates} othersMarkedDates={othersMarkedDates} />} />
         </SafeAreaView>;
 }
 
@@ -135,7 +135,7 @@ const handleDayPress = (day) => {
             <Calendar
             minDate={moment(new Date()).format("YYYY-MM-DD")}
             // hideExtraDays={true}
-            style={{ width: '90%', alignSelf: 'center'}}
+            style={{ width: '87%', alignSelf: 'center'}}
       markedDates={{...myMarkedDates, ...othersMarkedDates }}
       markingType={'period'}
       onDayPress={handleDayPress}
@@ -152,14 +152,15 @@ const handleDayPress = (day) => {
 
         const circleStyle = {
           // height: '100%',
-          width: '75%',
+          // width: '75%',
           borderRadius: 120,
           zIndex: 100,
           position: 'absolute',
           alignSelf: 'center' , 
-          height: '95%',
+          height: '100%',
+          aspectRatio: 1,
           overflow: 'hidden',
-          borderWidth: 7,
+          borderWidth: 4,
           borderColor: fadedColor,
           backgroundColor: isTentative?'white':color,
 
@@ -172,8 +173,8 @@ const handleDayPress = (day) => {
         };
         var markStyle = {
           backgroundColor: 'transparent',
-          width: '135%',
-          height: '50%',
+          width: '150%',
+          height: '75%',
           alignItems: 'center',
           justifyContent: 'center',
         };
@@ -227,7 +228,7 @@ const handleDayPress = (day) => {
 
 
         return (
-          <TouchableOpacity style={{width: '100%', alignItems: 'center', height: 40, justifyContent: 'center'}} onPress={()=>{
+          <TouchableOpacity style={{width: '100%', alignItems: 'center', height: 30, marginVertical: -5,justifyContent: 'center'}} onPress={()=>{
             handleDayPress(date);
           }}>
             {startOrEnd && !disqualified?<View style={circleStyle} />:<></>}
@@ -242,7 +243,11 @@ const handleDayPress = (day) => {
         );
       }}
     />
-    <Button style={{color: picked?'blue':'grey'}} title="rent" onPress={()=>{
+    <View style={{paddingHorizontal: 80, flexDirection: 'row', justifyContent: 'space-around', marginTop: 20}}>
+      {/* <TouchableOpacity style={{height: 40, backgroundColor: constants.BGGREY, justifyContent: 'center', alignItems: 'center', borderRadius: 40, paddingHorizontal: 15}} onPress={()=>{setModalOpen(false)}} >
+        <Text>close</Text>
+      </TouchableOpacity> */}
+    <TouchableOpacity style={{backgroundColor: picked?(requestTypeIsRent?constants.PURPLE:constants.ORANGE):constants.GREY,height: 40, justifyContent: 'center', alignItems: 'center', borderRadius: 40, paddingHorizontal: 15}} title="rent" onPress={()=>{
       // db.collection("chatGroups").doc(route.params.data.id).update({[`markedDates.${auth.currentUser.uid}`]: markedDates});
       console.log('HELLOOOOOO');
       const dates = Object.keys(myMarkedDates);
@@ -266,9 +271,15 @@ const handleDayPress = (day) => {
     // }).then(res => res.json())
     //   .then(json => console.log(json));
     //     console.log('payment done!');
-      }, extra: <Text>Use from {start} to {end}</Text>}, );
+      }, extra: <Text>{start} to {end}</Text>}, );
       close();
-    }} />
+    }} >
+      <Text style={{color: 'white'}}>
+        next
+      </Text>
+    </TouchableOpacity>
+
+</View>
         {/* <Button title="close" onPress={()=>{setModalOpen(!modalOpen)}} /> */}
         </View>
 }

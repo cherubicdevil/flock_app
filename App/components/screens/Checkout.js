@@ -8,6 +8,8 @@ import HeaderGradient from '../HeaderGradient';
 import {useStore, useDispatch, useSelector} from 'react-redux';
 import {firebase, auth, db} from 'App/firebase/config';
 import {useFocusEffect} from '@react-navigation/native';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import LinearGradient from 'react-native-linear-gradient';
 
 const fetchCustomerInfo = (customerId) =>{
     return new Promise((resolve) => {
@@ -61,18 +63,36 @@ const Checkout = ({navigation, route}) => {
     <SafeAreaView style={{flex: 1,backgroundColor: constants.TRANSLUCENT}}>
         <HeaderGradient navigation={navigation} absolute={false} />
 
-        <View style={{flex: 1, backgroundColor: constants.PINK_BACKGROUND, padding: 30,}}>
-        <View>
-            {route.params.extra}
+        <View style={{flex: 1, backgroundColor: constants.PINK_BACKGROUND,}}>
+
+        <View style={{height: '100%', marginTop: 10, }}>
+            <View style={{backgroundColor: 'white', paddingVertical: 10, borderBottomLeftRadius: 30, borderBottomRightRadius: 30, alignItems: "flex-end"}}>
+            <View style={styles.row}>
+            <Text style={{marginVertical: 15}}>
+    {<Text style={{fontWeight: 'bold'}}>Period: </Text>}{route.params.extra}
+        </Text>
         </View>
-        <View style={{height: '100%', marginTop: 20}}>
-            <TouchableOpacity onPress={()=>{
+        <View style={[styles.row, {justifyContent: 'space-between'}]}>
+            <TouchableOpacity
+            style={{marginRight: 10, width: '100%', justifyContent: 'space-between', flexDirection:'row'}}
+            onPress={()=>{
                 setShipModal(true);
-            }}><Text>Shipping information</Text></TouchableOpacity>
-            <TouchableOpacity onPress={()=>{
-                console.log(changed);
+            }}><Text>Shipping information</Text>
+            <Icon name="chevron-right" size={20} />
+            </TouchableOpacity>
+            
+        </View>
+        <Text></Text>
+        <View style={[styles.row, {justifyContent: 'space-between'}]}>
+            <TouchableOpacity 
+            style={{marginRight: 10,width: '100%', justifyContent: 'space-between', flexDirection:'row'}}
+            onPress={()=>{
                 setBillModal(true);
-            }}><Text>Billing information</Text></TouchableOpacity>
+            }}><Text>Billing information</Text>
+            <Icon name="chevron-right" size={20} />
+            </TouchableOpacity>
+            
+        </View>
                 <Button title="done" onPress={async ()=>{
             // route.params.doneFunc();
             const token = await stripe.createTokenWithCard(info);
@@ -123,15 +143,16 @@ const Checkout = ({navigation, route}) => {
             console.log('done');
             navigation.navigate('Success');
         }} />
-        <Button title="back" onPress = {()=>{navigation.goBack()}}/>
+        </View>
+        
         
         </View>
 
 </View>
 
     </SafeAreaView>
-    <AnimatedModal visible={billModal} close={()=>setBillModal(false)} state={info} setState={setInfo} content={<BillingModal state={info} setState={setInfo} setChanged={setChanged} close={()=>setBillModal(false)}/>}/>
-        <AnimatedModal visible={shipModal} close={()=>setShipModal(false)} state={info} setState={setInfo} content={<ShippingModal state={info} setState={setInfo} setChanged={setChanged} close={()=>setShipModal(false)}/>}/>
+    <AnimatedModal colored={true} colors={[constants.ORANGE, constants.GREYORANGE]} visible={billModal} close={()=>setBillModal(false)} state={info} setState={setInfo} content={<BillingModal state={info} setState={setInfo} setChanged={setChanged} close={()=>setBillModal(false)}/>}/>
+        <AnimatedModal colored={true} colors={[constants.ORANGE, constants.GREYORANGE]} visible={shipModal} close={()=>setShipModal(false)} state={info} setState={setInfo} content={<ShippingModal state={info} setState={setInfo} setChanged={setChanged} close={()=>setShipModal(false)}/>}/>
     </>
 };
 
@@ -178,10 +199,11 @@ const BillingModal = ({state, setState, close, setChanged}) => {
     const placeholderColor = localState.number === ''?'grey':'black';
     const numberPlaceholder= localState.number=== ''?'4242424242424242':localState.number;
     const expirationPlaceholder = localState.expMonth === ''?"MM/YY":localState.expMonth+"/"+localState.expYear;
-    return <View style={{position: 'absolute', top: 0, width: '100%', height: '50%', paddingLeft: 30, paddingRight: 30, borderTopLeftRadius: 40, borderTopRightRadius: 40, backgroundColor:'white', zIndex: 50}}>
+    return <View style={{paddingLeft: 30, paddingRight: 30, borderTopLeftRadius: 40, borderTopRightRadius: 40, backgroundColor:'white', zIndex: 50}}>
            <Text style={{color: 'red', opacity: error?1:0}}>Please review your information for errors</Text>
-            <Text style={{marginLeft: 10}}>Card</Text>
-            <PaymentCardTextField style={{color: 'black', borderWidth: 1, borderRadius: 30}} 
+           <Text style={{alignSelf: 'center',fontSize: 15, fontFamily: constants.FONT, fontWeight: 'bold'}}>Billing Information</Text>
+            <Text style={{marginLeft: 10, marginTop: 10, marginBottom: 5}}>Card</Text>
+            <PaymentCardTextField style={[styles.textbox,{marginTop: 0, }]} 
             onParamsChange={(valid, params) => {
                 // setValid(valid);
                 // setCardNumber(params.number);
@@ -199,20 +221,30 @@ const BillingModal = ({state, setState, close, setChanged}) => {
                 }
             }}
             />
-            <Text style={{marginLeft: 10}}>Full Name</Text>
+            <Text style={{marginLeft: 10, marginTop: 10, marginBottom: 5}}>Full Name</Text>
             <TextInput defaultValue={localState.name} onChangeText={(text)=> {
                 localState.name = text;
-            }} style={{borderWidth: 1, borderRadius: 30, padding: 10, paddingBottom: 10, paddingTop: 10, fontSize: 18}} />
-            <TouchableOpacity style={{width: '100%', height: 100, }} onPress={()=>{
+            }} style={styles.textbox} />
+            <TouchableOpacity style={{marginTop:30, borderRadius: 40, overflow: 'hidden',  height: 35, width: "100%", alignSelf:'center', backgroundColor:constants.ORANGE, justifyContent:'center', alignItems: 'center', borderRadius:30}} onPress={()=>{
                  // if (!(validateCard(cardNumber(cardNumber)) && validateExp(expMonth, expYear)))
-                if (!valid || localState.name === '') {
+                valid = true;
+                 if (!valid) {
                     setError(true);
+                    console.log('error');
                     return;
                 }
                 setState(localState);
                 setChanged(true);
                 close();
-                }}><Text>done</Text></TouchableOpacity>
+                }}>
+                    <LinearGradient style={{width: '100%', height: '100%',
+                    justifyContent: 'center', alignItems: 'center',}}
+                    colors={[constants.YELLOW, constants.ORANGE]}
+                    start={{ x: 0, y: 1 }} end={{ x: 1, y: 1 }}
+                    >
+                    <Text style={{color: 'white'}}>confirm</Text>
+                    </LinearGradient>
+                    </TouchableOpacity>
                 
             </View>
             
@@ -228,43 +260,44 @@ const ShippingModal = ({state, setState, close, setChanged}) => {
     // const [name, setName] = useState('');
     var valid = false;
     const [error, setError] = useState(false);
-    return <View style={{position: 'absolute', top: 0, width: '100%', height: '50%', paddingLeft: 30, paddingRight: 30, borderTopLeftRadius: 40, borderTopRightRadius: 40, backgroundColor:'white', zIndex: 50}}>
+    return <View style={{paddingLeft: 30, paddingRight: 30, borderTopLeftRadius: 40, borderTopRightRadius: 40, backgroundColor:'white', zIndex: 50}}>
+            <Text style={{alignSelf: 'center',fontSize: 15, fontFamily: constants.FONT, fontWeight: 'bold'}}>Shipping Address</Text>
             <Text style={{color: 'red', opacity: error?1:0}}>Please review your information for errors</Text>
-            <Text style={{marginLeft: 10}}>Full Name</Text>
+            <Text style={{marginLeft: 10, marginTop: 10, marginBottom: 5}}>Full Name</Text>
             <TextInput defaultValue={localState.name} onChangeText={(text)=> {
                 localState.name = text;
-            }} style={{borderWidth: 1, borderRadius: 30, padding: 10, paddingBottom: 10, paddingTop: 10, fontSize: 18}} />
-            <Text style={{marginLeft: 10}}>Address</Text>
+            }} style={styles.textbox} />
+            <Text style={{marginLeft: 10, marginTop: 15, marginBottom: 5}}>Address</Text>
             <TextInput defaultValue={localState.addressLine1} onChangeText={(text)=> {
                 localState.addressLine1 = text;
-            }} style={{borderWidth: 1, borderRadius: 30, padding: 10, paddingBottom: 10, paddingTop: 10, fontSize: 18}} />
+            }} style={styles.textbox} />
 
-            <View style={{flexDirection: 'row'}}>
-                <View>
-            <Text style={{marginLeft: 10}}>City</Text>
+            <View style={{flexDirection: 'row', justifyContent:'space-between'}}>
+                <View style={{flex: 1, marginRight: 20}}>
+            <Text style={{marginLeft: 10, marginTop: 15, marginBottom: 5}}>City</Text>
             <TextInput defaultValue={localState.addressCity} onChangeText={(text)=> {
                 localState.addressCity = text;
-            }} style={{borderWidth: 1, borderRadius: 30, padding: 10, paddingBottom: 10, paddingTop: 10, fontSize: 18}} />
+            }} style={styles.textbox} />
                         </View>
-                        <View>
-                        <Text style={{marginLeft: 10}}>State</Text>
+                        <View >
+                        <Text style={{marginLeft: 10, marginTop: 15, marginBottom: 5}}>State</Text>
             <TextInput defaultValue={localState.addressState} onChangeText={(text)=> {
                 localState.addressState = text;
-            }} style={{borderWidth: 1, borderRadius: 30, padding: 10, paddingBottom: 10, paddingTop: 10, fontSize: 18}} />
+            }} style={styles.textbox} />
                         </View>
-                        <View>
-                        <Text style={{marginLeft: 10}}>Country</Text>
+                        {/* <View>
+                        <Text style={{marginLeft: 10, marginTop: 15, marginBottom: 5}}>Country</Text>
             <TextInput defaultValue={localState.addressCountry} onChangeText={(text)=> {
                 localState.addressCountry = text;
-            }} style={{borderWidth: 1, borderRadius: 30, padding: 10, paddingBottom: 10, paddingTop: 10, fontSize: 18}} />
-            </View>
+            }} style={styles.textbox} />
+            </View> */}
             </View>            
-            <Text style={{marginLeft: 10}}>Zip Code</Text>
+            <Text style={{marginLeft: 10, marginTop: 15, marginBottom: 5}}>Zip Code</Text>
             <TextInput defaultValue={localState.addressZip} onChangeText={(text)=> {
                 localState.addressZip = text;
-            }} style={{borderWidth: 1, borderRadius: 30, padding: 10, paddingBottom: 10, paddingTop: 10, fontSize: 18}} />
+            }} style={styles.textbox} />
 
-            <TouchableOpacity style={{width: '100%', height: 100, }} onPress={()=>{
+            <TouchableOpacity style={{marginTop:30, borderRadius: 40, overflow: 'hidden',  height: 35, width: "100%", alignSelf:'center', backgroundColor:constants.ORANGE, justifyContent:'center', alignItems: 'center', borderRadius:30}} onPress={()=>{
                  // if (!(validateCard(cardNumber(cardNumber)) && validateExp(expMonth, expYear)))
                 valid = true;
                  if (!valid) {
@@ -275,11 +308,23 @@ const ShippingModal = ({state, setState, close, setChanged}) => {
                 setState(localState);
                 setChanged(true);
                 close();
-                }}><Text>done</Text></TouchableOpacity>
+                }}>
+                    <LinearGradient style={{width: '100%', height: '100%',
+                    justifyContent: 'center', alignItems: 'center',}}
+                    colors={[constants.YELLOW, constants.ORANGE]}
+                    start={{ x: 0, y: 1 }} end={{ x: 1, y: 1 }}
+                    >
+                    <Text style={{color: 'white'}}>confirm</Text>
+                    </LinearGradient>
+                    </TouchableOpacity>
                 
             </View>
             
 }
 
+const styles = {
+    textbox: {borderWidth: 1, borderColor: constants.DARKGREY, borderRadius: 30, padding: 10, paddingBottom: 10, paddingTop: 10, fontSize: 18},
+    row: {width: '100%', borderBottomWidth: 2, borderColor: constants.PINK_BACKGROUND,paddingHorizontal:20, flexDirection: 'row', paddingVertical:20},
+}
 
 export default Checkout;

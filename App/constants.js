@@ -60,6 +60,8 @@ export const constants = {
   BIRDS: require('App/Assets/Images/birds.png'),
   COMMENT_COLOR: 'rgb(255, 245, 240)',
   BLUE: '#2c82c9',
+  LAVENDER: "#968bab",
+  PURPINK: "#c2a4b1",
   BRIGHT_BLUE: '#22a7f0',
   PINK_BACKGROUND: 'rgba(223, 210, 220,0.5)',
   PINK_BACKGROUND_OPAQUE: 'rgba(239, 232, 237,1)',
