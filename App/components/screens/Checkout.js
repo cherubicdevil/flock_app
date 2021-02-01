@@ -6,6 +6,7 @@ import AnimatedModal from 'App/components/AnimatedModal';
 import {constants} from 'App/constants';
 import HeaderGradient from '../HeaderGradient';
 import {useStore} from 'react-redux';
+import {firebase, auth, db} from 'App/firebase';
 
 const fetchCustomerInfo = (customerId) =>{
     fetch(constants.RETR_CUST+`?id=${customerId}`).then((resp)=> {
@@ -78,6 +79,8 @@ const Checkout = ({navigation, route}) => {
             var cId;
             fetch(createCustomerEndpoint).then(resp=>{
                 resp.json().then((cid)=>{
+                    dispatch({type: "UPDATE_DATA", payload: {membertype: 'customerId',data: cid.id}})
+                    db.collection('users').doc(auth.currentUser.uid).update({customerId: res.id});
                     var chargeCustomerEndpoint = constants.CHARGE_CUSTOMER + "?id="+cid.id+"&amount="+ 500;
                     fetch(chargeCustomerEndpoint).then(()=>{
                         console.log('done');
