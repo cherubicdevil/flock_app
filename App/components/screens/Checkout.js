@@ -1,15 +1,29 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, Text, SafeAreaView, TouchableOpacity, Button, Modal, TextInput} from 'react-native';
 import stripe from 'tipsi-stripe';
 import {PaymentCardTextField} from 'tipsi-stripe';
 import AnimatedModal from 'App/components/AnimatedModal';
 import {constants} from 'App/constants';
 import HeaderGradient from '../HeaderGradient';
+import {useStore} from 'react-redux';
 
 const Checkout = ({navigation, route}) => {
     const [shipModal, setShipModal] = useState(false);
     const [billModal, setBillModal] = useState(false);
 
+    const store = useStore();
+    const fetchCustomerInfo = () =>{
+
+    };
+    useEffect(()=>{
+        const customerId = store.getState().userInfo.customerId;
+        if (customerId !== undefined && customerId !== null && customerId !== "none") {
+            fetchCustomerInfo();
+        }
+    },[]);
+
+
+    console.log(store.getState().userInfo.customerId);
     const [info, setInfo] = useState({
         // mandatory
         number: '4000000000000077',
