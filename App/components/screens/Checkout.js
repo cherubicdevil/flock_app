@@ -4,6 +4,7 @@ import stripe from 'tipsi-stripe';
 import {PaymentCardTextField} from 'tipsi-stripe';
 import AnimatedModal from 'App/components/AnimatedModal';
 import {constants} from 'App/constants';
+import HeaderGradient from '../HeaderGradient';
 
 const Checkout = ({navigation, route}) => {
     const [shipModal, setShipModal] = useState(false);
@@ -26,11 +27,14 @@ const Checkout = ({navigation, route}) => {
         addressZip: '55555',
       });
     
-    return <SafeAreaView>
+    return <SafeAreaView style={{flex: 1,backgroundColor: constants.TRANSLUCENT}}>
+        <HeaderGradient navigation={navigation} absolute={false} />
+
+        <View style={{flex: 1, backgroundColor: constants.PINK_BACKGROUND, padding: 30,}}>
         <View>
             {route.params.extra}
         </View>
-        <View style={{height: '100%'}}>
+        <View style={{height: '100%', marginTop: 20}}>
             <TouchableOpacity onPress={()=>{
                 setShipModal(true);
             }}><Text>Shipping information</Text></TouchableOpacity>
@@ -55,7 +59,7 @@ const Checkout = ({navigation, route}) => {
         </View>
         <AnimatedModal visible={billModal} close={()=>setBillModal(false)} state={info} setState={setInfo} content={<BillingModal state={info} setState={setInfo} close={()=>setBillModal(false)}/>}/>
         <AnimatedModal visible={shipModal} close={()=>setShipModal(false)} state={info} setState={setInfo} content={<ShippingModal state={info} setState={setInfo} close={()=>setShipModal(false)}/>}/>
-
+</View>
     </SafeAreaView>
 };
 

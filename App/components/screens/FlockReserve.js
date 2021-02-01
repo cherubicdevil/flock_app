@@ -46,13 +46,7 @@ const FlockReserve = ({navigation, route}) => {
       {/* <Text>{requestTypeIsRent?"Borrow":"Flock"}</Text> */}
         {/* <Button title="back" onPress={()=>navigation.goBack()} style={{position: 'absolute', top: '10'}}/> */}
         {/* <View style={{height: 100, width: '100%', position: 'absolute', top: 0, zIndex: 400, backgroundColor: constants.TRANSLUCENT, borderBottomRightRadius: 30, borderBottomLeftRadius: 30}}> */}
-        <HeaderGradient>
-          <TouchableOpacity style={{position: 'absolute', zIndex: 800, top: 50, left: 20}} onPress={()=>{
-            navigation.goBack();
-          }}>
-        <Icon name="chevron-left" size={24} color="grey" />
-        </TouchableOpacity>
-        </HeaderGradient>
+        <HeaderGradient navigation={navigation} absolute={true} />
         {/* </View> */}
         <View style={{backgroundColor: 'white', borderBottomLeftRadius: 60, borderBottomRightRadius: 60}}>
         <View style={{width: '100%', height: percent, borderBottomRightRadius: 60, borderBottomLeftRadius: 60, overflow: 'hidden'}}>
@@ -104,15 +98,16 @@ const ReserveCalendar = ({navigation, route, close, myMarkedDates, othersMarkedD
   const [picked, setPicked] = useState(false);
   const markPeriod = (start, duration=4, options) => {
     const marked = {};
-  for (var i = 1; i < duration - 1; i++) {
-      marked[moment(start.dateString).add(i, 'days').format('YYYY-MM-DD')] = options;
-  }
     marked[start.dateString] = {
       startingDay: true,...options,
       tentative: true,
     };
     console.log(start);
     marked[moment(start.dateString).add(duration-1, 'days').format('YYYY-MM-DD')] = {endingDay: true, ...options, tentative: true};
+  for (var i = 1; i < duration - 1; i++) {
+      marked[moment(start.dateString).add(i, 'days').format('YYYY-MM-DD')] = options;
+  }
+
     setMyMarkedDates(marked);
 } 
 
@@ -271,7 +266,7 @@ const handleDayPress = (day) => {
     }).then(res => res.json())
       .then(json => console.log(json));
         console.log('payment done!');
-      }, extra: <Text>{start} to {end}</Text>}, );
+      }, extra: <Text>Use from {start} to {end}</Text>}, );
       close();
     }} />
         {/* <Button title="close" onPress={()=>{setModalOpen(!modalOpen)}} /> */}
