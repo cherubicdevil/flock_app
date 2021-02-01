@@ -187,10 +187,24 @@ function ChatInterface({route, navigation}) {
   const [partOf, setPartOf] = useState(part);
   console.log(route.params.data.maximums, user.uid);
 
+  const convertArrayToDict = (arr) => {
+    // format [{"dadsfa": "ADFadsf"},{"asdfadsf":"adsfasdfa"}]
+    const dicti = {};
+    for (const item of arr) {
+      var obj = Object.entries(item);
+            dicti[obj[0][0]] = obj[0][1]
+    }
+    return dicti;
+  }
+  const yourPrice = convertArrayToDict(route.params.data.maximums)[user.uid];
+
   const priceText = () => {
     if (part) {
-      return <><Text style={{color:'white', marginBottom: 10, fontWeight: 'bold'}}>You can have it now if all flockers increase maximum to ${(route.params.data.product.price / route.params.data.members.length).toFixed(2)}.</Text>
-      <Text style={{color:'white', marginBottom: 10, fontWeight: 'bold'}}>Your maximum: ${route.params.data.maximums[user.uid]}</Text>
+      return <>
+      <Text style={{color:'white', marginBottom: 10}}>Your are paying: ${yourPrice} ({(parseFloat(yourPrice)/parseFloat(route.params.data.product.price) *100).toFixed(0)}% ownership)</Text>
+      <Text style={{color:'white', marginBottom: 10}}>Increase to own more and use more of the item once this flock takes off.</Text>
+      <Text style={{color:'white', marginBottom: 10}}>Change your payment:</Text>
+      <Text style={{color:'white', marginBottom: 10, fontWeight: 'bold'}}>Have it now if you  ${(route.params.data.product.price / route.params.data.members.length).toFixed(2)}.</Text>
       <Text style={{color:'white', marginBottom: 10, fontWeight: 'bold'}}>Want to pay less? Get more people to join!</Text></>;
 
     } else {
@@ -204,15 +218,15 @@ function ChatInterface({route, navigation}) {
     <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
       
 <HeaderView navigation={navigation} route={route} />
-      <View style={{ position: 'absolute', zIndex: 200, top: 100, width: '100%', borderRadius: 0, borderBottomRightRadius: 30, borderBottomLeftRadius: 30}}>
-      <View style={{shadowColor: "#ff7009", shadowOffset: {height: 0, width: 0}, shadowOpacity: 0.42, elevation: 13, shadowRadius: 28.30, borderBottomLeftRadius: 30, borderBottomRightRadius: 30}}>
+      <View style={{ position: 'absolute', zIndex: 200, top: 100, width: '100%', borderRadius: 0, borderBottomRightRadius: 70, borderBottomLeftRadius: 70}}>
+      <View style={{shadowColor: "#ff7009", shadowOffset: {height: 0, width: 0}, shadowOpacity: 0.42, elevation: 13, shadowRadius: 28.30, borderBottomLeftRadius: 70, borderBottomRightRadius: 70}}>
       <LinearGradient
           colors={[constants.ORANGE, constants.PEACH]}
           start={{ x: 0, y: 0 }} end={{ x: 0, y: 1 }}
           style={{
             borderRadius: 20,
-            borderBottomLeftRadius: 30,
-            borderBottomRightRadius: 30,
+            borderBottomLeftRadius: 40,
+            borderBottomRightRadius: 40,
             
             padding: 10,
             shadowColor: "#ff7009", shadowOffset: {height: 10, width: 0}, shadowOpacity: 0.39, elevation: 13, shadowRadius: 8.30,
@@ -220,7 +234,7 @@ function ChatInterface({route, navigation}) {
             flex: 1,
           }}>
             <View style={{width: '80%', alignSelf: 'center'}}>
-            <Text style={{color:'white', marginBottom: 10, fontWeight: 'bold'}}>Current flock price: ${route.params.data?.product?.price || ""}</Text>
+            {/* <Text style={{color:'white', marginBottom: 10, fontWeight: 'bold'}}>Current flock price: ${route.params.data?.product?.price || ""}</Text> */}
             {/* <Text style={{color:'white', marginBottom: 10, fontWeight: 'bold'}}>Total price: ${route.params.data?.product?.price || ""}</Text> */}
             {priceText()}
             </View>

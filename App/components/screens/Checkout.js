@@ -280,7 +280,7 @@ const BillingModal = ({state, setState, close, setChanged}) => {
             }} style={styles.textbox} />
             <TouchableOpacity style={{marginTop:30, borderRadius: 40, overflow: 'hidden',  height: 35, width: "100%", alignSelf:'center', backgroundColor:constants.ORANGE, justifyContent:'center', alignItems: 'center', borderRadius:30}} onPress={()=>{
                  // if (!(validateCard(cardNumber(cardNumber)) && validateExp(expMonth, expYear)))
-                valid = true;
+                // valid = true;
                  if (!valid) {
                     setError(true);
                     console.log('error');

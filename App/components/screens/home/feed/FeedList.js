@@ -33,7 +33,7 @@ import {fetchAlbums, fetchProducts, mergeArrays, fetchFlockables, fetchRentables
 import LinearGradient from 'react-native-linear-gradient';
 import ProductBlurb from 'App/components/screens/home/feed/ProductBlurb';
 const width = Dimensions.get('window').width / 2 - 30;
-const FeedList= ({navigation, route, videoData, feedItem=null, productBlurb=null, KeyContext, flockOrNot}) => {
+const FeedList= ({navigation, route, videoData, feedItem=null, productBlurb=null, KeyContext= null, flockOrNot}) => {
   const [myAr, setMyAr] = useState([]);
   // const [localAr, setLocalAr] = useState(videoData);
 
@@ -118,7 +118,9 @@ const FeedList= ({navigation, route, videoData, feedItem=null, productBlurb=null
 
       var {limitKey, setLimitKey, limitKeyRent, setLimitKeyRent} = useContext(KeyContext);
     }
+    if (KeyContext) {
     var {keyArrRent, keyArrFlock, setKeyArrRent, setKeyArrFlock} = useContext(KeyContext);
+    }
     return (
       <>
       {/* <Button style={{position: 'absolute', bottom: 0, zIndex: 500}} title="GET MORE" onPress={()=> {
