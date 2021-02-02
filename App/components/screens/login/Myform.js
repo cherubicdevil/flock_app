@@ -53,7 +53,7 @@ const Myform = ({registration, navigation}) => {
             .firestore()
             .collection('users')
             .doc(user.user.uid)
-            .set({likedVideos: [], chatGroups: {}, chatIds:[], customerId: "none", bio:""});
+            .set({likedVideos: [], chatGroups: {}, chatIds:[], customerId: "none", bio:"", eggCoins: 300});
         })
         .catch(function (error) {
           // Handle Errors here.

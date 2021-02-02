@@ -362,7 +362,7 @@ const Product = ({route, navigation}) => {
                 }}>
                 <Image 
                 style={{shadowOpacity: 0.4, shadowOffset:{height:2, width:0},  width: 30, height: 30, aspectRatio:1}}
-                source={require('App/Assets/Images/Share_Icon_White.png') } />
+                source={require('App/Assets/Images/Share_Icon_White_Earn.png') } />
               </TouchableOpacity>
               
               <View style={{shadowOpacity: 1, shadowColor: '#555', shadowOffset: {height: 2, width: 0}, borderRadius: 30, overflow: 'hidden', flex: 0.8, flexDirection: 'row', backgroundColor: constants.ORANGE, height: 50, alignItems: 'center', marginRight: 10,}}>

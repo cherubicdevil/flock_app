@@ -199,7 +199,7 @@ useEffect(()=>{
             source={require('App/Assets/Images/Share_Icon_White.png')}
           />
         </TouchableWithoutFeedback>
-        <View style={{padding: 0, backgroundColor: "#fb9b37", borderRadius: 20,alignItems: 'center', marginTop: -5, alignSelf: 'center'}}>
+        <View style={{padding: 0, backgroundColor: dataType==="rent"?constants.LAVENDER:"#fb9b37", borderRadius: 20,alignItems: 'center', marginTop: -5, alignSelf: 'center'}}>
         <Text style={{marginLeft: 5, marginRight: 5,color: 'white', paddingTop: 5, paddingBottom: 5,  fontSize: 10, fontWeight: 'bold'}}>Earn $</Text>
         </View>
         </View>
@@ -261,14 +261,14 @@ useEffect(()=>{
                   
                   navigation.navigate("FlockReserve", {data: data});
               }
-          }}><View style={{flexDirection: 'row',alignItems: 'center', backgroundColor: 'rgba(255,255,255,1)', marginTop: 20, marginLeft: 10, marginRight: 10, marginBottom: 10, padding: 10, paddingLeft: 30, borderRadius: 100, borderWidth: 3, borderColor: constants.GREYORANGE}} >
+          }}><View style={{flexDirection: 'row',alignItems: 'center', backgroundColor: 'rgba(255,255,255,1)', marginTop: 20, marginLeft: 10, marginRight: 10, marginBottom: 10, padding: 10, paddingLeft: 30, borderRadius: 100, borderWidth: 3, borderColor: dataType==="rent"?constants.LAVENDER:constants.GREYORANGE}} >
               <View style={{flex: 1}}>
               <Text numberOfLines={2}>{data?.product?.title}</Text>
               <Text></Text>
-              <Text style={{color: dataType==="rent"?constants.LAVENDER:constants.GREYORANGE}}>${data?.product && data?.members? (data?.product?.price / (data?.members.length+1)).toFixed(2) + " or less when you split with flockers":""}</Text>
+              <Text style={{color: dataType==="rent"?constants.LAVENDER:constants.GREYORANGE}}>As low as ${data?.product && data?.members? (data?.product?.price / (data?.members.length+1)).toFixed(2) + " when you split with flockers":""}</Text>
               <Text style={{color: "grey"}}>${data?.product?.price} original</Text>
               </View>
-              <Icon color={constants.GREYORANGE} name="chevron-right" size={30} />
+              <Icon color={dataType==="rent"?constants.LAVENDER:constants.GREYORANGE} name="chevron-right" size={30} />
           </View>
           </TouchableOpacity>
           </View>

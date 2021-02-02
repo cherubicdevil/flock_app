@@ -59,6 +59,7 @@ const EggItem = ({image, text}) => {
   </TouchableOpacity>
   </View>
 <AnimatedModal 
+fadeOpacity={0.90}
 contentTop={
   <View style={{width: '80%', alignSelf: 'center', padding: 10, justifyContent: 'center', alignItems: 'center'}}>
   <View style={{flexDirection: 'row', justifyContent:'space-between', marginTop: 10,}}>

@@ -41,6 +41,7 @@ const AnimatedModal = ({
   colors=['transparent', 'transparent'],
   bgcolor="white",
   fade=true,
+  fadeOpacity=0.8,
   curve = true,
   behind=false,
   viewParams={bottom: 0, height: Dimensions.get('window').height, width:Dimensions.get('window').width, left: 0},
@@ -50,7 +51,7 @@ const AnimatedModal = ({
   const startAnimation = () => {
     Animated.timing(animation.current, {
       useNativeDriver: false,
-      toValue: 0.8,
+      toValue: fadeOpacity,
       delay: 0,
       duration: 700,
     }).start();
