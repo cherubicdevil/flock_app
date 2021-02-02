@@ -37,7 +37,7 @@ const HeaderGradient = ({navigation, children, absolute=true, closeX = false, ti
         <Icon name="chevron-left" size={24} color="grey" />
         
         </TouchableOpacity>}
-        <View style={{zIndex: 1000, position: 'absolute', bottom: 25, right: 0, width: '100%'}}><Text style={{fontFamily: constants.FONT, alignSelf: 'center', fontSize: 18,}}>{title}</Text></View>
+        <View style={{zIndex: 10, position: 'absolute', bottom: 25, right: 0, width: '100%'}}><Text style={{fontFamily: constants.FONT, alignSelf: 'center', fontSize: 18,}}>{title}</Text></View>
         {children}
 
         </LinearGradient>
