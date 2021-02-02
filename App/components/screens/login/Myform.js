@@ -32,7 +32,15 @@ const Myform = ({registration, navigation}) => {
           console.log("this login didn't work");
           setPassword("");
           console.log(err);
-          setErrorMessage("This login didn't work");
+          if (err.code === "auth/invalid-email") {
+            setErrorMessage("Invalid email.")
+          } else if (err.code === "auth/user-not-found") {
+          setErrorMessage("No user linked to that email.");
+          } else if (err.message) {
+            setErrorMessage(err.message);
+            } else {
+            setErrorMessage("This signup didn't work!");
+            }
         });
     } else {
       firebase
@@ -50,10 +58,20 @@ const Myform = ({registration, navigation}) => {
         .catch(function (error) {
           // Handle Errors here.
           console.log('EERRRROR', error);
+          console.log(error.code, error.message);
           console.log('This registration did not work');
           setPassword("");
-          if (error === "[Error: The email address is already in use by another account.]"){}
-          setErrorMessage("This signup didn't work!");
+          if (error.code === "auth/email-already-in-use"){
+            setErrorMessage("Email already in use. Log in instead.")
+          } else if (error.code === "auth/weak-password") {
+            setErrorMessage("Password must be at least 6 characters long.")
+          } else if (error.code === "auth/invalid-email") {
+            setErrorMessage("Invalid email.")
+          } else if (error.message) {
+          setErrorMessage(error.message);
+          } else {
+            setErrorMessage("This signup didn't work!");
+            }
           // ...
         });
     }
@@ -66,7 +84,7 @@ const Myform = ({registration, navigation}) => {
     return (
       <View style={styles.container}>
         <Text style={{fontSize: 17, marginLeft: 10, color: 'white', fontFamily: constants.FONT}}>{registration?"Create an account.":"Have an account? Login."}</Text>
-        <Text style={{color: 'red', fontFamily: constants.FONT}}>{errorMessage}</Text>
+        <Text style={{color: 'red', marginLeft: 10, fontFamily: constants.FONT}}>{errorMessage}</Text>
         <Input
           label=""
           
