@@ -18,7 +18,7 @@ const ShareScreen = ({navigation, route}) => {
             <View style={{height: 80, borderBottomRightRadius: 50, borderBottomLeftRadius: 50, backgroundColor: constants.TRANSLUCENT}}>
     <View style={{alignSelf: 'center'}}>
         <Text style={{fontSize: 17, fontFamily: constants.FONT, alignSelf: 'center', fontWeight: 'bold'}}>Share</Text>
-        <Text style={{fontSize: 17, fontFamily: constants.FONT, alignSelf: 'center'}}>%{route.params.flockId.padStart(5,0)}</Text>
+        <Text style={{fontSize: 17, fontFamily: constants.FONT, alignSelf: 'center'}}>%{route.params.flockId.padStart(5,0).substring(0,5)}</Text>
     </View>
     <TouchableOpacity 
     style={{borderRadius: 40, backgroundColor: constants.DARKGREY, padding: 10, alignSelf:'flex-end', marginTop: -30, marginRight: 20}}

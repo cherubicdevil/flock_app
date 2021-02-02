@@ -32,6 +32,7 @@ const SearchPage = ({navigation, route}) => {
         <View style={{alignItems: 'center', flexDirection:'row', paddingLeft: 20, paddingRight: 20, borderWidth: 1, height: 40, width: '100%', borderRadius: 30, borderWidth: 1, borderColor: constants.DARKGREY}}>
             <Icon name="search" size={20} color={constants.DARKGREY}/>
     <TextInput 
+    selectTextOnFocus
     onSubmitEditing
     placeholder="Search"
     style={{marginLeft: 10, width: '100%'}}
@@ -78,7 +79,9 @@ const SearchPage = ({navigation, route}) => {
     })} */}
     <FeedList videoData={results} navigation={navigation} route={route} 
     feedItem={(item)=>{
-        return <FeedItemTemp image={item.product.image} />;
+        var dataType = item.type;
+        
+        return <FeedItemTemp item={item} navigation = {navigation} dataType={item.type} image={item.product.image} />;
     }}
     />
     </ScrollView>
@@ -86,13 +89,23 @@ const SearchPage = ({navigation, route}) => {
     </SafeAreaView></Fragment>
 };
 
-const FeedItemTemp = ({image}) => {
+const FeedItemTemp = ({navigation, image, item, type}) => {
     const [width, setWidth] = useState(0);
     return <View onLayout={(event)=>{
         setWidth(event.nativeEvent.layout.width);
     }}
     style={{resizeMode: 'cover', width: '100%'}}>
+        <TouchableOpacity onPress={()=>{
+            console.log(item);
+            if (type !== "rent") {
+                navigation.navigate("Product", {album: item.product, flockId: item.objectID, id: item.objectID})
+            } else {
+                navigation.navigate("Home");
+            }
+            
+        }}>
     <ResizeableImage source={{uri: image}} wLimit = {width} />
+    </TouchableOpacity>
     </View>
 }
 

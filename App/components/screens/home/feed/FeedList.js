@@ -25,7 +25,7 @@
 
 
 import React, {useState, useContext} from 'react';
-import {Dimensions, ScrollView, View, Button} from 'react-native';
+import {Dimensions, ScrollView, View, Button, TouchableOpacity} from 'react-native';
 import FeedItem from './FeedItem';
 import HalfProduct from './HalfProduct';
 import {constants} from 'App/constants';
@@ -45,7 +45,18 @@ const FeedList= ({navigation, route, videoData, feedItem=null, productBlurb=null
   }
   const renderFeedItem = (al) => {
     if (feedItem) {
-      return feedItem(al);
+      var type = al.type;
+
+//       return <TouchableOpacity onPress={()=>{
+//         if (al.type !== "rent") {
+//           navigation.navigate("Product", {album: al, id: al.id});
+//         } else {
+//           navigation.navigate("FlockReserve");
+//         }
+//       }}>
+// {feedItem(al)}
+//       </TouchableOpacity>;
+return feedItem(al);
     }
     return <FeedItem
     mute={true}

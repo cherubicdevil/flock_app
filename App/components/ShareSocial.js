@@ -33,7 +33,7 @@ const ShareSocial = ({product, data={}, flockId, shareApp=false}) => {
         <Image style = {{height: 250,}} source = {{uri: product.image}} />
         <View style={{position:'absolute', bottom: 20, right: 20, justifyContent: 'center', }}>
         <Image style={{height: 55, width: 150}} source={require('App/Assets/Images/Flock_Watermark.png')}/>
-<Text style={{marginTop: -15, alignSelf: 'flex-end', width: 85, shadowColor: 'white', shadowOpacity: 1, shadowOffset:{height:0}, fontFamily: 'Nunito', fontWeight: 'bold', fontSize: 8}}>search {<Text style={{color: 'black'}}>%{flockId.padStart(5,'0')}</Text>} in app</Text>
+<Text style={{marginTop: -15, alignSelf: 'flex-end', width: 85, shadowColor: 'white', shadowOpacity: 1, shadowOffset:{height:0}, fontFamily: 'Nunito', fontWeight: 'bold', fontSize: 8}}>search {<Text style={{color: 'black'}}>%{flockId.padStart(5,'0').substring(0,5)}</Text>} in app</Text>
         </View></>:<></>}
       </ViewShot>
     </>

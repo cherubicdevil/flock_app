@@ -109,13 +109,17 @@ const DataList = ({navigation, route}) => {
   // const boxes = <View style={{backgroundColor: 'white'}}>{data.map(()=>{
   //   <View style={{width: 30, height: 50, backgroundColor: 'red'}} />
   // })}</View>
-  return <View style={{height: '100%', backgroundColor: constants.PINK_BACKGROUND, width: '100%'}}><Text style={{color: 'white'}}>{val}</Text><FeedList route={route} videoData={route.params.videoData} flockOrNot={route.params.dataType} KeyContext={KeyContext} feedItem={(al)=>{
+  return <View style={{height: '100%', backgroundColor: constants.PINK_BACKGROUND, width: '100%'}}><Text style={{color: 'white'}}>{val}</Text><FeedList route={route} videoData={route.params.videoData} flockOrNot={route.params.dataType} KeyContext={KeyContext} 
+  feedItem={(al)=>{
   // console.log('al image', al.image, al.title, al.product.image);
     return <TouchableOpacity onPress={()=>{
-    if (route.params.dataType === "flockData") {
-      navigation.navigate('ChatInterface', {data: al});
-    } else if (route.params.dataType === "rentData") {
+      console.log('helo pressing');
+    if (al.completed === false) { // flock
+      navigation.navigate("Product", {album: al.product, id: al.id});
+    } else if (al.completed === true) {
     navigation.navigate('FlockReserve', {data:al});
+    } else {
+      navigation.navigate("Product", {album: al.product, id: al.id})
     }
   }}
 
