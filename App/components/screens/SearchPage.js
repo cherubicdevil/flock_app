@@ -59,7 +59,7 @@ const SearchPage = ({navigation, route}) => {
         </View>
     </LinearGradient>
     
-    <ScrollView scrollEnabled={false} style={{flex: 1}}>
+    <ScrollView scrollEnabled={true} style={{flex: 1}}>
         
             {/* {results.map((item)=> {
         return <View style={{height: 100, width: '100%'}}>
