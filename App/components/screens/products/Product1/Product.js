@@ -545,8 +545,8 @@ const FlockList = ({product, navigation, ar, limited = true}) => {
       <View style={{flex:1, marginRight: 15}}>
       <Countdown dateObj = {ar[i].time} />
       </View>
-      <View style={{borderRadius: 30, justifyContent:'center',  overflow: 'hidden', borderColor: constants.ORANGE, borderWidth: 2}}>
-      <View style={{position: 'absolute', width: paidForPercent + "%", height: '100%', backgroundColor: constants.ORANGE, opacity: 0.8, borderRadius: 40, transform: [{ scaleX: 1 }, { scaleY: 1.2 }] }} />
+      <View style={{borderRadius: 30, justifyContent:'center', overflow: 'hidden',  borderColor: constants.ORANGE, borderWidth: 2}}>
+      <View style={{position: 'absolute', left: "-40%", width: paidForPercent+ 40 + "%", height: '100%', backgroundColor: constants.ORANGE, opacity: 0.8, borderRadius: 40, transform: [{ scaleX: 1 }, { scaleY: 1.3 }] }} />
       <TouchableOpacity style={{paddingLeft: 10, paddingRight: 10,}}
       onPress={tempFunc}>
         
