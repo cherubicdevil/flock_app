@@ -53,7 +53,8 @@ const StartFlock = ({navigation, route}) => {
           messages: [],
           
           time: Math.round(Date.now() / 1000),
-          members: [{name: user.displayName, uid: user.uid}]
+          members: [{name: user.displayName, uid: user.uid}],
+          memberIds: [user.uid],
         };
         // const maximums = [{}];
         // maximums[0][user.uid] = route.params.data.maxPrice;

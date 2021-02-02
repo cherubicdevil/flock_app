@@ -196,7 +196,7 @@ const ProfileMain = ({navigation}) => {
   useEffect(() => {
     var citiesRef = db.collection("chatGroups");
     // this filter is kind of inefficient; gets the entire table
-    var query = citiesRef.where("members", "array-contains", {name: firebase.auth().currentUser.displayName, uid: firebase.auth().currentUser.uid});
+    var query = citiesRef.where("memberIds", "array-contains", firebase.auth().currentUser.uid);
     var unsubscribe = query
     .onSnapshot(function(querySnapshot) {
       const rent = [];
@@ -219,7 +219,7 @@ const ProfileMain = ({navigation}) => {
   const [modalOpen, setModalOpen] = useState(false);
   const Tab = createMaterialTopTabNavigator();
 
-  console.log("MY USERNAME IS:", auth.currentUser.displayName);
+
   return (
     <View style={{backgroundColor: constants.PINK_BACKGROUND_OPAQUE, flex: 1}}>
       <View style={{borderBottomLeftRadius: 50, borderBottomEndRadius: 50, overflow: 'hidden', height: Dimensions.get('window').height - constants.NAVBARHEIGHT, backgroundColor: 'white'}}>

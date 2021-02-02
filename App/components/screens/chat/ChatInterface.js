@@ -367,6 +367,7 @@ return <ScrollView  style={{marginLeft: 15}} keyboardShouldPersistTaps="never">
         route.params.data.maximums[firebase.auth().currentUser.uid] = 100;
         db.collection('chatGroups').doc(route.params.data.id).update({
           members: firebase.firestore.FieldValue.arrayUnion(memberInfo),
+          memberIds: firebase.firestore.FieldValue.arrayUnion(memberInfo.uid),
           maximums: route.params.data.maximums,
         });
         setPartOf(true);

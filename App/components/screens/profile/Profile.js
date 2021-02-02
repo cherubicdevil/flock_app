@@ -364,6 +364,7 @@ const Profile = ({navigation}) => {
               db.collection('users').doc(auth.currentUser.uid).update({
                 bio: bio,
               });
+              user.reload();
               console.log("updated", username, email)
             }}>
             <Text
