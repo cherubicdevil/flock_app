@@ -481,8 +481,8 @@ const MiniCarouselRenting = ({navigation, route}) => {
 };
 
 const MiniCarouselFlocking = ({navigation, route}) => {
-  // const store = useStore();
-  const select = useSelector(state => state);
+  const store = useStore();
+  const select = useSelector(state => state.videopage);
 
   const dispatch = useDispatch();
   const [viewHeight, setViewHeight] = useState(600);
@@ -507,25 +507,36 @@ const MiniCarouselFlocking = ({navigation, route}) => {
       setTimeout(()=>setCover(false), 2500);
     });
   },[]);
-  // console.log(store.getState().videopage.carIndex);
-  if (select.videopage.carIndexFlock < 0) {
+  console.log(store.getState().videopage.carIndex);
+  // if (store.getState().videopage.carIndex < 0) {
+  if (select.carIndexFlock < 0 && !cover) {
     console.log('reached the end');
     
     fetchFlockables().then((ar) => {
       setKeyArrFlock([...keyArrFlock, ...ar]);
-      setFinalAr([...ar,...keyArrFlock, ]);
-      dispatch({type:'sendCarouselFlockIndex', payload: ar.length});
+      // setFinalAr([...ar,...keyArrFlock, ]);
+      console.log('donneeeee');
+      setFinalAr([...ar]);
+      dispatch({type:'sendCarouselFlockIndex', payload: ar.length-1});
       console.log('done');
+      setCover(false);
       // setFinishedLoading(true);
-      // Animated.timing(coverFade, {
-      //   toValue: 0,
-      //   duration: 500,
-      //   delay: 2000,
-      //   useNativeDriver: false,
-      // }).start();
-      // setTimeout(()=>setCover(false), 2500);
+      Animated.timing(coverFade, {
+        toValue: 0,
+        duration: 500,
+        delay: 1000,
+        useNativeDriver: false,
+      }).start();
+      setTimeout(()=>setCover(false), 2500);
 
-    })
+    });
+    setCover(true);
+    Animated.timing(coverFade, {
+      toValue: 1,
+      duration: 200,
+      delay: 0,
+      useNativeDriver: false,
+    }).start();
   }
 
   var res = [];
