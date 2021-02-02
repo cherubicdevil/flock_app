@@ -471,7 +471,9 @@ const MiniCarouselRenting = ({navigation, route}) => {
 }}/>
 <Image source={require('App/Assets/Images/flock-anim.gif')} style={{width: 200, height: 200, position: 'absolute', top: '30%', left: '30%'}} />
 </Animated.View>
-  <View onLayout = {(event) => {
+  <View 
+
+  onLayout = {(event) => {
     // setViewHeight(event.nativeEvent.layout.height);
   }}><FeatherPanResponder navigation={navigation} route={route} data={res} viewHeight={Dimensions.get('window').height - 80 - 50 - constants.NAVBARHEIGHT} type="rent" /></View>
   </>;

@@ -225,7 +225,7 @@ const FeatherPanResponder = React.memo(({index, positions, currIndex, setCurrent
         const newLeft = 1000; // ypos.getLayout().top , left
         Animated.timing(position, {
           useNativeDriver: false,
-          toValue: {y:1000, x: newLeft},
+          toValue: {y:500, x: newLeft},
           delay: 0,
           duration: 300,
         }).start();
@@ -233,6 +233,7 @@ const FeatherPanResponder = React.memo(({index, positions, currIndex, setCurrent
       var isUp = false;
       var isDown = false;
       const panResponder = PanResponder.create({
+        onMoveShouldSetPanResponderCapture:()=>true,
         onStartShouldSetPanResponder: (event, gesture) => true,
         onPanResponderMove: (event, gesture) => {
             if (gesture.dy > 0) {
@@ -242,7 +243,7 @@ const FeatherPanResponder = React.memo(({index, positions, currIndex, setCurrent
             } else if (gesture.dy < 0) {
                 if (isDown) return;
                 if (!isTop) {
-                    positions[index+1].setValue({y: Dimensions.get('window').height + gesture.dy, x: 300 +gesture.dx});
+                    positions[index+1].setValue({y: gesture.dy-100, x: 0+ gesture.dx});
                 }
             }
         
@@ -250,6 +251,16 @@ const FeatherPanResponder = React.memo(({index, positions, currIndex, setCurrent
         onPanResponderRelease: (event, gesture) => {
             isUp = false;
             isDown = false;
+            if (Math.abs(gesture.dy) < 100 ) {
+                console.log('hello');
+                Animated.timing(positions[index], {
+                    useNativeDriver: false,
+                    toValue: {y:0, x: 0},
+                    delay: 0,
+                    duration: 200,
+                  }).start();
+                  return;
+            }
             if (gesture.dy > 0) {
                 outofwayAnimation();
                 setTimeout(()=>{
@@ -286,13 +297,15 @@ const FeatherPanResponder = React.memo(({index, positions, currIndex, setCurrent
                         // dispatch({type: 'sendCarouselIndex', payload: currentIndex + 1});
                     }, 200);
                     //   dispatch({type: 'sendCarouselIndex', payload: currentIndex + 1});
-                    if (type === "flock") {
-                        dispatch({type: 'sendCarouselFlockIndex', payload: currentIndex + 1});
-                    } else if (type === "rent") {
-                        dispatch({type: 'sendCarouselRentIndex', payload: currentIndex + 1});
-                    } else {
-                        dispatch({type: 'sendCarouselIndex', payload: currentIndex + 1});
-                    }
+                    setTimeout(()=>{
+                        if (type === "flock") {
+                            dispatch({type: 'sendCarouselFlockIndex', payload: currentIndex + 1});
+                        } else if (type === "rent") {
+                            dispatch({type: 'sendCarouselRentIndex', payload: currentIndex + 1});
+                        } else {
+                            dispatch({type: 'sendCarouselIndex', payload: currentIndex + 1});
+                        }
+                    }, 700);
                       console.log("changing carindex", currentIndex + 1);
                 }
             }

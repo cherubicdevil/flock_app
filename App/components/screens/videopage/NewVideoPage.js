@@ -251,7 +251,7 @@ useEffect(()=>{
           <ScrollCount data={flockCountdowns} />
            :<></>}
 </View>
-          <TouchableOpacity onPress={()=>{
+          <TouchableOpacity  onPress={()=>{
               const video = data.video;
               console.log(dataType);
               if (dataType==="flock" || dataType==="video") {
