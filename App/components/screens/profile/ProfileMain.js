@@ -27,6 +27,7 @@ import {getIndexOfData} from '../../../utils';
 import ResizeableImage from 'App/components/ResizeableImage';
 import AnimatedModal from 'App/components/AnimatedModal';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import HeaderGradient from 'App/components/HeaderGradient';
 //import Base64 from 'base-64';
 
 // global.atob = Base64.encode;
@@ -224,7 +225,7 @@ const ProfileMain = ({navigation}) => {
     <View style={{backgroundColor: constants.PINK_BACKGROUND_OPAQUE, flex: 1}}>
       <View style={{borderBottomLeftRadius: 50, borderBottomEndRadius: 50, overflow: 'hidden', height: Dimensions.get('window').height - constants.NAVBARHEIGHT, backgroundColor: 'white'}}>
     <Fragment><SafeAreaView style={{ flex: 0, backgroundColor: constants.TRANSLUCENT }} /><SafeAreaView style={{flex: 1, backgroundColor: constants.PINK_BACKGROUND}}>
-      <AnimatedModal bgcolor={constants.PINK_BACKGROUND_OPAQUE} fade={false} upPercent="35%" visible={modalOpen} close={()=>setModalOpen(false)} content={<View>
+      <AnimatedModal  fade={false} upPercent="35%" visible={modalOpen} close={()=>setModalOpen(false)} content={<View>
         <TouchableOpacity
           onPress={() => {
             navigation.navigate('Profile');
@@ -232,7 +233,7 @@ const ProfileMain = ({navigation}) => {
           }}
           style={{padding: 20, alignItems: 'center', justifyContent: 'center', borderBottomWidth: 1, borderColor: constants.GREY}}
         >
-        <Text style={{color: constants.ORANGE, fontSize: 17}}>Edit Profile</Text>
+        <Text style={{color: constants.LAVENDER, fontSize: 17}}>Edit Profile</Text>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => {
@@ -241,21 +242,12 @@ const ProfileMain = ({navigation}) => {
           }}
           style={{padding: 20, alignItems: 'center', justifyContent: 'center', borderBottomWidth: 1, borderColor: constants.GREY, borderTopWidth:0}}
         >
-          <Text style={{color: constants.LAVENDER, fontSize: 17}}>Logout</Text>
+          <Text style={{color: constants.LIGHTGREY, fontSize: 17}}>Logout</Text>
           </TouchableOpacity>
       </View>}/>
 
       <View style={{height: 50, backgroundColor: constants.TRANSLUCENT, borderBottomLeftRadius: 30, borderBottomRightRadius: 30}}>
-      <View style={{justifyContent: 'center', position: 'absolute', left: 10, top: 0, zIndex: 400, }}>
-        <TouchableOpacity
-          onPress={() => {
-            navigation.goBack();
-          }}
-        >
-        <Icon name="chevron-left" size={40} color="#999" />
-</TouchableOpacity>
-        </View>
-        <Text style={{alignSelf: 'center', marginTop: 5, fontSize: 20}}>Profile</Text>
+      <HeaderGradient navigation={navigation} absolute={false} title="Profile" />
       </View>
       {/* <ImageBackground
         source={require('App/Assets/Images/Orange_Gradient_Small.png')}

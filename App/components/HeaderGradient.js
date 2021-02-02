@@ -1,10 +1,10 @@
 import React from 'react';
-import {View, Text, TouchableOpacity} from 'react-native';
+import {View, Text, TouchableOpacity, Dimensions} from 'react-native';
 import {constants} from 'App/constants';
 import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-const HeaderGradient = ({navigation, children, absolute=true, closeX = false}) => {
+const HeaderGradient = ({navigation, children, absolute=true, closeX = false, title=""}) => {
     return <View style={{width: '100%', height: absolute?100:50, position:absolute?'absolute':'relative', top: 0, zIndex: 500,backgroundColor: constants.TRANSLUCENT, borderBottomRightRadius: 30, borderBottomLeftRadius: 30}}>
           <LinearGradient
     colors={[constants.TRANSLUCENT, 'white']}
@@ -14,6 +14,7 @@ const HeaderGradient = ({navigation, children, absolute=true, closeX = false}) =
       justifyContent: 'space-around',
       alignItems: 'flex-end',
       paddingTop: 10,
+      width: '100%',
       paddingBottom: 20,
       height:'100%',
       borderBottomRightRadius:20,
@@ -34,8 +35,9 @@ const HeaderGradient = ({navigation, children, absolute=true, closeX = false}) =
             navigation.goBack();
           }}>
         <Icon name="chevron-left" size={24} color="grey" />
+        
         </TouchableOpacity>}
-
+        <View style={{zIndex: 1000, position: 'absolute', bottom: 25, right: 0, width: '100%'}}><Text style={{fontFamily: constants.FONT, alignSelf: 'center', fontSize: 18,}}>{title}</Text></View>
         {children}
 
         </LinearGradient>
