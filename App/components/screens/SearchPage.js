@@ -1,5 +1,5 @@
 import React, {useState, Fragment, useContext, createContext} from 'react';
-import {SafeAreaView, View, Text, TextInput,Image, TouchableOpacity, Dimensions} from 'react-native';
+import {SafeAreaView, ScrollView, View, Text, TextInput,Image, TouchableOpacity, Dimensions} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import FeedList from 'App/components/screens/home/feed/FeedList';
@@ -34,7 +34,7 @@ const SearchPage = ({navigation, route}) => {
     <TextInput 
     onSubmitEditing
     placeholder="Search"
-    style={{marginLeft: 10}}
+    style={{marginLeft: 10, width: '100%'}}
      value={search} onChangeText={(text)=>{
             setSearch(text);
         }}
@@ -59,7 +59,7 @@ const SearchPage = ({navigation, route}) => {
         </View>
     </LinearGradient>
     
-    <View style={{flex: 1}}>
+    <ScrollView scrollEnabled={false} style={{flex: 1}}>
         
             {/* {results.map((item)=> {
         return <View style={{height: 100, width: '100%'}}>
@@ -81,7 +81,7 @@ const SearchPage = ({navigation, route}) => {
         return <FeedItemTemp image={item.product.image} />;
     }}
     />
-    </View>
+    </ScrollView>
 
     </SafeAreaView></Fragment>
 };
