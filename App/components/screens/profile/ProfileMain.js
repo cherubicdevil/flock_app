@@ -100,16 +100,17 @@ const ProfileMain = ({navigation}) => {
       </View>;
 
       return (
-        <View style={{backgroundColor: "rgba(166,184,205,0.5)", flex: 1}}>
+        <View style={{backgroundColor: constants.PINK_BACKGROUND, flex: 1}}>
           <FlatList
             //contentContainerStyle={{flexDirection: 'row', flexWrap: 'wrap'}}
             numColumns={3}
             data={flockData}
             renderItem={(el) => {
-              return <TouchableOpacity onPress={()=>{navigation.navigate("ChatInterface", {data: el.item})}}><View style={{borderWidth: 3, borderColor: constants.GREYORANGE, width: Dimensions.get('window').width/3 - 10, margin: 5, paddingBottom: 30, borderBottomRightRadius: 40, borderBottomLeftRadius: 40, backgroundColor: 'white', resizeMode: 'contain'}} >
-                <Text>Current Price: ${(el.item.product.price/el.item.members.length).toFixed(2)} </Text>
-              <Text>Your Maximum: ${(el.item.maximums[firebase.auth().currentUser.uid])}</Text>
-              <ResizeableImage limitHorizontal={false} hLimit={50} source={{uri: el.item.product.image}} style={{width:'100%', height: 50}} />
+              return <TouchableOpacity onPress={()=>{navigation.navigate("ChatInterface", {data: el.item})}}><View style={{borderWidth: 0, borderColor: constants.GREYORANGE, width: Dimensions.get('window').width/3 - 10, margin: 5,borderBottomRightRadius: 40, borderBottomLeftRadius: 40, backgroundColor: 'white', resizeMode: 'contain', overflow: 'hidden'}} >
+                {/* <Text>Current Price: ${(el.item.product.price/el.item.members.length).toFixed(2)} </Text> */}
+              {/* <Text>Your Maximum: ${(el.item.maximums[firebase.auth().currentUser.uid])}</Text> */}
+              {/* <ResizeableImage limitHorizontal={false} hLimit={50} source={{uri: el.item.product.image}}  /> */}
+              <Image source={{uri: el.item.product.image}} style={{width: '100%', aspectRatio: 1}} />
               </View>
               </TouchableOpacity>
             }}
@@ -122,7 +123,7 @@ const ProfileMain = ({navigation}) => {
     console.log("RENTDATA length", rentData.length);
     console.log(rentData);
     return (
-      <View style={{backgroundColor: constants.GREYORANGE, flex: 1}}>
+      <View style={{backgroundColor: constants.PINK_BACKGROUND, flex: 1}}>
         <FlatList
           //contentContainerStyle={{flexDirection: 'row', flexWrap: 'wrap'}}
           numColumns={3}
@@ -222,8 +223,8 @@ const ProfileMain = ({navigation}) => {
   return (
     <View style={{backgroundColor: constants.PINK_BACKGROUND_OPAQUE, flex: 1}}>
       <View style={{borderBottomLeftRadius: 50, borderBottomEndRadius: 50, overflow: 'hidden', height: Dimensions.get('window').height - constants.NAVBARHEIGHT, backgroundColor: 'white'}}>
-    <Fragment><SafeAreaView style={{ flex: 0, backgroundColor: constants.TRANSLUCENT }} /><SafeAreaView style={{flex: 1, backgroundColor: "rgba(166,184,205,0.5)"}}>
-      <AnimatedModal fade={false} upPercent="35%" visible={modalOpen} close={()=>setModalOpen(false)} content={<View>
+    <Fragment><SafeAreaView style={{ flex: 0, backgroundColor: constants.TRANSLUCENT }} /><SafeAreaView style={{flex: 1, backgroundColor: constants.PINK_BACKGROUND}}>
+      <AnimatedModal bgcolor={constants.PINK_BACKGROUND_OPAQUE} fade={false} upPercent="35%" visible={modalOpen} close={()=>setModalOpen(false)} content={<View>
         <TouchableOpacity
           onPress={() => {
             navigation.navigate('Profile');
@@ -231,7 +232,7 @@ const ProfileMain = ({navigation}) => {
           }}
           style={{padding: 20, alignItems: 'center', justifyContent: 'center', borderBottomWidth: 1, borderColor: constants.GREY}}
         >
-        <Text style={{color: constants.PURPLE}}>Edit Profile</Text>
+        <Text style={{color: constants.ORANGE, fontSize: 17}}>Edit Profile</Text>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => {
@@ -240,7 +241,7 @@ const ProfileMain = ({navigation}) => {
           }}
           style={{padding: 20, alignItems: 'center', justifyContent: 'center', borderBottomWidth: 1, borderColor: constants.GREY, borderTopWidth:0}}
         >
-          <Text style={{color: constants.BLUE}}>Logout</Text>
+          <Text style={{color: constants.LAVENDER, fontSize: 17}}>Logout</Text>
           </TouchableOpacity>
       </View>}/>
 
@@ -328,12 +329,12 @@ const ProfileMain = ({navigation}) => {
       {/* </ImageBackground> */}
       <View style={{flex: 4}}>
         <Tab.Navigator tabBarOptions={{
-       activeTintColor: '#fff',
+       activeTintColor: 'black',
       //  inactiveTintColor: 'lightgray',
       //  activeBackgroundColor: '#c4461c',
       //  inactiveBackgroundColor: '#b55031',
            style: {
-                 backgroundColor: constants.BLUE_FADE,
+                 backgroundColor: constants.PINK_BACKGROUND,
                  paddingBottom: 3
            }
     }} >
