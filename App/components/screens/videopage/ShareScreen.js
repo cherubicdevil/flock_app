@@ -21,11 +21,11 @@ const ShareScreen = ({navigation, route}) => {
         <Text style={{fontSize: 17, fontFamily: constants.FONT, alignSelf: 'center'}}>%{route.params.flockId.padStart(5,0).substring(0,5)}</Text>
     </View>
     <TouchableOpacity 
-    style={{borderRadius: 40, backgroundColor: constants.DARKGREY, padding: 10, alignSelf:'flex-end', marginTop: -30, marginRight: 20}}
+    style={{borderRadius: 40, backgroundColor: constants.ORANGE, padding: 10, alignSelf:'flex-end', marginTop: -30, marginRight: 20}}
     onPress={()=>{
         navigation.goBack();
     }}>
-        <Text>done</Text>
+        <Text style={{color: 'white'}}>done</Text>
     </TouchableOpacity>
     </View>
     <ShareSocial product = {route.params.product} data = {route.params.data} flockId={route.params.flockId} /></SafeAreaView>

@@ -17,7 +17,7 @@ const ShareSocial = ({product, data={}, flockId, shareApp=false}) => {
     return <><View style={[styles.container, {marginBottom: -2,}]}>
         <Text style={{fontWeight:'bold'}}>Want to pay less? Get more people to join, and earn eggs when you share!</Text>
     </View>
-    <ShareRow label="Tag a flocker"  product = {product} data={data} toggle={false} egg={false} shareApp={shareApp}/>
+    {/* <ShareRow label="Tag a flocker"  product = {product} data={data} toggle={false} egg={false} shareApp={shareApp}/> */}
     <ShareRow label="Share on Facebook" app="facebook" product = {product} data={data} toggle={true} egg={true} shareApp={shareApp} />
     <ShareRow label="Share on Instagram" app="instagram" product = {product} data={data} toggle={true} egg={true} shareApp={shareApp} />
     <ShareRow label="Share on Snapchat" app="snapchat" product = {product} data={data} toggle={true} egg={true} shareApp={shareApp} />
@@ -62,7 +62,7 @@ const ShareRow = ({toggle, label, app, egg, product, data={}, shareApp}) => {
     onValueChange={toggleFunc}
     trackColor={{ false: constants.DARKGREY, true: constants.ORANGE }}
     style={{ transform: [{ scaleX: .8 }, { scaleY: .8 }] }} />:<Image source={require('App/Assets/Images/Front_Icon.png')} style={{width:20, height: 20, tintColor: constants.DARKGREY}} />;
-var shareContainer = <View style={{alignItems: 'center', flexDirection: 'row'}}>{egg?<Image style={{width: 25, height: 25}} source={constants.PLACEHOLDER_IMAGE} />:<View />}{shareAction}</View>;
+var shareContainer = <View style={{alignItems: 'center', flexDirection: 'row'}}>{egg?<Image style={{width: 20, height: 20, resizeMode:'contain'}} source={constants.EGG_GOLD} />:<View />}{shareAction}</View>;
     return <>
     {/* <LottieView style={{backgroundColor:'black'}} speed = { 1.5} source={require('App/Assets/coins.json')} autoPlay loop /> */}
     

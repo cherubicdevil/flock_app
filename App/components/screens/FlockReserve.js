@@ -93,7 +93,7 @@ source={require('App/Assets/Images/Share_Icon_White_Earn.png') } />
         </LinearGradient>
         </TouchableOpacity>
         </View>
-        <AnimatedModal upPercent={"50%"} colored={true} colors={colors} visible={modalOpen} behind={true} close={()=>setModalOpen(false)} content={<ReserveCalendar navigation = {navigation} close={()=>{setModalOpen(false)}} route={route} myMarkedDates={myMarkedDates} setMyMarkedDates={setMyMarkedDates} othersMarkedDates={othersMarkedDates} subtotal={subtotal} />} />
+        <AnimatedModal colored={true} colors={colors} visible={modalOpen} behind={true} close={()=>setModalOpen(false)} content={<ReserveCalendar navigation = {navigation} close={()=>{setModalOpen(false)}} route={route} myMarkedDates={myMarkedDates} setMyMarkedDates={setMyMarkedDates} othersMarkedDates={othersMarkedDates} subtotal={subtotal} />} />
         </SafeAreaView>;
 }
 
@@ -124,9 +124,10 @@ const handleDayPress = (day) => {
   //     return;
   // }
   if (reserved(othersMarkedDates, auth.currentUser.uid, numDays, day.dateString)) {
-    return;
+    setPicked(false);
+  } else {
+    setPicked(true);
   }
-  setPicked(true);
   markPeriod(start=day, duration=numDays, options={type: 'meReserved', color: 'rgba(100,255,50,0.5)', user: auth.currentUser.uid});
   console.log(myMarkedDates);
   
@@ -150,6 +151,8 @@ const handleDayPress = (day) => {
         var isAfter = moment(date.dateString).isAfter(moment(new Date()));
         // add two months/four months is also disqualified...
         var disqualified = Object.entries(marking).length === 0 || !isAfter;
+        var other = marking['type'] === 'otherReserved';
+        var me = marking['type'] === 'meReserved';
         var isTentative = marking['tentative'];
         // console.log(moment(date.dateString), moment(new Date()));
 
@@ -224,7 +227,10 @@ const handleDayPress = (day) => {
             markStyle['width'] = '300%';
           }
         } else if (marking['type'] === 'otherReserved') {
-          textStyle['textDecorationLineColor'] = color;
+          textStyle['textDecorationLine'] = 'line-through';
+          textStyle['textDecorationLineColor'] = fadedColor;
+          textStyle['color'] = fadedColor;
+          // markStyle['backgroundColor'] = fadedColor;
         }
         }
 
@@ -234,7 +240,7 @@ const handleDayPress = (day) => {
           <TouchableOpacity style={{width: '100%', alignItems: 'center', height: 30, marginVertical: -5,justifyContent: 'center'}} onPress={()=>{
             handleDayPress(date);
           }}>
-            {startOrEnd && !disqualified?<View style={circleStyle} />:<></>}
+            {startOrEnd && !disqualified && (!other || isTentative)?<View style={circleStyle} />:<></>}
             <View style={markStyle}>
             
 
@@ -246,10 +252,12 @@ const handleDayPress = (day) => {
         );
       }}
     />
+    {picked===false?<Text style={{alignSelf: 'center', color: 'red', marginTop: 5}}>Choose a valid date.</Text>:<><Text style={{marginTop: 5}}> </Text></>}
     <View style={{paddingHorizontal: 80, flexDirection: 'row', justifyContent: 'space-around', marginTop: 20}}>
       {/* <TouchableOpacity style={{height: 40, backgroundColor: constants.BGGREY, justifyContent: 'center', alignItems: 'center', borderRadius: 40, paddingHorizontal: 15}} onPress={()=>{setModalOpen(false)}} >
         <Text>close</Text>
       </TouchableOpacity> */}
+      
     <TouchableOpacity style={{backgroundColor: picked?(requestTypeIsRent?constants.PURPLE:constants.ORANGE):constants.GREY,height: 40, justifyContent: 'center', alignItems: 'center', borderRadius: 40, paddingHorizontal: 15}} title="rent" onPress={()=>{
       // db.collection("chatGroups").doc(route.params.data.id).update({[`markedDates.${auth.currentUser.uid}`]: markedDates});
       console.log('HELLOOOOOO');
@@ -277,6 +285,7 @@ const handleDayPress = (day) => {
       }, start: start, end:end, subtotal: parseFloat(subtotal)}, );
       close();
     }} >
+      
       <Text style={{color: 'white'}}>
         next
       </Text>
