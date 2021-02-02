@@ -233,8 +233,9 @@ const FeatherPanResponder = React.memo(({index, positions, currIndex, setCurrent
       var isUp = false;
       var isDown = false;
       const panResponder = PanResponder.create({
-        onMoveShouldSetPanResponderCapture:()=>true,
-        onStartShouldSetPanResponder: (event, gesture) => true,
+          onPanResponderTerminationRequest:(event, gesture) => false,
+        onMoveShouldSetPanResponderCapture:(event, gesture)=>Math.abs(gesture.dy)/Math.abs(gesture.dx)>2,
+        // onStartShouldSetPanResponder: (event, gesture) => true,
         onPanResponderMove: (event, gesture) => {
             if (gesture.dy > 0) {
                 if (isUp) return;
