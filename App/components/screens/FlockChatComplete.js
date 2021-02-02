@@ -118,7 +118,7 @@ function FlockChatComplete({route, navigation}) {
   const [partOf, setPartOf] = useState(part);
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
-      <HeaderGradient>
+      <HeaderGradient navigation={navigation} >
         <Text style={{marginBottom: 7, fontFamily: constants.FONT}}>{route.params.data.flock}</Text>
       </HeaderGradient>
 

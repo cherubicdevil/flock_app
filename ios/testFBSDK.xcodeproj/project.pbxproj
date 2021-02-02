@@ -826,7 +826,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.flock.testFBSDK;
+				PRODUCT_BUNDLE_IDENTIFIER = com.shopwithflock.flock.app;
 				PRODUCT_NAME = testFBSDK;
 				SWIFT_OBJC_BRIDGING_HEADER = "testFBSDK-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -851,7 +851,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.flock.testFBSDK;
+				PRODUCT_BUNDLE_IDENTIFIER = com.shopwithflock.flock.app;
 				PRODUCT_NAME = testFBSDK;
 				SWIFT_OBJC_BRIDGING_HEADER = "testFBSDK-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
