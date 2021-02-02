@@ -228,7 +228,7 @@ useEffect(()=>{
             borderRadius: 60,
             borderTopLeftRadius: 0,
             borderTopRightRadius: 0,
-            overflow: 'hidden',
+            // overflow: 'hidden',
             backgroundColor: 'white',
           }}>
               {/* <Image source = {{uri: data?.poster || data?.product?.image || ''}} style={{position: 'absolute', zIndex: -10, top: 0, width: '100%', height: '100%' }} blurRadius={100} /> */}

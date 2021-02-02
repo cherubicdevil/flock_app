@@ -22,6 +22,7 @@ import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 //import {useFocusEffect} from 'react-navigation-hooks';
 import {useFocusEffect} from '@react-navigation/native';
 import {constants} from 'App/constants';
+import AnimatedModal from 'App/components/AnimatedModal';
 
 const renderPostTime = (nowDate, thenDate) => {
   //console.log(nowDate, thenDate);
@@ -436,7 +437,7 @@ const CommentsModal = ({modalVisible, data, toggleFunc}) => {
     }
   };
   return (
-    <Modal animationType="slide" transparent={true} visible={modalVisible}>
+    <AnimatedModal fade={false} animationType="slide" transparent={true} visible={modalVisible} close={()=>toggleFunc(false)}>
       <KeyboardAvoidingView behavior="padding" style={styles.centeredView}>
         <View
           style={styles.modalView}
@@ -468,7 +469,7 @@ const CommentsModal = ({modalVisible, data, toggleFunc}) => {
               height: 100,
               zIndex: -10,
             }}>
-            <LinearGradient
+            {/* <LinearGradient
               colors={[
                 constants.COMMENT_COLOR,
                 constants.COMMENT_COLOR,
@@ -481,7 +482,7 @@ const CommentsModal = ({modalVisible, data, toggleFunc}) => {
                 top: 0,
                 zIndex: -10,
               }}
-            />
+            /> */}
           </View>
           <Text style={styles.modalText}>Comments ({comments.length}) </Text>
           <ScrollView
@@ -539,7 +540,7 @@ const CommentsModal = ({modalVisible, data, toggleFunc}) => {
           </TouchableOpacity>
         </View>
       </KeyboardAvoidingView>
-    </Modal>
+    </AnimatedModal>
   );
 };
 
@@ -555,23 +556,24 @@ const styles = StyleSheet.create({
   modalView: {
     //marginTop: 'auto',
     //marginBottom: 0,
-    height: '70%',
+    height: '100%',
     width: '100%',
-    backgroundColor: 'rgb(250,250,250)',
+    // marginTop: -30,
+    // backgroundColor: 'rgb(250,250,250)',
     borderRadius: 20,
     borderBottomLeftRadius: 0,
     borderBottomRightRadius: 0,
     padding: 0,
     paddingTop: 30,
     alignItems: 'flex-start',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
+    // shadowColor: '#000',
+    // shadowOffset: {
+    //   width: 0,
+    //   height: 2,
+    // },
+    // shadowOpacity: 0.25,
+    // shadowRadius: 3.84,
+    // elevation: 5,
   },
   openButton: {
     marginRight: 4,
@@ -634,7 +636,7 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     paddingBottom: 10,
     marginLeft: 20,
-    backgroundColor: constants.COMMENT_COLOR,
+    // backgroundColor: constants.COMMENT_COLOR,
   },
   textInputStyle: {
     paddingLeft: 10,

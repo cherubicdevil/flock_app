@@ -32,6 +32,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import { AnimationObjectGroup } from 'three';
 
 const AnimatedModal = ({
+  children,
   visible,
   close,
   navigation,
@@ -113,6 +114,7 @@ const AnimatedModal = ({
             <View style={{position: 'absolute', bottom: 0, width: '100%', height: upPercent, borderRadius: curve?100:0, borderBottomRightRadius: 0, borderBottomLeftRadius: 0, backgroundColor: bgcolor, paddingTop: 40, overflow: 'hidden'}}>
               
               {content}
+              {children}
               </View>
       </Modal>
     </View>
