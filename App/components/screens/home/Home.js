@@ -472,7 +472,7 @@ const MiniCarouselRenting = ({navigation, route}) => {
 <Image source={require('App/Assets/Images/flock-anim.gif')} style={{width: 200, height: 200, position: 'absolute', top: '30%', left: '30%'}} />
 </Animated.View>
   <View onLayout = {(event) => {
-    // setViewHeight(event.nativeEvent.layout.height);
+    setViewHeight(event.nativeEvent.layout.height);
   }}><FeatherPanResponder navigation={navigation} route={route} data={res} viewHeight={viewHeight} type="rent" /></View>
   </>;
 
@@ -481,10 +481,9 @@ const MiniCarouselRenting = ({navigation, route}) => {
 const MiniCarouselFlocking = ({navigation, route}) => {
   // const store = useStore();
   const select = useSelector(state => state);
-  const store = useStore();
 
   const dispatch = useDispatch();
-  const [viewHeight, setViewHeight] = useState(800);
+  const [viewHeight, setViewHeight] = useState(600);
   const {key, key1, keyArrRent, setKeyArrRent, limitKey, keyArrFlock, setKeyArrFlock, keyVideoData, setKeyVideoData, setKeyFinishedLoading} = useContext(KeyContext);
   var unsubscribeCurrentFlock;
   const [cover, setCover] = useState(true);
@@ -507,8 +506,7 @@ const MiniCarouselFlocking = ({navigation, route}) => {
     });
   },[]);
   // console.log(store.getState().videopage.carIndex);
-  // if (select.videopage.carIndexFlock < 0) {
-    if (store.getState().videopage.carIndexFlock < 0) {
+  if (select.videopage.carIndexFlock < 0) {
     console.log('reached the end');
     
     fetchFlockables().then((ar) => {
@@ -530,7 +528,7 @@ const MiniCarouselFlocking = ({navigation, route}) => {
 
   var res = [];
   for (const item of finalAr) {
-    res.push(<View style={{height: 200, width: '100%', borderWidth: 0, borderOpacity: 0.1,borderBottomWidth: 0,borderWidth: 3,}}>
+    res.push(<View style={{height: '100%', width: '100%', borderWidth: 0, borderOpacity: 0.1,borderBottomWidth: 0,}}>
     {/* <Text>{item?.product?.title || item.flock}</Text> */}
     <NewVideoPage route={route} navigation={navigation} data={item} index={finalAr.indexOf(item)} currIndex={finalAr.indexOf(item)} viewHeight={viewHeight} />
     </View>);
@@ -556,9 +554,11 @@ const MiniCarouselFlocking = ({navigation, route}) => {
     justifyContent: 'center', alignItems: 'center',
 }}/>
 <Image source={require('App/Assets/Images/flock-anim.gif')} style={{width: 200, height: 200, position: 'absolute', top: '30%', left: '30%'}} />
-</Animated.View><View onLayout = {(event) => {
+</Animated.View><View 
+style={{flex: 1}}
+onLayout = {(event) => {
     // setViewHeight(event.nativeEvent.layout.height);
-  }}><FeatherPanResponder navigation={navigation} route={route} data={res} viewHeight={viewHeight} type="flock" /></View>
+  }}><FeatherPanResponder navigation={navigation} route={route} data={res} viewHeight={Dimensions.get('window').height - 50- constants.NAVBARHEIGHT-80} type="flock" /></View>
 </>
 };
 
