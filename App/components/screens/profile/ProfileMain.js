@@ -284,8 +284,10 @@ const ProfileMain = ({navigation}) => {
               // }).then(res => res.json())
               //   .then(json => console.log(json));
                 }}>
-                <View style={{backgroundColor:'rgba(0,0,0,0.1)', padding: 5, borderRadius:40, flexDirection:'row'}}>
+                <View style={{backgroundColor:'rgba(0,0,0,0.1)', padding: 5, borderRadius:40, flexDirection:'row', paddingRight: 20}}>
                 <Text
+                  numberOfLines={1}
+                  
                   style={{
                     marginRight: 10,
                     color: 'black',
