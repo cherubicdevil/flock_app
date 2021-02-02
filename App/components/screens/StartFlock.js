@@ -82,14 +82,15 @@ const StartFlock = ({navigation, route}) => {
             dispatch({type: "UPDATE_DATA", payload: ["chatGroups", "add", "array", data]});
         });
 
-        navigation.dispatch(
-            CommonActions.reset({
-              index: 0,
-              routes: [
-                { name: 'Product', params:{album: route.params.product, id: route.params.data.id} },
-              ],
-            })
-          );
+        // navigation.dispatch(
+        //     CommonActions.reset({
+        //       index: 0,
+        //       routes: [
+        //         { name: 'Product', params:{album: route.params.product, id: route.params.data.id} },
+        //       ],
+        //     })
+        //   );
+        navigation.goBack();
     }}
   />
     {ar[route.params.index]}

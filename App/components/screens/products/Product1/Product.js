@@ -343,9 +343,9 @@ const Product = ({route, navigation}) => {
         <View style={{resizeMode: 'contain', position: 'absolute', bottom: 100, right: 70}}>
         {/* <Icon name="arrow-down" size={30} color={'white'}  /> */}
         <Image source = {require('App/Assets/Images/handarrow.png')}  style={{tintColor: 'white', height: 180,width: 150}} />
-        <TouchableWithoutFeedback style={{width: '100%', height: '100%',}} onPress={()=> {
+        {/* <TouchableWithoutFeedback style={{width: '100%', height: '100%',}} onPress={()=> {
           setTutorialScreen(false);
-        }} />
+        }} /> */}
         </View>
       </View>
       </TouchableOpacity>
