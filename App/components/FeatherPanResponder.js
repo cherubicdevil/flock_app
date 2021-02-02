@@ -256,17 +256,21 @@ const FeatherPanResponder = ({index, positions, currIndex, setCurrentIndex, cont
                     setCurrentIndex({curr:currentIndex - 1, prev: currentIndex});
 
                     // dispatch({type: 'sendCarouselIndex', payload: currentIndex - 1});
+
                 }, 200);
                 //setCurrentIndex(currentIndex - 1);
+                setTimeout(()=>{
+                    if (type === "flock") {
+                        dispatch({type: 'sendCarouselFlockIndex', payload: currentIndex - 1});
+                    } else if (type === "rent") {
+                        dispatch({type: 'sendCarouselRentIndex', payload: currentIndex - 1});
+                    } else {
+                        dispatch({type: 'sendCarouselIndex', payload: currentIndex - 1});
+                    }
+                }, 700);
                 
                 // dispatch({type: 'sendCarouselIndex', payload: currentIndex - 1});
-                if (type === "flock") {
-                    dispatch({type: 'sendCarouselFlockIndex', payload: currentIndex - 1});
-                } else if (type === "rent") {
-                    dispatch({type: 'sendCarouselRentIndex', payload: currentIndex - 1});
-                } else {
-                    dispatch({type: 'sendCarouselIndex', payload: currentIndex - 1});
-                }
+
                 console.log("changing flock carindex", currentIndex - 1);
             } else if (gesture.dy < 0) {
                 if (!isTop) {
