@@ -309,7 +309,7 @@ const Product = ({route, navigation}) => {
             <View style={styles.productRow}>{renderDescription()}</View>
             <View style={[styles.productRow, {backgroundColor: 'white'}]}>
             <Text style={{fontWeight: 'bold'}}>{flockAr.reduce((total, item)=>total + item.members.length, 0)} people are currently flocking.</Text>
-            <FlockList navigation = {navigation} product = {route.params.album} ar = {flockAr} />
+            <FlockList navigation = {navigation} product = {route.params.album} ar = {flockAr} randomId={randomId} />
             </View>
             <View style={styles.productRow}>{renderDetail()}</View>
           </View>
@@ -444,7 +444,7 @@ const Countdown = ({dateObj}) => {
   <View style={{flexDirection: 'row', justifyContent:'space-between', fontSize: 10}}><Text style={{fontSize:10, alignSelf: 'stretch'}}>days</Text><Text style={{fontSize:10, alignSelf: 'stretch'}}>hrs</Text><Text style={{fontSize:10, alignSelf: 'stretch'}}>min</Text><Text style={{fontSize:10, alignSelf: 'stretch'}}>left</Text></View></>
 }
 
-const FlockList = ({product, navigation, ar, limited = true}) => {
+const FlockList = ({product, navigation, ar, limited = true, randomId}) => {
   const scrollRef = useRef();
   var offset = 0;
 

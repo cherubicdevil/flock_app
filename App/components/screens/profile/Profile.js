@@ -11,6 +11,7 @@ import {
   SafeAreaView,
   ScrollView,
 } from 'react-native';
+import {PaymentCardTextField} from 'tipsi-stripe';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import AnimatedModal from 'App/components/AnimatedModal';
 import ImagePicker from 'react-native-image-picker';
