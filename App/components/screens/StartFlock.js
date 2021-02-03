@@ -99,7 +99,7 @@ const StartFlock = ({navigation, route}) => {
 }
 
 const PageOne = ({product, data, setCanNext}) => {
-    const [can1, setCan1] = useState(false);
+    const [can1, setCan1] = useState(data['specifications']!==undefined && data['specifications'].length > 0);
     const [can2, setCan2] = useState(data['description']!==undefined && data['description'].length > 0);
     useEffect(()=>{
         setCanNext(can1 && can2);
@@ -156,9 +156,9 @@ const PageFour = () => {
 
 const InputText = ({numLines, data, title, placeholder, label, setCanNext, defaultValue=""}) => {
     console.log(data[label]);
-    data[title] = defaultValue;
+    // data[title] = defaultValue;
 
-    const [textValue, setTextValue] = useState(null);
+    const [textValue, setTextValue] = useState(data[title]);
     return <View style={{marginBottom: 10}}><Text style={{fontWeight: 'bold'}}>{label}</Text>
     <TextInput
     value={textValue}
