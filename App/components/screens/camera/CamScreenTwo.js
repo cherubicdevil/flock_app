@@ -409,7 +409,7 @@ const CamScreenTwo = ({navigation, route}) => {
           const result = pinLocalFunc(htmlBody, urlState);
           setImageState(result.image);
           setTitleState(result.title);
-          setPriceState(result.price);
+          setPriceState(result.price.replace(/\D/g,''));
           setDataUrl(urlState);
           setModalOpen(false);
           setPinned(true);
