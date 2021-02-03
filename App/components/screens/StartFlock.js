@@ -11,15 +11,17 @@ import Animation from 'lottie-react-native';
 import {firebase, db} from 'App/firebase/config';
 import ShareSocial from 'App/components/ShareSocial';
 import { set } from 'react-native-reanimated';
-import {CommonActions} from '@react-navigation/native';
+import {CommonActions, useFocusEffect} from '@react-navigation/native';
+
 
 const StartFlock = ({navigation, route}) => {
-    const [flockId, setFlockId] = useState(route.params.flockId);
-    useEffect(()=>{
-        if (flockId === undefined) {
-            setFlockId((Math.random()*10000).toFixed(0));
-        }
-    },[]);
+    const flockId =  route.params.flockId;
+    // useFocusEffect(()=>{
+    //         setFlockId((Math.random()*10000).toFixed(0));
+    //     // return ()=>{
+    //     //     setFlockId(undefined);
+    //     // }
+    // },[route.params.data]);
     const dispatch = useDispatch();
     const [canNext, setCanNext] = useState(true);
     const Tab = createMaterialTopTabNavigator();
@@ -76,11 +78,16 @@ const StartFlock = ({navigation, route}) => {
         //navigation.navigate("Carousel");
         firebase.firestore().collection("chatGroups").doc(flockId).set(data).then((docRef)=>{
             data["id"] = docRef.id;
+            console.log(docRef.id, "IDDDDDD");
             db.collection('users').doc(firebase.auth().currentUser.uid).update({
                 chatIds: firebase.firestore.FieldValue.arrayUnion(docRef.id)
+              }).catch(err=>{
+                  console.log("NESTED ERROR", err);
               });
-            dispatch({type: "UPDATE_DATA", payload: ["chatIds", "add", "array", docRef.id]});
-            dispatch({type: "UPDATE_DATA", payload: ["chatGroups", "add", "array", data]});
+            // dispatch({type: "UPDATE_DATA", payload: ["chatIds", "add", "array", docRef.id]});
+            // dispatch({type: "UPDATE_DATA", payload: ["chatGroups", "add", "array", data]});
+        }).catch(err=>{
+            console.log("make start flock eeorr", err);
         });
 
         // navigation.dispatch(

@@ -263,6 +263,8 @@ const Product = ({route, navigation}) => {
     }
   }
   console.log("URLSSSS:", route.params.album.url);
+  const randomId = (Math.random()*10000).toFixed(0);
+  console.log(randomId);
     return (
       <View style={{flex: 1, backgroundColor: constants.PINK_BACKGROUND}}>
                             {renderBackOrClose()}
@@ -400,7 +402,7 @@ const Product = ({route, navigation}) => {
               <View style={{flex:1, height: '100%', justifyContent: 'center'}}>
                 <TouchableOpacity style={{height: "100%", justifyContent: 'center'}} onPress= {() => {
 
-                  navigation.navigate('StartFlock', {index: 0, product: route.params.album, data:{}});
+                  navigation.navigate('StartFlock', {index: 0, product: route.params.album, data:{}, flockId: randomId});
     
                 }}
     
@@ -578,7 +580,7 @@ const FlockList = ({product, navigation, ar, limited = true}) => {
             flex: 1,
           }}>
   <TouchableOpacity onPress= {() => {
-    navigation.navigate('StartFlock', {index: 0, product: product});
+    navigation.navigate('StartFlock', {index: 0, product: product, flockId: randomId});
 
   }}><Text style={{textAlign: 'center', color: 'white', fontWeight: 'bold', fontSize: 13}}>Start Your Flock</Text>
   </TouchableOpacity></View></View></View>)}</ScrollView>;
