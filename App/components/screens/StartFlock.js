@@ -177,7 +177,7 @@ const InputText = ({numLines, data, title, placeholder, label, setCanNext, defau
             setCanNext(true);
         }
     }}
-    defaultValue={data[title]} blurOnSubmit placeholder={placeholder} style={{marginTop: 5, borderColor: "grey", paddingLeft: 15, borderRadius: 10, borderWidth: 1, height: numLines * 25}} multiline numberOfLines = {numLines} onBlur = {(e)=> {
+    defaultValue={data[title]} blurOnSubmit placeholder={placeholder} style={{marginTop: 5, borderColor: "grey", paddingLeft: 15, borderRadius: 80, borderWidth: 1, height: numLines * 25}} multiline numberOfLines = {numLines} onBlur = {(e)=> {
         console.log("BLUR", e.nativeEvent.text);
         data[title] = e.nativeEvent.text;
         if (e.nativeEvent.text !== "") {
@@ -243,7 +243,7 @@ const ProductPreview = ({product}) => {
 
 const styles = {
     container: {width:'100%', backgroundColor: 'white', marginTop: 5, padding: 20},
-    inputBox: {borderColor: "grey", paddingLeft: 15, borderRadius: 10, borderWidth: 1}
+    inputBox: {borderColor: "grey", paddingLeft: 15, borderRadius: 80, borderWidth: 1}
 };
 
 export default StartFlock;

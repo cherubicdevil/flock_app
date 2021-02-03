@@ -164,6 +164,7 @@ const Product = ({route, navigation}) => {
   };
 
   const renderDescription = () => {
+    console.log("ASFASDFADF", route.params.album.price.replace(".",""));
     return (
       <View>
         <Text style={{fontSize: 14, fontWeight: 'bold', marginBottom: 5,}}>
@@ -182,7 +183,7 @@ const Product = ({route, navigation}) => {
             marginLeft: 10, 
             borderRadius: 30,
             zIndex: 40,
-          }}><TouchableOpacity style={{borderRadius: 30, color: 'white', justifyContent: 'center', alignItems:'center', paddingBottom: 5, paddingTop: 3,paddingLeft: 10, paddingRight: 10}}><Text style={{color: 'white', fontSize: 14, fontFamily: constants.FONTBOLD}}>{"As low as $" + Math.round(route.params.album.price / 25 * 1.35) + " when you flock"}</Text></TouchableOpacity>
+          }}><TouchableOpacity style={{borderRadius: 30, color: 'white', justifyContent: 'center', alignItems:'center', paddingBottom: 5, paddingTop: 3,paddingLeft: 10, paddingRight: 10}}><Text style={{color: 'white', fontSize: 14, fontFamily: constants.FONTBOLD}}>{"As low as $" + Math.round(parseFloat(route.params.album.price) / 25 * 1.35) + " when you flock"}</Text></TouchableOpacity>
 </LinearGradient>
         </View>
       </View>
@@ -309,7 +310,7 @@ const Product = ({route, navigation}) => {
             <View style={styles.productRow}>{renderDescription()}</View>
             <View style={[styles.productRow, {backgroundColor: 'white'}]}>
             <Text style={{fontWeight: 'bold'}}>{flockAr.reduce((total, item)=>total + item.members.length, 0)} people are currently flocking.</Text>
-            <FlockList navigation = {navigation} product = {route.params.album} ar = {flockAr} />
+            <FlockList navigation = {navigation} product = {route.params.album} ar = {flockAr} randomId={randomId} />
             </View>
             <View style={styles.productRow}>{renderDetail()}</View>
           </View>
@@ -444,7 +445,7 @@ const Countdown = ({dateObj}) => {
   <View style={{flexDirection: 'row', justifyContent:'space-between', fontSize: 10}}><Text style={{fontSize:10, alignSelf: 'stretch'}}>days</Text><Text style={{fontSize:10, alignSelf: 'stretch'}}>hrs</Text><Text style={{fontSize:10, alignSelf: 'stretch'}}>min</Text><Text style={{fontSize:10, alignSelf: 'stretch'}}>left</Text></View></>
 }
 
-const FlockList = ({product, navigation, ar, limited = true}) => {
+const FlockList = ({product, navigation, ar, limited = true, randomId}) => {
   const scrollRef = useRef();
   var offset = 0;
 
