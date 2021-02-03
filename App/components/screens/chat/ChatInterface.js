@@ -210,7 +210,7 @@ function ChatInterface({route, navigation}) {
       setDialVisible(false);
     }}/>
   </Dialog.Container>;
-    return <><TextInput
+    return <View style={{flexDirection:'row'}}><TextInput
     // contextMenuHidden={numeric}
     style={{width: 75, backgroundColor: 'white', borderRadius: 40, paddingLeft: 20}}
     keyboardType={"numeric"}
@@ -232,7 +232,8 @@ function ChatInterface({route, navigation}) {
     
     />
     {dial}
-    </>;
+    <Text style={{color: 'white', marginLeft: 10, width: 150}}>{100*(parseInt(dataValue) / route.params.data.product.price)>100?"100%":100*(parseInt(dataValue) / route.params.data.product.price)<1?"<1%":(100*parseInt(dataValue) / route.params.data.product.price).toFixed(0) + "%"}</Text>
+    </View>;
 }
 return <ScrollView  style={{marginLeft: 15}} keyboardShouldPersistTaps="never">
   <NumericTextInput data={data} />
