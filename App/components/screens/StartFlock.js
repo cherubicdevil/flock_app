@@ -100,14 +100,14 @@ const StartFlock = ({navigation, route}) => {
 
 const PageOne = ({product, data, setCanNext}) => {
     const [can1, setCan1] = useState(false);
-    const [can2, setCan2] = useState(false);
+    const [can2, setCan2] = useState(data['description']!==undefined && data['description'].length > 0);
     useEffect(()=>{
         setCanNext(can1 && can2);
     }, [can1, can2]);
 
     return <View style={{width:'100%', backgroundColor: 'white', marginTop: 5, padding: 20}}>
         <InputText data = {data} title = "specifications" numLines = {2} setCanNext={setCan1} placeholder = "Size 4? Size 10? Red? Green?" label="List specifications like size and color if applicable." />
-        <InputText data = {data} title = "description" numLines = {4}  setCanNext={setCan2}  placeholder = "What do you want others to know about this product? Hype it up so they join your flock and lower your price!" label="Message" defaultValue = "Hey! What do you think of this? Want to flock it with me? Together we split the cost and share the item."/>
+        <InputText data = {data} title = "description" numLines = {4}  setCanNext={setCan2}  placeholder = "What do you want others to know about this product? Hype it up so they join your flock and lower your price!" label="Message"/>
         <ProductPreview product = {product} toggle={true} egg={true} />
 
     </View>;
@@ -157,8 +157,20 @@ const PageFour = () => {
 const InputText = ({numLines, data, title, placeholder, label, setCanNext, defaultValue=""}) => {
     console.log(data[label]);
     data[title] = defaultValue;
+
+    const [textValue, setTextValue] = useState(null);
     return <View style={{marginBottom: 10}}><Text style={{fontWeight: 'bold'}}>{label}</Text>
-    <TextInput defaultValue={data[title] || defaultValue} blurOnSubmit placeholder={placeholder} style={{marginTop: 5, borderColor: "grey", paddingLeft: 15, borderRadius: 10, borderWidth: 1, height: numLines * 25}} multiline numberOfLines = {numLines} onBlur = {(e)=> {
+    <TextInput
+    value={textValue}
+    onChangeText={(text)=>{
+        setTextValue(text);
+        if (text === "") {
+            setCanNext(false);
+        } else {
+            setCanNext(true);
+        }
+    }}
+    defaultValue={data[title]} blurOnSubmit placeholder={placeholder} style={{marginTop: 5, borderColor: "grey", paddingLeft: 15, borderRadius: 10, borderWidth: 1, height: numLines * 25}} multiline numberOfLines = {numLines} onBlur = {(e)=> {
         console.log("BLUR", e.nativeEvent.text);
         data[title] = e.nativeEvent.text;
         if (e.nativeEvent.text !== "") {

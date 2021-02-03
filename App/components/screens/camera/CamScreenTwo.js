@@ -37,6 +37,12 @@ const CamScreenTwo = ({navigation, route}) => {
   var urlResult = "";
   const [htmlBody, setHtml] = useState("");
 
+
+  const [pinned, setPinned] = useState(false);
+
+  const [canNext, setCanNext] = useState(pinned);
+
+
   
 
   
@@ -308,6 +314,7 @@ const CamScreenTwo = ({navigation, route}) => {
           headerText="Find a Product"
           goBack={true}
           nextRoute="Product Options"
+          canGoNext={canNext}
           number={1}
           index={0}
           backRoute="Add Video"
@@ -405,6 +412,8 @@ const CamScreenTwo = ({navigation, route}) => {
           setPriceState(result.price);
           setDataUrl(urlState);
           setModalOpen(false);
+          setPinned(true);
+          setCanNext(true);
           }}>
           <Text style={{color: 'white'}}>import</Text>
           </TouchableOpacity>
