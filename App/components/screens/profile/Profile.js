@@ -12,8 +12,10 @@ import {
   ScrollView,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import AnimatedModal from 'App/components/AnimatedModal';
 import ImagePicker from 'react-native-image-picker';
 import {constants} from 'App/constants';
+import LinearGradient from 'react-native-linear-gradient';
 //import Input from 'App/components/common/Input';
 import {firebase, auth, db} from 'App/firebase/config';
 import OptionsModal from 'App/navigators/OptionsModal';
@@ -171,6 +173,27 @@ const uploadImage = async ({data, filename, uri}) => {
 
 const Profile = ({navigation}) => {
   const [openModal, setOpenModal] = useState(false);
+  const [billModal, setBillModal] = useState(false);
+  const [shipModal, setShipModal] = useState(false);
+
+  const [changed, setChanged] = useState(false);
+
+  const [info, setInfo] = useState({
+    // mandatory
+    number: '4000000000000077',
+    expMonth: 11,
+    expYear: 23,
+    cvc: '223',
+    // optional
+    name: 'Test User',
+    currency: 'usd',
+    addressLine1: '123 Test Street',
+    addressLine2: 'Apt. 5',
+    addressCity: 'Test City',
+    addressState: 'Test State',
+    addressCountry: 'Test Country',
+    addressZip: '55555',
+  });
 
   const dispatch = useDispatch();
   const user = firebase.auth().currentUser;
@@ -415,9 +438,148 @@ const Profile = ({navigation}) => {
         </View>
       </ScrollView>
     </SafeAreaView>
+    <AnimatedModal colored={true} colors={[constants.ORANGE, constants.GREYORANGE]} visible={billModal} close={()=>setBillModal(false)} state={info} setState={setInfo} content={<BillingModal state={info} setState={setInfo} setChanged={setChanged} close={()=>setBillModal(false)}/>}/>
+        <AnimatedModal colored={true} colors={[constants.ORANGE, constants.GREYORANGE]} visible={shipModal} close={()=>setShipModal(false)} state={info} setState={setInfo} content={<ShippingModal state={info} setState={setInfo} setChanged={setChanged} close={()=>setShipModal(false)}/>}/>
     </>
   );
 };
+
+const BillingModal = ({state, setState, close, setChanged}) => {
+  const [localState, setLocalState] = useState(state);
+  // const [cardNumber, setCardNumber] = useState('');
+  // const [expMonth, setExpMonth] = useState('');
+  // const [expYear, setExpYear] = useState('');
+  // const [sec, setSec] = useState('');
+  
+  // const [name, setName] = useState('');
+  const [valid, setValid] = useState(false);
+  const [error, setError] = useState(false);
+
+  const placeholderColor = localState.number === ''?'grey':'black';
+  const numberPlaceholder= localState.number=== ''?'4242424242424242':localState.number;
+  const expirationPlaceholder = localState.expMonth === ''?"MM/YY":localState.expMonth+"/"+localState.expYear;
+  return <ScrollView style={{paddingLeft: 30, paddingRight: 30, borderTopLeftRadius: 40, borderTopRightRadius: 40, backgroundColor:'white', zIndex: 50}}>
+         <Text style={{color: 'red', opacity: error?1:0}}>Please review your information for errors</Text>
+         <Text style={{alignSelf: 'center',fontSize: 15, fontFamily: constants.FONT, fontWeight: 'bold'}}>Billing Information</Text>
+          <Text style={{marginLeft: 10, marginTop: 10, marginBottom: 5}}>Card</Text>
+          <PaymentCardTextField style={[styles.textbox,{marginTop: 0, }]} 
+          onParamsChange={(valid, params) => {
+              // setValid(valid);
+              // setCardNumber(params.number);
+              // setSec(params.cvc);
+              // setExpMonth(params.expMonth);
+              // setExpYear(params.expYear);
+              if (valid) {
+                  setValid(true);
+                  setLocalState({
+                      ...localState,
+                      ...params
+                  })
+              } else {
+                  setValid(false);
+              }
+          }}
+          />
+          <Text style={{marginLeft: 10, marginTop: 10, marginBottom: 5}}>Full Name</Text>
+          <TextInput defaultValue={localState.name} onChangeText={(text)=> {
+              localState.name = text;
+          }} style={styles.textbox} />
+          <TouchableOpacity style={{marginTop:30, borderRadius: 40, overflow: 'hidden',  height: 35, width: "100%", alignSelf:'center', backgroundColor:constants.ORANGE, justifyContent:'center', alignItems: 'center', borderRadius:30}} onPress={()=>{
+               // if (!(validateCard(cardNumber(cardNumber)) && validateExp(expMonth, expYear)))
+              // valid = true;
+               if (!valid) {
+                  setError(true);
+                  console.log('error');
+                  return;
+              }
+              setState(localState);
+              setChanged(true);
+              close();
+              }}>
+                  <LinearGradient style={{width: '100%', height: '100%',
+                  justifyContent: 'center', alignItems: 'center',}}
+                  colors={[constants.YELLOW, constants.ORANGE]}
+                  start={{ x: 0, y: 1 }} end={{ x: 1, y: 1 }}
+                  >
+                  <Text style={{color: 'white'}}>confirm</Text>
+                  </LinearGradient>
+                  </TouchableOpacity>
+              
+          </ScrollView>
+          
+}
+
+const ShippingModal = ({state, setState, close, setChanged}) => {
+  const [localState, setLocalState] = useState(state);
+  // const [cardNumber, setCardNumber] = useState('');
+  // const [expMonth, setExpMonth] = useState('');
+  // const [expYear, setExpYear] = useState('');
+  // const [sec, setSec] = useState('');
+  
+  // const [name, setName] = useState('');
+  var valid = false;
+  const [error, setError] = useState(false);
+  return <View style={{paddingLeft: 30, paddingRight: 30, borderTopLeftRadius: 40, borderTopRightRadius: 40, backgroundColor:'white', zIndex: 50}}>
+          <Text style={{alignSelf: 'center',fontSize: 15, fontFamily: constants.FONT, fontWeight: 'bold'}}>Shipping Address</Text>
+          <Text style={{color: 'red', opacity: error?1:0}}>Please review your information for errors</Text>
+          <Text style={{marginLeft: 10, marginTop: 10, marginBottom: 5}}>Full Name</Text>
+          <TextInput defaultValue={localState.name} onChangeText={(text)=> {
+              localState.name = text;
+          }} style={styles.textbox} />
+          <Text style={{marginLeft: 10, marginTop: 15, marginBottom: 5}}>Address</Text>
+          <TextInput defaultValue={localState.addressLine1} onChangeText={(text)=> {
+              localState.addressLine1 = text;
+          }} style={styles.textbox} />
+
+          <View style={{flexDirection: 'row', justifyContent:'space-between'}}>
+              <View style={{flex: 1, marginRight: 20}}>
+          <Text style={{marginLeft: 10, marginTop: 15, marginBottom: 5}}>City</Text>
+          <TextInput defaultValue={localState.addressCity} onChangeText={(text)=> {
+              localState.addressCity = text;
+          }} style={styles.textbox} />
+                      </View>
+                      <View >
+                      <Text style={{marginLeft: 10, marginTop: 15, marginBottom: 5}}>State</Text>
+          <TextInput defaultValue={localState.addressState} onChangeText={(text)=> {
+              localState.addressState = text;
+          }} style={styles.textbox} />
+                      </View>
+                      {/* <View>
+                      <Text style={{marginLeft: 10, marginTop: 15, marginBottom: 5}}>Country</Text>
+          <TextInput defaultValue={localState.addressCountry} onChangeText={(text)=> {
+              localState.addressCountry = text;
+          }} style={styles.textbox} />
+          </View> */}
+          </View>            
+          <Text style={{marginLeft: 10, marginTop: 15, marginBottom: 5}}>Zip Code</Text>
+          <TextInput defaultValue={localState.addressZip} onChangeText={(text)=> {
+              localState.addressZip = text;
+          }} style={styles.textbox} />
+
+          <TouchableOpacity style={{marginTop:30, borderRadius: 40, overflow: 'hidden',  height: 35, width: "100%", alignSelf:'center', backgroundColor:constants.ORANGE, justifyContent:'center', alignItems: 'center', borderRadius:30}} onPress={()=>{
+               // if (!(validateCard(cardNumber(cardNumber)) && validateExp(expMonth, expYear)))
+              valid = true;
+               if (!valid) {
+                  setError(true);
+                  console.log('error');
+                  return;
+              }
+              setState(localState);
+              setChanged(true);
+              close();
+              }}>
+                  <LinearGradient style={{width: '100%', height: '100%',
+                  justifyContent: 'center', alignItems: 'center',}}
+                  colors={[constants.YELLOW, constants.ORANGE]}
+                  start={{ x: 0, y: 1 }} end={{ x: 1, y: 1 }}
+                  >
+                  <Text style={{color: 'white'}}>confirm</Text>
+                  </LinearGradient>
+                  </TouchableOpacity>
+              
+          </View>
+          
+}
 
 const styles = StyleSheet.create({
   inputStyle: {
