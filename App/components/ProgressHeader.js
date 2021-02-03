@@ -123,11 +123,17 @@ const ProgressHeader = ({
         />
         {result}
       </View>
-      <TouchableOpacity
-        style={{
+      <View style={{
           position: 'absolute',
           right: 20,
-          bottom: 5,
+          bottom: 25,
+          padding: 10, height: 40, backgroundColor: constants.ORANGE, width: 60, borderRadius: 30, opacity: canGoNext ? 1 : 0.2,
+
+          }}>
+      <TouchableOpacity
+        style={{
+          width: '100%',
+          height: '100%',
         }}
         onPress={() => {
           if (index === number - 1) {
@@ -152,7 +158,7 @@ const ProgressHeader = ({
             opacity: canGoNext ? 1 : 0.2,
           }}
           source={require('App/Assets/Images/Orange_Gradient_Small.png')}> */}
-          <View style={{marginBottom: 25, justifyContent: 'center', padding: 10, height: 40, backgroundColor: constants.ORANGE, width: 60, borderRadius: 30, opacity: canGoNext ? 1 : 0.2,}}>
+          <View>
           <Text
             style={{
               textAlign: 'center',
@@ -164,6 +170,7 @@ const ProgressHeader = ({
           </View>
         {/* </ImageBackground> */}
       </TouchableOpacity>
+      </View>
       {renderGoBack()}
     </View>
   );

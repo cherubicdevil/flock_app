@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, SafeAreaView, TouchableOpacity, Button, Modal, TextInput, Switch} from 'react-native';
+import {View, Text, SafeAreaView, TouchableOpacity, Button, Modal, TextInput, Switch, ScrollView} from 'react-native';
 import stripe from 'tipsi-stripe';
 import {PaymentCardTextField} from 'tipsi-stripe';
 import AnimatedModal from 'App/components/AnimatedModal';
@@ -72,7 +72,7 @@ const Checkout = ({navigation, route}) => {
     return <>
     <SafeAreaView style={{flex: 1,backgroundColor: constants.TRANSLUCENT}}>
         <HeaderGradient title="Checkout" navigation={navigation} absolute={false} >
-        <Text style={{fontFamily: constants.FONT, fontSize: 18, marginTop: -10}}>Checkout</Text>
+        {/* <Text style={{fontFamily: constants.FONT, fontSize: 18, marginTop: -10}}>Checkout</Text> */}
         </HeaderGradient>
 
         <View style={{flex: 1, backgroundColor: constants.PINK_BACKGROUND,}}>
@@ -252,7 +252,7 @@ const BillingModal = ({state, setState, close, setChanged}) => {
     const placeholderColor = localState.number === ''?'grey':'black';
     const numberPlaceholder= localState.number=== ''?'4242424242424242':localState.number;
     const expirationPlaceholder = localState.expMonth === ''?"MM/YY":localState.expMonth+"/"+localState.expYear;
-    return <View style={{paddingLeft: 30, paddingRight: 30, borderTopLeftRadius: 40, borderTopRightRadius: 40, backgroundColor:'white', zIndex: 50}}>
+    return <ScrollView style={{paddingLeft: 30, paddingRight: 30, borderTopLeftRadius: 40, borderTopRightRadius: 40, backgroundColor:'white', zIndex: 50}}>
            <Text style={{color: 'red', opacity: error?1:0}}>Please review your information for errors</Text>
            <Text style={{alignSelf: 'center',fontSize: 15, fontFamily: constants.FONT, fontWeight: 'bold'}}>Billing Information</Text>
             <Text style={{marginLeft: 10, marginTop: 10, marginBottom: 5}}>Card</Text>
@@ -299,7 +299,7 @@ const BillingModal = ({state, setState, close, setChanged}) => {
                     </LinearGradient>
                     </TouchableOpacity>
                 
-            </View>
+            </ScrollView>
             
 }
 

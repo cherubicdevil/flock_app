@@ -262,6 +262,7 @@ const Product = ({route, navigation}) => {
       }}><Icon name="times" size={35} color={constants.LIGHTGREY} /></TouchableOpacity>
     }
   }
+  console.log("URLSSSS:", route.params.album.url);
     return (
       <View style={{flex: 1, backgroundColor: constants.PINK_BACKGROUND}}>
                             {renderBackOrClose()}
@@ -550,7 +551,7 @@ const FlockList = ({product, navigation, ar, limited = true}) => {
       <TouchableOpacity style={{paddingLeft: 10, paddingRight: 10,}}
       onPress={tempFunc}>
         
-      <Text style={{color: 'black', fontFamily: constants.FONT, fontWeight: 'bold', fontSize: 13}}>${ar[i].product.price - paidFor} to go</Text>
+      <Text style={{color: 'black', fontFamily: constants.FONT, fontWeight: 'bold', fontSize: 13}}>${(ar[i].product.price - paidFor).toFixed(2)} to go</Text>
       </TouchableOpacity>
       </View>
       </View>

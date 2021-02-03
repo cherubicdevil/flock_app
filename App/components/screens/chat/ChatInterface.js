@@ -196,7 +196,7 @@ function ChatInterface({route, navigation}) {
     const dial = <Dialog.Container visible={dialVisible}>
     <Dialog.Title>Confirm Change</Dialog.Title>
     <Dialog.Description>
-      You will not be charged immediately, only if and when the flock completes.
+      You will only be charged if the flock completes.
     </Dialog.Description>
     <Dialog.Button label="Cancel" onPress={()=>{
       setDataValue(data);

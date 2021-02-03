@@ -118,16 +118,16 @@ const AddItem = ({image, text, navigation, route}) => {
   navigation.navigate('CamScreen', {data: {}});
 
   }} style={{height: '100%', width: '100%', justifyContent: 'center'}}>
-    <Text style={{alignSelf: 'center', color: constants.PURPLE, fontFamily: constants.FONT, fontSize: 24}}>
+    <Text style={{alignSelf: 'center', color: constants.ORANGE, fontFamily: constants.FONT, fontSize: 24}}>
       Add Product to Flock
     </Text>
     </TouchableOpacity></View></View>
 <View style={{flex: 1}}>
-<View style={{height: 70, borderRadius: 40, backgroundColor: 'rgba(255,255,255,0.6)', marginLeft: 20, marginRight: 20, justifyContent: 'center'}}><TouchableOpacity onPress={()=>{
+<View style={{height: 70, borderRadius: 40, backgroundColor: constants.DARKGREY, marginLeft: 20, marginRight: 20, justifyContent: 'center'}}><TouchableOpacity onPress={()=>{
   setModalOpen(false);
   // navigation.navigate('CamScreen');
 
-  }} style={{height: '100%', width: '100%', justifyContent: 'center'}}><Text style={{alignSelf: 'center', color: constants.PURPLE, fontFamily: constants.FONT, fontSize: 24}}>Cancel</Text></TouchableOpacity></View>
+  }} style={{height: '100%', width: '100%', justifyContent: 'center'}}><Text style={{alignSelf: 'center', color: 'white', fontFamily: constants.FONT, fontSize: 24}}>Cancel</Text></TouchableOpacity></View>
 </View>
       </View>} viewParams={{width:1500, height: 1500, left: -300, bottom: -200}} bgcolor="transparent" upPercent="25%"/>
       <TouchableOpacity

@@ -121,7 +121,7 @@ const CamScreenTwo = ({navigation, route}) => {
   const [titleState, setTitleState] = useState(null);
   const [descState, setDescState] = useState(null);
   const [priceState, setPriceState] = useState(0);
-  var dataUrl = "";
+  const [dataUrl, setDataUrl] = useState("");
   const [enlarge, setEnlarge] = useState(false);
   const animation = useRef(new Animated.Value(90));
   //var searchUrl = '';
@@ -206,7 +206,7 @@ const CamScreenTwo = ({navigation, route}) => {
                   if (text === "") {
                     setPriceState("");
                 } else {
-                    setPriceState(parseInt(text.replace(".","").replace("$",""))/100);
+                    setPriceState(parseInt(text.replace(".","").replace("$","").replace(/\D/g,''))/100);
                     console.log(parseInt(text.replace(".","").replace("$",""))/100);
                 }
                 }}
@@ -350,7 +350,7 @@ const CamScreenTwo = ({navigation, route}) => {
           }}
         />
         
-        <View style={{flex: 1, zIndex: -100, backgroundColor: constants.PINK_BACKGROUND}}>
+        <ScrollView scrollEnabled={false} style={{flex: 1, zIndex: -100, backgroundColor: constants.PINK_BACKGROUND}}>
           <View style={{paddingLeft: 20, paddingTop: 10, paddingRight: 20, backgroundColor: 'white'}}>
             
             <TouchableOpacity style={[{padding: 10, backgroundColor: 'white', borderRadius: 50, borderWidth: 1, borderColor: constants.DARKGREY}]} value={""} onPress={()=>{
@@ -362,7 +362,7 @@ const CamScreenTwo = ({navigation, route}) => {
             </TouchableOpacity>
           </View>
           {renderForm()}
-        </View>
+        </ScrollView>
       </View>
       <View style={{position: 'absolute', zIndex: 10000, height:loading?50:0, width: loading?50:0, backgroundColor: 'black'}} />
     </KeyboardAvoidingView>
@@ -403,6 +403,7 @@ const CamScreenTwo = ({navigation, route}) => {
           setImageState(result.image);
           setTitleState(result.title);
           setPriceState(result.price);
+          setDataUrl(urlState);
           setModalOpen(false);
           }}>
           <Text style={{color: 'white'}}>import</Text>
@@ -423,6 +424,7 @@ const CamScreenTwo = ({navigation, route}) => {
                 onNavigationStateChange={(webViewState) => {
                   setUrlState(webViewState.url);
                   setSearchUrl(webViewState.url);
+                  
                 }}
                 style={{
                   backgroundColor: enlarge ? 'white' : 'transparent',
