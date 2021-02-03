@@ -11,6 +11,7 @@ import {
   SafeAreaView,
   ScrollView,
 } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import ImagePicker from 'react-native-image-picker';
 import {constants} from 'App/constants';
 //import Input from 'App/components/common/Input';
@@ -22,7 +23,7 @@ import {useDispatch} from 'react-redux';
 
 // global.atob = Base64.encode;
 
-const ProfilePicture = () => {
+const ProfilePicture = ({setOpenModal}) => {
 
   const user = firebase.auth().currentUser;
   const options = {
@@ -34,7 +35,7 @@ const ProfilePicture = () => {
     //user.photoUrl,
     uri: user.photoURL || '',
   });
-  const [openModal, setOpenModal] = useState(false);
+
 
   const getResponse = (response) => {
     //console.log('Response = ', response);
@@ -57,40 +58,37 @@ const ProfilePicture = () => {
   //ImagePicker.launchImageLibrary(options, getResponse);
   return (
     <View style={{zIndex: 300}}>
-      <OptionsModal
-        style={{zIndex: 300}}
-        text1="Take Photo"
-        text2="Choose from Library"
-        func1={() => {
-          ImagePicker.launchCamera(options, getResponse);
-        }}
-        func2={() => {
-          console.log('launcghin');
-          ImagePicker.launchImageLibrary(options, getResponse);
-        }}
-        toggleFunc={() => {
-          setOpenModal(false);
-        }}
-        modalVisible={openModal}
-      />
       <View
+      borderRadius={60}
+      resizeMode='cover'
         style={{
           // alignSelf: 'flex-start',
           marginLeft: 30,
           width: 120,
           height: 120,
-          borderRadius: 60,
+          // borderRadius: 60,
+          borderWidth:2,
+          borderColor: constants.LAVENDER,
+          overflow: 'hidden',
+          borderRadius: 100,
+          zIndex: 400,
+          // justifyContent: 'center',
         }}>
         <Image
-          style={{width: 120, height: 120, borderRadius: 60}}
+          style={{width: 120, height: 120, borderRadius: 60, }}
           source={avatar}
+          defaultSource={constants.PLACEHOLDER_IMAGE}
         />
+        {/* <View style={{position: 'absolute', bottom: 20, zIndex: -200, height: 20, backgroundColor: 'yellow', width: '100%', overflow: 'hidden'}}> */}
+
+        {/* </View> */}
         <TouchableOpacity
+        style={{position: 'absolute', height: 20, width: '100%', justifyContent: 'center', bottom: 0, alignSelf: 'center', backgroundColor: 'rgba(0,0,0,0.4)'}}
           onPress={() => {
             setOpenModal(true);
             //ImagePicker.showImagePicker(options, getResponse);
           }}>
-          <Text style={{textAlign: 'center', color: constants.RED}}>
+          <Text style={{textAlign: 'center', color: 'rgba(255,50,0,1)'}}>
             Change
           </Text>
         </TouchableOpacity>
@@ -172,6 +170,8 @@ const uploadImage = async ({data, filename, uri}) => {
 };
 
 const Profile = ({navigation}) => {
+  const [openModal, setOpenModal] = useState(false);
+
   const dispatch = useDispatch();
   const user = firebase.auth().currentUser;
   const settings = {
@@ -208,7 +208,7 @@ const Profile = ({navigation}) => {
   };
   const bioRef = useRef(null);
 
-  const [modalOpen, setModalOpen] = useState(false);
+  // const [modalOpen, setModalOpen] = useState(false);
 
   const [username, setUserName] = useState(user.displayName || '');
   const [email, setEmail] = useState(user.email || '');
@@ -305,13 +305,30 @@ const Profile = ({navigation}) => {
   };
   useEffect(() => {}, []);
   return (
+    <>
+    <OptionsModal
+        style={{zIndex: 300}}
+        text1="Take Photo"
+        text2="Choose from Library"
+        func1={() => {
+          ImagePicker.launchCamera(options, getResponse);
+        }}
+        func2={() => {
+          console.log('launcghin');
+          ImagePicker.launchImageLibrary(options, getResponse);
+        }}
+        toggleFunc={() => {
+          setOpenModal(false);
+        }}
+        modalVisible={openModal}
+      />
     <SafeAreaView style={{flex: 1, paddingLeft: 30, paddingRight: 20, backgroundColor: constants.PINK_BACKGROUND}}>
       <ScrollView style={{paddingTop: 20}}>
         <Text style={{fontSize: 24, textAlign: 'center', marginBottom: 20}}>
           Edit Profile
         </Text>
         <View style={{flexDirection: 'row'}}>
-        <ProfilePicture />
+        <ProfilePicture setOpenModal={setOpenModal} />
 
         <View style={{flex: 1, marginLeft: 20, justifyContent: 'flex-start'}}>
           {/* {renderFormBoxes()} */}
@@ -320,7 +337,26 @@ const Profile = ({navigation}) => {
           {renderFormBox(0.5, "Bio", "bio", "bio", bio, setBio, 2)}
         </View>
         </View>
-        <View style={{flex: 1}} />
+        <View style={{flex: 1, marginTop: 20,}} >
+        <View style={[styles.row, {justifyContent: 'space-between'}]}>
+            <TouchableOpacity 
+            style={{marginRight: 10,width: '100%', justifyContent: 'space-between', flexDirection:'row'}}
+            onPress={()=>{
+                setBillModal(true);
+            }}><Text>Billing information</Text>
+            <Icon name="chevron-right" size={20} />
+            </TouchableOpacity>
+        </View>
+        <View style={[styles.row, {justifyContent: 'space-between'}]}>
+            <TouchableOpacity 
+            style={{marginRight: 10,width: '100%', justifyContent: 'space-between', flexDirection:'row'}}
+            onPress={()=>{
+                setBillModal(true);
+            }}><Text>Shipping information</Text>
+            <Icon name="chevron-right" size={20} />
+            </TouchableOpacity>
+        </View>
+        </View>
         <View style={{justifyContent: 'center', flexDirection: 'row', marginTop: 50}}>
           <TouchableOpacity
             style={{
@@ -379,6 +415,7 @@ const Profile = ({navigation}) => {
         </View>
       </ScrollView>
     </SafeAreaView>
+    </>
   );
 };
 
@@ -389,6 +426,8 @@ const styles = StyleSheet.create({
     borderRadius: 3,
     borderWidth: 1,
   },
+  textbox: {borderWidth: 1, borderColor: constants.DARKGREY, borderRadius: 30, padding: 10, paddingBottom: 10, paddingTop: 10, fontSize: 18},
+  row: {width: '100%', marginLeft: 10, borderBottomWidth: 2, borderColor: constants.PINK_BACKGROUND,paddingHorizontal:20, paddingVertical:20},
 });
 
 export default Profile;
