@@ -64,11 +64,13 @@ const Checkout = ({navigation, route}) => {
         addressZip: '55555',
       });
     
-      const shipMain = 23.99;
+      
+      const shipConst = 23.99;
       const dollars = parseFloat((select.eggCoins / constants.EGG_RATIO).toFixed(2));
-      const reductionDollars = Math.min(dollars, route.params.subtotal+shipMain);
+      const reductionDollars = Math.min(dollars, shipConst);
       const reductionEggs = Math.round(reductionDollars * constants.EGG_RATIO);
-      const amount = tog?(shipMain + route.params.subtotal - reductionDollars).toFixed(2):(shipMain + route.params.subtotal).toFixed(2);
+      const shipMain = tog?((shipConst - reductionDollars).toFixed(2)):shipConst;
+      const amount = parseFloat(shipMain + route.params.subtotal).toFixed(2);
     return <>
     <SafeAreaView style={{flex: 1,backgroundColor: constants.TRANSLUCENT}}>
         <HeaderGradient title="Checkout" navigation={navigation} absolute={false} >
@@ -117,7 +119,7 @@ const Checkout = ({navigation, route}) => {
             </View>
         <View style={{flexDirection: 'row', width: '100%', marginVertical: 15, justifyContent: 'space-between'}}>
             <Text>Shipping and Maintenance</Text>
-            <Text>${shipMain}</Text>
+            <Text style={{color: tog?constants.ORANGE:'black'}}>${shipMain}</Text>
             </View>
             <View style={{flexDirection: 'row', width: '100%',  justifyContent: 'space-between', borderTopWidth: 1, borderColor: constants.PINK_BACKGROUND, paddingTop: 10}}>
             <Text style={{fontWeight: 'bold', }}>Total</Text>

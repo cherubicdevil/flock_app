@@ -16,6 +16,7 @@ import {
   TouchableWithoutFeedback,
   TextInput
 } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import Dialog from 'react-native-dialog';
 import {firebase, db, auth} from 'App/firebase/config';
 import io from 'socket.io-client';
@@ -210,14 +211,11 @@ function ChatInterface({route, navigation}) {
       setDialVisible(false);
     }}/>
   </Dialog.Container>;
-    return <View style={{flexDirection:'row'}}><TextInput
+    return <View style={{flexDirection:'row', alignItems: 'center'}}><TextInput
     // contextMenuHidden={numeric}
     style={{width: 75, backgroundColor: 'white', borderRadius: 40, paddingLeft: 20}}
     keyboardType={"numeric"}
     blurOnSubmit placeholder={"0.00"} onBlur = {(e)=> {
-      if (dataValue !== data) {
-        setDialVisible(true);
-      }
         // console.log("BLUR", e.nativeEvent.text);
     }} 
     value={(typeof dataValue)==="string"?dataValue:dataValue.toFixed(2)}
@@ -232,7 +230,16 @@ function ChatInterface({route, navigation}) {
     
     />
     {dial}
-    <Text style={{color: 'white', marginLeft: 10, width: 150}}>{100*(parseInt(dataValue) / route.params.data.product.price)>100?"100%":100*(parseInt(dataValue) / route.params.data.product.price)<1?"<1%":(100*parseInt(dataValue) / route.params.data.product.price).toFixed(0) + "%"}</Text>
+    <Text style={{color: 'white', marginLeft: 10, width: 30}}>{100*(parseInt(dataValue) / route.params.data.product.price)>100?"100%":100*(parseInt(dataValue) / route.params.data.product.price)<1?"<1%":(100*parseInt(dataValue) / route.params.data.product.price).toFixed(0) + "%"}</Text>
+    <TouchableOpacity onPress={()=>{
+      if (dataValue !== data) {
+      setDialVisible(true);
+      }
+    }}>
+      <View style={{marginLeft: 10, borderRadius: 40, backgroundColor: 'green'}}>
+      <Icon name="check" size={10} color="white" />
+      </View>
+      </TouchableOpacity>
     </View>;
 }
 return <ScrollView  style={{marginLeft: 15}} keyboardShouldPersistTaps="never">
