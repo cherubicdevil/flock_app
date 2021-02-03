@@ -142,7 +142,7 @@ const Product = ({route, navigation}) => {
     // }, 2000);
     return () => {
       // clearInterval(interval);
-      setTutorialScreen(false);
+      // setTutorialScreen(false);
     };
   },[]);
 
