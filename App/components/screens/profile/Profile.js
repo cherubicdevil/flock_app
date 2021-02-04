@@ -21,6 +21,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import {firebase, auth, db} from 'App/firebase/config';
 import OptionsModal from 'App/navigators/OptionsModal';
 import {useDispatch} from 'react-redux';
+import {validateCard} from 'App/utils';
 // FLOCK_TODO: make this into an npm module so I don't have to put it here.
 //import Base64 from 'base-64';
 
@@ -462,8 +463,7 @@ const BillingModal = ({state, setState, close, setChanged}) => {
   return <ScrollView style={{paddingLeft: 30, paddingRight: 30, borderTopLeftRadius: 40, borderTopRightRadius: 40, backgroundColor:'white', zIndex: 50}}>
          <Text style={{color: 'red', opacity: error?1:0}}>Please review your information for errors</Text>
          <Text style={{alignSelf: 'center',fontSize: 15, fontFamily: constants.FONT, fontWeight: 'bold'}}>Billing Information</Text>
-          <Text style={{marginLeft: 10, marginTop: 10, marginBottom: 5}}>Card</Text>
-          <PaymentCardTextField style={[styles.textbox,{marginTop: 0, }]} 
+          <PaymentCard style={[styles.textbox,{marginTop: 0, }]} 
           onParamsChange={(valid, params) => {
               // setValid(valid);
               // setCardNumber(params.number);
@@ -580,6 +580,42 @@ const ShippingModal = ({state, setState, close, setChanged}) => {
               
           </View>
           
+
+}
+
+const PaymentCard = () => {
+  const exp = useRef();
+  const cvc = useRef();
+  const [cardNumber, setCardNumber] = useState("");
+  const valid = validateCard(cardNumber);
+  const invalidLength = cardNumber.length < 15;
+  console.log(valid, cardNumber.length);
+  
+  return <View>
+    <View>
+      <Text style={{marginLeft: 10}}>Card</Text>
+    <TextInput style={[styles.textbox,{color: valid || invalidLength?'black':'red'}]} onChangeText={(text)=>{
+      setCardNumber(text);
+      if (text.length >= 16) {
+        exp.current.focus();
+      }
+    }} />
+    </View>
+
+    <View style={{flexDirection: 'row'}}>
+      <View style={{marginTop: 20, flex: 2}}>
+        <Text style={{marginLeft: 10,}}>Exp Date</Text>
+      <TextInput keyboardType="numeric" ref = {exp} style={styles.textbox} onChangeText={(text)=>{
+
+      }}
+      />
+      </View>
+      <View style={{marginTop: 20, flex: 1, marginLeft: 10}}>
+        <Text style={{marginLeft: 10}}>CVC</Text>
+      <TextInput ref = {cvc} style={styles.textbox} />
+      </View>
+    </View>
+  </View>
 }
 
 const styles = StyleSheet.create({

@@ -697,6 +697,27 @@ const rentPrice = (totalPrice) => {
 return (totalPrice /25 * 1.4 + 23.99).toFixed(2);
 }
 
+function validateCard (value) {
+  // Accept only digits, dashes or spaces
+    if (/[^0-9-\s]+/.test(value)) return false;
+
+    // The Luhn Algorithm. It's so pretty.
+    let nCheck = 0, bEven = false;
+    value = value.replace(/\D/g, "");
+
+    for (var n = value.length - 1; n >= 0; n--) {
+        var cDigit = value.charAt(n),
+              nDigit = parseInt(cDigit, 10);
+
+        if (bEven && (nDigit *= 2) > 9) nDigit -= 9;
+
+        nCheck += nDigit;
+        bEven = !bEven;
+    }
+
+    return (nCheck % 10) == 0;
+}
+
 export {
   rentPrice,
   fetchStreamableSource,
@@ -719,5 +740,6 @@ export {
   shareActions,
   generateUserObject,
   shuffle,
-  pinLocalFunc
+  pinLocalFunc,
+  validateCard
 };
