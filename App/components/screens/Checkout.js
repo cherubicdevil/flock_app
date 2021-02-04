@@ -11,6 +11,7 @@ import {useFocusEffect} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import moment from 'moment';
 import LinearGradient from 'react-native-linear-gradient';
+import {createOrUpdate} from 'App/utils';
 
 const fetchCustomerInfo = (customerId) =>{
     return new Promise((resolve) => {
@@ -141,49 +142,15 @@ const Checkout = ({navigation, route}) => {
  
             </View>
                 <TouchableOpacity style={{width: '90%',height: 40, overflow: 'hidden', borderRadius: 40, marginHorizontal:20,}} onPress={async ()=>{
-            // route.params.doneFunc();
-            const token = await stripe.createTokenWithCard(info);
-            console.log("token", token);
-            // const endpoint = constants.PAY_ENDPOINT + `?price=${100}&token=${token.tokenId}`;
-            // fetch(endpoint);
-
-            //create customer if no customerid
-            var createCustomerEndpoint = constants.CUSTOMER_ENDPOINT + "?token=" + token.tokenId;
-            if (!hasId) {
-                console.log('credit card make');;
-            var cId;
-            fetch(createCustomerEndpoint).then(resp=>{
-                resp.json().then((cid)=>{
-                    console.log("CUSTOMERID", cid.id);
-                    dispatch({type: "UPDATE_DATA", payload: ['customerId',null, null,res.id]})
-                    db.collection('users').doc(auth.currentUser.uid).update({customerId: cid.id}).catch(err=>{
-                        console.log(err);
-                    });
-                    var chargeCustomerEndpoint = constants.CHARGE_CUSTOMER + "?id="+cid.id+"&amount="+ amount*100;
-                    fetch(chargeCustomerEndpoint).then(()=>{
-                        console.log('done');
-                    }).catch(err=>{
-                        console.log(err);
-                    });
-                })
+            createOrUpdate(hasId, customerId, info).then((cid) => {
+                var chargeCustomerEndpoint = constants.CHARGE_CUSTOMER + "?id="+cid+"&amount="+ amount*100;
+          fetch(chargeCustomerEndpoint).then(()=>{
+              console.log('done');
+          }).catch(err=>{
+              console.log(err);
+          });
             });
-            
-            } else {
-                console.log('already had');
-                console.log(customerId);
-                if (changed) {
-                await fetch(constants.UPDATE_CUST, {
-                    method: 'POST',
-                    body: JSON.stringify({info: info, id: customerId}),
-                    headers: { 'Content-Type': 'application/json' }
-                });
-            }
-                var chargeCustomerEndpoint = constants.CHARGE_CUSTOMER + "?id="+customerId+"&amount="+ amount*100;
-            await fetch(chargeCustomerEndpoint);
-            }
 
-            // charge customer
-            console.log(token);
             if (route.params.doneFunc) {
                 route.params.doneFunc();
             }

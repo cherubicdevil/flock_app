@@ -428,6 +428,10 @@ const Profile = ({navigation}) => {
               });
               user.reload();
               console.log("updated", username, email)
+
+              if (changed) { // update credit card
+
+              }
             }}>
             <Text
               style={{

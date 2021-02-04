@@ -51,6 +51,7 @@ import { AppInstalledChecker, CheckPackageInstallation } from 'react-native-chec
 import CameraRoll from '@react-native-community/cameraroll';
 const cheerio = require('react-native-cheerio')
 const stringSimilarity = require("string-similarity");
+import stripe from 'tipsi-stripe';
 // var sizeOf = require('image-size');
 
 
@@ -716,6 +717,44 @@ function validateCard (value) {
     }
 
     return (nCheck % 10) == 0;
+}
+
+
+const createOrUpdate = async (hasId, customerId, info) => {
+  return new Promise(async (resolve) => {
+    if (!hasId) {
+      const token = await stripe.createTokenWithCard(info);
+      console.log("token", token);
+      // const endpoint = constants.PAY_ENDPOINT + `?price=${100}&token=${token.tokenId}`;
+      // fetch(endpoint);
+    
+      //create customer if no customerid
+      var createCustomerEndpoint = constants.CUSTOMER_ENDPOINT + "?token=" + token.tokenId;
+    fetch(createCustomerEndpoint).then(resp=>{
+      resp.json().then((cid)=>{
+          console.log("CUSTOMERID", cid.id);
+          dispatch({type: "UPDATE_DATA", payload: ['customerId',null, null,res.id]})
+          db.collection('users').doc(auth.currentUser.uid).update({customerId: cid.id}).catch(err=>{
+              console.log(err);
+          });
+          resolve(cid.id);
+      })
+    });
+    
+    } else {
+      console.log('already had');
+      console.log(customerId);
+      if (changed) {
+      await fetch(constants.UPDATE_CUST, {
+          method: 'POST',
+          body: JSON.stringify({info: info, id: customerId}),
+          headers: { 'Content-Type': 'application/json' }
+      });
+    }
+      resolve(customerId);
+    }
+  });
+
 }
 
 export {
