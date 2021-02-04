@@ -13,6 +13,7 @@ import {
   KeyboardAvoidingView,
 } from 'react-native';
 import {PaymentCardTextField} from 'tipsi-stripe';
+import {createOrUpdate} from 'App/utils';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import AnimatedModal from 'App/components/AnimatedModal';
 import ImagePicker from 'react-native-image-picker';
@@ -181,32 +182,40 @@ const Profile = ({navigation}) => {
   const [shipModal, setShipModal] = useState(false);
 
   const [changed, setChanged] = useState(false);
-
+  var hasId = false;
   const select = useSelector(state=>state.userInfo);
 
   useEffect(()=>{
     if (select.customerId === "none" || select.customerId === undefined) {
       console.log("NOETAPPLCABE", select.customerId);
+      hasId = false;
     } else {
       console.log("EHEREIT IS", select.customerId);
+      hasId = true;
+      fetch(constants.RETR_CUST +"?id="+select.customerId).then((res) =>{
+        res.json().then((data)=>{
+          setInfo(data);
+        console.log(data);
+        })
+      })
     }
   }, [select.customerId]);
 
   const [info, setInfo] = useState({
     // mandatory
-    number: '4000000000000077',
-    expMonth: 11,
-    expYear: 23,
-    cvc: '223',
+    number: '',
+    expMonth: null,
+    expYear: null,
+    cvc: '',
     // optional
-    name: 'Test User',
+    name: '',
     currency: 'usd',
-    addressLine1: '123 Test Street',
-    addressLine2: 'Apt. 5',
-    addressCity: 'Test City',
-    addressState: 'Test State',
-    addressCountry: 'Test Country',
-    addressZip: '55555',
+    addressLine1: '',
+    addressLine2: '',
+    addressCity: '',
+    addressState: '',
+    addressCountry: 'USA',
+    addressZip: '',
   });
 
   const dispatch = useDispatch();
@@ -440,7 +449,10 @@ const Profile = ({navigation}) => {
               console.log("updated", username, email)
 
               if (changed) { // update credit card
-
+                createOrUpdate(hasId, select.customerId, info).then((id)=>{
+                  dispatch({type:'UPDATE_DATA', payload: ["customerId", null, null, id]});
+                  console.log('done in profile change')
+                })
               }
             }}>
             <Text
@@ -480,6 +492,7 @@ const BillingModal = ({state, setState, close, setChanged}) => {
          <Text style={{color: 'red', opacity: error?1:0}}>Please review your information for errors</Text>
          <Text style={{alignSelf: 'center',fontSize: 15, fontFamily: constants.FONT, fontWeight: 'bold'}}>Billing Information</Text>
           <PaymentCard
+          state={state}
           onParamsChange={(valid, params) => {
             console.log('changing');
               // setValid(valid);
@@ -600,7 +613,7 @@ const ShippingModal = ({state, setState, close, setChanged}) => {
 
 }
 
-const PaymentCard = ({onParamsChange=()=>{}}) => {
+const PaymentCard = ({onParamsChange=()=>{}, state}) => {
   const cardRef = useRef();
   const exp = useRef();
   const cvc = useRef();
@@ -617,7 +630,7 @@ const PaymentCard = ({onParamsChange=()=>{}}) => {
   return <View>
     <View>
       <Text style={{marginLeft: 10}}>Card</Text>
-    <TextInput value={cardNumber} ref = {cardRef} keyboardType="numeric" style={[styles.textbox,{color: valid || invalidLength?'black':'red'}]} onChangeText={(text)=>{
+    <TextInput defaultValue={state.number} value={cardNumber} ref = {cardRef} keyboardType="numeric" style={[styles.textbox,{color: valid || invalidLength?'black':'red'}]} onChangeText={(text)=>{
       const currValid = validateCard(text);
       const allValid = currValid && expDate.length == 5 && cvcVal.length == 3;
       onParamsChange(allValid, {number: text, expMonth: expDate.split("/")[0], expYear: expDate.split("/")[1] || "", cvc: cvcVal});
@@ -635,7 +648,7 @@ const PaymentCard = ({onParamsChange=()=>{}}) => {
     <View style={{flexDirection: 'row'}}>
       <View style={{marginTop: 20, flex: 2}}>
         <Text style={{marginLeft: 10,}}>Exp Date</Text>
-      <TextInput value = {expDate} placeholder="MM/YY" keyboardType="numeric" ref = {exp} style={styles.textbox}
+      <TextInput defaultValue={state.expMonth + "/" + state.expYear} value = {expDate} placeholder="MM/YY" keyboardType="numeric" ref = {exp} style={styles.textbox}
       onKeyPress={({nativeEvent})=>{
         console.log(expDate, nativeEvent.key);
         if (nativeEvent.key === 'Backspace') {
@@ -691,7 +704,7 @@ const PaymentCard = ({onParamsChange=()=>{}}) => {
       </View>
       <View style={{marginTop: 20, flex: 1, marginLeft: 10}}>
         <Text style={{marginLeft: 10}}>CVC</Text>
-      <TextInput value={cvcVal} ref = {cvc} maxLength={3} style={styles.textbox} 
+      <TextInput defaultValue = {state.cvc} value={cvcVal} ref = {cvc} maxLength={3} style={styles.textbox} 
       onKeyPress={({nativeEvent})=>{
         if (nativeEvent.key =="Backspace") {
           if (cvcVal === "") {
