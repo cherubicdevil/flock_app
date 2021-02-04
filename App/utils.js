@@ -41,7 +41,7 @@
 */
 
 import {constants} from 'App/constants';
-import {firebase, db} from 'App/firebase/config';
+import {firebase, db, auth} from 'App/firebase/config';
 import ImagePicker from 'react-native-image-picker';
 import {Animated, Share, Linking} from 'react-native';
 import {createThumbnail} from 'react-native-create-thumbnail';
@@ -733,7 +733,7 @@ const createOrUpdate = async (hasId, customerId, info) => {
     fetch(createCustomerEndpoint).then(resp=>{
       resp.json().then((cid)=>{
           console.log("CUSTOMERID", cid.id);
-          dispatch({type: "UPDATE_DATA", payload: ['customerId',null, null,res.id]})
+          
           db.collection('users').doc(auth.currentUser.uid).update({customerId: cid.id}).catch(err=>{
               console.log(err);
           });
@@ -780,5 +780,6 @@ export {
   generateUserObject,
   shuffle,
   pinLocalFunc,
-  validateCard
+  validateCard,
+  createOrUpdate
 };

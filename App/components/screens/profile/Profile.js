@@ -18,6 +18,7 @@ import AnimatedModal from 'App/components/AnimatedModal';
 import ImagePicker from 'react-native-image-picker';
 import {constants} from 'App/constants';
 import LinearGradient from 'react-native-linear-gradient';
+import {useSelector} from 'react-redux';
 //import Input from 'App/components/common/Input';
 import {firebase, auth, db} from 'App/firebase/config';
 import OptionsModal from 'App/navigators/OptionsModal';
@@ -181,6 +182,16 @@ const Profile = ({navigation}) => {
 
   const [changed, setChanged] = useState(false);
 
+  const select = useSelector(state=>state.userInfo);
+
+  useEffect(()=>{
+    if (select.customerId === "none" || select.customerId === undefined) {
+      console.log("NOETAPPLCABE", select.customerId);
+    } else {
+      console.log("EHEREIT IS", select.customerId);
+    }
+  }, [select.customerId]);
+
   const [info, setInfo] = useState({
     // mandatory
     number: '4000000000000077',
@@ -329,7 +340,6 @@ const Profile = ({navigation}) => {
       );
     });
   };
-  useEffect(() => {}, []);
   return (
     <>
     <OptionsModal

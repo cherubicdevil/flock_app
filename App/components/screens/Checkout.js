@@ -144,6 +144,8 @@ const Checkout = ({navigation, route}) => {
                 <TouchableOpacity style={{width: '90%',height: 40, overflow: 'hidden', borderRadius: 40, marginHorizontal:20,}} onPress={async ()=>{
             createOrUpdate(hasId, customerId, info).then((cid) => {
                 var chargeCustomerEndpoint = constants.CHARGE_CUSTOMER + "?id="+cid+"&amount="+ amount*100;
+                dispatch({type: "UPDATE_DATA", payload: ['customerId',null, null,cid]});
+                console.log('customer id, cid', cid);
           fetch(chargeCustomerEndpoint).then(()=>{
               console.log('done');
           }).catch(err=>{
@@ -198,7 +200,7 @@ const BillingModal = ({state, setState, close, setChanged}) => {
            <Text style={{color: 'red', opacity: error?1:0}}>Please review your information for errors</Text>
            <Text style={{alignSelf: 'center',fontSize: 15, fontFamily: constants.FONT, fontWeight: 'bold'}}>Billing Information</Text>
             <Text style={{marginLeft: 10, marginTop: 10, marginBottom: 5}}>Card</Text>
-            <PaymentCardTextField style={[styles.textbox,{marginTop: 0, }]} 
+            <PaymentCardTextField style={styles.textbox} 
             onParamsChange={(valid, params) => {
                 // setValid(valid);
                 // setCardNumber(params.number);
