@@ -591,6 +591,7 @@ const PaymentCard = () => {
   const cvc = useRef();
   const [cardNumber, setCardNumber] = useState("");
   const [expDate, setExpDate] = useState("");
+  const [monthYear, setMonthYear] = useState({month:"", year:""});
   const valid = validateCard(cardNumber) && cardNumber.length < 17;
   const invalidLength = cardNumber.length < 15;
   console.log("IS", valid, cardNumber.length);
@@ -614,18 +615,27 @@ const PaymentCard = () => {
     <View style={{flexDirection: 'row'}}>
       <View style={{marginTop: 20, flex: 2}}>
         <Text style={{marginLeft: 10,}}>Exp Date</Text>
-      <TextInput value = {expDate} placeholder="MM/YY" keyboardType="numeric" ref = {exp} style={styles.textbox}
+      <TextInput value = {monthYear.month+"/"+monthYear.year} placeholder="MM/YY" keyboardType="numeric" ref = {exp} style={styles.textbox}
       onKeyPress={({nativeEvent})=>{
         console.log(expDate, nativeEvent.key);
-        if (expDate ==="") {
-          if (nativeEvent.key === 'Backspace') {
-            cardRef.current.focus();
-            setCardNumber(cardNumber.substring(0, cardNumber.length - 1));
-          }
-        }
+        // if (month ==="") {
+        //   if (nativeEvent.key === 'Backspace') {
+        //     cardRef.current.focus();
+        //     setCardNumber(cardNumber.substring(0, cardNumber.length - 1));
+        //   }
+        // }
       }}
       onChangeText={(text)=>{
-        setExpDate(text);
+        // setExpDate(text);
+        var [month, year] = text.split("/");
+        
+        if (month !== "" && parseInt(month) < 10) {
+          month = "0"+parseInt(month);
+        }
+        if (year !== parseInt(year) < 10) {
+          year = "0" + parseInt(year);
+        }
+        setMonthYear({month:month, year: year});
       }}
       />
       </View>
