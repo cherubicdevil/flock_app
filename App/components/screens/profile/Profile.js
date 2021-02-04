@@ -465,8 +465,9 @@ const BillingModal = ({state, setState, close, setChanged}) => {
          
          <Text style={{color: 'red', opacity: error?1:0}}>Please review your information for errors</Text>
          <Text style={{alignSelf: 'center',fontSize: 15, fontFamily: constants.FONT, fontWeight: 'bold'}}>Billing Information</Text>
-          <PaymentCard style={[styles.textbox,{marginTop: 0, }]} 
+          <PaymentCard
           onParamsChange={(valid, params) => {
+            console.log('changing');
               // setValid(valid);
               // setCardNumber(params.number);
               // setSec(params.cvc);
@@ -585,7 +586,7 @@ const ShippingModal = ({state, setState, close, setChanged}) => {
 
 }
 
-const PaymentCard = () => {
+const PaymentCard = ({onParamsChange=()=>{}}) => {
   const cardRef = useRef();
   const exp = useRef();
   const cvc = useRef();
@@ -597,12 +598,15 @@ const PaymentCard = () => {
   var codeFull = false;
   const invalidLength = cardNumber.length < 15;
   console.log("IS", valid, cardNumber.length);
+  // const allValid = valid && expDate.length == 5 && cvcVal.length == 3;
   
   return <View>
     <View>
       <Text style={{marginLeft: 10}}>Card</Text>
     <TextInput value={cardNumber} ref = {cardRef} keyboardType="numeric" style={[styles.textbox,{color: valid || invalidLength?'black':'red'}]} onChangeText={(text)=>{
       const currValid = validateCard(text);
+      const allValid = currValid && expDate.length == 5 && cvcVal.length == 3;
+      onParamsChange(allValid, {number: text, expMonth: expDate.split("/")[0], expYear: expDate.split("/")[1] || "", cvc: cvcVal});
       if (text.length == 16 && currValid) {
         console.log("leave now");
         setCardNumber(text);
@@ -636,6 +640,7 @@ const PaymentCard = () => {
         // }
       }}
       onChangeText={(text)=>{
+        var newText= text;
         // setExpDate(text);
         if (text.indexOf("/") == -1) {
           console.log("/ not found")
@@ -643,24 +648,30 @@ const PaymentCard = () => {
             console.log(parseInt(text));
             if (parseInt(text) >= 2) {
               setExpDate("0"+text +"/");
+              newText = "0"+text +"/";
               return;
             }
           }
 
         }
         if (text.length == 2 && backspaceExp) {
+          newText=text.substring(0,1);
           setExpDate(text.substring(0,1));
-          return;
-        }
-         if (text.length == 2) {
+        } else if (text.length == 2) {
+          newText = text+"/";
           setExpDate(text+"/");
         } else if (text.length == 5) {
+          newText = text;
           setExpDate(text);
           cvc.current.focus();
         } else {
+          newText=text;
           setExpDate(text);
         }
-        // setExpDate()
+        
+        
+        const allValid = valid && newText.length == 5 && cvcVal.length == 3;
+        onParamsChange(allValid, {number: cardNumber, expMonth: newText.split("/")[0], expYear: newText.split("/")[1] || "", cvc: cvcVal});
       }}
       />
       </View>
@@ -682,6 +693,8 @@ const PaymentCard = () => {
       }}
       onChangeText={(text)=>{
         setCVCVal(text);
+        const allValid = valid && expDate.length == 5 && text.length == 3;
+        onParamsChange(allValid, {number: cardNumber, expMonth: expDate.split("/")[0], expYear: expDate.split("/")[1] || "", cvc: text});
         
       }} />
       </View>
