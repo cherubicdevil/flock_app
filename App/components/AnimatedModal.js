@@ -105,14 +105,18 @@ const AnimatedModal = ({
           <TouchableOpacity onPress={()=>{
             close();
             resetAnimation();
-              }} style={{position: 'absolute', top:0, height: '100%', width: '100%', zIndex: 100}} />
-              <View style={{height: '100%', position: 'absolute', bottom: 0, backgroundColor: 'transparent', width: '100%', justifyContent: 'flex-end'}}>
+              }} style={{position: 'absolute', top:0, height: '100%', width: '100%', zIndex: 5}} />
+              <View style={{height: '100%', position: 'absolute', bottom: 0, zIndex: 200, backgroundColor: 'transparent', width: '100%', justifyContent: 'flex-end'}}>
+              <TouchableOpacity onPress={()=>{
+            close();
+            resetAnimation();
+              }} style={{position: 'absolute', top:0, height: '100%', width: '100%', zIndex: 5}} />
             {behind?<View style={{position: 'absolute', bottom: 15, height: upPercent, width: '88%', backgroundColor: bgcolor, opacity: 0.5, alignSelf: 'center', borderRadius: curve?90:0,}} />:<></>}
             {behind?<View style={{position: 'absolute', bottom: 8, height: upPercent, width: '90%', backgroundColor: bgcolor, opacity: 0.5, alignSelf: 'center', borderRadius: curve?80:0,}} />:<></>}
             <View style={{zIndex: -40, justifyContent: 'center', alignItems: 'center', position: 'absolute', top: 0, width: '100%', height: (100-parseInt(upPercent.replace("%",""))) + "%", backgroundColor:"rgba(255,255,255,0)"}}>
               {contentTop}
             </View>
-            <KeyboardAvoidingView behavior="position" enabled style={{backgroundColor: 'transparent', height: upPercent, }}>
+            <KeyboardAvoidingView behavior="position" enabled style={{position: 'absolute', zIndex: 20, width: '100%', backgroundColor: 'transparent', height: upPercent, }}>
             <View behavior="padding" style={{width: '100%', height: "100%", borderRadius: curve?100:0, borderBottomRightRadius: 0, borderBottomLeftRadius: 0, backgroundColor: bgcolor, paddingTop: 40, overflow: 'hidden'}}>
             
               {content}
