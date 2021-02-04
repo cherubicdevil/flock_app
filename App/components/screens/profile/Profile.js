@@ -593,6 +593,7 @@ const PaymentCard = () => {
   const [expDate, setExpDate] = useState("");
   const [monthYear, setMonthYear] = useState({month:"", year:""});
   const valid = validateCard(cardNumber) && cardNumber.length < 17;
+  var backspaceExp = false;
   const invalidLength = cardNumber.length < 15;
   console.log("IS", valid, cardNumber.length);
   
@@ -615,9 +616,19 @@ const PaymentCard = () => {
     <View style={{flexDirection: 'row'}}>
       <View style={{marginTop: 20, flex: 2}}>
         <Text style={{marginLeft: 10,}}>Exp Date</Text>
-      <TextInput value = {monthYear.month+"/"+monthYear.year} placeholder="MM/YY" keyboardType="numeric" ref = {exp} style={styles.textbox}
+      <TextInput value = {expDate} placeholder="MM/YY" keyboardType="numeric" ref = {exp} style={styles.textbox}
       onKeyPress={({nativeEvent})=>{
         console.log(expDate, nativeEvent.key);
+        if (nativeEvent.key === 'Backspace') {
+          backspaceExp = true;
+          console.log(expDate.length, 'length');
+          // if (expDate.length == 3) {
+          //   console.log("chanigngngg");
+          //   setExpDate(expDate.substring(0, 2));
+          // }
+        } else {
+          backspaceExp = false;
+        }
         // if (month ==="") {
         //   if (nativeEvent.key === 'Backspace') {
         //     cardRef.current.focus();
@@ -627,15 +638,19 @@ const PaymentCard = () => {
       }}
       onChangeText={(text)=>{
         // setExpDate(text);
-        var [month, year] = text.split("/");
-        
-        if (month !== "" && parseInt(month) < 10) {
-          month = "0"+parseInt(month);
+        if (text.length == 2 && backspaceExp) {
+          setExpDate(text.substring(0,1));
+          return;
         }
-        if (year !== parseInt(year) < 10) {
-          year = "0" + parseInt(year);
+         if (text.length == 2) {
+          setExpDate(text+"/");
+        } else if (text.length == 5) {
+          setExpDate(text);
+          cvc.current.focus();
+        } else {
+          setExpDate(text);
         }
-        setMonthYear({month:month, year: year});
+        // setExpDate()
       }}
       />
       </View>
