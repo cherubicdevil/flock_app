@@ -10,6 +10,7 @@ import {
   Platform,
   SafeAreaView,
   ScrollView,
+  KeyboardAvoidingView,
 } from 'react-native';
 import {PaymentCardTextField} from 'tipsi-stripe';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -461,6 +462,7 @@ const BillingModal = ({state, setState, close, setChanged}) => {
   const numberPlaceholder= localState.number=== ''?'4242424242424242':localState.number;
   const expirationPlaceholder = localState.expMonth === ''?"MM/YY":localState.expMonth+"/"+localState.expYear;
   return <ScrollView style={{paddingLeft: 30, paddingRight: 30, borderTopLeftRadius: 40, borderTopRightRadius: 40, backgroundColor:'white', zIndex: 50}}>
+         
          <Text style={{color: 'red', opacity: error?1:0}}>Please review your information for errors</Text>
          <Text style={{alignSelf: 'center',fontSize: 15, fontFamily: constants.FONT, fontWeight: 'bold'}}>Billing Information</Text>
           <PaymentCard style={[styles.textbox,{marginTop: 0, }]} 
@@ -584,29 +586,46 @@ const ShippingModal = ({state, setState, close, setChanged}) => {
 }
 
 const PaymentCard = () => {
+  const cardRef = useRef();
   const exp = useRef();
   const cvc = useRef();
   const [cardNumber, setCardNumber] = useState("");
-  const valid = validateCard(cardNumber);
+  const [expDate, setExpDate] = useState("");
+  const valid = validateCard(cardNumber) && cardNumber.length < 17;
   const invalidLength = cardNumber.length < 15;
-  console.log(valid, cardNumber.length);
+  console.log("IS", valid, cardNumber.length);
   
   return <View>
     <View>
       <Text style={{marginLeft: 10}}>Card</Text>
-    <TextInput style={[styles.textbox,{color: valid || invalidLength?'black':'red'}]} onChangeText={(text)=>{
-      setCardNumber(text);
-      if (text.length >= 16) {
+    <TextInput value={cardNumber} ref = {cardRef} keyboardType="numeric" style={[styles.textbox,{color: valid || invalidLength?'black':'red'}]} onChangeText={(text)=>{
+      const currValid = validateCard(text);
+      if (text.length == 16 && currValid) {
+        console.log("leave now");
+        setCardNumber(text);
         exp.current.focus();
+        return;
       }
+
+        setCardNumber(text);
     }} />
     </View>
 
     <View style={{flexDirection: 'row'}}>
       <View style={{marginTop: 20, flex: 2}}>
         <Text style={{marginLeft: 10,}}>Exp Date</Text>
-      <TextInput keyboardType="numeric" ref = {exp} style={styles.textbox} onChangeText={(text)=>{
-
+      <TextInput value = {expDate} placeholder="MM/YY" keyboardType="numeric" ref = {exp} style={styles.textbox}
+      onKeyPress={({nativeEvent})=>{
+        console.log(expDate, nativeEvent.key);
+        if (expDate ==="") {
+          if (nativeEvent.key === 'Backspace') {
+            cardRef.current.focus();
+            setCardNumber(cardNumber.substring(0, cardNumber.length - 1));
+          }
+        }
+      }}
+      onChangeText={(text)=>{
+        setExpDate(text);
       }}
       />
       </View>

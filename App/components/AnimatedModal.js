@@ -25,7 +25,7 @@
  */
 
 import {constants} from 'App/constants';
-import {View, Modal, Text, Animated, TouchableOpacity, Dimensions} from 'react-native';
+import {View, Modal, Text, Animated, TouchableOpacity, Dimensions, KeyboardAvoidingView} from 'react-native';
 import React, {useRef} from 'react';
 import MaskedViewIOS from '@react-native-community/masked-view';
 import LinearGradient from 'react-native-linear-gradient';
@@ -95,26 +95,33 @@ const AnimatedModal = ({
         transparent={true}
         visible={visible}
         style={{
-            
+          
           position: 'absolute',
           width: '100%',
           justifyContent: 'flex-end',
           //backgroundColor: '#aea',
         }}>
+          
           <TouchableOpacity onPress={()=>{
             close();
             resetAnimation();
               }} style={{position: 'absolute', top:0, height: '100%', width: '100%', zIndex: -30}} />
-            
+              <View style={{height: '100%', position: 'absolute', bottom: 0, backgroundColor: 'transparent', width: '100%', justifyContent: 'flex-end'}}>
             {behind?<View style={{position: 'absolute', bottom: 15, height: upPercent, width: '88%', backgroundColor: bgcolor, opacity: 0.5, alignSelf: 'center', borderRadius: curve?90:0,}} />:<></>}
             {behind?<View style={{position: 'absolute', bottom: 8, height: upPercent, width: '90%', backgroundColor: bgcolor, opacity: 0.5, alignSelf: 'center', borderRadius: curve?80:0,}} />:<></>}
             <View style={{zIndex: -40, justifyContent: 'center', alignItems: 'center', position: 'absolute', top: 0, width: '100%', height: (100-parseInt(upPercent.replace("%",""))) + "%", backgroundColor:"rgba(255,255,255,0)"}}>
               {contentTop}
             </View>
-            <View style={{position: 'absolute', bottom: 0, width: '100%', height: upPercent, borderRadius: curve?100:0, borderBottomRightRadius: 0, borderBottomLeftRadius: 0, backgroundColor: bgcolor, paddingTop: 40, overflow: 'hidden'}}>
-              
+            <KeyboardAvoidingView behavior="position" enabled style={{backgroundColor: 'transparent', height: upPercent, }}>
+            <View behavior="padding" style={{width: '100%', height: "100%", borderRadius: curve?100:0, borderBottomRightRadius: 0, borderBottomLeftRadius: 0, backgroundColor: bgcolor, paddingTop: 40, overflow: 'hidden'}}>
+            
               {content}
               {children}
+            
+              </View>
+              {/* </KeyboardAvoidingView> */}
+              </KeyboardAvoidingView>
+              {/* </View> */}
               </View>
       </Modal>
     </View>
