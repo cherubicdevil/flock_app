@@ -591,9 +591,10 @@ const PaymentCard = () => {
   const cvc = useRef();
   const [cardNumber, setCardNumber] = useState("");
   const [expDate, setExpDate] = useState("");
-  const [monthYear, setMonthYear] = useState({month:"", year:""});
+  const [cvcVal, setCVCVal] = useState("");
   const valid = validateCard(cardNumber) && cardNumber.length < 17;
   var backspaceExp = false;
+  var codeFull = false;
   const invalidLength = cardNumber.length < 15;
   console.log("IS", valid, cardNumber.length);
   
@@ -621,11 +622,9 @@ const PaymentCard = () => {
         console.log(expDate, nativeEvent.key);
         if (nativeEvent.key === 'Backspace') {
           backspaceExp = true;
-          console.log(expDate.length, 'length');
-          // if (expDate.length == 3) {
-          //   console.log("chanigngngg");
-          //   setExpDate(expDate.substring(0, 2));
-          // }
+            if (expDate === "") {
+              cardRef.current.focus();
+          }
         } else {
           backspaceExp = false;
         }
@@ -638,6 +637,17 @@ const PaymentCard = () => {
       }}
       onChangeText={(text)=>{
         // setExpDate(text);
+        if (text.indexOf("/") == -1) {
+          console.log("/ not found")
+          if (text.length == 1) {
+            console.log(parseInt(text));
+            if (parseInt(text) >= 2) {
+              setExpDate("0"+text +"/");
+              return;
+            }
+          }
+
+        }
         if (text.length == 2 && backspaceExp) {
           setExpDate(text.substring(0,1));
           return;
@@ -656,7 +666,24 @@ const PaymentCard = () => {
       </View>
       <View style={{marginTop: 20, flex: 1, marginLeft: 10}}>
         <Text style={{marginLeft: 10}}>CVC</Text>
-      <TextInput ref = {cvc} style={styles.textbox} />
+      <TextInput value={cvcVal} ref = {cvc} maxLength={3} style={styles.textbox} 
+      onKeyPress={({nativeEvent})=>{
+        if (nativeEvent.key =="Backspace") {
+          if (cvcVal === "") {
+            exp.current.focus();
+          }
+        } else {
+          if (cvcVal.length == 3) {
+            codeFull = true;
+          } else {
+            codeFull = false;
+          }
+        }
+      }}
+      onChangeText={(text)=>{
+        setCVCVal(text);
+        
+      }} />
       </View>
     </View>
   </View>
