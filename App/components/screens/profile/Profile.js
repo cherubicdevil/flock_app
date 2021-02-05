@@ -13,7 +13,7 @@ import {
   KeyboardAvoidingView,
 } from 'react-native';
 import {PaymentCardTextField} from 'tipsi-stripe';
-import {createOrUpdate} from 'App/utils';
+import {createOrUpdate, fetchCustomerInfo} from 'App/utils';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import AnimatedModal from 'App/components/AnimatedModal';
 import ImagePicker from 'react-native-image-picker';
@@ -29,6 +29,8 @@ import {validateCard} from 'App/utils';
 //import Base64 from 'base-64';
 
 // global.atob = Base64.encode;
+
+const cardIcons = {'Visa': <Icon name="cc-visa" size={25} />, "MasterCard": <Icon name="cc-mastercard" size={25} />, "American Express":<Icon name="cc-amex" size={25} />,"Diners Club":<Icon name="cc-diners-club" size={25} />, "Discover": <Icon name="cc-discover" size={25} />, "JCB":<Icon name="cc-jcb" size={25} />, "UnionPay":<Icon name="credit-card" size={25} />, "Unknown": <Icon name="credit-card" size={25} />}
 
 const ProfilePicture = ({setOpenModal}) => {
 
@@ -192,12 +194,10 @@ const Profile = ({navigation}) => {
     } else {
       console.log("EHEREIT IS", select.customerId);
       hasId = true;
-      fetch(constants.RETR_CUST +"?id="+select.customerId).then((res) =>{
-        res.json().then((data)=>{
-          setInfo(data);
-        console.log(data);
+      fetchCustomerInfo(select.customerId).then((data)=>{
+          setInfo(data.card);
+        console.log(data.card,"MY CARD");
         })
-      })
     }
   }, [select.customerId]);
 
@@ -389,6 +389,9 @@ const Profile = ({navigation}) => {
             onPress={()=>{
                 setBillModal(true);
             }}><Text>Billing information</Text>
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            {cardIcons[info.brand]}<Text style={{marginLeft: 5}}>{info.last4}</Text>
+            </View>
             <Icon name="chevron-right" size={20} />
             </TouchableOpacity>
         </View>

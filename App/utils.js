@@ -757,6 +757,25 @@ const createOrUpdate = async (hasId, customerId, info) => {
 
 }
 
+const fetchCustomerInfo = (customerId) =>{
+  return new Promise((resolve) => {
+      fetch(constants.RETR_CUST+`?id=${customerId}`).then((resp)=> {
+      resp.json().then((res) =>{
+              var customerInfo = res;
+              const cardId = res.default_source;
+              // console.log("CARDID", cardId);
+              fetch(constants.RETR_CARD+"?id="+customerId+"&card="+cardId).then((cardRes)=>{
+                  cardRes.json().then((card)=>{
+                    // console.log("THIS IS CARD", card);
+                  resolve({customer: res, card: card});
+                  })
+              })
+
+      })
+  })
+});
+};
+
 export {
   rentPrice,
   fetchStreamableSource,
@@ -781,5 +800,6 @@ export {
   shuffle,
   pinLocalFunc,
   validateCard,
-  createOrUpdate
+  createOrUpdate,
+  fetchCustomerInfo
 };

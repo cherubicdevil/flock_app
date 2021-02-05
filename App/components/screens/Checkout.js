@@ -11,17 +11,9 @@ import {useFocusEffect} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import moment from 'moment';
 import LinearGradient from 'react-native-linear-gradient';
-import {createOrUpdate} from 'App/utils';
+import {createOrUpdate, fetchCustomerInfo} from 'App/utils';
 
-const fetchCustomerInfo = (customerId) =>{
-    return new Promise((resolve) => {
-        fetch(constants.RETR_CUST+`?id=${customerId}`).then((resp)=> {
-        resp.json().then((res) =>{
-                resolve(res);
-        })
-    })
-});
-};
+
 const Checkout = ({navigation, route}) => {
     const [shipModal, setShipModal] = useState(false);
     const [billModal, setBillModal] = useState(false);
@@ -40,7 +32,8 @@ const Checkout = ({navigation, route}) => {
     useEffect(()=>{
         if (hasId) {
             fetchCustomerInfo(customerId).then((customerInfo) =>{
-                setInfo({...info, ...customerInfo});
+                // setInfo({...info, ...customerInfo.customer});
+                setInfo({...info, ...customer.card});
             });
         }
     },[]);
