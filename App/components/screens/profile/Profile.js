@@ -642,7 +642,7 @@ const PaymentCard = ({onParamsChange=()=>{}, state}) => {
     <View>
       <Text style={{marginLeft: 10}}>Card</Text>
       <View style={[styles.textbox, {flexDirection: 'row', paddingVertical: 0, alignItems: 'center'}]}>
-        {cardIcons[cardBrand]}
+        <View style={{width: 40}}>{cardIcons[cardBrand]}</View>
     <TextInput defaultValue={state.number} value={cardNumber} ref = {cardRef} maxLength={maximumLength} keyboardType="numeric" style={[styles.textbox,{color: valid || invalidLength?'black':'red', width:'100%', height: '100%', borderWidth: 0}]} onChangeText={(text)=>{
       const currValid = validateCard(text);
       const allValid = currValid && expDate.length == 5 && cvcVal.length == 3;
