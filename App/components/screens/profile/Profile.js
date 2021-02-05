@@ -24,13 +24,14 @@ import {useSelector} from 'react-redux';
 import {firebase, auth, db} from 'App/firebase/config';
 import OptionsModal from 'App/navigators/OptionsModal';
 import {useDispatch} from 'react-redux';
-import {validateCard} from 'App/utils';
+import {validateCard, cc_brand_id} from 'App/utils';
 // FLOCK_TODO: make this into an npm module so I don't have to put it here.
 //import Base64 from 'base-64';
 
 // global.atob = Base64.encode;
 
-const cardIcons = {'Visa': <Icon name="cc-visa" size={25} />, "MasterCard": <Icon name="cc-mastercard" size={25} />, "American Express":<Icon name="cc-amex" size={25} />,"Diners Club":<Icon name="cc-diners-club" size={25} />, "Discover": <Icon name="cc-discover" size={25} />, "JCB":<Icon name="cc-jcb" size={25} />, "UnionPay":<Icon name="credit-card" size={25} />, "Unknown": <Icon name="credit-card" size={25} />}
+const cardColor = constants.LAVENDER;
+const cardIcons = {'Visa': <Icon name="cc-visa" size={25} color={cardColor}/>, "MasterCard": <Icon name="cc-mastercard" size={25} color={cardColor} />, "American Express":<Icon name="cc-amex" size={25} color={cardColor} />,"Diners Club":<Icon name="cc-diners-club" size={25} color={cardColor} />, "Discover": <Icon name="cc-discover" size={25} color={cardColor} />, "JCB":<Icon name="cc-jcb" size={25} color={cardColor} />, "UnionPay":<Icon name="credit-card" size={25} color={cardColor} />, "Unknown": <Icon name="credit-card" size={25} color={cardColor} />, "Maestro": <Icon name="credit-card" size={25} color={cardColor} />}
 
 const ProfilePicture = ({setOpenModal}) => {
 
@@ -186,6 +187,8 @@ const Profile = ({navigation}) => {
   const [changed, setChanged] = useState(false);
   var hasId = false;
   const select = useSelector(state=>state.userInfo);
+
+
 
   useEffect(()=>{
     if (select.customerId === "none" || select.customerId === undefined) {
@@ -623,21 +626,30 @@ const PaymentCard = ({onParamsChange=()=>{}, state}) => {
   const [cardNumber, setCardNumber] = useState("");
   const [expDate, setExpDate] = useState("");
   const [cvcVal, setCVCVal] = useState("");
-  const valid = validateCard(cardNumber) && cardNumber.length < 17;
+
+  const card_number_lengths = {"Visa": 16, "MasterCard": 16, "American Express": 15, "Diners Club": 14, "Discover": 16, "JCB":16, "Maestro": 16, "Unknown":19}
+
+
+  const cardBrand = cc_brand_id(cardNumber);
+  const maximumLength = card_number_lengths[cardBrand];
+  const valid = validateCard(cardNumber) && cardNumber.length <= maximumLength;
   var backspaceExp = false;
-  var codeFull = false;
-  const invalidLength = cardNumber.length < 15;
+  const invalidLength = cardNumber.length < 13;
   console.log("IS", valid, cardNumber.length);
   // const allValid = valid && expDate.length == 5 && cvcVal.length == 3;
   
   return <View>
     <View>
       <Text style={{marginLeft: 10}}>Card</Text>
-    <TextInput defaultValue={state.number} value={cardNumber} ref = {cardRef} keyboardType="numeric" style={[styles.textbox,{color: valid || invalidLength?'black':'red'}]} onChangeText={(text)=>{
+      <View style={[styles.textbox, {flexDirection: 'row', paddingVertical: 0, alignItems: 'center'}]}>
+        {cardIcons[cardBrand]}
+    <TextInput defaultValue={state.number} value={cardNumber} ref = {cardRef} maxLength={maximumLength} keyboardType="numeric" style={[styles.textbox,{color: valid || invalidLength?'black':'red', width:'100%', height: '100%', borderWidth: 0}]} onChangeText={(text)=>{
       const currValid = validateCard(text);
       const allValid = currValid && expDate.length == 5 && cvcVal.length == 3;
       onParamsChange(allValid, {number: text, expMonth: expDate.split("/")[0], expYear: expDate.split("/")[1] || "", cvc: cvcVal});
-      if (text.length == 16 && currValid) {
+      if (text.length == maximumLength
+        //  && currValid
+         ) {
         console.log("leave now");
         setCardNumber(text);
         exp.current.focus();
@@ -647,11 +659,12 @@ const PaymentCard = ({onParamsChange=()=>{}, state}) => {
         setCardNumber(text);
     }} />
     </View>
+    </View>
 
     <View style={{flexDirection: 'row'}}>
       <View style={{marginTop: 20, flex: 2}}>
         <Text style={{marginLeft: 10,}}>Exp Date</Text>
-      <TextInput defaultValue={state.expMonth + "/" + state.expYear} value = {expDate} placeholder="MM/YY" keyboardType="numeric" ref = {exp} style={styles.textbox}
+      <TextInput defaultValue={state.expMonth + "/" + state.expYear} maxLength={5} value = {expDate} placeholder="MM/YY" keyboardType="numeric" ref = {exp} style={styles.textbox}
       onKeyPress={({nativeEvent})=>{
         console.log(expDate, nativeEvent.key);
         if (nativeEvent.key === 'Backspace') {
@@ -739,7 +752,7 @@ const styles = StyleSheet.create({
     borderRadius: 3,
     borderWidth: 1,
   },
-  textbox: {borderWidth: 1, borderColor: constants.DARKGREY, borderRadius: 30, padding: 10, paddingBottom: 10, paddingTop: 10, fontSize: 18},
+  textbox: {borderWidth: 1, borderColor: constants.DARKGREY, borderRadius: 30, padding: 10, paddingVertical: 10, fontSize: 18},
   row: {width: '100%', marginLeft: 10, borderBottomWidth: 2, borderColor: constants.PINK_BACKGROUND,paddingHorizontal:20, paddingVertical:20},
 });
 
