@@ -30,9 +30,11 @@ import {validateCard, cc_brand_id} from 'App/utils';
 
 // global.atob = Base64.encode;
 
-const cardColor = constants.LAVENDER;
+const showCardIcon = (brand, color)=>{
+const cardColor = color;
 const cardIcons = {'Visa': <Icon name="cc-visa" size={25} color={cardColor}/>, "MasterCard": <Icon name="cc-mastercard" size={25} color={cardColor} />, "American Express":<Icon name="cc-amex" size={25} color={cardColor} />,"Diners Club":<Icon name="cc-diners-club" size={25} color={cardColor} />, "Discover": <Icon name="cc-discover" size={25} color={cardColor} />, "JCB":<Icon name="cc-jcb" size={25} color={cardColor} />, "UnionPay":<Icon name="credit-card" size={25} color={cardColor} />, "Unknown": <Icon name="credit-card" size={25} color={cardColor} />, "Maestro": <Icon name="credit-card" size={25} color={cardColor} />}
-
+return cardIcons[brand];
+}
 const ProfilePicture = ({setOpenModal}) => {
 
   const user = firebase.auth().currentUser;
@@ -393,7 +395,7 @@ const Profile = ({navigation}) => {
                 setBillModal(true);
             }}><Text>Billing information</Text>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            {cardIcons[info.brand]}<Text style={{marginLeft: 5}}>{info.last4}</Text>
+            {showCardIcon(info.brand, constants.LAVENDER)}<Text style={{marginLeft: 5}}>{info.last4}</Text>
             </View>
             <Icon name="chevron-right" size={20} />
             </TouchableOpacity>
@@ -642,7 +644,7 @@ const PaymentCard = ({onParamsChange=()=>{}, state}) => {
     <View>
       <Text style={{marginLeft: 10}}>Card</Text>
       <View style={[styles.textbox, {flexDirection: 'row', paddingVertical: 0, alignItems: 'center'}]}>
-        <View style={{width: 40}}>{cardIcons[cardBrand]}</View>
+        <View style={{width: 40}}>{showCardIcon(cardBrand, constants.GREYORANGE)}</View>
     <TextInput defaultValue={state.number} value={cardNumber} ref = {cardRef} maxLength={maximumLength} keyboardType="numeric" style={[styles.textbox,{color: valid || invalidLength?'black':'red', width:'100%', height: '100%', borderWidth: 0}]} onChangeText={(text)=>{
       const currValid = validateCard(text);
       const allValid = currValid && expDate.length == 5 && cvcVal.length == 3;
