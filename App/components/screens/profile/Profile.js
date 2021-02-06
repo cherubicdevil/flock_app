@@ -599,10 +599,10 @@ const BillingModal = ({state, setState, close, setChanged}) => {
 
 const ShippingModal = ({state, setState, close, setChanged}) => {
   const [localState, setLocalState] = useState(state);
-  const [address, setAddress] = useState('');
-  const [geostate, setGeostate] = useState("");
-  const [city, setCity] = useState("");
-  const [zip, setZip] = useState("");
+  const [address, setAddress] = useState(state.address?.line1);
+  const [geostate, setGeostate] = useState(state.address?.state);
+  const [city, setCity] = useState(state.address?.city);
+  const [zip, setZip] = useState(state.address?.postal_code)
   const [name, setName] = useState("");
 
   // const [cardNumber, setCardNumber] = useState('');
@@ -621,20 +621,20 @@ const ShippingModal = ({state, setState, close, setChanged}) => {
               setName(text);
           }} style={styles.textbox} /> */}
           <Text style={{marginLeft: 10, marginTop: 15, marginBottom: 5}}>Address</Text>
-          <TextInput value = {address} defaultValue={state?.address?.line1} onChangeText={(text)=> {
+          <TextInput value = {address}  onChangeText={(text)=> {
               setAddress(text);
           }} style={styles.textbox} />
 
           <View style={{flexDirection: 'row', justifyContent:'space-between'}}>
               <View style={{flex: 1, marginRight: 20}}>
           <Text style={{marginLeft: 10, marginTop: 15, marginBottom: 5}}>City</Text>
-          <TextInput value={city} defaultValue={state?.address?.city} onChangeText={(text)=> {
+          <TextInput value={city}  onChangeText={(text)=> {
               setCity(text);
           }} style={styles.textbox} />
                       </View>
                       <View >
                       <Text style={{marginLeft: 10, marginTop: 15, marginBottom: 5}}>State</Text>
-          <TextInput value={geostate}  defaultValue={state?.address?.state} onChangeText={(text)=> {
+          <TextInput value={geostate}   onChangeText={(text)=> {
               setGeostate(text);
           }} style={styles.textbox} />
                       </View>
@@ -646,7 +646,7 @@ const ShippingModal = ({state, setState, close, setChanged}) => {
           </View> */}
           </View>            
           <Text style={{marginLeft: 10, marginTop: 15, marginBottom: 5}}>Zip Code</Text>
-          <TextInput value={zip} maximumLength={5} keyboardType="numeric" defaultValue={state?.address?.postal_code} onChangeText={(text)=> {
+          <TextInput value={zip} maximumLength={5} keyboardType="numeric" onChangeText={(text)=> {
               setZip(text);
           }} style={styles.textbox} />
 
