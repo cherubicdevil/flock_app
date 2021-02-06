@@ -475,7 +475,7 @@ const Profile = ({navigation}) => {
                 textAlign: 'center',
                 fontFamily: 'Nunito-Bold',
               }}>
-              Done
+              Cancel
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
@@ -509,6 +509,7 @@ const Profile = ({navigation}) => {
                   console.log('done in profile change')
                 })
               }
+              navigation.goBack();
             }}>
             <Text
               style={{
@@ -613,7 +614,7 @@ const ShippingModal = ({state, setState, close, setChanged}) => {
   // const [name, setName] = useState('');
   var valid = false;
   const [error, setError] = useState(false);
-  return <View style={{paddingLeft: 30, paddingRight: 30, borderTopLeftRadius: 40, borderTopRightRadius: 40, backgroundColor:'white', zIndex: 50}}>
+  return <ScrollView scrollEnabled={false} style={{paddingLeft: 30, paddingRight: 30, borderTopLeftRadius: 40, borderTopRightRadius: 40, backgroundColor:'white', zIndex: 50}}>
           <Text style={{alignSelf: 'center',fontSize: 15, fontFamily: constants.FONT, fontWeight: 'bold'}}>Shipping Address</Text>
           <Text style={{color: 'red', opacity: error?1:0}}>Please review your information for errors</Text>
           {/* <Text style={{marginLeft: 10, marginTop: 10, marginBottom: 5}}>Full Name</Text>
@@ -632,9 +633,9 @@ const ShippingModal = ({state, setState, close, setChanged}) => {
               setCity(text);
           }} style={styles.textbox} />
                       </View>
-                      <View >
+                      <View style={{width: 75}}>
                       <Text style={{marginLeft: 10, marginTop: 15, marginBottom: 5}}>State</Text>
-          <TextInput value={geostate}   onChangeText={(text)=> {
+          <TextInput keyboardType="default" maxLength={2} value={geostate}   onChangeText={(text)=> {
               setGeostate(text);
           }} style={styles.textbox} />
                       </View>
@@ -677,7 +678,7 @@ const ShippingModal = ({state, setState, close, setChanged}) => {
                   </LinearGradient>
                   </TouchableOpacity>
               
-          </View>
+          </ScrollView>
           
 
 }
