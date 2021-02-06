@@ -17,6 +17,7 @@ import {
   TextInput
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import Slider from '@react-native-community/slider';
 import Dialog from 'react-native-dialog';
 import {firebase, db, auth} from 'App/firebase/config';
 import io from 'socket.io-client';
@@ -243,6 +244,13 @@ function ChatInterface({route, navigation}) {
     </View>;
 }
 return <ScrollView  style={{marginLeft: 15}} keyboardShouldPersistTaps="never">
+  <Slider
+    style={{width: 200, height: 40}}
+    minimumValue={0}
+    maximumValue={1}
+    minimumTrackTintColor="#FFFFFF"
+    maximumTrackTintColor="#000000"
+  />
   <NumericTextInput data={data} />
   </ScrollView>
   }
