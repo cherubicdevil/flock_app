@@ -757,6 +757,14 @@ const createOrUpdate = async (hasId, customerId, info) => {
 
 }
 
+const updateCard = async (customerId, cardInfo) => {
+  fetch(constants.CREATE_CARD_SWITCH_DEFAULT, {
+    method: 'POST',
+    body: JSON.stringify({cardInfo: cardInfo, id: customerId}),
+    headers: { 'Content-Type': 'application/json' }
+  });
+}
+
 const fetchCustomerInfo = (customerId) =>{
   return new Promise((resolve) => {
       fetch(constants.RETR_CUST+`?id=${customerId}`).then((resp)=> {
@@ -852,5 +860,5 @@ export {
   createOrUpdate,
   fetchCustomerInfo,
   cc_brand_id,
-
+  updateCard,
 };

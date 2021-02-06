@@ -77,6 +77,7 @@ export const constants = {
   CHARGE_CUSTOMER: 'https://protected-thicket-47492.herokuapp.com/chargeCustomer', // ?id=&amount=
   UPDATE_CUST: 'https://protected-thicket-47492.herokuapp.com/updateCustomer/', // post query
   UPDATE_CARD: 'https://protected-thicket-47492.herokuapp.com/updateCard/', // post query
+  CREATE_CARD_SWITCH_DEFAULT: 'https://protected-thicket-47492.herokuapp.com/createCardSwitchDefault/', // post query
   CHARGE_FLOCK_COMPLETE_ENDPOINT: 'https://protected-thicket-47492.herokuapp.com/chargeCustomerFlockComplete/',
   CUSTOMER_ENDPOINT: 'https://protected-thicket-47492.herokuapp.com/createCustomer/', // ?token=
   // CUSTOMER_ENDPOINT: 'http://localhost:5000/createCustomer/',

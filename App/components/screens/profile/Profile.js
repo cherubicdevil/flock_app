@@ -24,7 +24,7 @@ import {useSelector} from 'react-redux';
 import {firebase, auth, db} from 'App/firebase/config';
 import OptionsModal from 'App/navigators/OptionsModal';
 import {useDispatch} from 'react-redux';
-import {validateCard, cc_brand_id} from 'App/utils';
+import {validateCard, cc_brand_id, updateCard} from 'App/utils';
 // FLOCK_TODO: make this into an npm module so I don't have to put it here.
 //import Base64 from 'base-64';
 
@@ -187,6 +187,7 @@ const Profile = ({navigation}) => {
   const [shipModal, setShipModal] = useState(false);
 
   const [changed, setChanged] = useState(false);
+  const [creditCardChanged, setCreditCardChanged] = useState(false);
   var hasId = false;
   const select = useSelector(state=>state.userInfo);
 
@@ -200,13 +201,31 @@ const Profile = ({navigation}) => {
       console.log("EHEREIT IS", select.customerId);
       hasId = true;
       fetchCustomerInfo(select.customerId).then((data)=>{
-          setInfo(data.card);
-        console.log(data.card,"MY CARD");
+          setInfo(data.customer);
+          setCreditInfo(data.card);
+        // console.log(data.card,"MY CARD");
         })
     }
   }, [select.customerId]);
 
   const [info, setInfo] = useState({
+    // mandatory
+    number: '',
+    expMonth: null,
+    expYear: null,
+    cvc: '',
+    // optional
+    name: '',
+    currency: 'usd',
+    addressLine1: '',
+    addressLine2: '',
+    addressCity: '',
+    addressState: '',
+    addressCountry: 'USA',
+    addressZip: '',
+  });
+
+  const [creditInfo, setCreditInfo] = useState({
     // mandatory
     number: '',
     expMonth: null,
@@ -455,8 +474,10 @@ const Profile = ({navigation}) => {
               });
               user.reload();
               console.log("updated", username, email)
-
-              if (changed) { // update credit card
+              
+              if (hasId && creditCardChanged) {
+                updateCard(select.customerId, creditInfo);
+              } else if (changed) { // update shipping info
                 createOrUpdate(hasId, select.customerId, info).then((id)=>{
                   dispatch({type:'UPDATE_DATA', payload: ["customerId", null, null, id]});
                   console.log('done in profile change')
@@ -475,7 +496,7 @@ const Profile = ({navigation}) => {
         </View>
       </ScrollView>
     </SafeAreaView>
-    <AnimatedModal colored={true} colors={[constants.ORANGE, constants.GREYORANGE]} visible={billModal} close={()=>setBillModal(false)} state={info} setState={setInfo} content={<BillingModal state={info} setState={setInfo} setChanged={setChanged} close={()=>setBillModal(false)}/>}/>
+    <AnimatedModal colored={true} colors={[constants.ORANGE, constants.GREYORANGE]} visible={billModal} close={()=>setBillModal(false)} state={info} setState={setInfo} content={<BillingModal state={creditInfo} setState={setCreditInfo} setChanged={setCreditCardChanged} close={()=>setBillModal(false)}/>}/>
         <AnimatedModal colored={true} colors={[constants.ORANGE, constants.GREYORANGE]} visible={shipModal} close={()=>setShipModal(false)} state={info} setState={setInfo} content={<ShippingModal state={info} setState={setInfo} setChanged={setChanged} close={()=>setShipModal(false)}/>}/>
     </>
   );
