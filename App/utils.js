@@ -744,13 +744,12 @@ const createOrUpdate = async (hasId, customerId, info) => {
     } else {
       console.log('already had');
       console.log(customerId);
-      if (changed) {
       await fetch(constants.UPDATE_CUST, {
           method: 'POST',
           body: JSON.stringify({info: info, id: customerId}),
           headers: { 'Content-Type': 'application/json' }
       });
-    }
+    
       resolve(customerId);
     }
   });

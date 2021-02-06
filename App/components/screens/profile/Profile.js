@@ -182,6 +182,7 @@ const uploadImage = async ({data, filename, uri}) => {
 };
 
 const Profile = ({navigation}) => {
+
   const [openModal, setOpenModal] = useState(false);
   const [billModal, setBillModal] = useState(false);
   const [shipModal, setShipModal] = useState(false);
@@ -193,6 +194,7 @@ const Profile = ({navigation}) => {
 
 
   console.log("HAS ID", hasId)
+
   useEffect(()=>{
     if (select.customerId === "none" || select.customerId === undefined) {
       console.log("NOETAPPLCABE", select.customerId);
@@ -204,6 +206,8 @@ const Profile = ({navigation}) => {
       setHasId(true);
       fetchCustomerInfo(select.customerId).then((data)=>{
           setInfo(data.customer);
+          console.log("ADDRESSSS");
+          console.log("CUSTOMER INFO", data.customer);
           setCreditInfo(data.card);
         // console.log(data.card,"MY CARD");
         })
@@ -213,12 +217,13 @@ const Profile = ({navigation}) => {
   const [info, setInfo] = useState({
     // mandatory
     number: '',
-    expMonth: null,
-    expYear: null,
+    exp_month: null,
+    exp_year: null,
     cvc: '',
     // optional
     name: '',
     currency: 'usd',
+    address: {},
     addressLine1: '',
     addressLine2: '',
     addressCity: '',
@@ -226,12 +231,13 @@ const Profile = ({navigation}) => {
     addressCountry: 'USA',
     addressZip: '',
   });
+  console.log(info);
 
   const [creditInfo, setCreditInfo] = useState({
     // mandatory
     number: '',
-    expMonth: null,
-    expYear: null,
+    exp_month: null,
+    exp_year: null,
     cvc: '',
     // optional
     name: '',
@@ -416,9 +422,15 @@ const Profile = ({navigation}) => {
                 setBillModal(true);
             }}><Text>Billing information</Text>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            {showCardIcon(creditInfo.brand, constants.LAVENDER)}<Text style={{marginLeft: 5}}>{creditInfo.last4}</Text>
+              <View style={{marginRight: 10}}>
+            {creditInfo.last4?
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            {showCardIcon(creditInfo.brand, constants.LAVENDER)}<Text style={{marginLeft: 5, color: 'black'}}>{creditInfo.last4}</Text>
+            </View>
+            :<Text style={{color: constants.RED}}>Needs Action</Text>}
             </View>
             <Icon name="chevron-right" size={20} />
+            </View>
             </TouchableOpacity>
         </View>
         <View style={[styles.row, {justifyContent: 'space-between'}]}>
@@ -427,8 +439,19 @@ const Profile = ({navigation}) => {
             onPress={()=>{
                 setShipModal(true);
             }}><Text>Shipping information</Text>
+
+            <View style={{flexDirection: 'row'}}>
+              <View style={{marginRight: 10}}>
+            {info?.address?.line1?
+            <View style={{flexDirection: 'row', alignItems: 'center',}}>
+            <Text>{info.address.line1}</Text>
+            </View>
+            :<Text style={{color: constants.RED, textAlign: 'right'}}>Needs Action</Text>}
+            </View>
             <Icon name="chevron-right" size={20} />
+            </View>
             </TouchableOpacity>
+            
         </View>
         </View>
         <View style={{justifyContent: 'center', flexDirection: 'row', marginTop: 50}}>
@@ -477,6 +500,7 @@ const Profile = ({navigation}) => {
               user.reload();
               console.log("updated", username, email)
               console.log(hasId, creditCardChanged,"HEREEEEE");
+              console.log(hasId, changed,"CHANGED SHIPPING");
               if (hasId && creditCardChanged) {
                 updateCard(select.customerId, creditInfo);
               } else if (changed) { // update shipping info
@@ -515,9 +539,9 @@ const BillingModal = ({state, setState, close, setChanged}) => {
   const [valid, setValid] = useState(false);
   const [error, setError] = useState(false);
 
-  const placeholderColor = localState.number === ''?'grey':'black';
-  const numberPlaceholder= localState.number=== ''?'4242424242424242':localState.number;
-  const expirationPlaceholder = localState.expMonth === ''?"MM/YY":localState.expMonth+"/"+localState.expYear;
+  // const placeholderColor = localState.number === ''?'grey':'black';
+  // const numberPlaceholder= localState.number=== ''?'4242424242424242':localState.number;
+  // const expirationPlaceholder = localState.expMonth === ''?"MM/YY":localState.expMonth+"/"+localState.expYear;
   return <ScrollView style={{paddingLeft: 30, paddingRight: 30, borderTopLeftRadius: 40, borderTopRightRadius: 40, backgroundColor:'white', zIndex: 50}}>
          
          <Text style={{color: 'red', opacity: error?1:0}}>Please review your information for errors</Text>
@@ -575,6 +599,12 @@ const BillingModal = ({state, setState, close, setChanged}) => {
 
 const ShippingModal = ({state, setState, close, setChanged}) => {
   const [localState, setLocalState] = useState(state);
+  const [address, setAddress] = useState('');
+  const [geostate, setGeostate] = useState("");
+  const [city, setCity] = useState("");
+  const [zip, setZip] = useState("");
+  const [name, setName] = useState("");
+
   // const [cardNumber, setCardNumber] = useState('');
   // const [expMonth, setExpMonth] = useState('');
   // const [expYear, setExpYear] = useState('');
@@ -586,26 +616,26 @@ const ShippingModal = ({state, setState, close, setChanged}) => {
   return <View style={{paddingLeft: 30, paddingRight: 30, borderTopLeftRadius: 40, borderTopRightRadius: 40, backgroundColor:'white', zIndex: 50}}>
           <Text style={{alignSelf: 'center',fontSize: 15, fontFamily: constants.FONT, fontWeight: 'bold'}}>Shipping Address</Text>
           <Text style={{color: 'red', opacity: error?1:0}}>Please review your information for errors</Text>
-          <Text style={{marginLeft: 10, marginTop: 10, marginBottom: 5}}>Full Name</Text>
-          <TextInput defaultValue={localState.name} onChangeText={(text)=> {
-              localState.name = text;
-          }} style={styles.textbox} />
+          {/* <Text style={{marginLeft: 10, marginTop: 10, marginBottom: 5}}>Full Name</Text>
+          <TextInput value = {name} defaultValue={state.name} onChangeText={(text)=> {
+              setName(text);
+          }} style={styles.textbox} /> */}
           <Text style={{marginLeft: 10, marginTop: 15, marginBottom: 5}}>Address</Text>
-          <TextInput defaultValue={localState.addressLine1} onChangeText={(text)=> {
-              localState.addressLine1 = text;
+          <TextInput value = {address} defaultValue={state?.address?.line1} onChangeText={(text)=> {
+              setAddress(text);
           }} style={styles.textbox} />
 
           <View style={{flexDirection: 'row', justifyContent:'space-between'}}>
               <View style={{flex: 1, marginRight: 20}}>
           <Text style={{marginLeft: 10, marginTop: 15, marginBottom: 5}}>City</Text>
-          <TextInput defaultValue={localState.addressCity} onChangeText={(text)=> {
-              localState.addressCity = text;
+          <TextInput value={city} defaultValue={state?.address?.city} onChangeText={(text)=> {
+              setCity(text);
           }} style={styles.textbox} />
                       </View>
                       <View >
                       <Text style={{marginLeft: 10, marginTop: 15, marginBottom: 5}}>State</Text>
-          <TextInput defaultValue={localState.addressState} onChangeText={(text)=> {
-              localState.addressState = text;
+          <TextInput value={geostate}  defaultValue={state?.address?.state} onChangeText={(text)=> {
+              setGeostate(text);
           }} style={styles.textbox} />
                       </View>
                       {/* <View>
@@ -616,8 +646,8 @@ const ShippingModal = ({state, setState, close, setChanged}) => {
           </View> */}
           </View>            
           <Text style={{marginLeft: 10, marginTop: 15, marginBottom: 5}}>Zip Code</Text>
-          <TextInput defaultValue={localState.addressZip} onChangeText={(text)=> {
-              localState.addressZip = text;
+          <TextInput value={zip} maximumLength={5} keyboardType="numeric" defaultValue={state?.address?.postal_code} onChangeText={(text)=> {
+              setZip(text);
           }} style={styles.textbox} />
 
           <TouchableOpacity style={{marginTop:30, borderRadius: 40, overflow: 'hidden',  height: 35, width: "100%", alignSelf:'center', backgroundColor:constants.ORANGE, justifyContent:'center', alignItems: 'center', borderRadius:30}} onPress={()=>{
@@ -628,7 +658,13 @@ const ShippingModal = ({state, setState, close, setChanged}) => {
                   console.log('error');
                   return;
               }
-              setState(localState);
+              setState({...state, address: {
+                line1: address,
+                city: city,
+                state: geostate,
+                country: "US",
+                postal_code: zip,
+              }});
               setChanged(true);
               close();
               }}>
@@ -673,7 +709,8 @@ const PaymentCard = ({onParamsChange=()=>{}, state}) => {
     <TextInput defaultValue={state.number} value={cardNumber} ref = {cardRef} maxLength={maximumLength} keyboardType="numeric" style={[styles.textbox,{color: valid || invalidLength?'black':'red', width:'100%', height: '100%', borderWidth: 0}]} onChangeText={(text)=>{
       const currValid = validateCard(text);
       const allValid = currValid && expDate.length == 5 && cvcVal.length == 3;
-      onParamsChange(allValid, {number: text, brand: cardBrand, expMonth: expDate.split("/")[0], expYear: expDate.split("/")[1] || "", cvc: cvcVal});
+      onParamsChange(allValid, {number: text, brand: cardBrand, expMonth: expDate.split("/")[0], expYear: expDate.split("/")[1] || "", cvc: cvcVal,
+      exp_month: expDate.split("/")[0], exp_year: expDate.split("/")[1] || ""});
       if (text.length == maximumLength
         //  && currValid
          ) {
@@ -691,7 +728,7 @@ const PaymentCard = ({onParamsChange=()=>{}, state}) => {
     <View style={{flexDirection: 'row'}}>
       <View style={{marginTop: 20, flex: 2}}>
         <Text style={{marginLeft: 10,}}>Exp Date</Text>
-      <TextInput defaultValue={state.expMonth + "/" + state.expYear} maxLength={5} value = {expDate} placeholder="MM/YY" keyboardType="numeric" ref = {exp} style={styles.textbox}
+      <TextInput maxLength={5} value = {expDate} placeholder="MM/YY" keyboardType="numeric" ref = {exp} style={styles.textbox}
       onKeyPress={({nativeEvent})=>{
         console.log(expDate, nativeEvent.key);
         if (nativeEvent.key === 'Backspace') {
