@@ -188,18 +188,20 @@ const Profile = ({navigation}) => {
 
   const [changed, setChanged] = useState(false);
   const [creditCardChanged, setCreditCardChanged] = useState(false);
-  var hasId = false;
+  const [hasId, setHasId] = useState(false);
   const select = useSelector(state=>state.userInfo);
 
 
-
+  console.log("HAS ID", hasId)
   useEffect(()=>{
     if (select.customerId === "none" || select.customerId === undefined) {
       console.log("NOETAPPLCABE", select.customerId);
-      hasId = false;
+      // hasId = false;
+      setHasId(false);
     } else {
       console.log("EHEREIT IS", select.customerId);
-      hasId = true;
+      // hasId = true;
+      setHasId(true);
       fetchCustomerInfo(select.customerId).then((data)=>{
           setInfo(data.customer);
           setCreditInfo(data.card);
@@ -414,7 +416,7 @@ const Profile = ({navigation}) => {
                 setBillModal(true);
             }}><Text>Billing information</Text>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            {showCardIcon(info.brand, constants.LAVENDER)}<Text style={{marginLeft: 5}}>{info.last4}</Text>
+            {showCardIcon(creditInfo.brand, constants.LAVENDER)}<Text style={{marginLeft: 5}}>{creditInfo.last4}</Text>
             </View>
             <Icon name="chevron-right" size={20} />
             </TouchableOpacity>
@@ -423,7 +425,7 @@ const Profile = ({navigation}) => {
             <TouchableOpacity 
             style={{marginRight: 10,width: '100%', justifyContent: 'space-between', flexDirection:'row'}}
             onPress={()=>{
-                setBillModal(true);
+                setShipModal(true);
             }}><Text>Shipping information</Text>
             <Icon name="chevron-right" size={20} />
             </TouchableOpacity>
@@ -474,7 +476,7 @@ const Profile = ({navigation}) => {
               });
               user.reload();
               console.log("updated", username, email)
-              
+              console.log(hasId, creditCardChanged,"HEREEEEE");
               if (hasId && creditCardChanged) {
                 updateCard(select.customerId, creditInfo);
               } else if (changed) { // update shipping info
@@ -535,6 +537,7 @@ const BillingModal = ({state, setState, close, setChanged}) => {
                       ...localState,
                       ...params
                   })
+                  console.log(params.brand);
               } else {
                   setValid(false);
               }
@@ -552,7 +555,8 @@ const BillingModal = ({state, setState, close, setChanged}) => {
                   console.log('error');
                   return;
               }
-              setState(localState);
+              const cardString = localState.number;
+              setState({...localState, brand: localState.brand, last4: cardString.substring(cardString.length - 4, cardString.length)});
               setChanged(true);
               close();
               }}>
@@ -669,7 +673,7 @@ const PaymentCard = ({onParamsChange=()=>{}, state}) => {
     <TextInput defaultValue={state.number} value={cardNumber} ref = {cardRef} maxLength={maximumLength} keyboardType="numeric" style={[styles.textbox,{color: valid || invalidLength?'black':'red', width:'100%', height: '100%', borderWidth: 0}]} onChangeText={(text)=>{
       const currValid = validateCard(text);
       const allValid = currValid && expDate.length == 5 && cvcVal.length == 3;
-      onParamsChange(allValid, {number: text, expMonth: expDate.split("/")[0], expYear: expDate.split("/")[1] || "", cvc: cvcVal});
+      onParamsChange(allValid, {number: text, brand: cardBrand, expMonth: expDate.split("/")[0], expYear: expDate.split("/")[1] || "", cvc: cvcVal});
       if (text.length == maximumLength
         //  && currValid
          ) {
@@ -737,7 +741,7 @@ const PaymentCard = ({onParamsChange=()=>{}, state}) => {
         
         
         const allValid = valid && newText.length == 5 && cvcVal.length == 3;
-        onParamsChange(allValid, {number: cardNumber, expMonth: newText.split("/")[0], expYear: newText.split("/")[1] || "", cvc: cvcVal});
+        onParamsChange(allValid, {number: cardNumber, brand: cardBrand, expMonth: newText.split("/")[0], expYear: newText.split("/")[1] || "", cvc: cvcVal});
       }}
       />
       </View>
@@ -760,7 +764,7 @@ const PaymentCard = ({onParamsChange=()=>{}, state}) => {
       onChangeText={(text)=>{
         setCVCVal(text);
         const allValid = valid && expDate.length == 5 && text.length == 3;
-        onParamsChange(allValid, {number: cardNumber, expMonth: expDate.split("/")[0], expYear: expDate.split("/")[1] || "", cvc: text});
+        onParamsChange(allValid, {number: cardNumber, brand: cardBrand, expMonth: expDate.split("/")[0], expYear: expDate.split("/")[1] || "", cvc: text});
         
       }} />
       </View>
