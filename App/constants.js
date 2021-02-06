@@ -70,6 +70,7 @@ export const constants = {
   TRANSLUCENT: '#f2f2f7',
   PEACH: '#ff9966',
   GREYBLUE: '#8291b0',
+  BLUERGREY: '#7488b0',
   CHAT_ENDPOINT: 'https://enigmatic-bastion-86695.herokuapp.com/',
   PAY_ENDPOINT: 'https://protected-thicket-47492.herokuapp.com/', // ?price=&token=
   RETR_CUST: 'https://protected-thicket-47492.herokuapp.com/retrieveCustomer/', // ?id=

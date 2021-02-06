@@ -17,7 +17,8 @@ import {
   TextInput
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import Slider from '@react-native-community/slider';
+// import Slider from '@react-native-community/slider';
+import MultiSlider from '@ptomasroos/react-native-multi-slider';
 import Dialog from 'react-native-dialog';
 import {firebase, db, auth} from 'App/firebase/config';
 import io from 'socket.io-client';
@@ -243,14 +244,8 @@ function ChatInterface({route, navigation}) {
       </TouchableOpacity>
     </View>;
 }
-return <ScrollView  style={{marginLeft: 15}} keyboardShouldPersistTaps="never">
-  <Slider
-    style={{width: 200, height: 40}}
-    minimumValue={0}
-    maximumValue={1}
-    minimumTrackTintColor="#FFFFFF"
-    maximumTrackTintColor="#000000"
-  />
+return <ScrollView  style={{marginLeft: 15, overflow: 'visible', backgroundColor: 'yellow'}} keyboardShouldPersistTaps="never">
+  
   <NumericTextInput data={data} />
   </ScrollView>
   }
@@ -261,6 +256,7 @@ return <ScrollView  style={{marginLeft: 15}} keyboardShouldPersistTaps="never">
       <Text style={{color:'white', marginBottom: 10}}>You are paying: ${(typeof priceShare === "string")?priceShare:priceShare.toFixed(2)} ({(parseFloat(priceShare)/parseFloat(route.params.data.product.price) *100).toFixed(0)}% ownership)</Text>
       <Text style={{color:'white', marginBottom: 10}}>Increase to own more and use more of the item once this flock takes off.</Text>
       <View style={{flexDirection: 'row'}}>
+        
       <Text style={{color:'white', marginBottom: 10}}>Change your payment:</Text>
       <ChangePayment data={priceShare} setState={setPriceShare}/>
       </View>
@@ -298,6 +294,27 @@ return <ScrollView  style={{marginLeft: 15}} keyboardShouldPersistTaps="never">
             <View style={{width: '80%', alignSelf: 'center'}}>
             {/* <Text style={{color:'white', marginBottom: 10, fontWeight: 'bold'}}>Current flock price: ${route.params.data?.product?.price || ""}</Text> */}
             {/* <Text style={{color:'white', marginBottom: 10, fontWeight: 'bold'}}>Total price: ${route.params.data?.product?.price || ""}</Text> */}
+            <View style={{flexDirection: 'row', alignItems: 'center', }}>
+              <View style={{width: 50, height: 15, backgroundColor: 'black', borderBottomLeftRadius: 40, borderTopLeftRadius: 40}}/>
+            <MultiSlider
+    // style={{width: 200, height: 40}}
+    // snapped={true}
+    markerStyle={{width: 40, height: 40, shadowOpacity:0}}
+    selectedStyle={{backgroundColor: constants.BLUERGREY}}
+    trackStyle={{height: 15, borderRadius: 20}}
+    // containerStyle={{height: 20}}
+    markerContainerStyle={{alignSelf: 'center', marginTop: 7.5}}
+    // markerStyle={{marginTop: 15,justifyContent: 'center', alignItems: 'center'}}
+    smoothSnapped={true}
+    step = {4}
+    min={50}
+    max={100}
+    markerSize={100}
+    showSteps={true}
+    // containerStyle={{width: 30}}
+    // markerSize={20}
+
+  /></View>
             {priceText()}
             </View>
             <TouchableOpacity onPress={()=>{
