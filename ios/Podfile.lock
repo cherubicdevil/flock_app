@@ -291,6 +291,8 @@ PODS:
     - React-Core
   - react-native-safe-area-context (3.1.9):
     - React-Core
+  - react-native-slider (3.0.3):
+    - React
   - react-native-video (5.1.0-alpha8):
     - React
     - react-native-video/Video (= 5.1.0-alpha8)
@@ -443,6 +445,7 @@ DEPENDENCIES:
   - react-native-image-picker (from `../node_modules/react-native-image-picker`)
   - react-native-image-resizer (from `../node_modules/react-native-image-resizer`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
+  - "react-native-slider (from `../node_modules/@react-native-community/slider`)"
   - react-native-video (from `../node_modules/react-native-video`)
   - react-native-view-shot (from `../node_modules/react-native-view-shot`)
   - react-native-webview (from `../node_modules/react-native-webview`)
@@ -542,6 +545,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-image-resizer"
   react-native-safe-area-context:
     :path: "../node_modules/react-native-safe-area-context"
+  react-native-slider:
+    :path: "../node_modules/@react-native-community/slider"
   react-native-video:
     :path: "../node_modules/react-native-video"
   react-native-view-shot:
@@ -634,6 +639,7 @@ SPEC CHECKSUMS:
   react-native-image-picker: c6d75c4ab2cf46f9289f341242b219cb3c1180d3
   react-native-image-resizer: a79bcffdef1b52160ff91db0d6fa24816a4ff332
   react-native-safe-area-context: b6e0e284002381d2ff29fa4fff42b4d8282e3c94
+  react-native-slider: e99fc201cefe81270fc9d81714a7a0f5e566b168
   react-native-video: dbb8df4f0bbdf80de6797c90fcad8bc12b19401d
   react-native-view-shot: 4475fde003fe8a210053d1f98fb9e06c1d834e1c
   react-native-webview: 0aa2cde4ee7e3e1c5fffdf64dbce9c709aa18155
