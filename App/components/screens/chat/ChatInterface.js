@@ -26,6 +26,7 @@ import NavBar from 'App/components/common/NavBar';
 import {GiftedChat} from 'react-native-gifted-chat';
 import AnimatedModal from 'App/components/AnimatedModal';
 import Checkout from 'App/components/Checkout';
+import {useFocusEffect} from '@react-navigation/native';
 // import NumericTextInput from 'App/components'
 import {
   DrawerContentScrollView,
@@ -58,10 +59,30 @@ function ChatInterface({route, navigation}) {
   const [creditModal, setCreditModal] = useState(false);
   const [priceShare, setPriceShare] = useState(route.params.data.maximums[auth.currentUser.uid] || 0);
   const [initialDialog, setInitialDialog] = useState(false);
+  const [remainingPercent, setRemainingPercent] = useState(0);
 
   useEffect(()=>{
     setPriceShare(route.params.data.maximums[auth.currentUser.uid]);
-  }, route.params.data)
+  }, [route.params.data]);
+  useFocusEffect(()=>{
+    const unsub = db.collection('chatGroups').doc(route.params.data.id).onSnapshot(docSnapshot => {
+      const data = docSnapshot.data();
+      const members = data.memberIds;
+      const maximums = data.maximums;
+      var remaining = route.params.data.product.price;
+      for (const m of members) {
+        remaining -= maximums[m];
+      }
+      // console.log(remaining/route.params.data.product.price);
+      setRemainingPercent(Math.round(100 * remaining/route.params.data.product.price));
+    }, err => {
+      console.log(`Encountered error: ${err}`);
+    });
+
+    return ()=>{
+      unsub();
+    }
+  },[])
   const completeFunc = (customerId) => {
     // send to socket, which pushes a broadcast
     // test signal, send test, on receive, console log "RECEIVED"
@@ -249,27 +270,7 @@ return <ScrollView  style={{marginLeft: 15, overflow: 'visible', backgroundColor
   <NumericTextInput data={data} />
   </ScrollView>
   }
-  const priceText = () => {
-    if (part) {
-      console.log(priceShare, "priceShare");
-      return <>
-      <Text style={{color:'white', marginBottom: 10}}>You are paying: ${(typeof priceShare === "string")?priceShare:priceShare.toFixed(2)} ({(parseFloat(priceShare)/parseFloat(route.params.data.product.price) *100).toFixed(0)}% ownership)</Text>
-      <Text style={{color:'white', marginBottom: 10}}>Increase to own more and use more of the item once this flock takes off.</Text>
-      <View style={{flexDirection: 'row'}}>
-        
-      <Text style={{color:'white', marginBottom: 10}}>Change your payment:</Text>
-      <ChangePayment data={priceShare} setState={setPriceShare}/>
-      </View>
-      {/* <Text style={{color:'white', marginBottom: 10, fontWeight: 'bold'}}>Have it now if you  ${(route.params.data.product.price / route.params.data.members.length).toFixed(2)}.</Text>
-      <Text style={{color:'white', marginBottom: 10, fontWeight: 'bold'}}>Want to pay less? Get more people to join!</Text> */}
-      </>;
-
-    } else {
-      return <><Text style={{color:'white', marginBottom: 10, fontWeight: 'bold'}}>You can have it now if you join for ${(route.params.data.product.price / (route.params.data.members.length+1)).toFixed(2)}.</Text>
-      <Text style={{color:'white', marginBottom: 10, fontWeight: 'bold'}}>Want to pay less? Get more people to join!</Text>
-      </>;
-    }
-  }
+  
   console.log("PARTOF?", partOf, part);
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
@@ -294,28 +295,8 @@ return <ScrollView  style={{marginLeft: 15, overflow: 'visible', backgroundColor
             <View style={{width: '80%', alignSelf: 'center'}}>
             {/* <Text style={{color:'white', marginBottom: 10, fontWeight: 'bold'}}>Current flock price: ${route.params.data?.product?.price || ""}</Text> */}
             {/* <Text style={{color:'white', marginBottom: 10, fontWeight: 'bold'}}>Total price: ${route.params.data?.product?.price || ""}</Text> */}
-            <View style={{flexDirection: 'row', alignItems: 'center', }}>
-              <View style={{width: 50, height: 15, backgroundColor: 'black', borderBottomLeftRadius: 40, borderTopLeftRadius: 40}}/>
-            <MultiSlider
-    // style={{width: 200, height: 40}}
-    // snapped={true}
-    markerStyle={{width: 40, height: 40, shadowOpacity:0}}
-    selectedStyle={{backgroundColor: constants.BLUERGREY}}
-    trackStyle={{height: 15, borderRadius: 20}}
-    // containerStyle={{height: 20}}
-    markerContainerStyle={{alignSelf: 'center', marginTop: 7.5}}
-    // markerStyle={{marginTop: 15,justifyContent: 'center', alignItems: 'center'}}
-    smoothSnapped={true}
-    step = {4}
-    min={50}
-    max={100}
-    markerSize={100}
-    showSteps={true}
-    // containerStyle={{width: 30}}
-    // markerSize={20}
-
-  /></View>
-            {priceText()}
+            
+            {part?<PriceText remainingPercent={remainingPercent} priceShareInitial={priceShare} completeFunc={completeFunc} productPrice={route.params.data.product.price} />:<></>}
             </View>
             <TouchableOpacity onPress={()=>{
               navigation.navigate("Product", {album: route?.params?.data?.product, id: route?.params?.data?.id});
@@ -449,6 +430,87 @@ return <ScrollView  style={{marginLeft: 15, overflow: 'visible', backgroundColor
       }} price = {0}/>} />
     </SafeAreaView>
   );
+}
+
+const PriceText = ({priceShareInitial, completeFunc, productPrice, remainingPercent}) => {
+  const [priceShare, setPriceShare] = useState(priceShareInitial);
+  const [changed, setChanged] = useState(false);
+
+  if (true) {
+    console.log(priceShare, "priceShare");
+    return <>
+    <View style={{flexDirection: 'row'}}>
+      {changed?<View>
+        <TouchableOpacity onPress={()=>{
+          setPriceShare(priceShareInitial);
+          setChanged(false);
+        }}><Text>Cancel</Text></TouchableOpacity>
+      </View>:<></>}
+    <View style={{alignItems: 'center'}}>
+    <Text style={{color:'white'}}>You are paying</Text>
+    <Text style={{fontSize: 18, color: 'white'}}>${(typeof priceShare === "string")?priceShare:priceShare.toFixed(2)} ({(parseFloat(priceShare)/parseFloat(productPrice) *100).toFixed(0)}%)</Text>
+    </View>
+    </View>
+    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+    <View style={{borderRadius: 40, backgroundColor: constants.ORANGE, width: 25, height: 25, justifyContent: 'center', alignItems: 'center'}}>
+        <TouchableOpacity >
+          <Icon name="minus" color="white" size={20} />
+        </TouchableOpacity>
+      </View>
+
+    <View style={{flex: 1, flexDirection: 'row', paddingLeft: 10, alignItems: 'center', justifyContent: 'center', alignSelf: 'center'}}>
+            <View style={{flex: 100-remainingPercent,  height: 15, backgroundColor: 'black', borderBottomLeftRadius: 40, borderTopLeftRadius: 40}}/>
+          <View style={{flex:remainingPercent, marginRight: 0, paddingRight: 0}}>
+          <MultiSlider
+          // style={{flex: remainingPercent}}
+          onValuesChange={(stuff)=>{
+            setPriceShare((parseInt(stuff[0])/100 * productPrice).toFixed(2));
+            console.log(stuff);
+            setChanged(true);
+          }}
+  // style={{width: 200, height: 40}}
+  // snapped={true}
+  markerStyle={{width: 40, height: 40, shadowOpacity:0}}
+  selectedStyle={{backgroundColor: constants.BLUERGREY}}
+  trackStyle={{height: 15, borderRadius: 20}}
+  // containerStyle={{height: 20}}
+  markerContainerStyle={{alignSelf: 'center', marginTop: 7.5}}
+  // markerStyle={{marginTop: 15,justifyContent: 'center', alignItems: 'center'}}
+  smoothSnapped={true}
+  sliderLength={280 * remainingPercent/100}
+  step = {4}
+  min={0}
+  max={104}
+  markerSize={100}
+  showSteps={true}
+  containerStyle={{width: 30}}
+  // markerSize={20}
+
+/>
+<View style={{borderRadius: 40, backgroundColor: constants.ORANGE, width: 25, height: 25, justifyContent: 'center', alignItems: 'center'}}>
+        <TouchableOpacity >
+          <Icon name="minus" color="white" size={20} />
+        </TouchableOpacity>
+      </View>
+</View>
+</View>
+</View>
+
+    <Text style={{color:'white', marginBottom: 10}}>Increase to own more and use more.</Text>
+    <View style={{flexDirection: 'row'}}>
+      
+    <Text style={{color:'white', marginBottom: 10}}>Change your payment:</Text>
+    {/* <ChangePayment data={priceShare} setState={setPriceShare}/> */}
+    </View>
+    {/* <Text style={{color:'white', marginBottom: 10, fontWeight: 'bold'}}>Have it now if you  ${(route.params.data.product.price / route.params.data.members.length).toFixed(2)}.</Text>
+    <Text style={{color:'white', marginBottom: 10, fontWeight: 'bold'}}>Want to pay less? Get more people to join!</Text> */}
+    </>;
+
+  } else {
+    return <><Text style={{color:'white', marginBottom: 10, fontWeight: 'bold'}}>You can have it now if you join for ${(route.params.data.product.price / (route.params.data.members.length+1)).toFixed(2)}.</Text>
+    <Text style={{color:'white', marginBottom: 10, fontWeight: 'bold'}}>Want to pay less? Get more people to join!</Text>
+    </>;
+  }
 }
 
 const HeaderView = ({navigation, route}) => {
