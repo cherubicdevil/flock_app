@@ -370,40 +370,7 @@ return <ScrollView  style={{marginLeft: 15, overflow: 'visible', backgroundColor
         onSend={onSend}
         user={{_id: 1}}
       /></View>
-      <Dialog.Container visible={initialDialog}>
-    <Dialog.Title>Set Your Price</Dialog.Title>
-    <Dialog.Description>
-      Please set your initial price. You can always change it later.
-    </Dialog.Description>
-    <Dialog.Button label="Cancel" onPress={()=>{
-      console.log(route.params.data.id,"ID");
-      setInitialDialog(false);
-    }}/>
-    <Dialog.Button label="Confirm" onPress={()=>{
-      
-      if (store.getState().userInfo.customerId !== "none") {
-        const memberInfo = {name: auth.currentUser.displayName, uid: auth.currentUser.uid};
-        db.collection('users').doc(auth.currentUser.uid).update({
-          chatIds: firebase.firestore.FieldValue.arrayUnion(route.params.data.id)
-        });
-        route.params.data.maximums[firebase.auth().currentUser.uid] = "100.00";
-        console.log('route  id', route.params.data.id);
-        db.collection('chatGroups').doc(route.params.data.id).update({
-          members: firebase.firestore.FieldValue.arrayUnion(memberInfo),
-          memberIds: firebase.firestore.FieldValue.arrayUnion(memberInfo.uid),
-          maximums: route.params.data.maximums,
-        });
-        setPartOf(true);
-      dispatch({type: "UPDATE_DATA", payload: ["chatIds", "add", "array", route.params.data.id]});
-      dispatch({type: "UPDATE_DATA", payload: ["chatGroups", "add", "array", route.params.data]});
-        route.params.data.members.push(memberInfo);
-        completeFunc(store.getState().userInfo.customerId);
-      } else {
-        setCreditModal(true);
-      }
-      setInitialDialog(false);
-    }}/>
-  </Dialog.Container>
+      <JoinDialog data={route.params.data} setCreditModal={setCreditModal} initialDialog={initialDialog} setInitialDialog={setInitialDialog} setPartOf = {setPartOf} completeFunc = {completeFunc} maxPercent = {remainingPercent} />
       {partOf?<></>:<View style={{position: 'absolute', bottom: 0, width: '100%', height: 100, backgroundColor: 'white'}}><View style={{height: '100%', backgroundColor: constants.PINK_BACKGROUND }}>
         <TouchableOpacity style={{width: '90%', height: 50, backgroundColor: constants.ORANGE, alignSelf: 'center', borderRadius: 30, justifyContent: 'center'}} onPress={()=>{
           setInitialDialog(true);
@@ -439,6 +406,72 @@ return <ScrollView  style={{marginLeft: 15, overflow: 'visible', backgroundColor
       }} price = {0}/>} />
     </SafeAreaView>
   );
+}
+
+const JoinDialog = ({data, setCreditModal, initialDialog, setInitialDialog, setPartOf, completeFunc, minPercent=8, maxPercent}) =>{
+  const store = useStore();
+  const dispatch = useDispatch();
+
+  const [initialPercent, setInitialPercent] = useState(8);
+
+  return <Dialog.Container visible={initialDialog}>
+  <Dialog.Title>Set Your Price</Dialog.Title>
+  <Dialog.Description>
+    Please set your initial price. You can always change it later.
+    <View style={{alignItems: 'center', flexDirection: 'row'}}>
+    <View style={{borderRadius: 40, backgroundColor: constants.ORANGE, width: 25, height: 25, justifyContent: 'center', alignItems: 'center'}}>
+        <TouchableOpacity onPress={()=>{
+          if (initialPercent > minPercent) {
+            setInitialPercent(initialPercent-4);
+          }
+          
+        }}>
+          <Icon name="minus" color="white" size={20} />
+        </TouchableOpacity>
+      </View>
+      <Text style={{width: 80,textAlign: 'center',fontSize:24, fontWeight: 'bold'}}>{initialPercent}%</Text>
+      <View style={{borderRadius: 40, backgroundColor: constants.ORANGE, width: 25, height: 25, justifyContent: 'center', alignItems: 'center'}}>
+        <TouchableOpacity onPress={()=>{
+          if (initialPercent < maxPercent) {
+            setInitialPercent(initialPercent+4);
+          }
+          
+        }}>
+          <Icon name="plus" color="white" size={20} />
+        </TouchableOpacity>
+      </View>
+
+    </View>
+  </Dialog.Description>
+  <Dialog.Button label="Cancel" onPress={()=>{
+    // console.log(route.params.data.id,"ID");
+    setInitialDialog(false);
+  }}/>
+  <Dialog.Button label="Confirm" onPress={()=>{
+    
+    if (store.getState().userInfo.customerId !== "none") {
+      const memberInfo = {name: auth.currentUser.displayName, uid: auth.currentUser.uid};
+      db.collection('users').doc(auth.currentUser.uid).update({
+        chatIds: firebase.firestore.FieldValue.arrayUnion(data.id)
+      });
+      data.maximums[auth.currentUser.uid] = (initialPercent * parseFloat(data.product.price)).toFixed(2);
+      // console.log('route  id', route.params.data.id);
+      db.collection('chatGroups').doc(data.id).update({
+        members: firebase.firestore.FieldValue.arrayUnion(memberInfo),
+        memberIds: firebase.firestore.FieldValue.arrayUnion(memberInfo.uid),
+        maximums: data.maximums,
+      });
+      setPartOf(true);
+    // dispatch({type: "UPDATE_DATA", payload: ["chatIds", "add", "array", data.id]});
+    // dispatch({type: "UPDATE_DATA", payload: ["chatGroups", "add", "array", data]});
+      data.members.push(memberInfo);
+      completeFunc(store.getState().userInfo.customerId);
+    } else {
+      setCreditModal(true);
+    }
+    setInitialDialog(false);
+  }}/>
+</Dialog.Container>
 }
 
 const PriceText = ({priceShareInitialPercent, completeFunc, productPrice, remainingPercent}) => {
