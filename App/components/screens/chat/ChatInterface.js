@@ -89,8 +89,9 @@ function ChatInterface({route, navigation}) {
     // send to socket, which pushes a broadcast
     // test signal, send test, on receive, console log "RECEIVED"
     // condition
-    // FLOCK_UPDATE
-
+      // FLOCK_UPDATE
+      console.log(route.params.data.product.price);
+      console.log(route.params.data.maximums);
     // const res = splitAlgorithm(route.params.data.members, route.params.data.maximums, route.params.data.product.price)
     const flockTookOff = didFlockTakeOff(route.params.data.members, route.params.data.maximums, route.params.data.product.price);
     if (flockTookOff) {
@@ -302,7 +303,7 @@ return <ScrollView  style={{marginLeft: 15, overflow: 'visible', backgroundColor
             {/* <Text style={{color:'white', marginBottom: 10, fontWeight: 'bold'}}>Current flock price: ${route.params.data?.product?.price || ""}</Text> */}
             {/* <Text style={{color:'white', marginBottom: 10, fontWeight: 'bold'}}>Total price: ${route.params.data?.product?.price || ""}</Text> */}
             
-            {part?<PriceText remainingPercent={remainingPercent} priceShareInitialPercent={parseFloat(priceShare) / parseFloat(route.params.data.product.price) * 100} completeFunc={completeFunc} productPrice={route.params.data.product.price} />:<></>}
+            {part?<PriceText remainingPercent={remainingPercent} priceShareInitialPercent={parseFloat(priceShare) / parseFloat(route.params.data.product.price) * 100} completeFunc={completeFunc} productPrice={route.params.data.product.price} maximums={route.params.data.maximums} />:<></>}
             </View>
             <TouchableOpacity onPress={()=>{
               navigation.navigate("Product", {album: route?.params?.data?.product, id: route?.params?.data?.id});
@@ -474,7 +475,7 @@ const JoinDialog = ({data, setCreditModal, initialDialog, setInitialDialog, setP
 </Dialog.Container>
 }
 
-const PriceText = ({priceShareInitialPercent, completeFunc, productPrice, remainingPercent}) => {
+const PriceText = ({priceShareInitialPercent, completeFunc, productPrice, remainingPercent, maximums}) => {
   // console.log(priceShareInitialPercent+"%");
   const [initialPercent, setInitialPercent] = useState(priceShareInitialPercent);
   const [pricePercent, setPricePercent] = useState(initialPercent);
@@ -502,8 +503,11 @@ const PriceText = ({priceShareInitialPercent, completeFunc, productPrice, remain
     {changed?<View style={{backgroundColor: constants.DONE, marginLeft: 30, justifyContent: 'center', borderRadius: 40, padding:10}}>
         <TouchableOpacity onPress={()=>{
           setInitialPercent(pricePercent);
+          console.log(select.customerId);
+          maximums[auth.currentUser.uid] = (pricePercent/100 * productPrice).toFixed(2);
           completeFunc(select.customerId);
           setChanged(false);
+          
         }}><Text>Confirm</Text></TouchableOpacity>
       </View>:<View style={{opacity:0,padding: 10, marginLeft:30}} ><Text>Confirm</Text></View>}
     </View>
