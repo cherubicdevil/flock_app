@@ -123,7 +123,7 @@ const handleDayPress = (day) => {
   //     console.log(markedDates);
   //     return;
   // }
-  if (reserved(othersMarkedDates, auth.currentUser.uid, numDays, day.dateString)) {
+  if (reserved(othersMarkedDates, auth.currentUser.uid, numDays, day.dateString) || !inRange(day.dateString)) {
     setPicked(false);
   } else {
     setPicked(true);
@@ -148,7 +148,7 @@ const handleDayPress = (day) => {
         console.log(date);
         var color = requestTypeIsRent?constants.PURPLE:constants.ORANGE;
         var fadedColor = "rgba(255, 221, 214, 1)";
-        var isAfter = moment(date.dateString).isAfter(moment(new Date()));
+        var isAfter = inRange(date.dateString); // moment(date.dateString).isAfter(moment(new Date()));
         // add two months/four months is also disqualified...
         var disqualified = Object.entries(marking).length === 0 || !isAfter;
         var other = marking['type'] === 'otherReserved';
@@ -294,6 +294,10 @@ const handleDayPress = (day) => {
 </View>
         {/* <Button title="close" onPress={()=>{setModalOpen(!modalOpen)}} /> */}
         </View>
+}
+
+const inRange = (day) => {
+  return moment(day).isAfter(moment(new Date()));
 }
 
 const reserved = (markedDates, userId, duration, day) => {

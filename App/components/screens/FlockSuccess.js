@@ -53,8 +53,13 @@ const FlockSuccess = ({navigation, route}) => {
     <TouchableOpacity style={{marginTop: 20, }} onPress={()=>{
         navigation.navigate("FlockReserve", {data: route.params.data});
       }}>
-      <View style={{padding: 20, marginBottom: 15, paddingLeft: 30, borderRadius: 50, shadowRadius: 2.62, backgroundColor: 'white', shadowOpacity: 0.23, shadowOffset:{height: 2,width:0}, elevation: 1}}>
+      <View style={{padding: 20, marginBottom: 15, paddingLeft: 30, borderRadius: 50, shadowRadius: 2.62, backgroundColor: 'white', borderWidth: 2, borderColor: constants.ORANGE, shadowOpacity: 0.23, shadowOffset:{height: 2,width:0}, elevation: 1}}>
+      <View style={{flexDirection:'row', paddingRight: 30}}>
       <Image style={{width: 50, height: 50}} source={{uri: route.params.data.product.image}} />
+      <View>
+        <Text numberOfLines={2} style={{flex:1}}>{route.params.data.product.title}</Text>
+      </View>
+      </View>
       </View>
       </TouchableOpacity>
       </View>
