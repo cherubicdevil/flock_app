@@ -3,6 +3,7 @@ import {View, Text, TouchableOpacity, Dimensions} from 'react-native';
 import {constants} from 'App/constants';
 import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import {CommonActions} from '@react-navigation/native';
 
 const HeaderGradient = ({navigation, children, absolute=true, closeX = false, title=""}) => {
     return <View style={{width: '100%', height: absolute?100:50, position:absolute?'absolute':'relative', top: 0, zIndex: 500,backgroundColor: constants.TRANSLUCENT, borderBottomRightRadius: 30, borderBottomLeftRadius: 30}}>
@@ -27,7 +28,7 @@ const HeaderGradient = ({navigation, children, absolute=true, closeX = false, ti
         CommonActions.reset({
           index: 0,
           routes: [
-            { name: 'Home' },
+            { name: 'Carousel' },
           ],
         })
                   );

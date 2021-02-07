@@ -60,11 +60,15 @@ function ChatInterface({route, navigation}) {
   const [priceShare, setPriceShare] = useState(route.params.data.maximums[auth.currentUser.uid] || 0);
   const [initialDialog, setInitialDialog] = useState(false);
   const [remainingPercent, setRemainingPercent] = useState(0);
+  // const [UUID, setUUID] = useState(0);
+  console.log('remaning percent', remainingPercent);
 
-  useEffect(()=>{
-    setPriceShare(route.params.data.maximums[auth.currentUser.uid]);
-  }, [route.params.data]);
   useFocusEffect(()=>{
+    // setUUID(Math.random());
+    setPriceShare(route.params.data.maximums[auth.currentUser.uid]);
+    console.log(route.params.data.id, route.params.data.maximums[auth.currentUser.uid]);
+  }, []);
+  useEffect(()=>{
     const unsub = db.collection('chatGroups').doc(route.params.data.id).onSnapshot(docSnapshot => {
       const data = docSnapshot.data();
       const members = data.memberIds;
@@ -76,6 +80,7 @@ function ChatInterface({route, navigation}) {
         }
       }
       // console.log(remaining/route.params.data.product.price);
+      console.log('first set', Math.round(100 * remaining/route.params.data.product.price));
       setRemainingPercent(Math.round(100 * remaining/route.params.data.product.price));
     }, err => {
       console.log(`Encountered error: ${err}`);
@@ -161,11 +166,11 @@ function ChatInterface({route, navigation}) {
     dispatch({type: 'emptySystemMessages'});
   }, []);
 
-  useEffect(() => {
-    for (const message of select.chat.systemMessages) {
-      setRecvMessages((prevState) => GiftedChat.append(prevState, message));
-    }
-  }, [select.chat.systemMessages]);
+  // useEffect(() => {
+  //   for (const message of select.chat.systemMessages) {
+  //     setRecvMessages((prevState) => GiftedChat.append(prevState, message));
+  //   }
+  // }, [select.chat.systemMessages]);
 
   // const setRecvMessages = (messages) => {
   //   recvMessages = messages;
@@ -276,6 +281,8 @@ return <ScrollView  style={{marginLeft: 15, overflow: 'visible', backgroundColor
   
   console.log("PARTOF?", partOf, part);
   console.log("ID", route.params.data.id);
+  console.log("priceshare", priceShare);
+  console.log(parseFloat(priceShare) / parseFloat(route.params.data.product.price) * 100);
   // console.log("prices", priceShare, route.params.data.product.price, parseFloat(priceShare) / parseFloat(route.params.data.product.price) * 100);
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
@@ -303,15 +310,21 @@ return <ScrollView  style={{marginLeft: 15, overflow: 'visible', backgroundColor
             {/* <Text style={{color:'white', marginBottom: 10, fontWeight: 'bold'}}>Current flock price: ${route.params.data?.product?.price || ""}</Text> */}
             {/* <Text style={{color:'white', marginBottom: 10, fontWeight: 'bold'}}>Total price: ${route.params.data?.product?.price || ""}</Text> */}
             
-            {part?<PriceText remainingPercent={remainingPercent} priceShareInitialPercent={parseFloat(priceShare) / parseFloat(route.params.data.product.price) * 100} completeFunc={completeFunc} productPrice={route.params.data.product.price} maximums={route.params.data.maximums} />:<></>}
+            {part?<PriceText key={Math.random()} remainingPercent={remainingPercent} priceShare = {priceShare} priceShareInitialPercent={parseFloat(priceShare) / parseFloat(route.params.data.product.price) * 100} completeFunc={completeFunc} productPrice={route.params.data.product.price} maximums={route.params.data.maximums} />:
+            <PriceTextPreview remainingPercent={remainingPercent} productPrice={route.params.data.product.price} />
+            }
             </View>
             <TouchableOpacity onPress={()=>{
               navigation.navigate("Product", {album: route?.params?.data?.product, id: route?.params?.data?.id});
             }}>
-            <View style={{flexDirection: 'row', padding: 20, marginBottom: 15, paddingLeft: 30, borderRadius: 50, shadowRadius: 2.62, backgroundColor: 'white', shadowOpacity: 0.23, shadowOffset:{height: 2,width:0}, elevation: 1}}>
+            <View style={{flexDirection: 'row', padding: 20, marginBottom: 15, paddingLeft: 30, paddingRight: 30,borderRadius: 50, shadowRadius: 2.62, backgroundColor: 'white', shadowOpacity: 0.23, shadowOffset:{height: 2,width:0}, elevation: 1}}>
             <Image style={{width: 50, height: 50}} source={{uri: route.params.data.product.image}} />
-            <Text>{route.params.data.product.title}</Text>
+            <View style={{flex:1}}>
+            <Text numberOfLines={2}>{route.params.data.product.title}</Text>
+            <Text>${route.params.data.product.price}</Text>
             </View>
+            </View>
+            
             </TouchableOpacity>
           </LinearGradient>
           </ScrollView>
@@ -371,7 +384,7 @@ return <ScrollView  style={{marginLeft: 15, overflow: 'visible', backgroundColor
         onSend={onSend}
         user={{_id: 1}}
       /></View>
-      <JoinDialog data={route.params.data} setCreditModal={setCreditModal} initialDialog={initialDialog} setInitialDialog={setInitialDialog} setPartOf = {setPartOf} completeFunc = {completeFunc} maxPercent = {remainingPercent} />
+      <JoinDialog navigation={navigation} data={route.params.data} setCreditModal={setCreditModal} initialDialog={initialDialog} setInitialDialog={setInitialDialog} setPartOf = {setPartOf} completeFunc = {completeFunc} maxPercent = {remainingPercent} />
       {partOf?<></>:<View style={{position: 'absolute', bottom: 0, width: '100%', height: 100, backgroundColor: 'white'}}><View style={{height: '100%', backgroundColor: constants.PINK_BACKGROUND }}>
         <TouchableOpacity style={{width: '90%', height: 50, backgroundColor: constants.ORANGE, alignSelf: 'center', borderRadius: 30, justifyContent: 'center'}} onPress={()=>{
           setInitialDialog(true);
@@ -409,7 +422,7 @@ return <ScrollView  style={{marginLeft: 15, overflow: 'visible', backgroundColor
   );
 }
 
-const JoinDialog = ({data, setCreditModal, initialDialog, setInitialDialog, setPartOf, completeFunc, minPercent=8, maxPercent}) =>{
+const JoinDialog = ({navigation, data, setCreditModal, initialDialog, setInitialDialog, setPartOf, completeFunc, minPercent=8, maxPercent}) =>{
   const store = useStore();
   const dispatch = useDispatch();
 
@@ -467,6 +480,7 @@ const JoinDialog = ({data, setCreditModal, initialDialog, setInitialDialog, setP
     // dispatch({type: "UPDATE_DATA", payload: ["chatGroups", "add", "array", data]});
       data.members.push(memberInfo);
       completeFunc(store.getState().userInfo.customerId);
+      navigation.navigate("ChatInterface", {data: data})
     } else {
       setCreditModal(true);
     }
@@ -475,14 +489,37 @@ const JoinDialog = ({data, setCreditModal, initialDialog, setInitialDialog, setP
 </Dialog.Container>
 }
 
+const PriceTextPreview = ({productPrice, remainingPercent}) =>{
+  console.log('remin', remainingPercent);
+  return <>
+  <View style={{flexDirection: 'row', justifyContent: 'center', }}>
+  <View style={{alignItems: 'center', width: 175}}>
+  <Text style={{color:'black'}}>Others are paying</Text>
+    <Text style={{fontSize: 18, color: 'black'}}>${(parseFloat(productPrice) * ((100-remainingPercent)/100)).toFixed(2)} ({(100-remainingPercent).toFixed(0)}%)</Text>
+  </View>
+  </View>
+  <View style={{flexDirection: 'row', alignItems: 'center'}}>
+  <View style={{flex: 1, flexDirection: 'row', paddingLeft: 10, alignItems: 'center', justifyContent: 'center', alignSelf: 'center'}}>
+          <View style={{flex: 100-remainingPercent,  height: 15, backgroundColor: constants.GREYORANGE, borderBottomLeftRadius: 40, borderTopLeftRadius: 40}}/>
+        <View style={{flex:remainingPercent, marginRight: 0, paddingRight: 0, backgroundColor: constants.DONE, }}>
+</View>
+</View>
+</View>
+
+  <Text style={{color:'black', marginBottom: 10, textAlign: 'center'}}>Increase to own more and use more.</Text>
+  <View style={{flexDirection: 'row'}}>
+  </View>
+  </>;
+}
 const PriceText = ({priceShareInitialPercent, completeFunc, productPrice, remainingPercent, maximums}) => {
-  // console.log(priceShareInitialPercent+"%");
+  console.log(priceShareInitialPercent+"%");
   const [initialPercent, setInitialPercent] = useState(priceShareInitialPercent);
   const [pricePercent, setPricePercent] = useState(initialPercent);
   const [changed, setChanged] = useState(false);
 
   const select = useSelector(state=>state.userInfo);
 
+  var changeable = false;
   console.log('remaining', remainingPercent);
 
   if (true) {
@@ -530,8 +567,15 @@ const PriceText = ({priceShareInitialPercent, completeFunc, productPrice, remain
           <MultiSlider
           values={[pricePercent]}
           // style={{flex: remainingPercent}}
+          onValuesChangeStart={()=>{
+            changeable = true;
+          }}
+          onValuesChangeFinish={()=>{
+            changable  = false;
+          }}
           onValuesChange={(stuff)=>{
             // setPriceShare((parseInt(stuff[0])/100 * productPrice).toFixed(2));
+            // if (!changeable) return;
             setPricePercent(stuff[0]);
             // console.log(stuff);
             setChanged(true);

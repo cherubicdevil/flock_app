@@ -34,7 +34,7 @@ import HeaderGradient from 'App/components/HeaderGradient';
 
 const FlockSuccess = ({navigation, route}) => {
     return <SafeAreaView>
-            <HeaderGradient closeX={true} absolute={false}>
+            <HeaderGradient navigation={navigation} closeX={true} absolute={false}>
         <Text>Success</Text>
     </HeaderGradient>
     <View style={{paddingVertical:10, paddingHorizontal:20}}>

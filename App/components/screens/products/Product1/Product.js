@@ -309,7 +309,11 @@ const Product = ({route, navigation}) => {
             <View style={styles.productRow}>{renderDescription()}</View>
             <View style={[styles.productRow, {backgroundColor: 'white'}]}>
             <Text style={{fontWeight: 'bold'}}>{flockAr.reduce((total, item)=>total + item.members.length, 0)} people are currently flocking.</Text>
-            <FlockList navigation = {navigation} product = {route.params.album} ar = {flockAr} randomId={randomId} />
+            <TouchableOpacity onPress={()=>{
+              setModalOpen(true);
+            }}>
+            <FlockList close = {()=>{setModalOpen(false)}}navigation = {navigation} product = {route.params.album} ar = {flockAr} randomId={randomId} />
+            </TouchableOpacity>
             </View>
             <View style={styles.productRow}>{renderDetail()}</View>
           </View>
@@ -413,7 +417,7 @@ const Product = ({route, navigation}) => {
                 </LinearGradient>
                 </View>
                 </View>
-                <AnimatedModal visible={modalOpen} close={()=>{setModalOpen(false)}} content={<View style={{paddingLeft: 20, paddingRight: 20}}><FlockList limited = {false} navigation={navigation} product = {route.params.album} ar={flockAr} /></View>} />
+                <AnimatedModal visible={modalOpen} close={()=>{setModalOpen(false)}} content={<View style={{paddingLeft: 20, paddingRight: 20}}><FlockList close = {()=>{setModalOpen(false)}} limited = {false} navigation={navigation} product = {route.params.album} ar={flockAr} /></View>} />
                 </View>
     );
   }
@@ -444,7 +448,7 @@ const Countdown = ({dateObj}) => {
   <View style={{flexDirection: 'row', justifyContent:'space-between', fontSize: 10}}><Text style={{fontSize:10, alignSelf: 'stretch'}}>days</Text><Text style={{fontSize:10, alignSelf: 'stretch'}}>hrs</Text><Text style={{fontSize:10, alignSelf: 'stretch'}}>min</Text><Text style={{fontSize:10, alignSelf: 'stretch'}}>left</Text></View></>
 }
 
-const FlockList = ({product, navigation, ar, limited = true, randomId}) => {
+const FlockList = ({product, navigation, ar, close, limited = true, randomId}) => {
   const scrollRef = useRef();
   var offset = 0;
 
@@ -513,6 +517,7 @@ const FlockList = ({product, navigation, ar, limited = true, randomId}) => {
     const tempFunc = ()=>{
       console.log("check array", ar);
       //console.log(ar.length, ar[0]);
+      close();
       console.log(i);
       console.log("SENDING DATA", dat);
       navigation.navigate("ChatInterface", {data: dat});
