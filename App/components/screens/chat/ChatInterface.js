@@ -442,6 +442,8 @@ const PriceText = ({priceShareInitialPercent, completeFunc, productPrice, remain
   const [pricePercent, setPricePercent] = useState(priceShareInitialPercent);
   const [changed, setChanged] = useState(false);
 
+  const select = useSelector(state=>state.userInfo);
+
   console.log('remaining', remainingPercent);
 
   if (true) {
@@ -460,7 +462,7 @@ const PriceText = ({priceShareInitialPercent, completeFunc, productPrice, remain
     </View>
     {changed?<View style={{backgroundColor: constants.DONE, marginLeft: 30, justifyContent: 'center', borderRadius: 40, padding:10}}>
         <TouchableOpacity onPress={()=>{
-          setPricePercent(priceShareInitialPercent);
+          completeFunc(select.customerId);
           setChanged(false);
         }}><Text>Confirm</Text></TouchableOpacity>
       </View>:<></>}
