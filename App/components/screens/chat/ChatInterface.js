@@ -382,15 +382,15 @@ return <ScrollView  style={{marginLeft: 15, overflow: 'visible', backgroundColor
     <Dialog.Button label="Confirm" onPress={()=>{
       
       if (store.getState().userInfo.customerId !== "none") {
-        const memberInfo = {name: auth.currentUser.displayName, uid: auth.currentUser.uid, max: priceShare};
+        const memberInfo = {name: auth.currentUser.displayName, uid: auth.currentUser.uid};
         db.collection('users').doc(auth.currentUser.uid).update({
           chatIds: firebase.firestore.FieldValue.arrayUnion(route.params.data.id)
         });
-        route.params.data.maximums[firebase.auth().currentUser.uid] = 100;
+        route.params.data.maximums[firebase.auth().currentUser.uid] = "100.00";
         console.log('route  id', route.params.data.id);
         db.collection('chatGroups').doc(route.params.data.id).update({
-          members: firebase.firestore.FieldValue.arrayUnion({name: 'test', uid: "test123", max: 123}),
-          memberIds: firebase.firestore.FieldValue.arrayUnion("test123"),
+          members: firebase.firestore.FieldValue.arrayUnion(memberInfo),
+          memberIds: firebase.firestore.FieldValue.arrayUnion(memberInfo.uid),
           maximums: route.params.data.maximums,
         });
         setPartOf(true);
@@ -452,6 +452,7 @@ const PriceText = ({priceShareInitialPercent, completeFunc, productPrice, remain
 
   if (true) {
     // console.log(priceShare, "priceShare");
+    console.log(productPrice * pricePercent);
     return <>
     <View style={{flexDirection: 'row', justifyContent: 'center', }}>
       {changed?<View style={{backgroundColor: constants.DONE, marginRight: 30, justifyContent: 'center', borderRadius: 40, padding: 10}}>
