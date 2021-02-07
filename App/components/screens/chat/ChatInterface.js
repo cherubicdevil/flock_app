@@ -71,7 +71,9 @@ function ChatInterface({route, navigation}) {
       const maximums = data.maximums;
       var remaining = route.params.data.product.price;
       for (const m of members) {
+        if (m != auth.currentUser.uid) {
         remaining -= maximums[m];
+        }
       }
       // console.log(remaining/route.params.data.product.price);
       setRemainingPercent(Math.round(100 * remaining/route.params.data.product.price));
@@ -272,15 +274,18 @@ return <ScrollView  style={{marginLeft: 15, overflow: 'visible', backgroundColor
   }
   
   console.log("PARTOF?", partOf, part);
+  // console.log("prices", priceShare, route.params.data.product.price, parseFloat(priceShare) / parseFloat(route.params.data.product.price) * 100);
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
       
 <HeaderView navigation={navigation} route={route} />
       <View style={{ position: 'absolute', zIndex: 200, top: 100, width: '100%', borderRadius: 0, borderBottomRightRadius: 70, borderBottomLeftRadius: 70}}>
-      <View style={{shadowColor: "#ff7009", shadowOffset: {height: 0, width: 0}, shadowOpacity: 0.42, elevation: 13, shadowRadius: 28.30, borderBottomLeftRadius: 70, borderBottomRightRadius: 70}}>
+      <View style={{
+        // shadowColor: "#ff7009", shadowOffset: {height: 0, width: 0}, shadowOpacity: 0.42, elevation: 13, shadowRadius: 28.30,
+       borderBottomLeftRadius: 70, borderBottomRightRadius: 70}}>
       <ScrollView scrollEnabled={false} keyboardShouldPersistTaps="never" >
       <LinearGradient
-          colors={[constants.ORANGE, constants.PEACH]}
+          colors={[constants.PEACHBG, constants.PEACHBG]}
           start={{ x: 0, y: 0 }} end={{ x: 0, y: 1 }}
           style={{
             borderRadius: 20,
@@ -292,11 +297,11 @@ return <ScrollView  style={{marginLeft: 15, overflow: 'visible', backgroundColor
             //alignItems: 'center',
             flex: 1,
           }}>
-            <View style={{width: '80%', alignSelf: 'center'}}>
+            <View style={{width: '90%', alignSelf: 'center'}}>
             {/* <Text style={{color:'white', marginBottom: 10, fontWeight: 'bold'}}>Current flock price: ${route.params.data?.product?.price || ""}</Text> */}
             {/* <Text style={{color:'white', marginBottom: 10, fontWeight: 'bold'}}>Total price: ${route.params.data?.product?.price || ""}</Text> */}
             
-            {part?<PriceText remainingPercent={remainingPercent} priceShareInitial={priceShare} completeFunc={completeFunc} productPrice={route.params.data.product.price} />:<></>}
+            {part?<PriceText remainingPercent={remainingPercent} priceShareInitialPercent={parseFloat(priceShare) / parseFloat(route.params.data.product.price) * 100} completeFunc={completeFunc} productPrice={route.params.data.product.price} />:<></>}
             </View>
             <TouchableOpacity onPress={()=>{
               navigation.navigate("Product", {album: route?.params?.data?.product, id: route?.params?.data?.id});
@@ -432,74 +437,99 @@ return <ScrollView  style={{marginLeft: 15, overflow: 'visible', backgroundColor
   );
 }
 
-const PriceText = ({priceShareInitial, completeFunc, productPrice, remainingPercent}) => {
-  const [priceShare, setPriceShare] = useState(priceShareInitial);
+const PriceText = ({priceShareInitialPercent, completeFunc, productPrice, remainingPercent}) => {
+  // console.log(priceShareInitialPercent+"%");
+  const [pricePercent, setPricePercent] = useState(priceShareInitialPercent);
   const [changed, setChanged] = useState(false);
 
+  console.log('remaining', remainingPercent);
+
   if (true) {
-    console.log(priceShare, "priceShare");
+    // console.log(priceShare, "priceShare");
     return <>
-    <View style={{flexDirection: 'row'}}>
-      {changed?<View>
+    <View style={{flexDirection: 'row', justifyContent: 'center', }}>
+      {changed?<View style={{backgroundColor: constants.DONE, marginRight: 30, justifyContent: 'center', borderRadius: 40, padding: 10}}>
         <TouchableOpacity onPress={()=>{
-          setPriceShare(priceShareInitial);
+          setPricePercent(priceShareInitialPercent);
           setChanged(false);
         }}><Text>Cancel</Text></TouchableOpacity>
       </View>:<></>}
-    <View style={{alignItems: 'center'}}>
-    <Text style={{color:'white'}}>You are paying</Text>
-    <Text style={{fontSize: 18, color: 'white'}}>${(typeof priceShare === "string")?priceShare:priceShare.toFixed(2)} ({(parseFloat(priceShare)/parseFloat(productPrice) *100).toFixed(0)}%)</Text>
+    <View style={{alignItems: 'center', width: 175}}>
+    <Text style={{color:'black'}}>You are paying</Text>
+      <Text style={{fontSize: 18, color: 'black'}}>${(parseFloat(productPrice) * pricePercent/100).toFixed(2)} ({pricePercent}%)</Text>
     </View>
+    {changed?<View style={{backgroundColor: constants.DONE, marginLeft: 30, justifyContent: 'center', borderRadius: 40, padding:10}}>
+        <TouchableOpacity onPress={()=>{
+          setPricePercent(priceShareInitialPercent);
+          setChanged(false);
+        }}><Text>Confirm</Text></TouchableOpacity>
+      </View>:<></>}
     </View>
     <View style={{flexDirection: 'row', alignItems: 'center'}}>
     <View style={{borderRadius: 40, backgroundColor: constants.ORANGE, width: 25, height: 25, justifyContent: 'center', alignItems: 'center'}}>
-        <TouchableOpacity >
+        <TouchableOpacity onPress={()=>{
+          if (pricePercent>=4) {
+            setPricePercent(pricePercent-4);
+            setChanged(true);
+          }
+          
+        }}>
           <Icon name="minus" color="white" size={20} />
         </TouchableOpacity>
       </View>
 
     <View style={{flex: 1, flexDirection: 'row', paddingLeft: 10, alignItems: 'center', justifyContent: 'center', alignSelf: 'center'}}>
-            <View style={{flex: 100-remainingPercent,  height: 15, backgroundColor: 'black', borderBottomLeftRadius: 40, borderTopLeftRadius: 40}}/>
+            <View style={{flex: 100-remainingPercent,  height: 15, backgroundColor: constants.GREYORANGE, borderBottomLeftRadius: 40, borderTopLeftRadius: 40}}/>
           <View style={{flex:remainingPercent, marginRight: 0, paddingRight: 0}}>
           <MultiSlider
+          values={[pricePercent]}
           // style={{flex: remainingPercent}}
           onValuesChange={(stuff)=>{
-            setPriceShare((parseInt(stuff[0])/100 * productPrice).toFixed(2));
-            console.log(stuff);
+            // setPriceShare((parseInt(stuff[0])/100 * productPrice).toFixed(2));
+            setPricePercent(stuff[0]);
+            // console.log(stuff);
             setChanged(true);
           }}
   // style={{width: 200, height: 40}}
   // snapped={true}
   markerStyle={{width: 40, height: 40, shadowOpacity:0}}
   selectedStyle={{backgroundColor: constants.BLUERGREY}}
-  trackStyle={{height: 15, borderRadius: 20}}
+  trackStyle={{height: 15, borderRadius: 20, borderTopLeftRadius: remainingPercent<100?0:20, borderBottomLeftRadius: remainingPercent<100?0:20}}
   // containerStyle={{height: 20}}
+  selectedStyle={{backgroundColor:constants.ORANGE}}
   markerContainerStyle={{alignSelf: 'center', marginTop: 7.5}}
   // markerStyle={{marginTop: 15,justifyContent: 'center', alignItems: 'center'}}
   smoothSnapped={true}
   sliderLength={280 * remainingPercent/100}
   step = {4}
   min={0}
-  max={104}
+  max={remainingPercent+4}
   markerSize={100}
   showSteps={true}
   containerStyle={{width: 30}}
   // markerSize={20}
 
 />
+
+</View>
 <View style={{borderRadius: 40, backgroundColor: constants.ORANGE, width: 25, height: 25, justifyContent: 'center', alignItems: 'center'}}>
-        <TouchableOpacity >
-          <Icon name="minus" color="white" size={20} />
+        <TouchableOpacity onPress={()=>{
+          if (pricePercent < 100) {
+            setPricePercent(pricePercent+4);
+            setChanged(true);
+          }
+          
+        }}>
+          <Icon name="plus" color="white" size={20} />
         </TouchableOpacity>
       </View>
 </View>
 </View>
-</View>
 
-    <Text style={{color:'white', marginBottom: 10}}>Increase to own more and use more.</Text>
+    <Text style={{color:'black', marginBottom: 10, textAlign: 'center'}}>Increase to own more and use more.</Text>
     <View style={{flexDirection: 'row'}}>
       
-    <Text style={{color:'white', marginBottom: 10}}>Change your payment:</Text>
+    {/* <Text style={{color:'white', marginBottom: 10}}>Change your payment:</Text> */}
     {/* <ChangePayment data={priceShare} setState={setPriceShare}/> */}
     </View>
     {/* <Text style={{color:'white', marginBottom: 10, fontWeight: 'bold'}}>Have it now if you  ${(route.params.data.product.price / route.params.data.members.length).toFixed(2)}.</Text>

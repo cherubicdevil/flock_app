@@ -69,6 +69,8 @@ export const constants = {
   PINK_BACKGROUND_OPAQUE_LIGHT: 'rgba(247, 244, 246, 1)',
   TRANSLUCENT: '#f2f2f7',
   PEACH: '#ff9966',
+  PEACHBG: "#f1d4c6",
+  DONE:"#f2f2f7",
   GREYBLUE: '#8291b0',
   BLUERGREY: '#7488b0',
   CHAT_ENDPOINT: 'https://enigmatic-bastion-86695.herokuapp.com/',
