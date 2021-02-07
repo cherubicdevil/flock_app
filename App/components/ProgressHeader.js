@@ -127,11 +127,15 @@ const ProgressHeader = ({
           position: 'absolute',
           right: 20,
           bottom: 25,
-          padding: 10, height: 40, backgroundColor: constants.ORANGE, width: 60, borderRadius: 30, opacity: canGoNext ? 1 : 0.2,
+          justifyContent: 'center',
+          alignItems: 'center',
+          height: 40, backgroundColor: constants.ORANGE, width: 60, borderRadius: 30, opacity: canGoNext ? 1 : 0.2,
 
           }}>
       <TouchableOpacity
         style={{
+          justifyContent: 'center',
+          alignItems: 'center',
           width: '100%',
           height: '100%',
         }}

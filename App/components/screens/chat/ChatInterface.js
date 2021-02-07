@@ -454,7 +454,7 @@ const JoinDialog = ({data, setCreditModal, initialDialog, setInitialDialog, setP
       db.collection('users').doc(auth.currentUser.uid).update({
         chatIds: firebase.firestore.FieldValue.arrayUnion(data.id)
       });
-      data.maximums[auth.currentUser.uid] = (initialPercent * parseFloat(data.product.price)).toFixed(2);
+      data.maximums[auth.currentUser.uid] = (initialPercent/100 * parseFloat(data.product.price)).toFixed(2);
       // console.log('route  id', route.params.data.id);
       db.collection('chatGroups').doc(data.id).update({
         members: firebase.firestore.FieldValue.arrayUnion(memberInfo),
@@ -476,7 +476,8 @@ const JoinDialog = ({data, setCreditModal, initialDialog, setInitialDialog, setP
 
 const PriceText = ({priceShareInitialPercent, completeFunc, productPrice, remainingPercent}) => {
   // console.log(priceShareInitialPercent+"%");
-  const [pricePercent, setPricePercent] = useState(priceShareInitialPercent);
+  const [initialPercent, setInitialPercent] = useState(priceShareInitialPercent);
+  const [pricePercent, setPricePercent] = useState(initialPercent);
   const [changed, setChanged] = useState(false);
 
   const select = useSelector(state=>state.userInfo);
@@ -490,25 +491,26 @@ const PriceText = ({priceShareInitialPercent, completeFunc, productPrice, remain
     <View style={{flexDirection: 'row', justifyContent: 'center', }}>
       {changed?<View style={{backgroundColor: constants.DONE, marginRight: 30, justifyContent: 'center', borderRadius: 40, padding: 10}}>
         <TouchableOpacity onPress={()=>{
-          setPricePercent(priceShareInitialPercent);
+          setPricePercent(initialPercent);
           setChanged(false);
         }}><Text>Cancel</Text></TouchableOpacity>
-      </View>:<></>}
+      </View>:<View style={{opacity:0,padding: 10, marginRight:30}} ><Text>Cancel</Text></View>}
     <View style={{alignItems: 'center', width: 175}}>
     <Text style={{color:'black'}}>You are paying</Text>
-      <Text style={{fontSize: 18, color: 'black'}}>${(parseFloat(productPrice) * pricePercent/100).toFixed(2)} ({pricePercent}%)</Text>
+      <Text style={{fontSize: 18, color: 'black'}}>${(parseFloat(productPrice) * pricePercent/100).toFixed(2)} ({pricePercent.toFixed(0)}%)</Text>
     </View>
     {changed?<View style={{backgroundColor: constants.DONE, marginLeft: 30, justifyContent: 'center', borderRadius: 40, padding:10}}>
         <TouchableOpacity onPress={()=>{
+          setInitialPercent(pricePercent);
           completeFunc(select.customerId);
           setChanged(false);
         }}><Text>Confirm</Text></TouchableOpacity>
-      </View>:<></>}
+      </View>:<View style={{opacity:0,padding: 10, marginLeft:30}} ><Text>Confirm</Text></View>}
     </View>
     <View style={{flexDirection: 'row', alignItems: 'center'}}>
     <View style={{borderRadius: 40, backgroundColor: constants.ORANGE, width: 25, height: 25, justifyContent: 'center', alignItems: 'center'}}>
         <TouchableOpacity onPress={()=>{
-          if (pricePercent>=4) {
+          if (pricePercent>4) {
             setPricePercent(pricePercent-4);
             setChanged(true);
           }
@@ -542,7 +544,7 @@ const PriceText = ({priceShareInitialPercent, completeFunc, productPrice, remain
   smoothSnapped={true}
   sliderLength={280 * remainingPercent/100}
   step = {4}
-  min={0}
+  min={8}
   max={remainingPercent+4}
   markerSize={100}
   showSteps={true}
@@ -622,9 +624,9 @@ const HeaderView = ({navigation, route}) => {
           <TouchableOpacity onPress={()=>{ setCollapsed(!collapsed); }}>
   <View>
     
-  <Text style={{fontSize: 14}}>{route.params.data.flock}</Text>
+  <Text style={{fontSize: 14}}>%{route.params.data.id}</Text>
   <Countdown dateObj={route.params.data.time} />
-  <Collapsible collapsed={collapsed}>
+  {/* <Collapsible collapsed={collapsed}>
     <ScrollView horizontal >
   {route.params.data.members.map((item)=>{
     const buyer = item.name;
@@ -660,7 +662,7 @@ const HeaderView = ({navigation, route}) => {
 </View>;
   })}
       </ScrollView>
-      </Collapsible>
+      </Collapsible> */}
   </View>
   </TouchableOpacity>
   <Button
