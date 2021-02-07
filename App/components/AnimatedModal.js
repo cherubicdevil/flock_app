@@ -45,6 +45,7 @@ const AnimatedModal = ({
   fadeOpacity=0.8,
   curve = true,
   behind=false,
+  keyboard=false,
   viewParams={bottom: 0, height: Dimensions.get('window').height, width:Dimensions.get('window').width, left: 0},
   contentTop=<></>
 }) => {
@@ -116,7 +117,7 @@ const AnimatedModal = ({
             <View style={{zIndex: -40, justifyContent: 'center', alignItems: 'center', position: 'absolute', top: 0, width: '100%', height: (100-parseInt(upPercent.replace("%",""))) + "%", backgroundColor:"rgba(255,255,255,0)"}}>
               {contentTop}
             </View>
-            <KeyboardAvoidingView behavior="position" enabled style={{position: 'absolute', zIndex: 20, width: '100%', backgroundColor: 'transparent', height: upPercent, }}>
+            <KeyboardAvoidingView enabled={false} behavior="position" style={{position: 'absolute', zIndex: 20, width: '100%', backgroundColor: 'transparent', height: upPercent, }}>
             <View behavior="padding" style={{width: '100%', height: "100%", borderRadius: curve?100:0, borderBottomRightRadius: 0, borderBottomLeftRadius: 0, backgroundColor: bgcolor, paddingTop: 40, overflow: 'hidden'}}>
             
               {content}

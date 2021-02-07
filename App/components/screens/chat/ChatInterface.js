@@ -274,6 +274,7 @@ return <ScrollView  style={{marginLeft: 15, overflow: 'visible', backgroundColor
   }
   
   console.log("PARTOF?", partOf, part);
+  console.log("ID", route.params.data.id);
   // console.log("prices", priceShare, route.params.data.product.price, parseFloat(priceShare) / parseFloat(route.params.data.product.price) * 100);
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
@@ -372,21 +373,24 @@ return <ScrollView  style={{marginLeft: 15, overflow: 'visible', backgroundColor
       <Dialog.Container visible={initialDialog}>
     <Dialog.Title>Set Your Price</Dialog.Title>
     <Dialog.Description>
-      You will not be charged immediately, only if and when the flock completes.
+      Please set your initial price. You can always change it later.
     </Dialog.Description>
     <Dialog.Button label="Cancel" onPress={()=>{
+      console.log(route.params.data.id,"ID");
       setInitialDialog(false);
     }}/>
     <Dialog.Button label="Confirm" onPress={()=>{
+      
       if (store.getState().userInfo.customerId !== "none") {
         const memberInfo = {name: auth.currentUser.displayName, uid: auth.currentUser.uid, max: priceShare};
         db.collection('users').doc(auth.currentUser.uid).update({
           chatIds: firebase.firestore.FieldValue.arrayUnion(route.params.data.id)
         });
         route.params.data.maximums[firebase.auth().currentUser.uid] = 100;
+        console.log('route  id', route.params.data.id);
         db.collection('chatGroups').doc(route.params.data.id).update({
-          members: firebase.firestore.FieldValue.arrayUnion(memberInfo),
-          memberIds: firebase.firestore.FieldValue.arrayUnion(memberInfo.uid),
+          members: firebase.firestore.FieldValue.arrayUnion({name: 'test', uid: "test123", max: 123}),
+          memberIds: firebase.firestore.FieldValue.arrayUnion("test123"),
           maximums: route.params.data.maximums,
         });
         setPartOf(true);

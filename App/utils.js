@@ -672,7 +672,7 @@ const pinLocalFunc = (htmlBody, notBaseURL) => {
     $('meta[name="keywords"]').attr("content");
 
     imageUrl = getImageUrl($, title);
-    imageUrl = imageDownloader.relativeUrlToAbsolute(imageUrl.trim());
+    imageUrl = imageDownloader.relativeUrlToAbsolute((imageUrl || "").trim());
     if (imageUrl.startsWith('data')) {
       //imageUrl = "too big";
     }

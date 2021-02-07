@@ -164,7 +164,6 @@ const Product = ({route, navigation}) => {
   };
 
   const renderDescription = () => {
-    console.log("ASFASDFADF", route.params.album.price.replace(".",""));
     return (
       <View>
         <Text style={{fontSize: 14, fontWeight: 'bold', marginBottom: 5,}}>
