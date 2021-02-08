@@ -52,7 +52,6 @@ const AnimatedModal = ({
   contentTop=<></>
 }) => {
   const animation = useRef(new Animated.Value(0));
-  const [backVisible, setBackVisible] = useState(false);
   const startAnimation = () => {
     Animated.timing(animation.current, {
       useNativeDriver: false,
@@ -69,16 +68,10 @@ const AnimatedModal = ({
       delay: 0,
       duration: 0,
     }).start();
-    setBackVisible(false);
-    console.log('animation ending', animation.current, backVisible);
   };
   useEffect(()=>{
     if (visible) {
-      setBackVisible(true);
       startAnimation();
-      console.log('animation starting', animation.current, backVisible);
-    } else {
-      setBackVisible(false);
     }
     // setBackVisible(visible);
   }, [visible]);
@@ -109,7 +102,7 @@ const AnimatedModal = ({
         alignSelf: 'center', 
           //right: Dimensions.get('window').width/2,
           backgroundColor: (colored || !fade)?'transparent':'rgb(0,0,0)',
-          opacity: backVisible?animation.current:0,
+          opacity: animation.current,
           //backgroundColor: modalVisible ? 'rgba(0,0,0,0.7)' : 'transparent',
         }}
       >
