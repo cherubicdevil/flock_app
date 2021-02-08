@@ -83,7 +83,7 @@ contentTop={
 <Text style={{color: 'white', alignSelf: 'center', marginTop: 20}}>Get more eggs by using the app: share, post, flock, and add products.</Text>
   </View>
 }
-viewParams={{bottom: 0, height: Dimensions.get('window').height, width:Dimensions.get('window').width + 300, left: -400}}
+// viewParams={{bottom: 0, height: Dimensions.get('window').height, width:Dimensions.get('window').width + 300, left: -400}}
 colored={true} colors={[constants.ORANGE, constants.GREYORANGE]} behind={false} upPercent="60%" visible={eggModalOpen} fade={false} close={()=>{setEggModalOpen(false)}} content={<View style={{flex: 1}}>
 
   <ShareSocial flockId="1234" product={null} shareApp={true} onSuccess={onSuccessfulShare}/>

@@ -26,7 +26,7 @@
 
 import {constants} from 'App/constants';
 import {View, Modal, Text, Animated, TouchableOpacity, Dimensions, KeyboardAvoidingView} from 'react-native';
-import React, {useRef} from 'react';
+import React, {useRef, useState, useEffect} from 'react';
 import MaskedViewIOS from '@react-native-community/masked-view';
 import LinearGradient from 'react-native-linear-gradient';
 import { AnimationObjectGroup } from 'three';
@@ -46,15 +46,18 @@ const AnimatedModal = ({
   curve = true,
   behind=false,
   keyboard=false,
+  modalAnimationType="slide",
+  behavior="position",
   viewParams={bottom: 0, height: Dimensions.get('window').height, width:Dimensions.get('window').width, left: 0},
   contentTop=<></>
 }) => {
   const animation = useRef(new Animated.Value(0));
+  const [backVisible, setBackVisible] = useState(false);
   const startAnimation = () => {
     Animated.timing(animation.current, {
       useNativeDriver: false,
       toValue: fadeOpacity,
-      delay: 0,
+      delay: 200,
       duration: 700,
     }).start();
   };
@@ -64,35 +67,27 @@ const AnimatedModal = ({
       useNativeDriver: false,
       toValue: 0,
       delay: 0,
-      duration: 1,
+      duration: 0,
     }).start();
+    setBackVisible(false);
+    console.log('animation ending', animation.current, backVisible);
   };
-  if (visible) {
-    startAnimation();
-  }
+  useEffect(()=>{
+    if (visible) {
+      setBackVisible(true);
+      startAnimation();
+      console.log('animation starting', animation.current, backVisible);
+    } else {
+      setBackVisible(false);
+    }
+    // setBackVisible(visible);
+  }, [visible]);
+
   return (
     <View style={{zIndex: 800}}>
-      <Animated.View
-        style={{
-          height: visible ? viewParams.height : 0,
-          width: visible ? viewParams.width: 0,
-          position: 'absolute',
-          zIndex: 500,
-          bottom: viewParams.bottom,
-          left: viewParams.left,
-        //   bottom: -1000,
-        alignSelf: 'center', 
-          //right: Dimensions.get('window').width/2,
-          backgroundColor: (colored || !fade)?'transparent':'rgb(0,0,0)',
-          opacity: animation.current,
-          //backgroundColor: modalVisible ? 'rgba(0,0,0,0.7)' : 'transparent',
-        }}
-      >
-    {colored?<LinearGradient style={{height: '100%'}} colors={colors} />:<></>}
 
-      </Animated.View>
       <Modal
-        animationType="slide"
+        animationType={modalAnimationType}
         transparent={true}
         visible={visible}
         style={{
@@ -102,7 +97,25 @@ const AnimatedModal = ({
           justifyContent: 'flex-end',
           //backgroundColor: '#aea',
         }}>
-          
+                <Animated.View
+        style={{
+          height: viewParams.height,
+          width: viewParams.width,
+          position: 'absolute',
+          zIndex: 200,
+          bottom: viewParams.bottom,
+          left: viewParams.left,
+        //   bottom: -1000,
+        alignSelf: 'center', 
+          //right: Dimensions.get('window').width/2,
+          backgroundColor: (colored || !fade)?'transparent':'rgb(0,0,0)',
+          opacity: backVisible?animation.current:0,
+          //backgroundColor: modalVisible ? 'rgba(0,0,0,0.7)' : 'transparent',
+        }}
+      >
+    {colored?<LinearGradient style={{height: '100%'}} colors={colors} />:<></>}
+
+      </Animated.View>
           <TouchableOpacity onPress={()=>{
             close();
             resetAnimation();
@@ -117,7 +130,7 @@ const AnimatedModal = ({
             <View style={{zIndex: -40, justifyContent: 'center', alignItems: 'center', position: 'absolute', top: 0, width: '100%', height: (100-parseInt(upPercent.replace("%",""))) + "%", backgroundColor:"rgba(255,255,255,0)"}}>
               {contentTop}
             </View>
-            <KeyboardAvoidingView enabled={false} behavior="position" style={{position: 'absolute', zIndex: 20, width: '100%', backgroundColor: 'transparent', height: upPercent, }}>
+            <KeyboardAvoidingView enabled={keyboard} behavior={behavior} style={{position: 'absolute', zIndex: 20, width: '100%', backgroundColor: 'transparent', height: upPercent, }}>
             <View behavior="padding" style={{width: '100%', height: "100%", borderRadius: curve?100:0, borderBottomRightRadius: 0, borderBottomLeftRadius: 0, backgroundColor: bgcolor, paddingTop: 40, overflow: 'hidden'}}>
             
               {content}

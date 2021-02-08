@@ -216,8 +216,8 @@ return <><View style={{flex: 1, marginTop: 5,}} >
           </TouchableOpacity>
         </View>
         </View>
-        <AnimatedModal colored={true} colors={[constants.ORANGE, constants.GREYORANGE]} visible={billModal} close={()=>setBillModal(false)} state={info} setState={setInfo} content={<BillingModal state={creditInfo} setState={setCreditInfo} setChanged={setCreditCardChanged} close={()=>setBillModal(false)}/>}/>
-<AnimatedModal colored={true} colors={[constants.ORANGE, constants.GREYORANGE]} visible={shipModal} close={()=>setShipModal(false)} state={info} setState={setInfo} content={<ShippingModal state={info} setState={setInfo} setChanged={setChanged} close={()=>setShipModal(false)}/>}/>
+        <AnimatedModal keyboard={true} upPercent="60%" colored={true} colors={[constants.ORANGE, constants.GREYORANGE]} visible={billModal} close={()=>setBillModal(false)} state={info} setState={setInfo} content={<BillingModal state={creditInfo} setState={setCreditInfo} setChanged={setCreditCardChanged} close={()=>setBillModal(false)}/>}/>
+<AnimatedModal keyboard={true} colored={true} colors={[constants.ORANGE, constants.GREYORANGE]} visible={shipModal} close={()=>setShipModal(false)} state={info} setState={setInfo} content={<ShippingModal state={info} setState={setInfo} setChanged={setChanged} close={()=>setShipModal(false)}/>}/>
 </>
 
 
@@ -235,6 +235,12 @@ const BillingModal = ({state, setState, close, setChanged}) => {
     // const [name, setName] = useState('');
     const [valid, setValid] = useState(false);
     const [error, setError] = useState(false);
+
+
+    const [address, setAddress] = useState(state.address?.line1);
+    const [geostate, setGeostate] = useState(state.address?.state);
+    const [city, setCity] = useState(state.address?.city);
+    const [zip, setZip] = useState(state.address?.postal_code);
   
     // const placeholderColor = localState.number === ''?'grey':'black';
     // const numberPlaceholder= localState.number=== ''?'4242424242424242':localState.number;
@@ -268,7 +274,38 @@ const BillingModal = ({state, setState, close, setChanged}) => {
             <TextInput defaultValue={localState.name} onChangeText={(text)=> {
                 localState.name = text;
             }} style={styles.textbox} />
-            <TouchableOpacity style={{marginTop:30, borderRadius: 40, overflow: 'hidden',  height: 35, width: "100%", alignSelf:'center', backgroundColor:constants.ORANGE, justifyContent:'center', alignItems: 'center', borderRadius:30}} onPress={()=>{
+
+<Text style={{marginLeft: 10, marginTop: 15, marginBottom: 5}}>Address</Text>
+            <TextInput value = {address}  onChangeText={(text)=> {
+                setAddress(text);
+            }} style={styles.textbox} />
+  
+            <View style={{flexDirection: 'row', justifyContent:'space-between'}}>
+                <View style={{flex: 1, marginRight: 20}}>
+            <Text style={{marginLeft: 10, marginTop: 15, marginBottom: 5}}>City</Text>
+            <TextInput value={city}  onChangeText={(text)=> {
+                setCity(text);
+            }} style={styles.textbox} />
+                        </View>
+                        <View style={{width: 75}}>
+                        <Text style={{marginLeft: 10, marginTop: 15, marginBottom: 5}}>State</Text>
+            <TextInput keyboardType="default" maxLength={2} value={geostate}   onChangeText={(text)=> {
+                setGeostate(text);
+            }} style={styles.textbox} />
+                        </View>
+                        {/* <View>
+                        <Text style={{marginLeft: 10, marginTop: 15, marginBottom: 5}}>Country</Text>
+            <TextInput defaultValue={localState.addressCountry} onChangeText={(text)=> {
+                localState.addressCountry = text;
+            }} style={styles.textbox} />
+            </View> */}
+            </View>            
+            <Text style={{marginLeft: 10, marginTop: 15, marginBottom: 5}}>Zip Code</Text>
+            <TextInput value={zip} maximumLength={5} keyboardType="numeric" onChangeText={(text)=> {
+                setZip(text);
+            }} style={styles.textbox} />
+
+            <TouchableOpacity style={{marginTop:30, marginBottom: 40, borderRadius: 40, overflow: 'hidden',  height: 35, width: "100%", alignSelf:'center', backgroundColor:constants.ORANGE, justifyContent:'center', alignItems: 'center', borderRadius:30}} onPress={()=>{
                  // if (!(validateCard(cardNumber(cardNumber)) && validateExp(expMonth, expYear)))
                 // valid = true;
                  if (!valid) {

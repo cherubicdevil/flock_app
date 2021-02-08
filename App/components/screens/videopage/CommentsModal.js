@@ -12,6 +12,7 @@ import {
   Modal,
   TouchableOpacity,
   TextInput,
+  Keyboard,
   TouchableWithoutFeedback,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -324,6 +325,7 @@ const CommentsModal = ({modalVisible, data, toggleFunc}) => {
       <View key={item.text + item.date} style={styles.commentWrapperStyle}>
         <View style={{flex: 1, flexDirection: 'row'}}>
           <Image
+          defaultSource={constants.PLACEHOLDER_IMAGE}
             source={{
               uri: item.user.photoURL,
             }}
@@ -437,13 +439,14 @@ const CommentsModal = ({modalVisible, data, toggleFunc}) => {
     }
   };
   return (
-    <AnimatedModal fade={false} animationType="slide" transparent={true} visible={modalVisible} close={()=>toggleFunc(false)}>
-      <KeyboardAvoidingView behavior="padding" style={styles.centeredView}>
+    <AnimatedModal keyboard={true} behavior="padding" fade={true} colored={true} colors={[constants.PEACH, constants.GREYORANGE]} modalAnimationType="slide" transparent={true} visible={modalVisible} close={()=>toggleFunc(false)}>
+      {/* <KeyboardAvoidingView behavior="padding" style={styles.centeredView}> */}
         <View
           style={styles.modalView}
           onStartShouldSetResponderCapture={() => false}
           onMoveShouldSetResponder={() => false}
           onStartShouldSetResponder={() => {
+            Keyboard.dismiss();
             console.log('tapping');
             sendFunction = sendOgComment;
             setReplyPlaceholder('Add comment...');
@@ -539,7 +542,7 @@ const CommentsModal = ({modalVisible, data, toggleFunc}) => {
             <Icon name="times" size={20} color="#555" />
           </TouchableOpacity> */}
         </View>
-      </KeyboardAvoidingView>
+      {/* </KeyboardAvoidingView> */}
     </AnimatedModal>
   );
 };
