@@ -333,7 +333,7 @@ return <ScrollView  style={{marginLeft: 15, overflow: 'visible', backgroundColor
         <Image style = {{width: 40, height: 40}} source ={constants.PLACEHOLDER_IMAGE } />
         <View style={{borderRadius: 30, flex: 1, backgroundColor: constants.GREYBLUE, padding: 20, marginRight: 20, shadowColor: constants.GREYBLUE, shadowOffset: {height: 10, width: 0}, shadowOpacity: 0.82, elevation: 13, shadowRadius: 18.30,}}>
           <View>
-            <Text>Important Size and Specification requirements:</Text>
+            <Text>Product specifications of this flock</Text>
             <View style={{borderWidth: 1}}>
               <Text>{route.params.data.specifications}</Text>
             </View>
@@ -499,9 +499,9 @@ const PriceTextPreview = ({productPrice, remainingPercent}) =>{
   </View>
   </View>
   <View style={{flexDirection: 'row', alignItems: 'center'}}>
-  <View style={{flex: 1, flexDirection: 'row', paddingLeft: 10, alignItems: 'center', justifyContent: 'center', alignSelf: 'center'}}>
+  <View style={{flex: 1, marginTop: 10, flexDirection: 'row', paddingLeft: 10, alignItems: 'center', justifyContent: 'center', alignSelf: 'center'}}>
           <View style={{flex: 100-remainingPercent,  height: 15, backgroundColor: constants.GREYORANGE, borderBottomLeftRadius: 40, borderTopLeftRadius: 40}}/>
-        <View style={{flex:remainingPercent, marginRight: 0, paddingRight: 0, backgroundColor: constants.DONE, }}>
+        <View style={{flex:remainingPercent, marginRight: 0, paddingRight: 0, borderTopRightRadius: 40, borderBottomRightRadius: 40,backgroundColor: constants.PINK_BACKGROUND_OPAQUE, borderColor: constants.GREYORANGE, borderWidth: 1,height: 15,}}>
 </View>
 </View>
 </View>
@@ -672,7 +672,7 @@ const HeaderView = ({navigation, route}) => {
           <TouchableOpacity onPress={()=>{ setCollapsed(!collapsed); }}>
   <View>
     
-  <Text style={{fontSize: 14}}>%{route.params.data.id}</Text>
+  <Text style={{fontSize: 14, textAlign: 'center'}}>%{route.params.data.id}</Text>
   <Countdown dateObj={route.params.data.time} />
   {/* <Collapsible collapsed={collapsed}>
     <ScrollView horizontal >

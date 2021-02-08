@@ -160,7 +160,7 @@ const Product = ({route, navigation}) => {
         <Text style={{fontFamily: constants.FONTBOLD, fontSize: 14, color: 'black'}}>
           Product information, description, and details
         </Text>
-        <Text>{'>'}</Text>
+        <Icon name="chevron-right" color = {constants.LIGHTGREY} size={25} />
       </TouchableOpacity>
     );
   };
@@ -250,7 +250,7 @@ const Product = ({route, navigation}) => {
 
   const renderBackOrClose = () => {
     if (!route.params.tutorial) { //  means its from startflock
-      return <TouchableOpacity style={{resizeMode: 'cover', zIndex: 50, height: 30, width: 50,position: 'absolute', top: 40, left: 30}} onPress={navigation.goBack}><Image style={{width: 35, height: 35, tintColor: constants.LIGHTGREY}} source = {require('App/Assets/Images/Back_Icon.png')} /></TouchableOpacity>
+      return <TouchableOpacity style={{resizeMode: 'cover', zIndex: 50, height: 30, width: 50,position: 'absolute', top: 40, left: 30}} onPress={navigation.goBack}><Icon color={constants.LIGHTGREY} name="chevron-left" style={{width: 35, height: 35, tintColor: constants.LIGHTGREY}} size={35} /></TouchableOpacity>
     } else {
       return <TouchableOpacity style={{resizeMode: 'cover', zIndex: 50, height: 30, width: 50,position: 'absolute', top: 40, left: 30}} onPress={()=>{
                   navigation.dispatch(
