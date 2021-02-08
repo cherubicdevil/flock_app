@@ -119,7 +119,7 @@ function FlockChatComplete({route, navigation}) {
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
       <HeaderGradient navigation={navigation} >
-        <Text style={{marginBottom: 7, fontFamily: constants.FONT}}>{route.params.data.flock}</Text>
+        <Text style={{marginBottom: 7, fontFamily: constants.FONT}}>%{route.params.data.id}</Text>
       </HeaderGradient>
 
       <View style={{ position: 'absolute', zIndex: 200, top: 100, width: '100%', borderRadius: 0, borderBottomRightRadius: 30, borderBottomLeftRadius: 30}}>
