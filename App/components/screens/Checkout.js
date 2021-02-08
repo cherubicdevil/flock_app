@@ -150,6 +150,7 @@ const Checkout = ({navigation, route}) => {
                 route.params.doneFunc();
             }
             console.log('done');
+            dispatch({type:'spendEggs', payload: reductionEggs});
             navigation.navigate('Success');
         }} >
                                 <LinearGradient style={{width: '100%', height: '100%',
