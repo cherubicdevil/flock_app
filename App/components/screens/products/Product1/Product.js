@@ -13,6 +13,7 @@ import {
   Dimensions,
   Animated
 } from 'react-native';
+import CommentsModal from 'App/components/screens/videopage/CommentsModal';
 import { CommonActions } from '@react-navigation/native';
 import {useFocusEffect} from '@react-navigation/native';
 import {firebase} from 'App/firebase/config';
@@ -86,6 +87,7 @@ const Flockit = () => {
 };
 
 const Product = ({route, navigation}) => {
+  const [commentsVisible, setCommentsVisible] = useState(false);
   const [tutorialScreen, setTutorialScreen] = useState(route.params.tutorial);
   const arrowMargin = new Animated.Value(0);
   const [flockAr, setFlockAr] = useState([]);
@@ -359,16 +361,23 @@ const Product = ({route, navigation}) => {
                 <View style={{flexDirection: 'row', height: 40, marginBottom: 30, marginRight: 10, marginLeft:20, justifyContent: 'space-between', alignItems: 'center', }}>
 
             
-                <Image source={constants.PLACEHOLDER_IMAGE } style={{width: 30, aspectRatio:1}}/>
+                <TouchableOpacity style={{shadowOpacity: 0.3, shadowColor: '#555', shadowOffset: {height: 2, width: 0},}} onPress={()=>{
+                  setCommentsVisible(true);
+                }}>
+                <Image
+              style={{height: 30, width: 30, aspectRatio: 1, marginTop: 3}}
+              source={require('App/Assets/Images/Comment_Icon_White.png')}
+            />
+              </TouchableOpacity>
                 
-                <View style={{justifyContent: 'center', alignItems: 'center'}}><Image source = {require('App/Assets/Images/heart.png')} style={{width: 25, height: 25,  shadowOpacity: 0.2, shadowOffset: {height:1 , width: 0}}} />
-                <Text style={{position: 'absolute', top: 5,fontSize: 12}}>34</Text>
+                <View style={{justifyContent: 'center', alignItems: 'center', shadowOpacity: 0.3, shadowColor: '#555', shadowOffset: {height: 2, width: 0},}}><Image source = {require('App/Assets/Images/heart.png')} style={{width: 25, height: 25,  shadowOpacity: 0.2, shadowOffset: {height:1 , width: 0}}} />
+                <Text style={{position: 'absolute', top: 5,fontSize: 12}}>{route.params.data.likes}</Text>
                 </View>
                 <TouchableOpacity  onPress={()=>{
                   navigation.navigate('ShareSocial', {product:route.params.album, data:{}, flockId: route.params.id})
                 }}>
                 <Image 
-                style={{shadowOpacity: 0.4, shadowOffset:{height:2, width:0},  width: 30, height: 30, aspectRatio:1}}
+                style={{shadowOpacity: 0.3, shadowOffset:{height:2, width:0},  width: 30, height: 30, aspectRatio:1}}
                 source={require('App/Assets/Images/Share_Icon_White_Earn.png') } />
               </TouchableOpacity>
               
@@ -418,6 +427,11 @@ const Product = ({route, navigation}) => {
                 </View>
                 </View>
                 <AnimatedModal visible={modalOpen} close={()=>{setModalOpen(false)}} content={<View style={{paddingLeft: 20, paddingRight: 20}}><FlockList close = {()=>{setModalOpen(false)}} limited = {false} navigation={navigation} product = {route.params.album} ar={flockAr} /></View>} />
+                <CommentsModal data={route.params.data} toggleFunc={() => {
+            setCommentsVisible(false);
+          }}
+          modalVisible={commentsVisible}
+          />
                 </View>
     );
   }
