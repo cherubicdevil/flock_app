@@ -32,9 +32,10 @@ import {validateCard, cc_brand_id, updateCard} from 'App/utils';
 // global.atob = Base64.encode;
 
 
-const ProfilePicture = ({setOpenModal}) => {
-
+const ProfilePicture = () => {
+  
   const user = firebase.auth().currentUser;
+  console.log(user.photoURL, "PHOTO");
   const options = {
     //customButtons: [{name: 'fb', title: 'Choose Photo From Facebook'}],
     maxWidth: 512,
@@ -52,6 +53,7 @@ const ProfilePicture = ({setOpenModal}) => {
     console.log('launchgin before');
     if (response.didCancel) {
       console.log('User cancelled image picker');
+      // setOpenModal(false);
     } else if (response.error) {
       console.log('ImagePicker Error: ', response.error);
     } else if (response.customButton) {
@@ -64,7 +66,7 @@ const ProfilePicture = ({setOpenModal}) => {
       setAvatar({uri: response.uri});
     }
   };
-  //ImagePicker.launchImageLibrary(options, getResponse);
+  // ImagePicker.launchImageLibrary(options, getResponse);
   return (
     <View style={{zIndex: 300}}>
       <View
@@ -94,8 +96,8 @@ const ProfilePicture = ({setOpenModal}) => {
         <TouchableOpacity
         style={{position: 'absolute', height: 20, width: '100%', justifyContent: 'center', bottom: 0, alignSelf: 'center', backgroundColor: 'rgba(0,0,0,0.4)'}}
           onPress={() => {
-            setOpenModal(true);
-            //ImagePicker.showImagePicker(options, getResponse);
+            // setOpenModal(true);
+            ImagePicker.showImagePicker(options, getResponse);
           }}>
           <Text style={{textAlign: 'center', color: 'rgba(255,50,0,1)'}}>
             Change
@@ -326,9 +328,13 @@ const Profile = ({navigation}) => {
     user.reload();
     navigation.goBack();
   }
+
+  const cancelFunc = () => {
+    navigation.goBack();
+  }
   return (
     <>
-    <OptionsModal
+    {/* <OptionsModal
         style={{zIndex: 300}}
         text1="Take Photo"
         text2="Choose from Library"
@@ -343,7 +349,7 @@ const Profile = ({navigation}) => {
           setOpenModal(false);
         }}
         modalVisible={openModal}
-      />
+      /> */}
     <SafeAreaView style={{flex: 1, paddingLeft: 30, paddingRight: 20, backgroundColor: constants.PINK_BACKGROUND}}>
       <ScrollView style={{paddingTop: 20}}>
         <Text style={{fontSize: 24, textAlign: 'center', marginBottom: 20}}>
@@ -359,7 +365,7 @@ const Profile = ({navigation}) => {
           {renderFormBox(0.5, "Bio", "bio", "bio", bio, setBio, 2)}
         </View>
         </View>
-<SmartCheckout confirmFunc={confirmFunc} />
+<SmartCheckout confirmFunc={confirmFunc} cancelFunc={cancelFunc} />
         
       </ScrollView>
     </SafeAreaView>

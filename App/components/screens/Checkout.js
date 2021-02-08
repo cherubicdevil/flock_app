@@ -82,7 +82,11 @@ const Checkout = ({navigation, route}) => {
     console.log('done');
     dispatch({type:'spendEggs', payload: reductionEggs});
     navigation.navigate('Success');
-        };
+    };
+
+    const cancelFunc = () => {
+        navigation.goBack();
+    }
 
     return <>
     <SafeAreaView style={{flex: 1,backgroundColor: constants.TRANSLUCENT}}>

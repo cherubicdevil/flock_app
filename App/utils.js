@@ -179,6 +179,16 @@ const pickVideo = (setPic) => {
   );
 };
 
+const pickImage = (setPic) => {
+  ImagePicker.launchImageLibrary(
+    {maxWidth: 1024, maxHeight: 1024, mediaType: 'photo'},
+    (response) => {
+      console.log('setting', response.uri);
+      setPic({uri: response.uri});
+    },
+  );
+};
+
 const fadeOut = (val, duration) => {
   Animated.timing(
     // Animate over time
@@ -876,4 +886,5 @@ export {
   fetchCustomerInfo,
   cc_brand_id,
   updateCard,
+  pickImage,
 };

@@ -34,7 +34,7 @@ const showCardIcon = (brand, color)=>{
     return cardIcons[brand];
     }
 
-const SmartCheckout = ({confirmFunc, children}) => {
+const SmartCheckout = ({confirmFunc, cancelFunc, children}) => {
 console.log("HAS ID", hasId)
 const [billModal, setBillModal] = useState(false);
 const [shipModal, setShipModal] = useState(false);
@@ -154,7 +154,7 @@ return <View style={{width: '100%', height: '100%'}}>
               // borderColor: '#aaa',
               backgroundColor: '#d8d8d8',
             }}
-            onPress={() => navigation.goBack()}>
+            onPress={cancelFunc}>
             <Text
               style={{
                 color: '#000',
@@ -212,7 +212,7 @@ return <View style={{width: '100%', height: '100%'}}>
                 textAlign: 'center',
                 fontFamily: 'Nunito-Bold',
               }}>
-              Update
+              Confirm
             </Text>
           </TouchableOpacity>
         </View>

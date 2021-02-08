@@ -14,7 +14,7 @@ import {
   Modal,
   TouchableWithoutFeedback,
 } from 'react-native';
-import {firebase, db} from 'App/firebase/config';
+import {firebase, db, auth} from 'App/firebase/config';
 import io from 'socket.io-client';
 import NavBar from 'App/components/common/NavBar';
 import {GiftedChat} from 'react-native-gifted-chat';
@@ -46,6 +46,7 @@ const updateCache = (id, messages) => {
 const systemMessages = [];
 
 function FlockChatComplete({route, navigation}) {
+  // console.log(auth.currentUser.photoURL, "PHOTO");
   const select = useSelector((state) => state);
   const socket = useRef(null);
   const [recvMessages, setRecvMessages] = useState(route.params.data.messages);
@@ -157,8 +158,8 @@ function FlockChatComplete({route, navigation}) {
           </LinearGradient>
         </View>
       <View style={{marginTop: 20, flexDirection: 'row'}}>
-        <Image style = {{width: 40, height: 40}} source ={constants.PLACEHOLDER_IMAGE } />
-        <View style={{borderRadius: 30, flex: 1, backgroundColor: constants.GREYBLUE, padding: 20, marginRight: 20, shadowColor: constants.GREYBLUE, shadowOffset: {height: 10, width: 0}, shadowOpacity: 0.82, elevation: 13, shadowRadius: 18.30,}}><Text>Description Hello world</Text></View>
+        <Image style = {{width: 40, height: 40}} defaultSource={constants.PLACEHOLDER_IMAGE} source ={{uri:auth.currentUser.photoURL }} />
+        <View style={{borderRadius: 30, flex: 1, backgroundColor: constants.GREYBLUE, padding: 20, marginRight: 20, shadowColor: constants.GREYBLUE, shadowOffset: {height: 10, width: 0}, shadowOpacity: 0.82, elevation: 13, shadowRadius: 18.30,}}><Text>{route.params.data.description}</Text></View>
       </View>
       </View>
       
