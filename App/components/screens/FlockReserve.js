@@ -93,7 +93,7 @@ source={require('App/Assets/Images/Share_Icon_White_Earn.png') } />
         </LinearGradient>
         </TouchableOpacity>
         </View>
-        <AnimatedModal colored={true} colors={colors} visible={modalOpen} behind={true} close={()=>setModalOpen(false)} content={<ReserveCalendar key={Math.random()} navigation = {navigation} close={()=>{setModalOpen(false)}} route={route} myMarkedDates={myMarkedDates} setMyMarkedDates={setMyMarkedDates} othersMarkedDates={othersMarkedDates} subtotal={subtotal} />} />
+        <AnimatedModal colored={true} colors={colors} visible={modalOpen} behind={true} close={()=>setModalOpen(false)} content={<ReserveCalendar navigation = {navigation} close={()=>{setModalOpen(false)}} route={route} myMarkedDates={myMarkedDates} setMyMarkedDates={setMyMarkedDates} othersMarkedDates={othersMarkedDates} subtotal={subtotal} />} />
         </SafeAreaView>;
 }
 

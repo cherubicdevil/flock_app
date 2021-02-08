@@ -94,11 +94,11 @@ const Checkout = ({navigation, route}) => {
         {/* <Text style={{fontFamily: constants.FONT, fontSize: 18, marginTop: -10}}>Checkout</Text> */}
         </HeaderGradient>
 
-        <View style={{flex: 1, backgroundColor: constants.PINK_BACKGROUND,}}>
+        {/* <View style={{flex: 1, backgroundColor: constants.PINK_BACKGROUND,}}> */}
 
-        <View style={{height: '100%', marginTop: 10, }}>
-            <View style={{backgroundColor: 'white', paddingVertical: 10, borderBottomLeftRadius: 30, borderBottomRightRadius: 30, alignItems: "flex-end"}}>
-            <View style={styles.row}>
+        {/* <View style={{height: '100%', marginTop: 10, }}> */}
+            {/* <View style={{backgroundColor: 'white', paddingVertical: 10, borderBottomLeftRadius: 30, borderBottomRightRadius: 30, alignItems: "flex-end"}}> */}
+        <View style={styles.row}>
             <Text style={{marginVertical: 15}}>
     {<Text style={{fontWeight: 'bold'}}>Period: </Text>}{route.params.start} to {route.params.end}
         </Text>
@@ -156,9 +156,8 @@ const Checkout = ({navigation, route}) => {
     </View>
             </View>
             </SmartCheckout >
-            <View style={{flexDirection: 'row', width: '100%', marginVertical: 15, justifyContent: 'space-between'}}>
- 
-            </View>
+            
+            {/* </View> */}
                 {/* <TouchableOpacity style={{width: '90%',height: 40, overflow: 'hidden', borderRadius: 40, marginHorizontal:20,}} onPress={async ()=>{
             createOrUpdate(hasId, customerId, info).then();
 
@@ -172,12 +171,12 @@ const Checkout = ({navigation, route}) => {
                     <Text style={{color: 'white'}}>confirm</Text>
                     </LinearGradient>
             </TouchableOpacity> */}
-        </View>
-        
-        
-        </View>
 
-</View>
+        
+        
+        {/* </View> */}
+
+{/* </View> */}
 
     </SafeAreaView>
     <AnimatedModal colored={true} keyboard = {true} colors={[constants.ORANGE, constants.GREYORANGE]} visible={billModal} close={()=>setBillModal(false)} state={info} setState={setInfo} content={<BillingModal state={info} setState={setInfo} setChanged={setChanged} close={()=>setBillModal(false)}/>}/>

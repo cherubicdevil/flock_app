@@ -100,8 +100,7 @@ const [creditInfo, setCreditInfo] = useState({
 });
 
 
-return <View style={{width: '100%', height: '100%'}}>
-            <View style={{flex: 1, marginTop: 20,}} >
+return <><View style={{flex: 1, marginTop: 5,}} >
         <View style={[styles.row, {justifyContent: 'space-between'}]}>
             <TouchableOpacity 
             style={{marginRight: 10,width: '100%', justifyContent: 'space-between', flexDirection:'row'}}
@@ -219,7 +218,7 @@ return <View style={{width: '100%', height: '100%'}}>
         </View>
         <AnimatedModal colored={true} colors={[constants.ORANGE, constants.GREYORANGE]} visible={billModal} close={()=>setBillModal(false)} state={info} setState={setInfo} content={<BillingModal state={creditInfo} setState={setCreditInfo} setChanged={setCreditCardChanged} close={()=>setBillModal(false)}/>}/>
 <AnimatedModal colored={true} colors={[constants.ORANGE, constants.GREYORANGE]} visible={shipModal} close={()=>setShipModal(false)} state={info} setState={setInfo} content={<ShippingModal state={info} setState={setInfo} setChanged={setChanged} close={()=>setShipModal(false)}/>}/>
-</View>
+</>
 
 
 };
