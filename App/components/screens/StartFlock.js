@@ -235,7 +235,7 @@ const ProductPreview = ({product}) => {
             paddingLeft: 10,
             paddingTop: 10,
             paddingBottom: 10
-          }}><Text style={{color: 'white', fontSize: 14, fontFamily: constants.FONTBOLD}}>{"$" + Math.floor(product.price / 2) + " or less when you split with flockers"}</Text>
+          }}><Text style={{color: 'white', fontSize: 14, fontFamily: constants.FONTBOLD}}>{"As low as $" + Math.floor(product.price / 25) + " when you split with flockers"}</Text>
 </LinearGradient>
         </View>
     </View>
