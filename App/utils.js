@@ -381,21 +381,35 @@ const updateCache = (member, actiontype, data) => {
 }
 
 const shareActions = {"facebook": function(content, failure) {
-  const {product: product, data: data} = content;
-  const shareLinkContent = {
+  const {image: image, data: data, shareApp: shareApp, successCallback: successCallback} = content;
+  var shareLinkContent;
+  var sharePhotoContent;
+  if (shareApp) {
+    shareLinkContent = {
+      contentType:'link',
+      contentUrl: "https://facebook.com",
+      contentDescription: 'Facebook sharing is easy!',
+    }
+    var sharePhotoContent = {
+      contentType :'photo',
+      photos: [{ imageUrl:  null}],
+      };
+  } else {
+  var shareLinkContent = {
     contentType: 'link',
      contentUrl: "https://facebook.com",
 contentDescription: 'Facebook sharing is easy!',
 };
+var sharePhotoContent = {
+  contentType :'photo',
+  photos: [{ imageUrl:  image}],
+  };
+  }
 
-const sharePhotoContent = {
-contentType :'photo',
-photos: [{ imageUrl:  product.image}],
-};
 //console.log("ShareDialog", FB);
-ShareDialog.canShow(shareLinkContent).then((canShow)=>{
+ShareDialog.canShow(sharePhotoContent).then((canShow)=>{
 console.log("canShow?", canShow);
-ShareDialog.show(shareLinkContent).then(
+ShareDialog.show(sharePhotoContent).then(
   function(result) {
     console.log(result);
     if (result.isCancelled) {
@@ -404,6 +418,8 @@ ShareDialog.show(shareLinkContent).then(
     } else {
       console.log('Share success with postId: '
         + result.postId);
+      successCallback();
+      
     }
   },
   function(error) {
@@ -414,12 +430,12 @@ ShareDialog.show(shareLinkContent).then(
 
 });
 
-AppInstalledChecker
-.checkURLScheme('whatsapp') // omit the :// suffix
-.then((isInstalled) => {
-  // isInstalled is true if the app is installed or false if not
-  console.log(isInstalled, "is installed");
-})
+// AppInstalledChecker
+// .checkURLScheme('whatsapp') // omit the :// suffix
+// .then((isInstalled) => {
+//   // isInstalled is true if the app is installed or false if not
+//   console.log(isInstalled, "is installed");
+// })
 },
 "twitter": function (content, failure) {
   Share.share({

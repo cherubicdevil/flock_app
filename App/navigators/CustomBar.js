@@ -52,6 +52,10 @@ const EggItem = ({image, text}) => {
   const select = useSelector(state => state);
   const dispatch = useDispatch();
   const [eggModalOpen, setEggModalOpen] = useState(false);
+
+  const onSuccessfulShare = () => {
+    dispatch({type:'getEggs', payload: 10});
+  }
   return <>
   <View style={{marginBottom:-1, marginTop: 1,}}>
   <TouchableOpacity style={{flex: 1}} onPress={()=>setEggModalOpen(true)}>
@@ -82,7 +86,7 @@ contentTop={
 viewParams={{bottom: 0, height: Dimensions.get('window').height, width:Dimensions.get('window').width + 300, left: -400}}
 colored={true} colors={[constants.ORANGE, constants.GREYORANGE]} behind={false} upPercent="60%" visible={eggModalOpen} fade={false} close={()=>{setEggModalOpen(false)}} content={<View style={{flex: 1}}>
 
-  <ShareSocial flockId="1234" product={null} shareApp={true} />
+  <ShareSocial flockId="1234" product={null} shareApp={true} onSuccess={onSuccessfulShare}/>
   {/* <Button title="spend" onPress={()=>{
     dispatch({type:'spendEggs', payload: 50});
 }} />

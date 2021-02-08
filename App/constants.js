@@ -30,6 +30,7 @@ export const constants = {
   BLUEBORDER: "#7791b0",
   PURPLEBORDER: "#C09BAE",
   NAVBARHEIGHT: 75,
+  HEADERHEIGHT: 50,
   LIGHTORANGE: '#ff9100',
   YELLOW: '#ffb700',
   ORANGE: '#ff7009',
