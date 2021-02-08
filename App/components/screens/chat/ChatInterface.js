@@ -16,6 +16,7 @@ import {
   TouchableWithoutFeedback,
   TextInput
 } from 'react-native';
+import HeaderGradient from 'App/components/HeaderGradient';
 import Icon from 'react-native-vector-icons/FontAwesome';
 // import Slider from '@react-native-community/slider';
 import MultiSlider from '@ptomasroos/react-native-multi-slider';
@@ -287,7 +288,12 @@ return <ScrollView  style={{marginLeft: 15, overflow: 'visible', backgroundColor
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
       
-<HeaderView navigation={navigation} route={route} />
+<HeaderGradient navigation={navigation} >
+  <View>
+<Text style={{fontSize: 14, textAlign: 'center'}}>%{route.params.data.id}</Text>
+  <Countdown dateObj={route.params.data.time} />
+  </View>
+</HeaderGradient>
       <View style={{ position: 'absolute', zIndex: 200, top: 100, width: '100%', borderRadius: 0, borderBottomRightRadius: 70, borderBottomLeftRadius: 70}}>
       <View style={{
         // shadowColor: "#ff7009", shadowOffset: {height: 0, width: 0}, shadowOpacity: 0.42, elevation: 13, shadowRadius: 28.30,
@@ -329,12 +335,16 @@ return <ScrollView  style={{marginLeft: 15, overflow: 'visible', backgroundColor
           </LinearGradient>
           </ScrollView>
         </View>
-      <View style={{marginTop: 20, flexDirection: 'row'}}>
-        <Image style = {{width: 40, height: 40}} source ={constants.PLACEHOLDER_IMAGE } />
-        <View style={{borderRadius: 30, flex: 1, backgroundColor: constants.GREYBLUE, padding: 20, marginRight: 20, shadowColor: constants.GREYBLUE, shadowOffset: {height: 10, width: 0}, shadowOpacity: 0.82, elevation: 13, shadowRadius: 18.30,}}>
+      <View style={{marginTop: 20, flexDirection: 'row',
+      shadowColor: constants.GREYBLUE, shadowOffset: {height: 10, width: 0}, shadowOpacity: 0.82, elevation: 13, shadowRadius: 18.30,
+    }}>
+        <Image style = {{width: 40, height: 40, marginRight: 20, marginLeft: 10, borderRadius: 50}} source ={constants.PLACEHOLDER_IMAGE } />
+        <View style={{borderRadius: 30, flex: 1, backgroundColor: constants.GREYBLUE, padding: 15, marginRight: 20, 
+          // shadowColor: constants.GREYBLUE, shadowOffset: {height: 10, width: 0}, shadowOpacity: 0.82, elevation: 13, shadowRadius: 18.30,
+          }}>
           <View>
             <Text>Product specifications of this flock</Text>
-            <View style={{borderWidth: 1}}>
+            <View style={{backgroundColor: 'rgba(0,0,0,0.2)', padding: 5, borderRadius: 15}}>
               <Text>{route.params.data.specifications}</Text>
             </View>
           {/* <Text>{route.params.data.description}</Text> */}
@@ -713,7 +723,7 @@ const HeaderView = ({navigation, route}) => {
       </Collapsible> */}
   </View>
   </TouchableOpacity>
-  <Button
+  {/* <Button
     title="
       ⓘ"
     onPress={() => {
@@ -722,7 +732,7 @@ const HeaderView = ({navigation, route}) => {
         data: route.params.data,
       });
     }}
-  />
+  /> */}
   </LinearGradient>
 </View>
 };
