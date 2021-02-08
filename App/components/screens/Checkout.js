@@ -12,6 +12,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import moment from 'moment';
 import LinearGradient from 'react-native-linear-gradient';
 import {createOrUpdate, fetchCustomerInfo} from 'App/utils';
+import SmartCheckout from 'App/components/SmartCheckout';
 
 
 const Checkout = ({navigation, route}) => {
@@ -65,6 +66,24 @@ const Checkout = ({navigation, route}) => {
       const reductionEggs = Math.round(reductionDollars * constants.EGG_RATIO);
       const shipMain = tog?((shipConst - reductionDollars).toFixed(2)):shipConst;
       const amount = parseFloat(shipMain + route.params.subtotal).toFixed(2);
+
+      const confirmFunc = (cid) => {
+            var chargeCustomerEndpoint = constants.CHARGE_CUSTOMER + "?id="+cid+"&amount="+ amount*100;
+            dispatch({type: "UPDATE_DATA", payload: ['customerId',null, null,cid]});
+            console.log('customer id, cid', cid);
+      fetch(chargeCustomerEndpoint).then(()=>{
+          console.log('done');
+      }).catch(err=>{
+          console.log(err);
+      });
+      if (route.params.doneFunc) {
+        route.params.doneFunc();
+    }
+    console.log('done');
+    dispatch({type:'spendEggs', payload: reductionEggs});
+    navigation.navigate('Success');
+        };
+
     return <>
     <SafeAreaView style={{flex: 1,backgroundColor: constants.TRANSLUCENT}}>
         <HeaderGradient title="Checkout" navigation={navigation} absolute={false} >
@@ -80,7 +99,7 @@ const Checkout = ({navigation, route}) => {
     {<Text style={{fontWeight: 'bold'}}>Period: </Text>}{route.params.start} to {route.params.end}
         </Text>
         </View>
-        <View style={[styles.row, {justifyContent: 'space-between'}]}>
+        {/* <View style={[styles.row, {justifyContent: 'space-between'}]}>
             <TouchableOpacity
             style={{marginRight: 10, width: '100%', justifyContent: 'space-between', flexDirection:'row'}}
             onPress={()=>{
@@ -101,7 +120,8 @@ const Checkout = ({navigation, route}) => {
 
 
             
-        </View>
+        </View> */}
+        <SmartCheckout confirmFunc = {confirmFunc} >
 
         <View style={[styles.row, {borderBottomWidth: 0}]}>
                 <Text style={{fontWeight: 'bold'}}>Summary</Text>
@@ -131,27 +151,14 @@ const Checkout = ({navigation, route}) => {
     style={{ transform: [{ scaleX: .8 }, { scaleY: .8 }] }} />
     </View>
             </View>
+            </SmartCheckout >
             <View style={{flexDirection: 'row', width: '100%', marginVertical: 15, justifyContent: 'space-between'}}>
  
             </View>
-                <TouchableOpacity style={{width: '90%',height: 40, overflow: 'hidden', borderRadius: 40, marginHorizontal:20,}} onPress={async ()=>{
-            createOrUpdate(hasId, customerId, info).then((cid) => {
-                var chargeCustomerEndpoint = constants.CHARGE_CUSTOMER + "?id="+cid+"&amount="+ amount*100;
-                dispatch({type: "UPDATE_DATA", payload: ['customerId',null, null,cid]});
-                console.log('customer id, cid', cid);
-          fetch(chargeCustomerEndpoint).then(()=>{
-              console.log('done');
-          }).catch(err=>{
-              console.log(err);
-          });
-            });
+                {/* <TouchableOpacity style={{width: '90%',height: 40, overflow: 'hidden', borderRadius: 40, marginHorizontal:20,}} onPress={async ()=>{
+            createOrUpdate(hasId, customerId, info).then();
 
-            if (route.params.doneFunc) {
-                route.params.doneFunc();
-            }
-            console.log('done');
-            dispatch({type:'spendEggs', payload: reductionEggs});
-            navigation.navigate('Success');
+            
         }} >
                                 <LinearGradient style={{width: '100%', height: '100%',
                     justifyContent: 'center', alignItems: 'center',}}
@@ -160,7 +167,7 @@ const Checkout = ({navigation, route}) => {
                     >
                     <Text style={{color: 'white'}}>confirm</Text>
                     </LinearGradient>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
         </View>
         
         

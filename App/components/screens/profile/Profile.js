@@ -31,11 +31,7 @@ import {validateCard, cc_brand_id, updateCard} from 'App/utils';
 
 // global.atob = Base64.encode;
 
-const showCardIcon = (brand, color)=>{
-const cardColor = color;
-const cardIcons = {'Visa': <Icon name="cc-visa" size={25} color={cardColor}/>, "MasterCard": <Icon name="cc-mastercard" size={25} color={cardColor} />, "American Express":<Icon name="cc-amex" size={25} color={cardColor} />,"Diners Club":<Icon name="cc-diners-club" size={25} color={cardColor} />, "Discover": <Icon name="cc-discover" size={25} color={cardColor} />, "JCB":<Icon name="cc-jcb" size={25} color={cardColor} />, "UnionPay":<Icon name="credit-card" size={25} color={cardColor} />, "Unknown": <Icon name="credit-card" size={25} color={cardColor} />, "Maestro": <Icon name="credit-card" size={25} color={cardColor} />}
-return cardIcons[brand];
-}
+
 const ProfilePicture = ({setOpenModal}) => {
 
   const user = firebase.auth().currentUser;
@@ -318,6 +314,18 @@ const Profile = ({navigation}) => {
       );
     });
   };
+
+  const confirmFunc = () => {
+    user.updateProfile({displayName: username});
+    user.updateEmail(email);
+    // update bio
+    dispatch({type:'UPDATE_DATA', payload: ["bio", null, null, bio]});
+    db.collection('users').doc(auth.currentUser.uid).update({
+      bio: bio,
+    });
+    user.reload();
+    navigation.goBack();
+  }
   return (
     <>
     <OptionsModal
@@ -351,91 +359,13 @@ const Profile = ({navigation}) => {
           {renderFormBox(0.5, "Bio", "bio", "bio", bio, setBio, 2)}
         </View>
         </View>
-<SmartCheckout />
-        <View style={{justifyContent: 'center', flexDirection: 'row', marginTop: 50}}>
-          <TouchableOpacity
-            style={{
-              width: 80,
-              margin: 10,
-              borderRadius: 20,
-
-              padding: 5,
-              // borderWidth: 2,
-              paddingTop: 3,
-              // borderColor: '#aaa',
-              backgroundColor: '#d8d8d8',
-            }}
-            onPress={() => navigation.goBack()}>
-            <Text
-              style={{
-                color: '#000',
-                textAlign: 'center',
-                fontFamily: 'Nunito-Bold',
-              }}>
-              Cancel
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            title="update"
-            style={{
-              width: 80,
-              margin: 10,
-              borderRadius: 20,
-              //borderWidth: 2,
-              padding: 5,
-              borderColor: 'white',
-              backgroundColor: constants.ORANGE,
-            }}
-            onPress={() => {
-              user.updateProfile({displayName: username});
-              user.updateEmail(email);
-              // update bio
-              dispatch({type:'UPDATE_DATA', payload: ["bio", null, null, bio]});
-              db.collection('users').doc(auth.currentUser.uid).update({
-                bio: bio,
-              });
-              user.reload();
-              console.log("updated", username, email)
-              console.log(hasId, creditCardChanged,"HEREEEEE");
-              console.log(hasId, changed,"CHANGED SHIPPING");
-              if (hasId && creditCardChanged) {
-                updateCard(select.customerId, creditInfo);
-              } else if (changed) { // update shipping info
-                createOrUpdate(hasId, select.customerId, info).then((id)=>{
-                  dispatch({type:'UPDATE_DATA', payload: ["customerId", null, null, id]});
-                  console.log('done in profile change')
-                })
-              }
-              navigation.goBack();
-            }}>
-            <Text
-              style={{
-                color: 'white',
-                textAlign: 'center',
-                fontFamily: 'Nunito-Bold',
-              }}>
-              Update
-            </Text>
-          </TouchableOpacity>
-        </View>
+<SmartCheckout confirmFunc={confirmFunc} />
+        
       </ScrollView>
     </SafeAreaView>
 
     </>
   );
 };
-
-
-
-const styles = StyleSheet.create({
-  inputStyle: {
-    fontSize: 14,
-    padding: 5,
-    borderRadius: 3,
-    borderWidth: 1,
-  },
-  textbox: {borderWidth: 1, borderColor: constants.DARKGREY, borderRadius: 30, padding: 10, paddingVertical: 10, fontSize: 18},
-  row: {width: '100%', marginLeft: 10, borderBottomWidth: 2, borderColor: constants.PINK_BACKGROUND,paddingHorizontal:20, paddingVertical:20},
-});
 
 export default Profile;
