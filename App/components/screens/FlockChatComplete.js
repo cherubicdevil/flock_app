@@ -138,13 +138,20 @@ function FlockChatComplete({route, navigation}) {
             flex: 1,
           }}>
             <View style={{width: '80%', alignSelf: 'center'}}>
-            <Text style={{color:'white', marginBottom: 10, fontWeight: 'bold'}}>This flock has taken off together! Click the blurb below to use your new item!</Text>
+            <Text style={{color:'white', marginBottom: 10, fontWeight: 'bold'}}>This flock has succeeded! Click the blurb below to use your new item!</Text>
             </View>
             <TouchableOpacity onPress={()=>{
               navigation.navigate("FlockReserve", {data: route.params.data});
             }}>
             <View style={{padding: 20, marginBottom: 15, paddingLeft: 30, borderRadius: 50, shadowRadius: 2.62, backgroundColor: 'white', shadowOpacity: 0.23, shadowOffset:{height: 2,width:0}, elevation: 1}}>
+            <View style={{flexDirection: 'row',}}>
             <Image style={{width: 50, height: 50}} source={{uri: route.params.data.product.image}} />
+            <View style={{paddingRight: 30}}>
+              <Text numberOfLines={2} style={{flex: 1}}>
+                {route.params.data.product.title}
+              </Text>
+            </View>
+            </View>
             </View>
             </TouchableOpacity>
           </LinearGradient>
