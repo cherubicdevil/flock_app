@@ -182,7 +182,7 @@ const Product = ({route, navigation}) => {
             marginLeft: 10, 
             borderRadius: 30,
             zIndex: 40,
-          }}><TouchableOpacity style={{borderRadius: 30, color: 'white', justifyContent: 'center', alignItems:'center', paddingBottom: 5, paddingTop: 3,paddingLeft: 10, paddingRight: 10}}><Text style={{color: 'white', fontSize: 14, fontFamily: constants.FONTBOLD}}>{"As low as $" + Math.round(parseFloat(route.params.album.price) / 25 * 1.35) + " when you flock"}</Text></TouchableOpacity>
+          }}><TouchableOpacity style={{borderRadius: 30, color: 'white', justifyContent: 'center', alignItems:'center', paddingBottom: 5, paddingTop: 3,paddingLeft: 10, paddingRight: 10}}><Text style={{color: 'white', fontSize: 14, fontFamily: constants.FONTBOLD}}>{"As low as $" + Math.round(parseFloat(route.params.album.price) / 25 * 1.4) + " when you flock"}</Text></TouchableOpacity>
 </LinearGradient>
         </View>
       </View>
