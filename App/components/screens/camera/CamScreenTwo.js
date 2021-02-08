@@ -213,7 +213,7 @@ const CamScreenTwo = ({navigation, route}) => {
                     setPriceState("");
                 } else {
                     setPriceState(parseInt(text.replace(".","").replace("$","").replace(/\D/g,''))/100);
-                    console.log(parseInt(text.replace(".","").replace("$",""))/100);
+                    // console.log(parseInt(text.replace(".","").replace("$",""))/100);
                 }
                 }}
                 placeholderTextColor={constants.DARKGREY}
@@ -409,7 +409,7 @@ const CamScreenTwo = ({navigation, route}) => {
           const result = pinLocalFunc(htmlBody, urlState);
           setImageState(result.image);
           setTitleState(result.title);
-          setPriceState(result.price.replace(/\D/g,''));
+          setPriceState(result.price.replace(',','').replace('$',''));
           setDataUrl(urlState);
           setModalOpen(false);
           setPinned(true);

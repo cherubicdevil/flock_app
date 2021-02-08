@@ -57,6 +57,8 @@ const StartFlock = ({navigation, route}) => {
           time: Math.round(Date.now() / 1000),
           members: [{name: user.displayName, uid: user.uid}],
           memberIds: [user.uid],
+          likes: 0,
+          comments: 0,
         };
         // const maximums = [{}];
         // maximums[0][user.uid] = route.params.data.maxPrice;

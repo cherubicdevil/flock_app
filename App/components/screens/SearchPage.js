@@ -12,7 +12,7 @@ const KeyContext = createContext();
 const SearchPage = ({navigation, route}) => {
     const [search, setSearch] = useState("");
     const [results, setResults] = useState([]);
-    return <Fragment><SafeAreaView style={{ flex: 0, backgroundColor: constants.TRANSLUCENT }} /><SafeAreaView style={{ flex: 1, backgroundColor: constants.PINK_BACKGROUND }}>
+    return <Fragment><SafeAreaView style={{ flex: 0, backgroundColor: constants.TRANSLUCENT }} /><SafeAreaView style={{ flex: 1, backgroundColor: constants.PINK_BACKGROUND_OPAQUE }}>
         <LinearGradient
     colors={[constants.TRANSLUCENT, 'white']}
     start={{ x: 0, y: 0 }} end={{ x: 0, y: 1 }}

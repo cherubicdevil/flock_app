@@ -529,7 +529,7 @@ const CommentsModal = ({modalVisible, data, toggleFunc}) => {
             }}
             style={styles.textInputStyle}
           />
-          <TouchableOpacity
+          {/* <TouchableOpacity
             style={styles.openButton}
             onPress={() => {
               dispatch({type: 'toggle'});
@@ -537,7 +537,7 @@ const CommentsModal = ({modalVisible, data, toggleFunc}) => {
               //setModalVis(false);
             }}>
             <Icon name="times" size={20} color="#555" />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
       </KeyboardAvoidingView>
     </AnimatedModal>

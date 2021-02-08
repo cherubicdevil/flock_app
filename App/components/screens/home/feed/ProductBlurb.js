@@ -27,7 +27,7 @@ const ProductBlurb = ({data}) => {
     }}>
       <Text numberOfLines={1} style={{flex: 1, color: 'black', fontWeight:'bold'}}>{data?.product?.title}</Text>
       <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-      <Text style={{color: constants.ORANGE, fontWeight: 'bold'}}>${data?.product?.price / data?.members?.length} pp</Text>
+      <Text style={{color: constants.ORANGE, fontWeight: 'bold'}}>${data?.product?.price / data?.members?.length}</Text>
       <Text>{data?.members?.length} flocking</Text>
       </View>
     </View>;
