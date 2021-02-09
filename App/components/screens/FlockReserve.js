@@ -58,7 +58,7 @@ const FlockReserve = ({navigation, route}) => {
          <View style={{paddingHorizontal: 20, paddingVertical:10, backgroundColor: 'white'}}>
         <Text style={{fontFamily: constants.FONT, fontWeight: 'bold'}}>{route.params.data.product.title}</Text>
         <Text>Price: ${route.params.data.product.price}</Text>
-    {requestTypeIsRent?<Text>Rent Price: ${subtotal}</Text>:<Text>Use Price for Flocker: ${subtotal} + shipping</Text>}
+    {requestTypeIsRent?<Text>Rent Price: ${subtotal}</Text>:<Text>Price for Flocker: ${subtotal} + shipping</Text>}
     {requestTypeIsRent?<></>:<View style={{flexDirection: 'row', alignItems: 'center', marginTop: 20,}}><Text>You are in this flock.</Text><TouchableOpacity style={{padding: 10, backgroundColor: constants.ORANGE, borderRadius: 30, marginLeft:10}} onPress={()=>{
       navigation.navigate("FlockChatComplete",{data:route.params.data})
     }} >
