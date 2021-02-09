@@ -439,7 +439,7 @@ const CommentsModal = ({modalVisible, data, toggleFunc}) => {
     }
   };
   return (
-    <AnimatedModal keyboard={true} behavior="padding" fade={true} colored={true} colors={[constants.PEACH, constants.GREYORANGE]} modalAnimationType="slide" transparent={true} visible={modalVisible} close={()=>toggleFunc(false)}>
+    <AnimatedModal nested={true} keyboard={true} behavior="padding" fade={true} colored={true} colors={[constants.PEACH, constants.GREYORANGE]} modalAnimationType="slide" transparent={true} visible={modalVisible} close={()=>toggleFunc(false)}>
       {/* <KeyboardAvoidingView behavior="padding" style={styles.centeredView}> */}
         <View
           style={styles.modalView}

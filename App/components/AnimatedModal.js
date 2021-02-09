@@ -79,19 +79,7 @@ const AnimatedModal = ({
 
   return (
     <View style={{zIndex: 800}}>
-
-      <Modal
-        animationType={modalAnimationType}
-        transparent={true}
-        visible={visible}
-        style={{
-          
-          position: 'absolute',
-          width: '100%',
-          justifyContent: 'flex-end',
-          //backgroundColor: '#aea',
-        }}>
-                <Animated.View
+{!nested?<Animated.View
         style={{
           height: visible?viewParams.height:0,
           width: visible?viewParams.width:0,
@@ -109,14 +97,53 @@ const AnimatedModal = ({
       >
     {colored?<LinearGradient style={{height: '100%'}} colors={colors} />:<></>}
 
-      </Animated.View>
-          <TouchableOpacity onPress={()=>{
-            close();
+      </Animated.View>:<></>}
+      <Modal
+        animationType={modalAnimationType}
+        transparent={true}
+        visible={visible}
+        style={{
+          
+          position: 'absolute',
+          width: '100%',
+          justifyContent: 'flex-end',
+          //backgroundColor: '#aea',
+        }}>
+                {nested?<Animated.View
+        style={{
+          height: visible?"100%":0,
+          width: visible?"100%":0,
+          position: 'absolute',
+          zIndex: 200,
+          bottom: 0,
+          left: 0,
+        //   bottom: -1000,
+        alignSelf: 'center', 
+          //right: Dimensions.get('window').width/2,
+          backgroundColor: (colored || !fade)?'transparent':'rgb(0,0,0)',
+          opacity: animation.current,
+          //backgroundColor: modalVisible ? 'rgba(0,0,0,0.7)' : 'transparent',
+        }}
+      >
+    {colored?<LinearGradient style={{height: '100%'}} colors={colors} />:<></>}
+
+      </Animated.View>:<></>}
+          {/* <TouchableOpacity onPress={()=>{
             resetAnimation();
-              }} style={{position: 'absolute', top:0, height: '100%', width: '100%', zIndex: 5}} />
+            setTimeout(()=>{
+              close();
+              console.log('close');
+            }, 2000);
+            
+            
+              }} style={{position: 'absolute', top:0, height: '100%', width: '100%', zIndex: 5}} /> */}
               <View style={{height: '100%', position: 'absolute', bottom: 0, zIndex: 200, backgroundColor: 'transparent', width: '100%', justifyContent: 'flex-end'}}>
               <TouchableOpacity onPress={()=>{
-            close();
+                console.log('reset');
+                setTimeout(()=>{
+                  close();
+                  console.log('close');
+                }, nested?300:0);
             resetAnimation();
               }} style={{position: 'absolute', top:0, height: '100%', width: '100%', zIndex: 5}} />
             {behind?<View style={{position: 'absolute', bottom: 15, height: upPercent, width: '88%', backgroundColor: bgcolor, opacity: 0.5, alignSelf: 'center', borderRadius: curve?90:0,}} />:<></>}
