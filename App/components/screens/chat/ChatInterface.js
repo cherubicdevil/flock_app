@@ -559,7 +559,7 @@ const PriceText = ({priceShareInitialPercent, completeFunc, productPrice, remain
       </View>:<View style={{opacity:0,padding: 10, marginLeft:30}} ><Text>Confirm</Text></View>}
     </View>
     <View style={{flexDirection: 'row', alignItems: 'center'}}>
-    <View style={{borderRadius: 40, backgroundColor: constants.ORANGE, width: 25, height: 25, justifyContent: 'center', alignItems: 'center'}}>
+    <View style={{borderRadius: 40, backgroundColor: constants.ORANGE, width: 30, height: 30, justifyContent: 'center', alignItems: 'center'}}>
         <TouchableOpacity onPress={()=>{
           if (pricePercent>4) {
             setPricePercent(pricePercent-4);
@@ -567,7 +567,7 @@ const PriceText = ({priceShareInitialPercent, completeFunc, productPrice, remain
           }
           
         }}>
-          <Icon name="minus" color="white" size={20} />
+          <Icon name="minus" color="white" size={27} />
         </TouchableOpacity>
       </View>
 
@@ -612,7 +612,7 @@ const PriceText = ({priceShareInitialPercent, completeFunc, productPrice, remain
 />
 
 </View>
-<View style={{borderRadius: 40, backgroundColor: constants.ORANGE, width: 25, height: 25, justifyContent: 'center', alignItems: 'center'}}>
+<View style={{borderRadius: 40, backgroundColor: constants.ORANGE, width: 30, height: 30, marginLeft: 10, justifyContent: 'center', alignItems: 'center'}}>
         <TouchableOpacity onPress={()=>{
           if (pricePercent < 100) {
             setPricePercent(pricePercent+4);
@@ -620,7 +620,7 @@ const PriceText = ({priceShareInitialPercent, completeFunc, productPrice, remain
           }
           
         }}>
-          <Icon name="plus" color="white" size={20} />
+          <Icon name="plus" color="white" size={27} />
         </TouchableOpacity>
       </View>
 </View>
