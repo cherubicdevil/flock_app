@@ -257,7 +257,7 @@ const Product = ({route, navigation}) => {
         CommonActions.reset({
           index: 0,
           routes: [
-            { name: 'Home' },
+            { name: 'Carousel' },
           ],
         })
                   );
