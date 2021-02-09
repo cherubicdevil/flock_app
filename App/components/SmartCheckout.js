@@ -518,7 +518,7 @@ const BillingModal = ({state, setState, close, setChanged}) => {
         </View>
         <View style={{marginTop: 20, flex: 1, marginLeft: 10}}>
           <Text style={{marginLeft: 10}}>CVC</Text>
-        <TextInput defaultValue = {state.cvc} value={cvcVal} ref = {cvc} maxLength={3} style={styles.textbox} 
+        <TextInput keyboardType="numeric" defaultValue = {state.cvc} value={cvcVal} ref = {cvc} maxLength={3} style={styles.textbox} 
         onKeyPress={({nativeEvent})=>{
           if (nativeEvent.key =="Backspace") {
             if (cvcVal === "") {
