@@ -129,6 +129,7 @@ const CamScreenTwo = ({navigation, route}) => {
 
   const [foundProduct, setFoundProduct] = useState(true);
   const [titleState, setTitleState] = useState(null);
+  const [brandState, setBrandState] = useState("");
   const [descState, setDescState] = useState(null);
   const [priceState, setPriceState] = useState(0);
   const [dataUrl, setDataUrl] = useState("");
@@ -170,7 +171,10 @@ const CamScreenTwo = ({navigation, route}) => {
                 borderTopRightRadius: 0,
                 }}>
                   <TouchableOpacity onPress={()=>{
+                    if (pinned) {
+
                     openChangePicture(true);
+                    }
                   }}>
               <View style={{width: 150, height: 150, alignItems: 'center', resizeMode: 'contain'}}>
             <ResizeableImage
@@ -186,7 +190,7 @@ const CamScreenTwo = ({navigation, route}) => {
             </View>
             </TouchableOpacity>
             </View>
-            <View style={{justifyContent: 'flex-start', flex: 1, marginTop: 10,}}>
+            <View style={{justifyContent: 'flex-start', flex: 1, marginTop: 5,}}>
             <View style={{marginBottom: 10}}>
               <Text style={{marginLeft: 15, color: constants.DARKGREY}}>Title</Text>
               <TextInput
@@ -197,6 +201,19 @@ const CamScreenTwo = ({navigation, route}) => {
                   setTitleState(text);
                 }}
                 value={titleState}
+              />
+            </View>
+
+            <View style={{marginBottom: 5}}>
+              <Text style={{marginLeft: 15, color: constants.DARKGREY}}>Brand</Text>
+              <TextInput
+                // placeholder="Describe the product"
+                style={styles.descriptionStyle}
+                placeholderTextColor={constants.DARKGREY}
+                onChangeText={(text) => {
+                  setBrandState(text);
+                }}
+                value={brandState}
               />
             </View>
             {/* <View style={{marginTop: 5, marginBottom: 10}}>
@@ -464,13 +481,17 @@ const CamScreenTwo = ({navigation, route}) => {
 
     <AnimatedModal visible={changePicture} close={()=>{openChangePicture(false)}}>
       <View style={{flex:1,}}>
-      <FlatList data = {imageSet} numColumns={3} renderItem={(item)=>{
+      <FlatList key={12334} style={{alignSelf: 'center'}} data = {imageSet} numColumns={4} renderItem={(item)=>{
+        if (item.item.startsWith("//")) {
+          item.item = "https:" +item.item;
+        }
         // return <Image source={{uri: item}} style={{height:200, aspectRatio:1, borderRadius: 40}} />
         return <TouchableOpacity onPress={()=>{
           setImageState(item.item);
           openChangePicture(false);
         }}><View style={{flex:1, height: 100,alignItems: 'center', resizeMode:'cover'}}>
           <Image source={{uri: item.item}} style={{flex: 1, aspectRatio:1, borderRadius: 40}} />
+          {/* <Text>{item.item}</Text> */}
         </View>
         </TouchableOpacity>
       }} />
