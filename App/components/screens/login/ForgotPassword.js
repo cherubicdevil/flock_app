@@ -24,16 +24,24 @@ import LoginCommon from './LoginCommon';
 
 const ForgotPassword = ({navigation}) => {
     const [email, setEmail] = useState("");
+    const [errMessage, setErrMessage] = useState("");
     return <LoginCommon>
         <View style={{flex: 1, justifyContent: 'center', alignSelf: 'center', marginLeft: 20, marginRight: 20, width: '80%'}}>
             <Text style={{fontSize: 22, color: 'white'}}>Password Reset</Text>
             <Text style={{marginVertical: 5, color: 'white'}}>Enter your flock email to receive a password reset link.</Text>
+            <Text style={{color: 'red', fontFamily: constants.FONT}}>{errMessage}</Text>
             <TextInput placeholder = "youremail@email.com" style={{color: 'white', padding:15, backgroundColor:'rgba(255,255,255,0.15)', borderRadius: 40, width: '100%'}} value={email} onChangeText={(text)=>{
                 setEmail(text.toLowerCase());
             }} />
         <TouchableOpacity style={{marginTop: 10, alignSelf: 'center', backgroundColor: constants.LAVENDER, paddingHorizontal: 20, paddingVertical: 10, justifyContent: 'center', alignItems: 'center', borderRadius: 40, width: 100}} onPress={()=>{
 auth.sendPasswordResetEmail(email).then().catch(err=>{
-    console.log(err);
+    // console.log(err);
+    // setErrMessage(err.message);
+    if (err.message === "There is no user record corresponding to this identifier. The user may have been deleted.") {
+        setErrMessage("This email is not registered to our app. Make a new account instead.");
+    } else {
+        setErrMessage("Try again.");
+    }
 })
         }}>
             <Text style={{fontWeight: 'bold', color: 'white'}}>Send</Text>
