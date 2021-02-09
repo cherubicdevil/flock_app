@@ -158,8 +158,12 @@ function FlockChatComplete({route, navigation}) {
           </LinearGradient>
         </View>
       <View style={{marginTop: 20, flexDirection: 'row'}}>
-        <Image style = {{width: 40, height: 40}} defaultSource={constants.PLACEHOLDER_IMAGE} source ={{uri:auth.currentUser.photoURL }} />
-        <View style={{borderRadius: 30, flex: 1, backgroundColor: constants.GREYBLUE, padding: 20, marginRight: 20, shadowColor: constants.GREYBLUE, shadowOffset: {height: 10, width: 0}, shadowOpacity: 0.82, elevation: 13, shadowRadius: 18.30,}}><Text>{route.params.data.description}</Text></View>
+        <Image style = {{marginLeft: 10, width: 40, height: 40, marginRight: 20, borderRadius: 40,
+        shadowColor: constants.GREYBLUE, shadowOffset: {height: 10, width: 0}, shadowOpacity: 0.82, elevation: 13, shadowRadius: 18.30,
+        }} defaultSource={constants.PLACEHOLDER_IMAGE} source ={{uri:auth.currentUser.photoURL }} />
+        <View style={{borderRadius: 30, flex: 1, backgroundColor: constants.GREYBLUE, padding: 20, marginRight: 20, 
+          shadowColor: constants.GREYBLUE, shadowOffset: {height: 10, width: 0}, shadowOpacity: 0.82, elevation: 13, shadowRadius: 18.30,
+          }}><Text>{route.params.data.description}</Text></View>
       </View>
       </View>
       

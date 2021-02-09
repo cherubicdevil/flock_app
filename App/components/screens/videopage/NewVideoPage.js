@@ -248,7 +248,11 @@ useEffect(()=>{
           
           {/* <ConditionalVideo index={index} data={data} viewHeight={viewHeight * percentage/100} /> */}
           {(dataType !=="rent")?
+          <TouchableOpacity onPress={()=>{
+            navigation.navigate('Product', {album: data.product, data: data, id: data.id});
+          }}>
           <ScrollCount data={flockCountdowns} />
+          </TouchableOpacity>
            :<></>}
 </View>
           <TouchableOpacity  onPress={()=>{
