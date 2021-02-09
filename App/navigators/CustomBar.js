@@ -133,7 +133,10 @@ const AddItem = ({image, text, navigation, route}) => {
 
   }} style={{height: '100%', width: '100%', justifyContent: 'center'}}><Text style={{alignSelf: 'center', color: 'white', fontFamily: constants.FONT, fontSize: 24}}>Cancel</Text></TouchableOpacity></View>
 </View>
-      </View>} viewParams={{width:1500, height: 1500, left: -300, bottom: -200}} bgcolor="transparent" upPercent="25%"/>
+      </View>} 
+      // viewParams={{width:1500, height: 1500, left: -300, bottom: -200}}
+      modalAnimationType="fade"
+       bgcolor="transparent" upPercent="25%"/>
       <TouchableOpacity
         style={{flex: 1}}
         onPress={() => {

@@ -631,6 +631,7 @@ const pinLocalFunc = (htmlBody, notBaseURL) => {
           return element.desc || "";
         })
       );
+      console.log(images);
       if (best.rating == 0) {
         imageUrl = images[0].img;
       } else {

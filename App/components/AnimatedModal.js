@@ -47,6 +47,7 @@ const AnimatedModal = ({
   behind=false,
   keyboard=false,
   modalAnimationType="slide",
+  nested=false,
   behavior="position",
   viewParams={bottom: 0, height: Dimensions.get('window').height, width:Dimensions.get('window').width, left: 0},
   contentTop=<></>
@@ -57,7 +58,7 @@ const AnimatedModal = ({
       useNativeDriver: false,
       toValue: fadeOpacity,
       delay: 200,
-      duration: 700,
+      duration: 200,
     }).start();
   };
 
@@ -65,7 +66,7 @@ const AnimatedModal = ({
     Animated.timing(animation.current, {
       useNativeDriver: false,
       toValue: 0,
-      delay: 0,
+      delay: 200,
       duration: 0,
     }).start();
   };
@@ -92,8 +93,8 @@ const AnimatedModal = ({
         }}>
                 <Animated.View
         style={{
-          height: viewParams.height,
-          width: viewParams.width,
+          height: visible?viewParams.height:0,
+          width: visible?viewParams.width:0,
           position: 'absolute',
           zIndex: 200,
           bottom: viewParams.bottom,
