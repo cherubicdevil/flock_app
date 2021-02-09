@@ -349,9 +349,9 @@ const Product = ({route, navigation}) => {
         setTutorialScreen(false);
       }}>
       <View style={{backgroundColor: "rgba(0,0,0,0.5)", height: tutorialScreen?Dimensions.get('window').height:0, width: tutorialScreen?Dimensions.get('window').width:0}} >
-        <View style={{resizeMode: 'contain', position: 'absolute', bottom: 100, right: 70}}>
+        <View style={{position: 'absolute', bottom: 100, right: 130,resizeMode: 'contain', }}>
         {/* <Icon name="arrow-down" size={30} color={'white'}  /> */}
-        <Image source = {require('App/Assets/Images/handarrow.png')}  style={{tintColor: 'white', height: 180,width: 150}} />
+        <Image source = {require('App/Assets/Images/handarrow.png')}  style={{tintColor: 'white', width: 100, height: 105}} />
         {/* <TouchableWithoutFeedback style={{width: '100%', height: '100%',}} onPress={()=> {
           setTutorialScreen(false);
         }} /> */}

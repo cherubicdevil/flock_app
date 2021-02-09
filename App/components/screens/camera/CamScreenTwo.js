@@ -353,7 +353,7 @@ const CamScreenTwo = ({navigation, route}) => {
           //     ],
           //   })
           // );
-          navigation.navigate("Product", {album: route.params.data.product, tutorial: true});
+          navigation.navigate("Product", {album: route.params.data.product, data: route.params.data, id: route.params.data.id, tutorial: true});
           }}
         />
         
