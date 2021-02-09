@@ -15,6 +15,7 @@ import {
   Keyboard,
   KeyboardAvoidingView,
   ScrollView,
+  FlatList
 } from 'react-native';
 const cheerio = require('react-native-cheerio')
 import ResizeableImage from 'App/components/ResizeableImage';
@@ -25,6 +26,7 @@ import { CommonActions } from '@react-navigation/native';
 import AnimatedModal from 'App/components/AnimatedModal';
 import LinearGradient from 'react-native-linear-gradient';
 import {pinLocalFunc} from 'App/utils';
+import { set } from 'react-native-reanimated';
 
 
 const jsCode = 'window.ReactNativeWebView.postMessage(document.documentElement.innerHTML)'
@@ -123,6 +125,8 @@ const CamScreenTwo = ({navigation, route}) => {
     }).start();
   };
 
+  const [changePicture, openChangePicture] = useState(false);
+
   const [foundProduct, setFoundProduct] = useState(true);
   const [titleState, setTitleState] = useState(null);
   const [descState, setDescState] = useState(null);
@@ -132,6 +136,7 @@ const CamScreenTwo = ({navigation, route}) => {
   const animation = useRef(new Animated.Value(90));
   //var searchUrl = '';
   const [imageState, setImageState] = useState(null);
+  const [imageSet, setImageSet] = useState([]);
   const [searchUrl, setSearchUrl] = useState('');
   const [urlState, setUrlState] = useState('');
 
@@ -164,6 +169,9 @@ const CamScreenTwo = ({navigation, route}) => {
                 borderTopLeftRadius: 0,
                 borderTopRightRadius: 0,
                 }}>
+                  <TouchableOpacity onPress={()=>{
+                    openChangePicture(true);
+                  }}>
             <ResizeableImage
               defaultSource={require('App/Assets/Images/Blank_Photo_Icon.png')}
               source={
@@ -173,6 +181,7 @@ const CamScreenTwo = ({navigation, route}) => {
               limitHorizontal={false}
               hLimit={150}
             />
+            </TouchableOpacity>
             </View>
             <View style={{justifyContent: 'flex-start', flex: 1, marginTop: 10,}}>
             <View style={{marginBottom: 10}}>
@@ -408,6 +417,8 @@ const CamScreenTwo = ({navigation, route}) => {
         onPress={()=>{
           const result = pinLocalFunc(htmlBody, urlState);
           setImageState(result.image);
+          setImageSet(result.imageSet);
+          console.log(result.imageSet);
           setTitleState(result.title);
           setPriceState(result.price.replace(',','').replace('$',''));
           setDataUrl(urlState);
@@ -433,6 +444,7 @@ const CamScreenTwo = ({navigation, route}) => {
                 onNavigationStateChange={(webViewState) => {
                   setUrlState(webViewState.url);
                   setSearchUrl(webViewState.url);
+                  console.log(webViewState);
                   
                 }}
                 style={{
@@ -445,6 +457,22 @@ const CamScreenTwo = ({navigation, route}) => {
     </View>
 
     } />
+
+    <AnimatedModal visible={changePicture} close={()=>{openChangePicture(false)}}>
+      <View style={{flex:1,}}>
+      <FlatList data = {imageSet} numColumns={3} renderItem={(item)=>{
+        // return <Image source={{uri: item}} style={{height:200, aspectRatio:1, borderRadius: 40}} />
+        return <TouchableOpacity onPress={()=>{
+          setImageState(item.item);
+          openChangePicture(false);
+        }}><View style={{flex:1, height: 100,alignItems: 'center', resizeMode:'cover'}}>
+          <Image source={{uri: item.item}} style={{flex: 1, aspectRatio:1, borderRadius: 40}} />
+        </View>
+        </TouchableOpacity>
+      }} />
+      
+      </View>
+    </AnimatedModal>
     </>
   );
 };

@@ -613,9 +613,18 @@ const pinLocalFunc = (htmlBody, notBaseURL) => {
   };
   
   const getImageUrl = ($, title) => {
+    console.log('before get og image');
     var imageUrl = $('meta[property="og:image:secure_url"]').attr("content");
+    console.log('after get og image', imageUrl);
+    var images = imageDownloader.extractImagesFromTags($);
+    // if (title) {
+    //   images = images.filter((item)=>{
+    //     return item.desc === undefined || stringSimilarity.compareTwoStrings(title, item.desc) > 0;
+    //   })
+    // }
     if (!imageUrl && title) {
-      var images = imageDownloader.extractImagesFromTags($);
+      
+      console.log('after downlado');
       // const newImages = [];
       // for (const i = 0; i < images.length; i++) {
       //   sizeOf(images[i].img, function (err, dimensions) {
@@ -626,19 +635,39 @@ const pinLocalFunc = (htmlBody, notBaseURL) => {
       // }
       // var images = newImages;
       const best = stringSimilarity.findBestMatch(
-        title,
+        title || "",
         images.map(function (element) {
           return element.desc || "";
         })
       );
+
+
+      console.log('after find best match', best[0]);
+      // console.log(title, 'hello', best.bestMatch.rating, images[best.bestMatchIndex].desc, images.filter((item)=>{
+      //   return stringSimilarity.compareTwoStrings(title, item.desc) > 0;
+      // }));
       console.log(images);
-      if (best.rating == 0) {
+      if (best.bestMatch.rating == 0) {
+        console.log('something wrong?');
         imageUrl = images[0].img;
       } else {
+        console.log('what is wrong here');
         imageUrl = images[best.bestMatchIndex].img;
       }
     }
-    return imageUrl;
+    console.log('after if loop');
+    images = images.filter((item)=>{
+      return item.img !== undefined;
+    })
+    images = images.map((item)=>{
+      const url = item.img;
+      if (url !== undefined && url.indexOf("?")>-1) {
+        return url.split("?")[0];
+      } else {
+        return url;
+      }
+    });
+    return {image: imageUrl, imageSet: images};
   };
   const getPriceTitleImage = ($) => {
     var imageUrl;
@@ -698,24 +727,27 @@ const pinLocalFunc = (htmlBody, notBaseURL) => {
     $("title").text() ||
     $('meta[name="keywords"]').attr("content");
 
-    imageUrl = getImageUrl($, title);
+    console.log('before getimageurl');
+    var {image: imageUrl, imageSet: imageSet} = getImageUrl($, title)
+    // imageUrl = getImageUrl($, title);
     imageUrl = imageDownloader.relativeUrlToAbsolute((imageUrl || "").trim());
     if (imageUrl.startsWith('data')) {
       //imageUrl = "too big";
     }
 
 
-    return {image: imageUrl, price: price, title: title};
+    return {image: imageUrl, imageSet: imageSet, price: price, title: title};
 }
   var $ = cheerio.load(htmlBody);
   
   // console.log("STUFFFFFFF", $("title").text())
-const {price: price, image: imageUrl, title: title } = getPriceTitleImage($);
+const {price: price, image: imageUrl, title: title, imageSet: imageSet} = getPriceTitleImage($);
 const data = {
   url: notBaseURL,
   title: title.trim().split(/[^/\S ]/)[0],
-  image: imageUrl,
+  image: imageUrl.indexOf("?")>-1?imageUrl.split("?")[0]:imageUrl,
   price: price.split("\n")[0],
+  imageSet: imageSet,
 };
 // console.log(data);
 return data;
