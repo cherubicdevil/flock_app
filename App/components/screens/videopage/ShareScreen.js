@@ -25,12 +25,12 @@ const ShareScreen = ({navigation, route}) => {
         <Text style={{fontSize: 17, fontFamily: constants.FONT, alignSelf: 'center', fontWeight: 'bold'}}>Share</Text>
         <Text style={{fontSize: 17, fontFamily: constants.FONT, alignSelf: 'center'}}>%{route.params.flockId.padStart(5,0).substring(0,5)}</Text>
     </View>
-    <View>
-        <Text style={{color: constants.ORANGE}}>
+    <View style={{height: 35, position: 'absolute', right: 5, bottom: 12, flexDirection:'row', alignItems:'center', }}>
+        <Text style={{marginRight: 10, color: constants.ORANGE, textAlign:'center'}}>
             +{plusCoins}
         </Text>
     <TouchableOpacity 
-    style={{position: 'absolute', right: 5, bottom: 12, borderRadius: 40, backgroundColor: constants.ORANGE, padding: 10, alignSelf:'flex-end', marginTop: -30, marginRight: 20}}
+    style={{borderRadius: 40, backgroundColor: constants.ORANGE, padding: 10, alignSelf:'flex-end', marginTop: -30, marginRight: 20}}
     onPress={()=>{
 
         navigation.goBack();

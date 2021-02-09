@@ -68,7 +68,7 @@ contentTop={
   <View style={{width: '80%', alignSelf: 'center', padding: 10, justifyContent: 'center', alignItems: 'center'}}>
   <View style={{flexDirection: 'row', justifyContent:'space-between', marginTop: 10,}}>
 <View style={{flex: 1}}>
-  <Text style={{color: 'white', alignSelf: 'center'}}>Nest Eggs</Text>
+  <Text style={{color: 'white', alignSelf: 'center'}}>Eggs</Text>
 <Text style={{color: 'white', alignSelf: 'center', fontWeight: 'bold', fontSize: 32}}>{select.userInfo.eggCoins}</Text>
 
 </View>
