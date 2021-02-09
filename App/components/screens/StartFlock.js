@@ -169,6 +169,7 @@ const InputText = ({numLines, data, title, placeholder, label, setCanNext, defau
 
     const [textValue, setTextValue] = useState(data[title]);
     return <View style={{marginBottom: 10}}><Text style={{fontWeight: 'bold'}}>{label}</Text>
+    <View style={{marginTop: 5, borderColor: "grey", borderRadius: 80, paddingHorizontal: 25, paddingTop: 5, borderWidth: 1, height: numLines * 25}}>
     <TextInput
     value={textValue}
     onChangeText={(text)=>{
@@ -179,13 +180,15 @@ const InputText = ({numLines, data, title, placeholder, label, setCanNext, defau
             setCanNext(true);
         }
     }}
-    defaultValue={data[title]} blurOnSubmit placeholder={placeholder} style={{marginTop: 5, borderColor: "grey", paddingLeft: 15, borderRadius: 80, borderWidth: 1, height: numLines * 25}} multiline numberOfLines = {numLines} onBlur = {(e)=> {
+    defaultValue={data[title]} blurOnSubmit placeholder={placeholder}  multiline numberOfLines = {numLines} onBlur = {(e)=> {
         console.log("BLUR", e.nativeEvent.text);
         data[title] = e.nativeEvent.text;
         if (e.nativeEvent.text !== "") {
             setCanNext(true);
         }
-    }} /></View>
+    }} />
+    </View>
+    </View>
 }
 
 const BasicInputText = ({setOutsideValue=()=>{},numLines=1, numeric, data, placeholder, label, title, defaultValue="", setFunc=()=>{}}) => {
@@ -245,7 +248,7 @@ const ProductPreview = ({product}) => {
 
 const styles = {
     container: {width:'100%', backgroundColor: 'white', marginTop: 5, padding: 20},
-    inputBox: {borderColor: "grey", paddingLeft: 15, borderRadius: 80, borderWidth: 1}
+    inputBox: {borderColor: "grey", paddingLeft: 15, borderRadius: 80, borderWidth: 1, paddingLeft: 30, paddingRight: 30}
 };
 
 export default StartFlock;
