@@ -146,7 +146,7 @@ const Checkout = ({navigation, route}) => {
             </View>
             <View style={{alignSelf:'flex-end', flexDirection:'row', alignItems:'center', marginTop: 10, marginRight: -5, justifyContent: 'space-between'}}>
                 <View style={{flex: 1}}>
-        <Text>You have {<Text style={{color: constants.ORANGE}}>{select.eggCoins}</Text>} nest eggs to redeem.</Text>
+        <Text>You have {<Text style={{color: constants.ORANGE}}>{select.eggCoins}</Text>} eggs to redeem.</Text>
         <Text>Use {reductionEggs} to save ${reductionDollars.toFixed(2)}</Text>
         </View>
             <Switch value={tog}

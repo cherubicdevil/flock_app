@@ -78,7 +78,11 @@ const Myform = ({registration, navigation}) => {
   }
   const renderForget = () => {
     return registration ? null : (
+      <TouchableOpacity onPress={()=> {
+        navigation.navigate("ForgotPassword");
+      }}>
       <Text style={styles.buttontext}>Forgot Password?</Text>
+      </TouchableOpacity>
     );
   }
     return (
@@ -108,7 +112,7 @@ const Myform = ({registration, navigation}) => {
           
         />
         <TouchableOpacity style={styles.forgotcontainer}>
-          {/* {renderForget()} */}
+          {renderForget()}
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.buttoncontainer}
@@ -126,6 +130,7 @@ const Myform = ({registration, navigation}) => {
           <Text style={styles.submitButton}>{retLogSign()}</Text>
           </LinearGradient>
         </TouchableOpacity>
+        
         <TouchableOpacity
           style={{marginTop: 10}}
           onPress={() => {

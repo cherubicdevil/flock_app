@@ -20,7 +20,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import { TouchableWithoutFeedback } from 'react-native';
 
 const anim_duration = 20000;
-const LoginCommon = ({content, lowerlink}) => {
+const LoginCommon = ({content, children, lowerlink}) => {
     const [cloudPos, setCloudPos] = useState(new Animated.Value(-200));
     const [randomTop, setRandomTop] = useState("10%");
     useEffect(() => {
@@ -65,6 +65,7 @@ const LoginCommon = ({content, lowerlink}) => {
       </View>
       <View style={styles.myform}>
         {content}
+        {children}
         {lowerlink}
       </View>
 
