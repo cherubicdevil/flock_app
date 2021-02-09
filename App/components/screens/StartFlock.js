@@ -53,6 +53,7 @@ const StartFlock = ({navigation, route}) => {
           // FLOCK_BUG use id later, for now use title
           productTitle: route.params.product.title,
           messages: [],
+          createdAt: Date.now(),
           
           time: Math.round(Date.now() / 1000),
           members: [{name: user.displayName, uid: user.uid}],
