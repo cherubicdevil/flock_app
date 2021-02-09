@@ -98,7 +98,7 @@ const FeedItemTemp = ({navigation, image, item, type}) => {
         <TouchableOpacity onPress={()=>{
             console.log(item);
             if (type !== "rent") {
-                navigation.navigate("Product", {album: item.product, flockId: item.objectID, id: item.objectID})
+                navigation.navigate("Product", {album: item.product, flockId: item.objectID, data: item, id: item.objectID})
             } else {
                 navigation.navigate("Home");
             }
