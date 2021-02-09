@@ -39,9 +39,11 @@ const FlockReserve = ({navigation, route}) => {
 
 
     const [modalOpen, setModalOpen] = useState(false);
+    
     console.log(route.params);
     const subtotal = requestTypeIsRent?rentPrice(route.params.data.product.price):"0.00"
-    const requestTypeIsRent = route.params.data.members.includes({name: auth.currentUser.displayName, uid: auth.currentUser.uid});
+    const requestTypeIsRent = route.params.data.memberIds.includes(auth.currentUser.uid);
+    console.log(requestTypeIsRent,'rent?');;
     const colors = (requestTypeIsRent)?[constants.LAVENDER, constants.PURPINK]:['#ff4d00', constants.PEACH];
     return <SafeAreaView style={{flex: 1, backgroundColor: constants.PINK_BACKGROUND}}>
       {/* <Text>{requestTypeIsRent?"Borrow":"Flock"}</Text> */}
