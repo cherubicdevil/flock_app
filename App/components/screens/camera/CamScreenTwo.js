@@ -172,6 +172,7 @@ const CamScreenTwo = ({navigation, route}) => {
                   <TouchableOpacity onPress={()=>{
                     openChangePicture(true);
                   }}>
+              <View style={{width: 150, height: 150, alignItems: 'center', resizeMode: 'contain'}}>
             <ResizeableImage
               defaultSource={require('App/Assets/Images/Blank_Photo_Icon.png')}
               source={
@@ -180,7 +181,9 @@ const CamScreenTwo = ({navigation, route}) => {
               horizontalLimit={false}
               limitHorizontal={false}
               hLimit={150}
+              // wLimit={150}
             />
+            </View>
             </TouchableOpacity>
             </View>
             <View style={{justifyContent: 'flex-start', flex: 1, marginTop: 10,}}>
@@ -420,7 +423,8 @@ const CamScreenTwo = ({navigation, route}) => {
           setImageSet(result.imageSet);
           console.log(result.imageSet);
           setTitleState(result.title);
-          setPriceState(result.price.replace(',','').replace('$',''));
+          setPriceState(result.price.replace(',','').replace('$','').replace(/[^0-9.]+/, '').split("$")[0]);
+          // console.log(result.price.replace(',','').replace('$','').replace(/[^0-9.]+/, ''), result.price);
           setDataUrl(urlState);
           setModalOpen(false);
           setPinned(true);
