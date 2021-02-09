@@ -130,10 +130,12 @@ const ProfileMain = ({navigation}) => {
           numColumns={3}
           data={rentData}
           renderItem={(el) => {
-            return <TouchableOpacity onPress={()=>{navigation.navigate('FlockReserve', {data: el.item})}}><View style={{backgroundColor: 'black', width: Dimensions.get('window').width/3- 10, margin: 5, height: 150, borderBottomRightRadius: 40, borderBottomLeftRadius: 40, backgroundColor: 'white'}} >
-              <Image style={{width: '100%', height: 110}} source={{uri: el.item.product.image}} />
-          <Text>{el.item.members.length} flockers</Text>
-            </View>
+            return <TouchableOpacity onPress={()=>{navigation.navigate('FlockReserve', {data: el.item})}}><View style={{borderWidth: 0, borderColor: constants.GREYORANGE, width: Dimensions.get('window').width/3 - 10, margin: 5,borderBottomRightRadius: 40, borderBottomLeftRadius: 40, backgroundColor: 'white', resizeMode: 'contain', overflow: 'hidden'}} >
+            {/* <Text>Current Price: ${(el.item.product.price/el.item.members.length).toFixed(2)} </Text> */}
+          {/* <Text>Your Maximum: ${(el.item.maximums[firebase.auth().currentUser.uid])}</Text> */}
+          {/* <ResizeableImage limitHorizontal={false} hLimit={50} source={{uri: el.item.product.image}}  /> */}
+          <Image source={{uri: el.item.product.image}} style={{width: '100%', aspectRatio: 1}} />
+          </View>
             </TouchableOpacity>
           }}
         />
