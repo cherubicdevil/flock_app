@@ -396,11 +396,14 @@ const updateCache = (member, actiontype, data) => {
   
 }
 
-const shareActions = {"facebook": function(content, failure) {
+const shareActions = {
+  "facebook": function(content, failure) {
   const {image: image, data: data, shareApp: shareApp, successCallback: successCallback} = content;
   var shareLinkContent;
   var sharePhotoContent;
-  if (shareApp) {
+  var imgRef = data.imgRef.current;
+
+  if (true) {
     shareLinkContent = {
       contentType:'link',
       contentUrl: "https://facebook.com",
@@ -423,26 +426,35 @@ var sharePhotoContent = {
   }
 
 //console.log("ShareDialog", FB);
+console.log('bout to show');
+imgRef.capture((uri)=>{
+  var sharePhotoContent = {
+    contentType :'photo',
+    photos: [{ imageUrl:  uri}],
+    };
 ShareDialog.canShow(sharePhotoContent).then((canShow)=>{
-console.log("canShow?", canShow);
-ShareDialog.show(sharePhotoContent).then(
-  function(result) {
-    console.log(result);
-    if (result.isCancelled) {
-      console.log('Share cancelled');
-      failure();
-    } else {
-      console.log('Share success with postId: '
-        + result.postId);
-      successCallback();
-      
+  console.log('showing', uri.substring(0,5));
+
+    ShareDialog.show(sharePhotoContent).then(
+      function(result) {
+        console.log(result);
+        if (result.isCancelled) {
+          console.log('Share cancelled');
+          failure();
+        } else {
+          console.log('Share success with postId: '
+            + result.postId);
+          successCallback();
+          
+        }
+      },
+    function(error) {
+      console.log('Share fail with error: ' + error);
     }
-  },
-  function(error) {
-    console.log('Share fail with error: ' + error);
-  }
-  );
-//ShareDialog.show(sharePhotoContent);
+    );
+  //ShareDialog.show(sharePhotoContent);
+  });
+  
 
 });
 
@@ -454,67 +466,83 @@ ShareDialog.show(sharePhotoContent).then(
 // })
 },
 "twitter": function (content, failure) {
-  Share.share({
-    message: 'hello world',
-    title: 'Flock Content',
-    url: 'https://twitter.com',
-  }).then((result)=> {
-    if (result.action === Share.dismissedAction) {
-      failure();
-      console.log('cancelled for real');
-    } else if (result.action === Share.sharedAction) {
-
-    }
-    console.log('cancelled');
-  });
-  
+  const img = content.data.imgRef.current;
+  const successCallback = content.successCallback;
+  img.capture().then(uri=>{
+    Share.share({
+      message: 'Become a flocker today!',
+      title: 'flock',
+      url: uri,
+    }).then((result)=> {
+      if (result.action === Share.dismissedAction) {
+        failure();
+        console.log('cancelled for real');
+      } else if (result.action === Share.sharedAction) {
+        successCallback();
+      }
+      console.log('cancelled');
+    })
+  })
+  ;
 },
 "snapchat": function (content, failure) {
-  Share.share({
-    message: 'hello world',
-    title: 'Flock Content',
-    url: 'https://twitter.com',
-  }).then((result)=> {
-    if (result.action === Share.dismissedAction) {
-      failure();
-      console.log('cancelled for real');
-    } else if (result.action === Share.sharedAction) {
-
-    }
-    console.log('cancelled');
-  });
+  const img = content.data.imgRef.current;
+  const successCallback = content.successCallback();
+  img.capture().then(uri=>{
+    Share.share({
+      message: 'Become a flocker today!',
+      title: 'flock',
+      url: uri,
+    }).then((result)=> {
+      if (result.action === Share.dismissedAction) {
+        failure();
+        console.log('cancelled for real');
+      } else if (result.action === Share.sharedAction) {
+        successCallback();
+      }
+      console.log('cancelled');
+    })
+  })
+  ;
 },
 "instagram": function (content) {
   console.log(content.data);
   const img = content.data.imgRef.current;
+  const successCallback = content.successCallback;
 
   img.capture().then(uri => {
     console.log("do something with ", uri);
-    let instagramURL = `instagram://library?LocalIdentifier=`+uri;
+    let instagramURL = `instagram://library?LocalIdentifier=`;;//+uri;
     console.log(uri);
     CameraRoll.save(uri).then(()=> {
       Linking.openURL(instagramURL);
+      successCallback();
     });
     
   });
 
 },
 "whatsapp": function (content, failure) {
-  Share.share({
-    message: 'hello world',
-    title: 'Flock Content',
-    url: 'https://twitter.com',
-  }).then((result)=> {
-    if (result.action === Share.dismissedAction) {
-      failure();
-      console.log('cancelled for real');
-    } else if (result.action === Share.sharedAction) {
-
-    }
-    console.log('cancelled');
-  });
+  const img = content.data.imgRef.current;
+  const successCallback = content.successCallback;
+  img.capture().then(uri=>{
+    Share.share({
+      message: 'hello world',
+      title: 'Flock Content',
+      url: uri,
+    }).then((result)=> {
+      if (result.action === Share.dismissedAction) {
+        failure();
+        console.log('cancelled for real');
+      } else if (result.action === Share.sharedAction) {
+        successCallback();
+      }
+      console.log('cancelled');
+    })
+  })
+  ;
 },
-"tiktok": function (content, failure) {
+"tiktok": function (content, failure) { // doesn't work right now
   Share.share({
     message: 'hello world',
     title: 'Flock Content',

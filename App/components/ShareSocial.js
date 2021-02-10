@@ -29,7 +29,7 @@ const ShareSocial = ({product, data={}, flockId, shareApp=false, showImage=true,
     {/* <ShareRow label="Text" app="text" product = {product} data={data} toggle={false} egg={true} shareApp={shareApp} /> */}
     {/* <ShareRow label="Email" app="email" product = {product} data={data} toggle={false} egg={true} shareApp={shareApp} /> */}
 
-    {!shareApp?<ViewShot ref={img} options={{ format: "jpg", quality: 0.9 }}>
+    {!shareApp?<ViewShot ref={img} options={{ result: "base64", format: "jpg", quality: 0.9 }}>
         {product?.image?
         <>
         <ResizeableImage source = {{uri: product.image}} wLimit={Dimensions.get('window').width} />
@@ -38,7 +38,7 @@ const ShareSocial = ({product, data={}, flockId, shareApp=false, showImage=true,
 <Text style={{marginTop: -15, alignSelf: 'flex-end', width: 85, shadowColor: 'white', shadowOpacity: 1, shadowOffset:{height:0}, fontFamily: 'Nunito', fontWeight: 'bold', fontSize: 8}}>search {<Text style={{color: 'black'}}>%{flockId.padStart(5,'0').substring(0,5)}</Text>} in app</Text>
         </View></>:<></>}
       </ViewShot>:
-      <ViewShot ref={img} options={{ format: "jpg", quality: 0.9 }}>
+      <ViewShot ref={img} options={{ result: "base64", format: "jpg", quality: 0.9 }}>
       {/* <ResizeableImage source = {{uri: product.image}} wLimit={Dimensions.get('window').width} /> */}
       <View style={{marginTop: 40, overflow: 'hidden', resizeMode: 'contain'}}>
           {/* <Text style={{fontSize: 24, textAlign: 'center',fontWeight: 'bold'}}>Shop with friends</Text> */}
