@@ -612,7 +612,7 @@ const PriceText = ({priceShareInitialPercent, completeFunc, productPrice, remain
 />
 
 </View>
-<View style={{borderRadius: 40, backgroundColor: constants.ORANGE, width: 30, height: 30, marginLeft: 10, justifyContent: 'center', alignItems: 'center'}}>
+<View style={{borderRadius: 40, backgroundColor: constants.ORANGE, width: 30, height: 30, marginLeft: 10, justifyContent: 'center', alignItems: 'center', zIndex: -40}}>
         <TouchableOpacity onPress={()=>{
           if (pricePercent < 100) {
             setPricePercent(pricePercent+4);

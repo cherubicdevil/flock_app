@@ -198,7 +198,7 @@ const CamScreenTwo = ({navigation, route}) => {
                     openChangePicture(true);
                     }
                   }}>
-            <View style={{height: 30, marginTop: 7, width: '100%', alignSelf:'center', backgroundColor:constants.PINK_BACKGROUND, borderRadius:40, paddingVertical:7}}>
+            <View style={{height: 30, marginTop: 10, width: '80%', alignSelf:'center', backgroundColor:constants.PINK_BACKGROUND, borderRadius:40, paddingVertical:7}}>
               <Text style={{color: constants.LAVENDER, textAlign:'center'}}>Change</Text>
             </View>
             </TouchableOpacity>
