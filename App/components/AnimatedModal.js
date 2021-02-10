@@ -57,8 +57,8 @@ const AnimatedModal = ({
     Animated.timing(animation.current, {
       useNativeDriver: false,
       toValue: fadeOpacity,
-      delay: 200,
-      duration: 200,
+      delay: nested?300:200,
+      duration: 500,
     }).start();
   };
 
