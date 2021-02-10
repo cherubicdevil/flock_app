@@ -549,7 +549,8 @@ const shuffle = (array) => {
 const pinLocalFunc = (htmlBody, notBaseURL) => {
   const imageDownloader = {
     // Source: https://support.google.com/webmasters/answer/2598805?hl=en
-    imageRegex: /(?:([^:\/?#]+):)?(?:\/\/([^\/?#]*))?([^?#]*\.(?:bmp|gif|jpe?g|png|svg|webp))(?:\?([^#]*))?(?:#(.*))?/i,
+    // no gif, no png no svg
+    imageRegex: /(?:([^:\/?#]+):)?(?:\/\/([^\/?#]*))?([^?#]*\.(?:bmp|jpe?g|webp))(?:\?([^#]*))?(?:#(.*))?/i,
   
     extractImagesFromTags(dol) {
       return imageDownloader.removeDuplicateOrEmpty(
@@ -628,6 +629,7 @@ const pinLocalFunc = (htmlBody, notBaseURL) => {
     //     return item.desc === undefined || stringSimilarity.compareTwoStrings(title, item.desc) > 0;
     //   })
     // }
+    console.log(images);
     if (!imageUrl && title) {
       
       console.log('after downlado');
@@ -748,8 +750,10 @@ const pinLocalFunc = (htmlBody, notBaseURL) => {
   
   // console.log("STUFFFFFFF", $("title").text())
 const {price: price, image: imageUrl, title: title, imageSet: imageSet} = getPriceTitleImage($);
+console.log('url', notBaseURL);
 const data = {
   url: notBaseURL,
+  brand: notBaseURL.split('.')[1],
   title: title.trim().split(/[^/\S ]/)[0],
   image: imageUrl.indexOf("?")>-1?imageUrl.split("?")[0]:imageUrl,
   price: price.split("\n")[0],

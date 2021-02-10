@@ -43,6 +43,7 @@ const CamScreenTwo = ({navigation, route}) => {
   const [pinned, setPinned] = useState(false);
 
   const [canNext, setCanNext] = useState(pinned);
+  const [searchResultPlaceholder, setSearchResultPlaceholder] = useState("Search for a product on the internet.");
 
 
   
@@ -395,7 +396,7 @@ const CamScreenTwo = ({navigation, route}) => {
               setModalOpen(true);
             }}>
               <Text style={{fontFamily: constants.FONT, color: constants.LIGHTGREY}}>
-                Search for a product on the internet
+                {searchResultPlaceholder}
               </Text>
             </TouchableOpacity>
           </View>
@@ -448,6 +449,7 @@ const CamScreenTwo = ({navigation, route}) => {
           setModalOpen(false);
           setPinned(true);
           setCanNext(true);
+          setSearchResultPlaceholder(result.brand + " | " + result.title);
           }}>
           <Text style={{color: 'white'}}>import</Text>
           </TouchableOpacity>

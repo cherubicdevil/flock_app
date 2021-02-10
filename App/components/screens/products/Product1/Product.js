@@ -171,8 +171,8 @@ const Product = ({route, navigation}) => {
         <Text style={{fontSize: 14, fontWeight: 'bold', marginBottom: 5,}}>
           {route.params.album.title}
         </Text>
-        <View style={{flexDirection:'row'}}>
-        <Text style={{textDecorationLine: 'line-through', alignSelf: 'center', fontFamily: constants.FONTBOLD, color: constants.ORANGE, fontSize: 16}}>
+        <View style={{flexDirection:'row', alignItems: 'center'}}>
+        <Text style={{textDecorationLine: 'line-through', fontFamily: constants.FONTBOLD, color: constants.ORANGE, fontSize: 16}}>
           ${route.params.album.price}
         </Text>
         {/*<Text style={styles.descriptionText}>50 flockers have bought</Text>*/}
@@ -581,7 +581,7 @@ const FlockList = ({product, navigation, ar, close, limited = true, randomId}) =
   }
   return <ScrollView decelerationRate={0.5} ref={scrollRef} pagingEnabled={limited} showsVerticalScrollIndicator={false} style={{padding:0, paddingBottom: 10, height: limited?100:'100%'}}>
   {result.length > 0?<>{result}<View style={{height: 50}} /></>:(<View style={{height: 60}}>
-    <View style={{borderTopWidth: 1, paddingTop: 15, paddingLeft:20, marginTop: 10, alignItems: 'center', flexDirection: 'row'}}>
+    <View style={{borderTopWidth: 1, borderColor: constants.PINK_BACKGROUND_OPAQUE, paddingTop: 15, paddingLeft:20, marginTop: 10, alignItems: 'center', flexDirection: 'row'}}>
     <Text>No current flocks.</Text>
     <View
           style={{
