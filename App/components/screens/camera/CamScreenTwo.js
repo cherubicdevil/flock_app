@@ -22,7 +22,7 @@ const cheerio = require('react-native-cheerio')
 import ResizeableImage from 'App/components/ResizeableImage';
 import {constants} from 'App/constants';
 import ProgressHeader from 'App/components/ProgressHeader';
-import {firebase, db} from 'App/firebase/config';
+import {firebase, db, auth} from 'App/firebase/config';
 import { CommonActions } from '@react-navigation/native';
 import AnimatedModal from 'App/components/AnimatedModal';
 import LinearGradient from 'react-native-linear-gradient';
