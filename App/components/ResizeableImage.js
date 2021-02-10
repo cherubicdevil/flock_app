@@ -40,8 +40,8 @@ const ResizeableImage = ({source, limitHorizontal=true, hLimit, wLimit, aspectRa
         //position: 'absolute',
         zIndex: -10,
         opacity: 0.935,
-        width: width || 0,
-        height: height == 0?100:height || 0,
+        width: width || 100,
+        height: height == 0?100:height || 100,
       }}
     />
   );

@@ -622,14 +622,16 @@ const pinLocalFunc = (htmlBody, notBaseURL) => {
   const getImageUrl = ($, title) => {
     console.log('before get og image');
     var imageUrl = $('meta[property="og:image:secure_url"]').attr("content");
+    var imageUrl = $('meta[property="og:image"]').attr("content");
     console.log('after get og image', imageUrl);
     var images = imageDownloader.extractImagesFromTags($);
+    images.push({img: imageUrl});
     // if (title) {
     //   images = images.filter((item)=>{
     //     return item.desc === undefined || stringSimilarity.compareTwoStrings(title, item.desc) > 0;
     //   })
     // }
-    console.log(images);
+    // console.log(images);
     if (!imageUrl && title) {
       
       console.log('after downlado');
@@ -747,6 +749,7 @@ const pinLocalFunc = (htmlBody, notBaseURL) => {
     return {image: imageUrl, imageSet: imageSet, price: price, title: title};
 }
   var $ = cheerio.load(htmlBody);
+  // console.log(htmlBody);
   
   // console.log("STUFFFFFFF", $("title").text())
 const {price: price, image: imageUrl, title: title, imageSet: imageSet} = getPriceTitleImage($);

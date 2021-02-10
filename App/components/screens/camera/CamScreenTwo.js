@@ -17,6 +17,7 @@ import {
   ScrollView,
   FlatList
 } from 'react-native';
+import Icon from "react-native-vector-icons/FontAwesome";
 const cheerio = require('react-native-cheerio')
 import ResizeableImage from 'App/components/ResizeableImage';
 import {constants} from 'App/constants';
@@ -167,17 +168,15 @@ const CamScreenTwo = ({navigation, route}) => {
                 marginRight: 15,
                 marginVertical: 10,
                 overflow: 'hidden',
-                borderRadius: 40,
-                borderTopLeftRadius: 0,
-                borderTopRightRadius: 0,
+                borderWidth: 0,
+                paddingBottom: 5,
+                // borderRadius: 40,
+                // borderTopLeftRadius: 0,
+                // borderTopRightRadius: 0,
                 }}>
-                  <TouchableOpacity onPress={()=>{
-                    if (pinned) {
-
-                    openChangePicture(true);
-                    }
-                  }}>
+                  
               <View style={{width: 150, height: 150, alignItems: 'center', resizeMode: 'contain'}}>
+                <View style={{borderWidth:2, borderColor: constants.DARKGREY,borderRadius:30,overflow: 'hidden', }}>
             <ResizeableImage
               defaultSource={require('App/Assets/Images/Blank_Photo_Icon.png')}
               source={
@@ -188,6 +187,19 @@ const CamScreenTwo = ({navigation, route}) => {
               hLimit={150}
               // wLimit={150}
             />
+            {/* <Text>Click to change product picture</Text> */}
+            
+            </View>
+            </View>
+            
+            <TouchableOpacity onPress={()=>{
+                    if (pinned) {
+
+                    openChangePicture(true);
+                    }
+                  }}>
+            <View style={{height: 30, marginTop: 7, width: '100%', alignSelf:'center', backgroundColor:constants.PINK_BACKGROUND, borderRadius:40, paddingVertical:7}}>
+              <Text style={{color: constants.LAVENDER, textAlign:'center'}}>Change</Text>
             </View>
             </TouchableOpacity>
             </View>
@@ -315,7 +327,7 @@ const CamScreenTwo = ({navigation, route}) => {
   return (
     <>
     <KeyboardAvoidingView
-      style={{flex: 1, backgroundColor: constants.PINK_BACKGROUND}}
+      style={{flex: 1, backgroundColor: constants.PINK_BACKGROUND_OPAQUE}}
       behavior="padding"
       keyboardVerticalOffset={100}>
         
@@ -389,7 +401,7 @@ const CamScreenTwo = ({navigation, route}) => {
           }}
         />
         
-        <ScrollView scrollEnabled={false} style={{flex: 1, zIndex: -100, backgroundColor: constants.PINK_BACKGROUND}}>
+        <ScrollView scrollEnabled={false} style={{flex: 1, zIndex: -100, backgroundColor: constants.PINK_BACKGROUND_OPAQUE}}>
           <View style={{paddingLeft: 20, paddingTop: 10, paddingRight: 20, backgroundColor: 'white'}}>
             
             <TouchableOpacity style={[{padding: 10, backgroundColor: 'white', borderRadius: 50, borderWidth: 1, borderColor: constants.DARKGREY}]} value={""} onPress={()=>{
@@ -401,7 +413,9 @@ const CamScreenTwo = ({navigation, route}) => {
             </TouchableOpacity>
           </View>
           {renderForm()}
+          <Text style={{color: constants.LAVENDER, textAlign: 'center', marginTop: 25, width: 200, alignSelf: 'center'}}>Please make sure the above information is accurate.</Text>
         </ScrollView>
+
       </View>
       <View style={{position: 'absolute', zIndex: 10000, height:loading?50:0, width: loading?50:0, backgroundColor: 'black'}} />
     </KeyboardAvoidingView>
@@ -445,16 +459,18 @@ const CamScreenTwo = ({navigation, route}) => {
           setTitleState(result.title);
           setPriceState(result.price.replace(',','').replace('$','').replace(/[^0-9.]+/, '').split("$")[0]);
           // console.log(result.price.replace(',','').replace('$','').replace(/[^0-9.]+/, ''), result.price);
+          setBrandState(result.brand.charAt(0).toUpperCase() + result.brand.slice(1));
           setDataUrl(urlState);
           setModalOpen(false);
           setPinned(true);
           setCanNext(true);
-          setSearchResultPlaceholder(result.brand + " | " + result.title);
+          
+          setSearchResultPlaceholder(result.brand.charAt(0).toUpperCase() + result.brand.slice(1) + " | " + result.title);
           }}>
           <Text style={{color: 'white'}}>import</Text>
           </TouchableOpacity>
                 </View>
-                <LinearGradient style={{flex: 1, height: '100%', width: '100%'}} colors={[constants.PINK_BACKGROUND, constants.TRANSLUCENT]}>
+                <LinearGradient style={{flex: 1, height: '100%', width: '100%'}} colors={[constants.PINK_BACKGROUND_OPAQUE, constants.TRANSLUCENT]}>
                 <View style={{flex: 1}}>
                 <WebView
                 injectedJavaScript={jsCode}
