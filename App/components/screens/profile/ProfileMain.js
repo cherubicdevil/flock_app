@@ -15,6 +15,7 @@ import {
   Dimensions,
   Modal
 } from 'react-native';
+import HelpDialog from 'App/components/HelpDialog';
 
 import ImagePicker from 'react-native-image-picker';
 import Video from 'react-native-video';
@@ -121,8 +122,8 @@ const ProfileMain = ({navigation}) => {
   };
 
   const Test3 = () => {
-    console.log("RENTDATA length", rentData.length);
-    console.log(rentData);
+    // console.log("RENTDATA length", rentData.length);
+    // console.log(rentData);
     return (
       <View style={{backgroundColor: constants.PINK_BACKGROUND, flex: 1}}>
         <FlatList
@@ -142,6 +143,28 @@ const ProfileMain = ({navigation}) => {
       </View>
     );
   }
+
+  const Products = () => {
+    return (
+      <View style={{backgroundColor: constants.PINK_BACKGROUND, flex: 1}}>
+        <FlatList
+          //contentContainerStyle={{flexDirection: 'row', flexWrap: 'wrap'}}
+          numColumns={3}
+          data={productData}
+          renderItem={(el) => {
+            return <TouchableOpacity onPress={()=>{navigation.navigate('Product', {data: el.item, id: el.item.id, album: el.item.product})}}><View style={{borderWidth: 0, borderColor: constants.GREYORANGE, width: Dimensions.get('window').width/3 - 10, margin: 5,borderBottomRightRadius: 40, borderBottomLeftRadius: 40, backgroundColor: 'white', resizeMode: 'contain', overflow: 'hidden'}} >
+            {/* <Text>Current Price: ${(el.item.product.price/el.item.members.length).toFixed(2)} </Text> */}
+          {/* <Text>Your Maximum: ${(el.item.maximums[firebase.auth().currentUser.uid])}</Text> */}
+          {/* <ResizeableImage limitHorizontal={false} hLimit={50} source={{uri: el.item.product.image}}  /> */}
+          <Image source={{uri: el.item.product.image}} style={{width: '100%', aspectRatio: 1}} />
+          </View>
+            </TouchableOpacity>
+          }}
+        />
+      </View>
+    );
+  }
+
   const Test2 = () => {
     var data = selector.userInfo.likedVideos;
     //var data = selector.userInfo.chatGroups.filter((item)=> item.completed==false );
@@ -196,10 +219,11 @@ const ProfileMain = ({navigation}) => {
 
   const [flockData, setFlockData] = useState([]);
   const [rentData, setRentData] = useState([]);
+  const [productData, setProductData] = useState([]);
   useEffect(() => {
     var citiesRef = db.collection("chatGroups");
     // this filter is kind of inefficient; gets the entire table
-    var query = citiesRef.where("memberIds", "array-contains", firebase.auth().currentUser.uid);
+    var query = citiesRef.where("memberIds", "array-contains", auth.currentUser.uid);
     var unsubscribe = query
     .onSnapshot(function(querySnapshot) {
       const rent = [];
@@ -216,7 +240,21 @@ const ProfileMain = ({navigation}) => {
       setRentData(rent);
     });
 
+    db.collection("posts").where("createdBy", "==", auth.currentUser.uid)
+    .orderBy("createdAt", "desc")
+    .limit(20)
+    .get()
+    .then((snapshot)=>{
+      const ar = [];
+      snapshot.forEach((doc)=>{
+        ar.push({...doc.doc(), id: doc.id});
+      });
+      setProductData(ar);
+    })
+
     return () => {unsubscribe()};
+
+
   }, []);
 
   const [modalOpen, setModalOpen] = useState(false);
@@ -319,6 +357,9 @@ const ProfileMain = ({navigation}) => {
               </Text>
             </View>
           </View>
+          <View style={{position: 'absolute', bottom: 10, right: 10}}>
+            <HelpDialog text="Report missing flocks or products, outstanding charges, and other problems." context={{user: auth.currentUser.uid}} />
+          </View>
         </View>
       {/* </ImageBackground> */}
       <View style={{flex: 4}}>
@@ -334,6 +375,7 @@ const ProfileMain = ({navigation}) => {
     }} >
           <Tab.Screen name="flocking" component={Test1} />
           <Tab.Screen name="flocked" component={Test3} />
+          <Tab.Screen name="pinned" component={Products} />
         </Tab.Navigator>
       </View>
     </SafeAreaView>

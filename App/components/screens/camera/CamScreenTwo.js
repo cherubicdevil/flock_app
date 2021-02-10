@@ -378,10 +378,11 @@ const CamScreenTwo = ({navigation, route}) => {
               image: imageState || "",
               brand: brandState || "",
               url: dataUrl || "",
+              
             };
             console.log('closing');
             console.log(route.params.data);
-            db.collection("posts").add(route.params.data)
+            db.collection("posts").add({...route.params.data, createdBy: auth.currentUser.uid, createdAt: Date.now()})
           .then(function(docRef) {
               console.log("Document written with ID: ", docRef.id);
           })
