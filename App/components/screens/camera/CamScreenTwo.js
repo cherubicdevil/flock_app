@@ -354,6 +354,7 @@ const CamScreenTwo = ({navigation, route}) => {
               price: priceState || "",
               title: titleState || "",
               image: imageState || "",
+              brand: brandState || "",
               url: dataUrl || "",
             };
           }}
@@ -362,6 +363,7 @@ const CamScreenTwo = ({navigation, route}) => {
               price: priceState || "",
               title: titleState || "",
               image: imageState || "",
+              brand: brandState || "",
               url: dataUrl || "",
             };
             console.log('closing');

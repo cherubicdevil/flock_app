@@ -115,11 +115,11 @@ const DataList = ({navigation, route}) => {
     return <TouchableOpacity onPress={()=>{
       console.log('helo pressing');
     if (al.completed === false) { // flock
-      navigation.navigate("Product", {album: al.product, id: al.id});
+      navigation.navigate("Product", {album: al.product, data: al, id: al.id});
     } else if (al.completed === true) {
     navigation.navigate('FlockReserve', {data:al});
     } else {
-      navigation.navigate("Product", {album: al.product, id: al.id})
+      navigation.navigate("Product", {album: al.product, data: al, id: al.id})
     }
   }}
 

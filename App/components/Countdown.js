@@ -6,7 +6,10 @@ const Countdown = ({dateObj}) => {
     const [now, setNow] = useState(Math.round(Date.now()/1000));
     var diff = dateObj - now + 3600*24*7;
     useEffect(()=> {
-      setInterval(()=> setNow(Math.round(Date.now()/1000)), 1000);
+      var interval = setInterval(()=> setNow(Math.round(Date.now()/1000)), 1000);
+      return ()=>{
+        clearInterval(interval);
+      }
     }, []);
   
     const days = Math.round(diff / (3600*24));
