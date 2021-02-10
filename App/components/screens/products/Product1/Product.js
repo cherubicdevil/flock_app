@@ -16,7 +16,7 @@ import {
 import CommentsModal from 'App/components/screens/videopage/CommentsModal';
 import { CommonActions } from '@react-navigation/native';
 import {useFocusEffect} from '@react-navigation/native';
-import {firebase} from 'App/firebase/config';
+import {firebase, auth, db} from 'App/firebase/config';
 import {WebView} from 'react-native-webview';
 import {constants} from 'App/constants';
 import LinearGradient from 'react-native-linear-gradient';
@@ -31,6 +31,7 @@ import ModalSelector from 'react-native-modal-selector';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import ResizeableImage from 'App/components/ResizeableImage';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import HelpDialog from 'App/components/HelpDialog';
 import AnimatedModal from 'App/components/AnimatedModal';
 
 const styles = StyleSheet.create({...ProductStyles});
@@ -168,8 +169,8 @@ const Product = ({route, navigation}) => {
   const renderDescription = () => {
     return (
       <View>
-        <Text style={{fontSize: 14, fontWeight: 'bold', marginBottom: 5,}}>
-          {route.params.album.title}
+        <Text style={{fontSize: 14, marginBottom: 5,}}>
+          <Text style={{fontWeight:'bold'}}>{route.params.album.brand}</Text> {route.params.album.title}
         </Text>
         <View style={{flexDirection:'row', alignItems: 'center'}}>
         <Text style={{textDecorationLine: 'line-through', fontFamily: constants.FONTBOLD, color: constants.ORANGE, fontSize: 16}}>
@@ -184,9 +185,10 @@ const Product = ({route, navigation}) => {
             marginLeft: 10, 
             borderRadius: 30,
             zIndex: 40,
-          }}><TouchableOpacity style={{borderRadius: 30, color: 'white', justifyContent: 'center', alignItems:'center', paddingBottom: 5, paddingTop: 3,paddingLeft: 10, paddingRight: 10}}><Text style={{color: 'white', fontSize: 14, fontFamily: constants.FONTBOLD}}>{"As low as $" + Math.round(parseFloat(route.params.album.price) / 25 * 1.4) + " when you flock"}</Text></TouchableOpacity>
+          }}><TouchableOpacity style={{borderRadius: 30, color: 'white', justifyContent: 'center', alignItems:'center', paddingBottom: 5, paddingTop: 3,paddingLeft: 10, paddingRight: 10}}><Text style={{color: 'white', fontSize: 14, fontFamily: constants.FONTBOLD}}>{"$" + Math.round(parseFloat(route.params.album.price) / 25 * 1.4) + " when you flock"}</Text></TouchableOpacity>
 </LinearGradient>
         </View>
+        <HelpDialog context={{uid: auth.currentUser.uid, name: auth.currentUser.displayName, productName: route.params.album.title, productId: route.params.album.id}} />
       </View>
     );
   };
