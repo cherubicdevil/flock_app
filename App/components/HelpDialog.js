@@ -11,7 +11,7 @@ import {constants} from 'App/constants';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Dialog from 'react-native-dialog';
 
-const HelpDialog = ({context}) => {
+const HelpDialog = ({context, text}) => {
 const [sendDialog, openSendDialog] = useState(false);
 const [message, setMessage] = useState("");
 
@@ -25,8 +25,7 @@ const [message, setMessage] = useState("");
         <Dialog.Container visible={sendDialog}>
     <Dialog.Title>Report a Problem</Dialog.Title>
     <Dialog.Description>
-      Incorrect or missing title, description, or product picture? Notify us below.
-      
+      {text}
     </Dialog.Description>
     <TextInput value ={message} onChangeText={(text)=>{
         setMessage(text);
@@ -36,6 +35,14 @@ const [message, setMessage] = useState("");
     }}/>
     <Dialog.Button label="Report" onPress={()=>{
         // send the email
+        console.log('context', context);
+        fetch(constants.HEROKU +"send_admin_email/", {
+          method: 'POST',
+          body: {context: context, message: message},
+          headers: { 'Content-Type': 'application/json' }
+      }).catch(err=>{
+        console.log(err)
+      });
       openSendDialog(false);
       
     }}/>

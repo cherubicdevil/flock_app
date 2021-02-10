@@ -187,8 +187,11 @@ const Product = ({route, navigation}) => {
             zIndex: 40,
           }}><TouchableOpacity style={{borderRadius: 30, color: 'white', justifyContent: 'center', alignItems:'center', paddingBottom: 5, paddingTop: 3,paddingLeft: 10, paddingRight: 10}}><Text style={{color: 'white', fontSize: 14, fontFamily: constants.FONTBOLD}}>{"$" + Math.round(parseFloat(route.params.album.price) / 25 * 1.4) + " when you flock"}</Text></TouchableOpacity>
 </LinearGradient>
+      <View style={{position: 'absolute', right: 0}}>
+        <HelpDialog text="Incorrect or missing title, description, or product picture? Notify us below." context={{uid: auth.currentUser.uid, name: auth.currentUser.displayName, productName: route.params.album.title, productId: route.params.album.id}} />
+          </View>
         </View>
-        <HelpDialog context={{uid: auth.currentUser.uid, name: auth.currentUser.displayName, productName: route.params.album.title, productId: route.params.album.id}} />
+        
       </View>
     );
   };
