@@ -13,9 +13,11 @@ import ShareSocial from 'App/components/ShareSocial';
 import HeaderGradient from 'App/components/HeaderGradient';
 
 const ShareScreen = ({navigation, route}) => {
+    const dispatch = useDispatch();
     const [plusCoins, setPlusCoins] = useState(0);
     const onSuccessfulShare = () =>{
         setPlusCoins(plusCoins+10);
+        dispatch({type:'getEggs', payload: 10});
     };
     return <Fragment>
     <SafeAreaView style={{backgroundColor: constants.TRANSLUCENT}} />
@@ -32,7 +34,8 @@ const ShareScreen = ({navigation, route}) => {
     <TouchableOpacity 
     style={{borderRadius: 40, backgroundColor: constants.ORANGE, padding: 10, alignSelf:'flex-end', marginTop: -30, marginRight: 20}}
     onPress={()=>{
-
+        // dispatch({type:'getEggs', payload: plusCoins});
+        setPlusCoins(0);
         navigation.goBack();
     }}>
         <Text style={{color: 'white'}}>done</Text>

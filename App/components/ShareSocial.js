@@ -1,5 +1,5 @@
 import React, {useState, useRef} from 'react';
-import {View, ScrollView, Text, Switch, TextInput, Image,Dimensions} from 'react-native';
+import {View, ScrollView, Text, Switch, TextInput, Image,Dimensions, TouchableOpacity} from 'react-native';
 import ProgressHeader from 'App/components/ProgressHeader';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import {constants} from 'App/constants';
@@ -54,16 +54,23 @@ const ShareSocial = ({product, data={}, flockId, shareApp=false, showImage=true,
 }
 
 const ShareRow = ({toggle, label, app, egg, product, data={}, shareApp, onSuccess}) => { 
+    const [showEgg, setShowEgg] = useState(false);
     const animation = useRef();
     const onFailure = () => {
         setToggle(false);
     }
   console.log("IMAGE", product);
     const toggleFunc = () => {
-        setToggle(!tog);
+        if (tog) {
+            onSuccess=()=>{};
+        } else {
+            setToggle(!tog);
+        }
+        
         //animation.play();
         var content;
-            var content = {product: product, shareApp: shareApp, data: data, successCallBack: onSuccess};
+            var content = {product: product, shareApp: shareApp, data: data, successCallBack: ()=>{setShowEgg(true)}};
+            // onSuccess();
       shareActions[app](content, onFailure);
 
     }
@@ -72,7 +79,16 @@ const ShareRow = ({toggle, label, app, egg, product, data={}, shareApp, onSucces
     onValueChange={toggleFunc}
     trackColor={{ false: constants.DARKGREY, true: constants.ORANGE }}
     style={{ transform: [{ scaleX: .8 }, { scaleY: .8 }] }} />:<Image source={require('App/Assets/Images/Front_Icon.png')} style={{width:20, height: 20, tintColor: constants.DARKGREY}} />;
-var shareContainer = <View style={{alignItems: 'center', flexDirection: 'row'}}>{egg?<Image style={{width: 20, height: 20, resizeMode:'contain'}} source={constants.EGG_GOLD} />:<View />}{shareAction}</View>;
+var shareContainer = <View style={{alignItems: 'center', flexDirection: 'row'}}>
+    {showEgg?
+    <TouchableOpacity onPress={()=>{
+        onSuccess();
+        setShowEgg(false); // should be false
+        setToggle(false);
+    }}>
+    <Image style={{width: 20, height: 20, resizeMode:'contain'}} source={constants.EGG_GOLD} />
+    </TouchableOpacity>
+    :<View />}{shareAction}</View>;
     return <>
     {/* <LottieView style={{backgroundColor:'black'}} speed = { 1.5} source={require('App/Assets/coins.json')} autoPlay loop /> */}
     

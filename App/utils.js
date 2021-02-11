@@ -397,88 +397,140 @@ const updateCache = (member, actiontype, data) => {
 }
 
 const shareActions = {
-  "facebook": function(content, failure) {
-  const {image: image, data: data, shareApp: shareApp, successCallback: successCallback} = content;
-  var shareLinkContent;
-  var sharePhotoContent;
-  var imgRef = data.imgRef.current;
+//   "facebook": function(content, failure) {
+//   const {image: image, data: data, shareApp: shareApp, successCallback: successCallback} = content;
+//   var shareLinkContent;
+//   var sharePhotoContent;
+//   var imgRef = data.imgRef.current;
 
-  if (true) {
-    shareLinkContent = {
-      contentType:'link',
-      contentUrl: "https://facebook.com",
-      contentDescription: 'Facebook sharing is easy!',
-    }
-    var sharePhotoContent = {
-      contentType :'photo',
-      photos: [{ imageUrl:  null}],
-      };
-  } else {
-  var shareLinkContent = {
-    contentType: 'link',
-     contentUrl: "https://facebook.com",
-contentDescription: 'Facebook sharing is easy!',
-};
-var sharePhotoContent = {
-  contentType :'photo',
-  photos: [{ imageUrl:  image}],
-  };
-  }
+//   if (true) {
+//     shareLinkContent = {
+//       contentType:'link',
+//       contentUrl: "https://facebook.com",
+//       contentDescription: 'Facebook sharing is easy!',
+//     }
+//     var sharePhotoContent = {
+//       contentType :'photo',
+//       photos: [{ imageUrl:  null}],
+//       };
+//   } else {
+//   var shareLinkContent = {
+//     contentType: 'link',
+//      contentUrl: "https://facebook.com",
+// contentDescription: 'Facebook sharing is easy!',
+// };
+// var sharePhotoContent = {
+//   contentType :'photo',
+//   photos: [{ imageUrl:  image}],
+//   };
+//   }
 
-//console.log("ShareDialog", FB);
-console.log('bout to show');
-imgRef.capture((uri)=>{
-  var sharePhotoContent = {
-    contentType :'photo',
-    photos: [{ imageUrl:  uri}],
-    };
-ShareDialog.canShow(sharePhotoContent).then((canShow)=>{
-  console.log('showing', uri.substring(0,5));
+// //console.log("ShareDialog", FB);
+// console.log('bout to show');
+// imgRef.capture((uri)=>{
+//   var sharePhotoContent = {
+//     contentType :'photo',
+//     photos: [{ imageUrl:  uri}],
+//     };
+// ShareDialog.canShow(sharePhotoContent).then((canShow)=>{
+//   console.log('showing', uri.substring(0,5));
 
-    ShareDialog.show(sharePhotoContent).then(
-      function(result) {
-        console.log(result);
-        if (result.isCancelled) {
-          console.log('Share cancelled');
-          failure();
-        } else {
-          console.log('Share success with postId: '
-            + result.postId);
-          successCallback();
+//     ShareDialog.show(sharePhotoContent).then(
+//       function(result) {
+//         console.log(result);
+//         if (result.isCancelled) {
+//           console.log('Share cancelled');
+//           failure();
+//         } else {
+//           console.log('Share success with postId: '
+//             + result.postId);
+//           successCallback();
           
-        }
-      },
-    function(error) {
-      console.log('Share fail with error: ' + error);
-    }
-    );
-  //ShareDialog.show(sharePhotoContent);
-  });
+//         }
+//       },
+//     function(error) {
+//       console.log('Share fail with error: ' + error);
+//     }
+//     );
+//   //ShareDialog.show(sharePhotoContent);
+//   });
   
 
-});
+// });
 
-// AppInstalledChecker
-// .checkURLScheme('whatsapp') // omit the :// suffix
-// .then((isInstalled) => {
-//   // isInstalled is true if the app is installed or false if not
-//   console.log(isInstalled, "is installed");
-// })
-},
-"twitter": function (content, failure) {
-  const img = content.data.imgRef.current;
-  const successCallback = content.successCallback;
+// // AppInstalledChecker
+// // .checkURLScheme('whatsapp') // omit the :// suffix
+// // .then((isInstalled) => {
+// //   // isInstalled is true if the app is installed or false if not
+// //   console.log(isInstalled, "is installed");
+// // })
+// },
+
+"facebook": function (content, failure) {
+  const availableTypes = ["net.whatsapp.WhatsApp.ShareExtension", "com.apple.UIKit.activity.Message",  "com.apple.UIKit.activity.PostToTwitter", "com.zhiliaoapp.musically.ShareExtension", 'com.burbn.instagram.shareextension', 'com.apple.UIKit.activity.PostToFacebook', 'com.toyopagroup.picaboo.share'];
+  const {data: data, successCallBack: successCallBack} = content;
+  var img = data.imgRef.current;
   img.capture().then(uri=>{
     Share.share({
-      message: 'Become a flocker today!',
-      title: 'flock',
-      url: uri,
+      // message: 'hello world',
+      // title: 'Flock Content',
+      url: "data:image/png;base64,"+uri,
     }).then((result)=> {
       if (result.action === Share.dismissedAction) {
         failure();
         console.log('cancelled for real');
       } else if (result.action === Share.sharedAction) {
-        successCallback();
+        if (availableTypes.includes(result.activityType)) {
+          successCallBack();
+        } else {
+          failure();
+        }
+      }
+      console.log('cancelled');
+    })
+  })
+  ;
+},
+
+// "twitter": function (content, failure) {
+//   const img = content.data.imgRef.current;
+//   const successCallback = content.successCallback;
+//   img.capture().then(uri=>{
+//     Share.share({
+//       message: 'Become a flocker today!',
+//       title: 'flock',
+//       url: uri,
+//     }).then((result)=> {
+//       if (result.action === Share.dismissedAction) {
+//         failure();
+//         console.log('cancelled for real');
+//       } else if (result.action === Share.sharedAction) {
+//         successCallback();
+//       }
+//       console.log('cancelled');
+//     })
+//   })
+//   ;
+// },
+"twitter": function (content, failure) {
+  const availableTypes = ["net.whatsapp.WhatsApp.ShareExtension", "com.apple.UIKit.activity.Message",  "com.apple.UIKit.activity.PostToTwitter", "com.zhiliaoapp.musically.ShareExtension", 'com.burbn.instagram.shareextension', 'com.apple.UIKit.activity.PostToFacebook', 'com.toyopagroup.picaboo.share'];
+  const {data: data, successCallBack: successCallBack} = content;
+  var img = data.imgRef.current;
+  img.capture().then(uri=>{
+    Share.share({
+      // message: 'hello world',
+      // title: 'Flock Content',
+      url: "data:image/png;base64,"+uri,
+    }).then((result)=> {
+      if (result.action === Share.dismissedAction) {
+        failure();
+        console.log('cancelled for real');
+      } else if (result.action === Share.sharedAction) {
+        if (availableTypes.includes(result.activityType)) {
+          successCallBack();
+        } else {
+          failure();
+        }
       }
       console.log('cancelled');
     })
@@ -486,56 +538,93 @@ ShareDialog.canShow(sharePhotoContent).then((canShow)=>{
   ;
 },
 "snapchat": function (content, failure) {
-  const img = content.data.imgRef.current;
-  const successCallback = content.successCallback();
+  const availableTypes = ["net.whatsapp.WhatsApp.ShareExtension", "com.apple.UIKit.activity.Message",  "com.apple.UIKit.activity.PostToTwitter", "com.zhiliaoapp.musically.ShareExtension", 'com.burbn.instagram.shareextension', 'com.apple.UIKit.activity.PostToFacebook', 'com.toyopagroup.picaboo.share'];
+  const {data: data, successCallBack: successCallBack} = content;
+  var img = data.imgRef.current;
   img.capture().then(uri=>{
     Share.share({
-      message: 'Become a flocker today!',
-      title: 'flock',
-      url: uri,
+      // message: 'hello world',
+      // title: 'Flock Content',
+      url: "data:image/png;base64,"+uri,
     }).then((result)=> {
       if (result.action === Share.dismissedAction) {
         failure();
         console.log('cancelled for real');
       } else if (result.action === Share.sharedAction) {
-        successCallback();
+        if (availableTypes.includes(result.activityType)) {
+          successCallBack();
+        } else {
+          failure();
+        }
       }
       console.log('cancelled');
     })
   })
   ;
 },
-"instagram": function (content) {
-  console.log(content.data);
-  const img = content.data.imgRef.current;
-  const successCallback = content.successCallback;
+// "instagram": function (content) {
+//   console.log(content.data);
+//   const img = content.data.imgRef.current;
+//   const successCallback = content.successCallback;
 
-  img.capture().then(uri => {
-    console.log("do something with ", uri);
-    let instagramURL = `instagram://library?LocalIdentifier=`;;//+uri;
-    console.log(uri);
-    CameraRoll.save(uri).then(()=> {
-      Linking.openURL(instagramURL);
-      successCallback();
-    });
+//   img.capture().then(uri => {
+//     console.log("do something with ", uri);
+//     let instagramURL = `instagram://library?LocalIdentifier=`;;//+uri;
+//     console.log(uri);
+//     CameraRoll.save(uri).then(()=> {
+//       Linking.openURL(instagramURL);
+//       successCallback();
+//     });
     
-  });
+//   });
 
-},
-"whatsapp": function (content, failure) {
-  const img = content.data.imgRef.current;
-  const successCallback = content.successCallback;
+// },
+
+"instagram": function (content, failure) {
+  const availableTypes = ["net.whatsapp.WhatsApp.ShareExtension", "com.apple.UIKit.activity.Message",  "com.apple.UIKit.activity.PostToTwitter", "com.zhiliaoapp.musically.ShareExtension", 'com.burbn.instagram.shareextension', 'com.apple.UIKit.activity.PostToFacebook', 'com.toyopagroup.picaboo.share'];
+  const {data: data, successCallBack: successCallBack} = content;
+  var img = data.imgRef.current;
   img.capture().then(uri=>{
     Share.share({
-      message: 'hello world',
-      title: 'Flock Content',
-      url: uri,
+      // message: 'hello world',
+      // title: 'Flock Content',
+      url: "data:image/png;base64,"+uri,
     }).then((result)=> {
       if (result.action === Share.dismissedAction) {
         failure();
         console.log('cancelled for real');
       } else if (result.action === Share.sharedAction) {
-        successCallback();
+        if (availableTypes.includes(result.activityType)) {
+          successCallBack();
+        } else {
+          failure();
+        }
+      }
+      console.log('cancelled');
+    })
+  })
+  ;
+},
+
+"whatsapp": function (content, failure) {
+  const availableTypes = ["net.whatsapp.WhatsApp.ShareExtension", "com.apple.UIKit.activity.Message",  "com.apple.UIKit.activity.PostToTwitter", "com.zhiliaoapp.musically.ShareExtension", 'com.burbn.instagram.shareextension', 'com.apple.UIKit.activity.PostToFacebook', 'com.toyopagroup.picaboo.share'];
+  const {data: data, successCallBack: successCallBack} = content;
+  var img = data.imgRef.current;
+  img.capture().then(uri=>{
+    Share.share({
+      // message: 'hello world',
+      // title: 'Flock Content',
+      url: "data:image/png;base64,"+uri,
+    }).then((result)=> {
+      if (result.action === Share.dismissedAction) {
+        failure();
+        console.log('cancelled for real');
+      } else if (result.action === Share.sharedAction) {
+        if (availableTypes.includes(result.activityType)) {
+          successCallBack();
+        } else {
+          failure();
+        }
       }
       console.log('cancelled');
     })
