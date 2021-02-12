@@ -143,6 +143,8 @@ const CamScreenTwo = ({navigation, route}) => {
   const [searchUrl, setSearchUrl] = useState('');
   const [urlState, setUrlState] = useState('');
 
+  const webviewRef = useRef();
+
   const renderForm = () => {
     //console.log('foundProduct:', foundProduct);
     if (!enlarge && foundProduct) {
@@ -474,6 +476,7 @@ const CamScreenTwo = ({navigation, route}) => {
                 <LinearGradient style={{flex: 1, height: '100%', width: '100%'}} colors={[constants.PINK_BACKGROUND_OPAQUE, constants.TRANSLUCENT]}>
                 <View style={{flex: 1}}>
                 <WebView
+                ref={webviewRef}
                 injectedJavaScript={jsCode}
                 onMessage={event => {
                   setHtml(event.nativeEvent.data);
@@ -494,6 +497,26 @@ const CamScreenTwo = ({navigation, route}) => {
                 }}
                 source={{uri: urlState}}
               />
+              <View style={{width: '100%', backgroundColor: 'white', height: 60, justifyContent: 'space-between', flexDirection: 'row', padding: 15}}>
+                <TouchableOpacity onPress={()=>{
+                  try {
+                  if (webviewRef.current) webviewRef.current.goBack()
+                  } catch (err) {
+                    console.log(err);
+                  }
+                }}>
+                <Icon name="chevron-left" size={25} />
+                </TouchableOpacity>
+                <TouchableOpacity style={{backgroundColor: 'yello'}} onPress={()=>{
+                  try {
+                  if (webviewRef.current) webviewRef.current.goForward()
+                  } catch (err) {
+                    console.log(err);
+                  }
+                }}>
+                <Icon name="chevron-right" size={25} />
+                </TouchableOpacity>
+              </View>
                 </View>
                 </LinearGradient>
     </View>
