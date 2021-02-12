@@ -19,6 +19,24 @@ const Myform = ({registration, navigation}) => {
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
+  const [confirm, setConfirm] = useState(null);
+
+  const [code, setCode] = useState('');
+
+  // Handle the button press
+  async function signInWithPhoneNumber() {
+    const confirmation = await firebase.auth().signInWithPhoneNumber(email, null);
+    setConfirm(confirmation);
+  }
+
+  async function confirmCode() {
+    try {
+      await confirm.confirm(code);
+    } catch (error) {
+      console.log('Invalid code.');
+    }
+  }
+
   const retLogSign = () => {
     return registration ? 'Sign Up' : 'Login';
   }
@@ -116,7 +134,7 @@ const Myform = ({registration, navigation}) => {
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.buttoncontainer}
-          onPress={onButtonPress}>
+          onPress={signInWithPhoneNumber}>
             <LinearGradient
           colors={[registration?"#ff6009":"#728cb1", registration?constants.ORANGE:"#8a86aa"]}
           start={{ x: 0, y: 1 }} end={{ x: 1, y: 1 }}
@@ -127,7 +145,23 @@ const Myform = ({registration, navigation}) => {
             width: '100%',
             paddingVertical: 15,
           }}>
-          <Text style={styles.submitButton}>{retLogSign()}</Text>
+          <Text style={styles.submitButton}>send code</Text>
+          </LinearGradient>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.buttoncontainer}
+          onPress={confirmCode}>
+            <LinearGradient
+          colors={[registration?"#ff6009":"#728cb1", registration?constants.ORANGE:"#8a86aa"]}
+          start={{ x: 0, y: 1 }} end={{ x: 1, y: 1 }}
+          style={{
+            borderRadius: 30,
+            zIndex: 40,
+            // height: '100%',
+            width: '100%',
+            paddingVertical: 15,
+          }}>
+          <Text style={styles.submitButton}>confirm code</Text>
           </LinearGradient>
         </TouchableOpacity>
         

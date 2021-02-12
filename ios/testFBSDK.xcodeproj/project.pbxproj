@@ -27,6 +27,7 @@
 		24350EF8259D9642007A6D42 /* OFL.txt in Resources */ = {isa = PBXBuildFile; fileRef = 24350EE9259D9641007A6D42 /* OFL.txt */; };
 		24350EF9259D9642007A6D42 /* Nunito-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 24350EEA259D9641007A6D42 /* Nunito-Italic.ttf */; };
 		24350EFA259D9642007A6D42 /* Nunito-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 24350EEB259D9641007A6D42 /* Nunito-LightItalic.ttf */; };
+		24B0764125D7338D00002C17 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 24B0764025D7338D00002C17 /* GoogleService-Info.plist */; };
 		2D02E4BC1E0B4A80006451C7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
@@ -84,6 +85,8 @@
 		24350EE9259D9641007A6D42 /* OFL.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = OFL.txt; sourceTree = "<group>"; };
 		24350EEA259D9641007A6D42 /* Nunito-Italic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Nunito-Italic.ttf"; sourceTree = "<group>"; };
 		24350EEB259D9641007A6D42 /* Nunito-LightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Nunito-LightItalic.ttf"; sourceTree = "<group>"; };
+		24B0763F25D72E5C00002C17 /* testFBSDK.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = testFBSDK.entitlements; path = testFBSDK/testFBSDK.entitlements; sourceTree = "<group>"; };
+		24B0764025D7338D00002C17 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		2D02E47B1E0B4A5D006451C7 /* testFBSDK-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "testFBSDK-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E4901E0B4A5D006451C7 /* testFBSDK-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "testFBSDK-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D3A5F27E5161EE060077D98 /* libPods-testFBSDK-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-testFBSDK-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -158,6 +161,7 @@
 		13B07FAE1A68108700A75B9A /* testFBSDK */ = {
 			isa = PBXGroup;
 			children = (
+				24B0763F25D72E5C00002C17 /* testFBSDK.entitlements */,
 				24350EDC259D9641007A6D42 /* fonts */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
@@ -166,6 +170,7 @@
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
 				13B07FB71A68108700A75B9A /* main.m */,
+				24B0764025D7338D00002C17 /* GoogleService-Info.plist */,
 				24350C90259D2279007A6D42 /* File.swift */,
 				24350C8F259D2278007A6D42 /* testFBSDK-Bridging-Header.h */,
 			);
@@ -417,6 +422,7 @@
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				24350EF7259D9642007A6D42 /* Nunito-BlackItalic.ttf in Resources */,
 				24350EF4259D9642007A6D42 /* Nunito-Black.ttf in Resources */,
+				24B0764125D7338D00002C17 /* GoogleService-Info.plist in Resources */,
 				24350EF3259D9642007A6D42 /* Nunito-BoldItalic.ttf in Resources */,
 				24350EF6259D9642007A6D42 /* Nunito-SemiBoldItalic.ttf in Resources */,
 				24350EF0259D9642007A6D42 /* Nunito-Regular.ttf in Resources */,
@@ -815,6 +821,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = testFBSDK/testFBSDK.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = Y98CX2C897;
 				ENABLE_BITCODE = NO;
@@ -842,6 +849,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = testFBSDK/testFBSDK.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = Y98CX2C897;
 				HEADER_SEARCH_PATHS = "$(inherited)";
