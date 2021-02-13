@@ -16,7 +16,7 @@ import {
 import CommentsModal from 'App/components/screens/videopage/CommentsModal';
 import { CommonActions } from '@react-navigation/native';
 import {useFocusEffect} from '@react-navigation/native';
-import {firebase, auth, db} from 'App/firebase/config';
+import {firebase, au, db} from 'App/firebase/config';
 import {WebView} from 'react-native-webview';
 import {constants} from 'App/constants';
 import LinearGradient from 'react-native-linear-gradient';
@@ -188,7 +188,7 @@ const Product = ({route, navigation}) => {
           }}><TouchableOpacity style={{borderRadius: 30, color: 'white', justifyContent: 'center', alignItems:'center', paddingBottom: 5, paddingTop: 3,paddingLeft: 10, paddingRight: 10}}><Text style={{color: 'white', fontSize: 14, fontFamily: constants.FONTBOLD}}>{"$" + Math.round(parseFloat(route.params.album.price) / 25 * 1.4) + " when you flock"}</Text></TouchableOpacity>
 </LinearGradient>
       <View style={{position: 'absolute', right: 0}}>
-        <HelpDialog text="Incorrect or missing title, description, or product picture? Notify us below." context={{uid: auth.currentUser.uid, name: auth.currentUser.displayName, productName: route.params.album.title, productId: route.params.album.id}} />
+        <HelpDialog text="Incorrect or missing title, description, or product picture? Notify us below." context={{uid: au.currentUser.uid, name: au.currentUser.displayName, productName: route.params.album.title, productId: route.params.album.id}} />
           </View>
         </View>
         

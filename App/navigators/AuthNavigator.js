@@ -11,7 +11,7 @@ const AuthNavigator = createStackNavigator(
     ForgotPassword: {screen: ForgotPassword}
   },
   {
-    initialRouteName: 'Signup',
+    initialRouteName: 'Login',
     defaultNavigationOptions: {},
     screenOptions: {},
     headerMode: 'none',

@@ -2,7 +2,7 @@ import React, {useState, useRef, useEffect} from 'react';
 import {View, Text, SafeAreaView, Image, Modal, Button, TouchableOpacity} from 'react-native';
 import {Calendar} from 'react-native-calendars';
 import moment from 'moment';
-import {firebase, db, auth} from 'App/firebase/config';
+import {firebase, db, au} from 'App/firebase/config';
 var seedrandom = require('seedrandom');
 import AnimatedModal from 'App/components/AnimatedModal';
 import {constants} from 'App/constants';
@@ -26,7 +26,7 @@ const FlockReserve = ({navigation, route}) => {
 
         const dates = doc.data().markedDates || {};
         for (var el in dates) {
-          if (dates[el].user !== auth.currentUser.uid){
+          if (dates[el].user !== au.currentUser.uid){
             dates[el] = {...dates[el], color: 'red', type: 'otherReserved', tentative: false}
           } else {
             dates[el] = {...dates[el], color:  'green', type: 'meReserved', tentative: false}
@@ -42,7 +42,7 @@ const FlockReserve = ({navigation, route}) => {
     
     console.log(route.params);
     const subtotal = requestTypeIsRent?rentPrice(route.params.data.product.price):"0.00"
-    const requestTypeIsRent = route.params.data.memberIds.includes(auth.currentUser.uid);
+    const requestTypeIsRent = route.params.data.memberIds.includes(au.currentUser.uid);
     console.log(requestTypeIsRent,'rent?');;
     const colors = (requestTypeIsRent)?[constants.LAVENDER, constants.PURPINK]:['#ff4d00', constants.PEACH];
     return <SafeAreaView style={{flex: 1, backgroundColor: constants.PINK_BACKGROUND}}>
@@ -116,7 +116,7 @@ const ReserveCalendar = ({navigation, route, close, myMarkedDates, othersMarkedD
     setMyMarkedDates(marked);
 } 
 
-const requestTypeIsRent = route.params.data.members.includes({name: auth.currentUser.displayName, uid: auth.currentUser.uid});
+const requestTypeIsRent = route.params.data.members.includes({name: au.currentUser.displayName, uid: au.currentUser.uid});
 const numDays = requestTypeIsRent?4:8;
 
 const handleDayPress = (day) => {
@@ -125,12 +125,12 @@ const handleDayPress = (day) => {
   //     console.log(markedDates);
   //     return;
   // }
-  if (reserved(othersMarkedDates, auth.currentUser.uid, numDays, day.dateString) || !inRange(day.dateString)) {
+  if (reserved(othersMarkedDates, au.currentUser.uid, numDays, day.dateString) || !inRange(day.dateString)) {
     setPicked(false);
   } else {
     setPicked(true);
   }
-  markPeriod(start=day, duration=numDays, options={type: 'meReserved', color: 'rgba(100,255,50,0.5)', user: auth.currentUser.uid});
+  markPeriod(start=day, duration=numDays, options={type: 'meReserved', color: 'rgba(100,255,50,0.5)', user: au.currentUser.uid});
   console.log(myMarkedDates);
   
 }

@@ -22,7 +22,7 @@ import {constants} from 'App/constants';
 import LinearGradient from 'react-native-linear-gradient';
 import {useSelector} from 'react-redux';
 //import Input from 'App/components/common/Input';
-import {firebase, auth, db} from 'App/firebase/config';
+import {firebase, au, db} from 'App/firebase/config';
 import OptionsModal from 'App/navigators/OptionsModal';
 import {useDispatch} from 'react-redux';
 import {validateCard, cc_brand_id, updateCard} from 'App/utils';
@@ -322,7 +322,7 @@ const Profile = ({navigation}) => {
     user.updateEmail(email);
     // update bio
     dispatch({type:'UPDATE_DATA', payload: ["bio", null, null, bio]});
-    db.collection('users').doc(auth.currentUser.uid).update({
+    db.collection('users').doc(au.currentUser.uid).update({
       bio: bio,
     });
     user.reload();

@@ -41,7 +41,7 @@
 */
 
 import {constants} from 'App/constants';
-import {firebase, db, auth} from 'App/firebase/config';
+import {firebase, db, au} from 'App/firebase/config';
 import ImagePicker from 'react-native-image-picker';
 import {Animated, Share, Linking} from 'react-native';
 import {createThumbnail} from 'react-native-create-thumbnail';
@@ -923,7 +923,7 @@ const createOrUpdate = async (hasId, customerId, info) => {
       resp.json().then((cid)=>{
           console.log("CUSTOMERID", cid.id);
           
-          db.collection('users').doc(auth.currentUser.uid).update({customerId: cid.id}).catch(err=>{
+          db.collection('users').doc(au.currentUser.uid).update({customerId: cid.id}).catch(err=>{
               console.log(err);
           });
           resolve(cid.id);

@@ -22,7 +22,7 @@ import Video from 'react-native-video';
 import {useSelector} from 'react-redux';
 import {constants} from 'App/constants';
 //import Input from 'App/components/common/Input';
-import {firebase, db, auth} from 'App/firebase/config';
+import {firebase, db, au} from 'App/firebase/config';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import {getIndexOfData} from '../../../utils';
 import ResizeableImage from 'App/components/ResizeableImage';
@@ -50,7 +50,7 @@ so there is no chance that the data will be out of sync.
 
 
 const ProfilePicture = () => {
-  const user = auth.currentUser;
+  const user = au.currentUser;
   const [avatar, setAvatar] = useState({
     //user.photoUrl,
     uri: user.photoURL || '',
@@ -77,7 +77,7 @@ const ProfilePicture = () => {
 const ProfileMain = ({navigation}) => {
   const select = useSelector(state=>state);
   const userInfo = {
-    username: auth.currentUser.displayName,
+    username: au.currentUser.displayName,
     bio: select.userInfo.bio || "This user likes to keep an air of mystery",
     // age: '20',
     // gender: 'Male',
@@ -223,7 +223,7 @@ const ProfileMain = ({navigation}) => {
   useEffect(() => {
     var citiesRef = db.collection("chatGroups");
     // this filter is kind of inefficient; gets the entire table
-    var query = citiesRef.where("memberIds", "array-contains", auth.currentUser.uid);
+    var query = citiesRef.where("memberIds", "array-contains", au.currentUser.uid);
     var unsubscribe = query
     .onSnapshot(function(querySnapshot) {
       const rent = [];
@@ -240,7 +240,7 @@ const ProfileMain = ({navigation}) => {
       setRentData(rent);
     });
 
-    db.collection("posts").where("createdBy", "==", auth.currentUser.uid)
+    db.collection("posts").where("createdBy", "==", au.currentUser.uid)
     .orderBy("createdAt", "desc")
     .limit(20)
     .get()
@@ -358,7 +358,7 @@ const ProfileMain = ({navigation}) => {
             </View>
           </View>
           <View style={{position: 'absolute', bottom: 10, right: 10}}>
-            <HelpDialog text="Report missing flocks or products, outstanding charges, and other problems." context={{user: auth.currentUser.uid}} />
+            <HelpDialog text="Report missing flocks or products, outstanding charges, and other problems." context={{user: au.currentUser.uid}} />
           </View>
         </View>
       {/* </ImageBackground> */}

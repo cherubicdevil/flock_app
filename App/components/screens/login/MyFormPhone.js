@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useRef} from 'react';
 import {
   View,
   Text,
@@ -103,9 +103,12 @@ const MyFormPhone = ({registration, navigation}) => {
 //     );
 //   }
 console.log('test', confirm);
+if (code.length == 6) {
+    confirmCode();
+}
     return (
       <View style={styles.container}>
-        <Text style={{fontSize: 17, marginLeft: 10, color: 'white', fontFamily: constants.FONT}}>{registration?"Create an account.":"Have an account? Login."}</Text>
+        {/* <Text style={{fontSize: 17, marginLeft: 10, color: 'white', fontFamily: constants.FONT}}>{registration?"Create an account.":"Have an account? Login."}</Text> */}
         <Text style={{color: 'red', marginLeft: 10, fontFamily: constants.FONT}}>{errorMessage}</Text>
         {!confirm?<Input
           label=""
@@ -118,16 +121,7 @@ console.log('test', confirm);
           style={styles.input}
         
         />:
-        <Input
-        placeholder="code"
-          onChangeText={(text) => {
-            setCode(text);
-            console.log(text);
-          }}
-          value={code}
-          style={styles.input}
-        
-        />
+        <EnterCode setCode={setCode} />
         }
         {/* <Input
           secureTextEntry
@@ -157,7 +151,7 @@ console.log('test', confirm);
           <Text style={styles.submitButton}>send code</Text>
           </LinearGradient>
         </TouchableOpacity>
-        <TouchableOpacity
+        {/* <TouchableOpacity
           style={styles.buttoncontainer}
           onPress={confirmCode}>
             <LinearGradient
@@ -172,20 +166,163 @@ console.log('test', confirm);
           }}>
           <Text style={styles.submitButton}>confirm code</Text>
           </LinearGradient>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         
         <TouchableOpacity
           style={{marginTop: 10}}
           onPress={() => {
             navigation.navigate(registration?"Login":'Signup');
           }}>
-          <Text style={styles.buttontext}>
+          {/* <Text style={styles.buttontext}>
             {registration?"Already a flocker? Login!":"Not yet a flocker? Sign up now!"}
-          </Text>
+          </Text> */}
         </TouchableOpacity>
       </View>
     );
   }
+
+const EnterCode = ({setCode}) =>{
+    const box1 = useRef();
+    const box2 = useRef();
+    const box3 = useRef();
+    const box4 = useRef();
+    const box5 = useRef();
+    const box6 = useRef();
+
+    const [v1, setV1] = useState("");
+    const [v2, setV2] = useState("");
+    const [v3, setV3] = useState("");
+    const [v4, setV4] = useState("");
+    const [v5, setV5] = useState("");
+    const [v6, setV6] = useState("");
+
+    return <View style={{flexDirection: 'row',  justifyContent: 'space-between'}}>
+        <TextInput style={styles.smsbox} ref={box1} value={v1} maxLength={1}
+        onKeyPress={(event) => {
+            if (event.nativeEvent.key === "Backspace") {
+                setV1("");
+                
+            } else {
+                if (v1.length == 1) {
+                    box2.current.focus();
+                    setV2(event.nativeEvent.key);
+                }
+            }
+        }}
+        
+        onChangeText={(text)=>{
+            setV1(text);
+            setCode(text+v2+v3+v4+v5+v6);
+            if (text.length == 0) {
+
+            } else if (text.length == 1) {
+                box2.current.focus();
+            }
+        }} />
+                <TextInput style={styles.smsbox} ref={box2} value={v2} maxLength={1}
+                        onKeyPress={(event) => {
+                            if (event.nativeEvent.key === "Backspace") {
+                                setV2("");
+                                box1.current.focus();
+                            } else {
+                                if (v2.length == 1) {
+                                    box3.current.focus();
+                                    setV3(event.nativeEvent.key);
+                                }
+                            }
+                        }}
+                onChangeText={(text)=>{
+            setV2(text);
+            setCode(v1+text+v3+v4+v5+v6);
+            if (text.length == 0) {
+                box1.current.focus();
+            } else if (text.length == 1) {
+                box3.current.focus();
+
+            }
+        }} />
+                <TextInput style={styles.smsbox} ref={box3} value={v3} maxLength={1}
+                onKeyPress={(event) => {
+                    if (event.nativeEvent.key === "Backspace") {
+                        setV3("");
+                        box2.current.focus();
+                    } else {
+                        if (v3.length == 1) {
+                            box4.current.focus();
+                            setV4(event.nativeEvent.key);
+                        }
+                    }
+                }}
+                
+                onChangeText={(text)=>{
+            setV3(text);
+            setCode(v1+v2+text+v4+v5+v6);
+            if (text.length == 0) {
+                box2.current.focus();
+            } else if (text.length == 1) {
+                box4.current.focus();
+            }
+        }} />
+                <TextInput style={styles.smsbox} ref={box4} value={v4} maxLength={1}
+                onKeyPress={(event) => {
+                    if (event.nativeEvent.key === "Backspace") {
+                        setV4("");
+                        box3.current.focus();
+                    } else {
+                        if (v4.length == 1) {
+                            box5.current.focus();
+                            setV5(event.nativeEvent.key);
+                        }
+                    }
+                }}
+                onChangeText={(text)=>{
+            setV4(text);
+            setCode(v1+v2+v3+text+v5+v6);
+            if (text.length == 0) {
+                box3.current.focus();
+            } else if (text.length == 1) {
+                box5.current.focus();
+            }
+        }} />
+                <TextInput style={styles.smsbox} ref={box5} value={v5} maxLength={1}
+                onKeyPress={(event) => {
+                    if (event.nativeEvent.key === "Backspace") {
+                        setV5("");
+                        box4.current.focus();
+                    } else {
+                        if (v5.length == 1) {
+                            box6.current.focus();
+                            setV6(event.nativeEvent.key);
+                        }
+                    }
+                }}
+                onChangeText={(text)=>{
+            setV5(text);
+            setCode(v1+v2+v3+v4+text+v6);
+            if (text.length == 0) {
+                box4.current.focus();
+            } else if (text.length == 1) {
+                box6.current.focus();
+            }
+        }} />
+                <TextInput style={styles.smsbox} ref={box6} value={v6} maxLength={1}
+                onKeyPress={(event) => {
+                    if (event.nativeEvent.key === "Backspace") {
+                        setV6("");
+                        box5.current.focus();
+                    }
+                }}
+                onChangeText={(text)=>{
+            setV6(text);
+            setCode(v1+v2+v3+v4+v5+text);
+            if (text.length == 0) {
+                box5.current.focus();
+            } else if (text.length == 1) {
+                box6.current.blur();
+            }
+        }} />
+    </View>
+}
 
 
 const styles = StyleSheet.create({
@@ -193,6 +330,19 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 20,
     paddingBottom: 0,
+  },
+  smsbox: {
+    borderWidth:1, 
+    textAlign: 'center',
+    fontSize: 24,
+    color: 'white',
+    fontFamily: constants.FONT,
+    backgroundColor: 'rgba(255,255,255,0.2)',
+    borderColor: constants.LAVENDER,
+    borderRadius: 20,
+    width: 50, height: 80,
+    justifyContent: 'center', 
+    alignItems: 'center'
   },
   input: {
     height: 40,

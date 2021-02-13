@@ -21,7 +21,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 // import Slider from '@react-native-community/slider';
 import MultiSlider from '@ptomasroos/react-native-multi-slider';
 import Dialog from 'react-native-dialog';
-import {firebase, db, auth} from 'App/firebase/config';
+import {firebase, db, au} from 'App/firebase/config';
 import io from 'socket.io-client';
 import NavBar from 'App/components/common/NavBar';
 import {GiftedChat} from 'react-native-gifted-chat';
@@ -58,7 +58,7 @@ const systemMessages = [];
 function ChatInterface({route, navigation}) {
 
   const [creditModal, setCreditModal] = useState(false);
-  const [priceShare, setPriceShare] = useState(route.params.data.maximums[auth.currentUser.uid] || 0);
+  const [priceShare, setPriceShare] = useState(route.params.data.maximums[au.currentUser.uid] || 0);
   const [initialDialog, setInitialDialog] = useState(false);
   const [remainingPercent, setRemainingPercent] = useState(0);
   // const [UUID, setUUID] = useState(0);
@@ -66,8 +66,8 @@ function ChatInterface({route, navigation}) {
 
   useFocusEffect(()=>{
     // setUUID(Math.random());
-    setPriceShare(route.params.data.maximums[auth.currentUser.uid]);
-    console.log(route.params.data.id, route.params.data.maximums[auth.currentUser.uid]);
+    setPriceShare(route.params.data.maximums[au.currentUser.uid]);
+    console.log(route.params.data.id, route.params.data.maximums[au.currentUser.uid]);
   }, []);
   useEffect(()=>{
     const unsub = db.collection('chatGroups').doc(route.params.data.id).onSnapshot(docSnapshot => {
@@ -76,7 +76,7 @@ function ChatInterface({route, navigation}) {
       const maximums = data.maximums;
       var remaining = route.params.data.product.price;
       for (const m of members) {
-        if (m != auth.currentUser.uid) {
+        if (m != au.currentUser.uid) {
         remaining -= maximums[m];
         }
       }
@@ -124,7 +124,7 @@ function ChatInterface({route, navigation}) {
       ...route.params.data,
       customerId: customerId,
       chatId: route.params.data.id,
-      userId: auth.currentUser.uid,
+      userId: au.currentUser.uid,
     }
     fetch(constants.CHARGE_FLOCK_COMPLETE_ENDPOINT, {
     method: 'POST',
@@ -236,7 +236,7 @@ function ChatInterface({route, navigation}) {
       setDialVisible(false);
     }}/>
     <Dialog.Button label="Confirm" onPress={()=>{
-      route.params.data.maximums[auth.currentUser.uid] = dataValue;
+      route.params.data.maximums[au.currentUser.uid] = dataValue;
       setState(dataValue);
       completeFunc(select.userInfo.customerId);
       // setDataValue()
@@ -403,10 +403,10 @@ return <ScrollView  style={{marginLeft: 15, overflow: 'visible', backgroundColor
       fetch(constants.CUSTOMER_ENDPOINT + "?token=" + token).then((response)=>response.json().then((res)=> {
         console.log(res.id, "customerid");
         dispatch({type: "UPDATE_DATA", payload: ['customerId',null, null,res.id]})
-        db.collection('users').doc(auth.currentUser.uid).update({customerId: res.id});
+        db.collection('users').doc(au.currentUser.uid).update({customerId: res.id});
 
-        const memberInfo = {name: auth.currentUser.displayName, uid: auth.currentUser.uid};
-        db.collection('users').doc(auth.currentUser.uid).update({
+        const memberInfo = {name: au.currentUser.displayName, uid: au.currentUser.uid};
+        db.collection('users').doc(au.currentUser.uid).update({
           chatIds: firebase.firestore.FieldValue.arrayUnion(route.params.data.id)
         });
         route.params.data.maximums[firebase.auth().currentUser.uid] = priceShare;
@@ -474,11 +474,11 @@ const JoinDialog = ({navigation, data, setCreditModal, initialDialog, setInitial
   <Dialog.Button label="Confirm" onPress={()=>{
     
     if (store.getState().userInfo.customerId !== "none") {
-      const memberInfo = {name: auth.currentUser.displayName, uid: auth.currentUser.uid};
-      db.collection('users').doc(auth.currentUser.uid).update({
+      const memberInfo = {name: au.currentUser.displayName, uid: au.currentUser.uid};
+      db.collection('users').doc(au.currentUser.uid).update({
         chatIds: firebase.firestore.FieldValue.arrayUnion(data.id)
       });
-      data.maximums[auth.currentUser.uid] = (initialPercent/100 * parseFloat(data.product.price)).toFixed(2);
+      data.maximums[au.currentUser.uid] = (initialPercent/100 * parseFloat(data.product.price)).toFixed(2);
       // console.log('route  id', route.params.data.id);
       db.collection('chatGroups').doc(data.id).update({
         members: firebase.firestore.FieldValue.arrayUnion(memberInfo),
@@ -551,7 +551,7 @@ const PriceText = ({priceShareInitialPercent, completeFunc, productPrice, remain
         <TouchableOpacity onPress={()=>{
           setInitialPercent(pricePercent);
           console.log(select.customerId);
-          maximums[auth.currentUser.uid] = (pricePercent/100 * productPrice).toFixed(2);
+          maximums[au.currentUser.uid] = (pricePercent/100 * productPrice).toFixed(2);
           completeFunc(select.customerId);
           setChanged(false);
           

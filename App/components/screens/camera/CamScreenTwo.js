@@ -22,7 +22,7 @@ const cheerio = require('react-native-cheerio')
 import ResizeableImage from 'App/components/ResizeableImage';
 import {constants} from 'App/constants';
 import ProgressHeader from 'App/components/ProgressHeader';
-import {firebase, db, auth} from 'App/firebase/config';
+import {firebase, db, au} from 'App/firebase/config';
 import { CommonActions } from '@react-navigation/native';
 import AnimatedModal from 'App/components/AnimatedModal';
 import LinearGradient from 'react-native-linear-gradient';
@@ -384,7 +384,7 @@ const CamScreenTwo = ({navigation, route}) => {
             };
             console.log('closing');
             console.log(route.params.data);
-            db.collection("posts").add({...route.params.data, createdBy: auth.currentUser.uid, createdAt: Date.now()})
+            db.collection("posts").add({...route.params.data, createdBy: au.currentUser.uid, createdAt: Date.now()})
           .then(function(docRef) {
               console.log("Document written with ID: ", docRef.id);
           })
