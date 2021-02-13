@@ -283,9 +283,10 @@ return <ScrollView  style={{marginLeft: 15, overflow: 'visible', backgroundColor
   console.log("PARTOF?", partOf, part);
   console.log("ID", route.params.data.id);
   console.log("priceshare", priceShare);
+  console.log(creditModal, "open?");
   console.log(parseFloat(priceShare) / parseFloat(route.params.data.product.price) * 100);
   // console.log("prices", priceShare, route.params.data.product.price, parseFloat(priceShare) / parseFloat(route.params.data.product.price) * 100);
-  return (
+  return (<>
     <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
       
 <HeaderGradient navigation={navigation} >
@@ -398,8 +399,11 @@ return <ScrollView  style={{marginLeft: 15, overflow: 'visible', backgroundColor
       {partOf?<></>:<View style={{position: 'absolute', bottom: 0, width: '100%', height: 100, backgroundColor: 'white'}}><View style={{height: '100%', backgroundColor: constants.PINK_BACKGROUND }}>
         <TouchableOpacity style={{width: '90%', height: 50, backgroundColor: constants.ORANGE, alignSelf: 'center', borderRadius: 30, justifyContent: 'center'}} onPress={()=>{
           setInitialDialog(true);
+          // setCreditModal(true);
       }}><Text style={{color: 'white', alignSelf: 'center', fontWeight: 'bold'}}>JOIN</Text></TouchableOpacity></View></View>}
-    <AnimatedModal visible={creditModal} close={()=>setCreditModal(false)} navigation={navigation} content={<Checkout navigation={navigation} route={route} doneFunc={(token)=> {
+    
+    </SafeAreaView>
+    <AnimatedModal colored={true} colors={[constants.ORANGE, constants.GREYORANGE]} nested={false} visible={creditModal} close={()=>setCreditModal(false)} navigation={navigation} content={<Checkout navigation={navigation} route={route} doneFunc={(token)=> {
       fetch(constants.CUSTOMER_ENDPOINT + "?token=" + token).then((response)=>response.json().then((res)=> {
         console.log(res.id, "customerid");
         dispatch({type: "UPDATE_DATA", payload: ['customerId',null, null,res.id]})
@@ -428,7 +432,12 @@ return <ScrollView  style={{marginLeft: 15, overflow: 'visible', backgroundColor
       
       
       }} price = {0}/>} />
-    </SafeAreaView>
+      {/* <Modal transparent={false} visible={creditModal}>
+        <TouchableOpacity  style = {{marginTop: 400}} onPress={()=>setCreditModal(false)}>
+          <Text>touch me</Text>
+        </TouchableOpacity>
+      </Modal> */}
+      </>
   );
 }
 
@@ -442,7 +451,7 @@ const JoinDialog = ({navigation, data, setCreditModal, initialDialog, setInitial
   <Dialog.Title>Set Your Price</Dialog.Title>
   <Dialog.Description>
     Please set your initial price. You can always change it later.
-    <View style={{alignItems: 'center', flexDirection: 'row'}}>
+    <View style={{alignItems: 'center', flexDirection: 'row', marginTop: 10}}>
     <View style={{borderRadius: 40, backgroundColor: constants.ORANGE, width: 25, height: 25, justifyContent: 'center', alignItems: 'center'}}>
         <TouchableOpacity onPress={()=>{
           if (initialPercent > minPercent) {
@@ -492,9 +501,14 @@ const JoinDialog = ({navigation, data, setCreditModal, initialDialog, setInitial
       completeFunc(store.getState().userInfo.customerId);
       navigation.navigate("ChatInterface", {data: data})
     } else {
-      setCreditModal(true);
+
+      setInitialDialog(false);
+      setTimeout(()=>{
+        setCreditModal(true);
+      }, 500);
+      
     }
-    setInitialDialog(false);
+    // setInitialDialog(false);
   }}/>
 </Dialog.Container>
 }

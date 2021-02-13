@@ -536,16 +536,18 @@ const FlockList = ({product, navigation, ar, close, limited = true, randomId}) =
     const tempFunc = ()=>{
       console.log("check array", ar);
       //console.log(ar.length, ar[0]);
-      close();
+      
       console.log(i);
       console.log("SENDING DATA", dat);
       navigation.navigate("ChatInterface", {data: dat});
+      console.log('going');
+      close();
     };
-    console.log(result.length);
+    // console.log(result.length);
     var leftover = parseFloat(ar[i].product.price);
     var paidFor = 0;
     var obj = ar[i].maximums;
-    console.log(typeof ar[i].maximums);
+    // console.log(typeof ar[i].maximums);
     if (typeof ar[i].maximums==="object") {
       var obj = Object.entries(ar[i].maximums);
       for (const item of obj) {
@@ -554,7 +556,7 @@ const FlockList = ({product, navigation, ar, close, limited = true, randomId}) =
 
     } else {
     for (const item of obj) {
-      console.log(leftover, item);
+      // console.log(leftover, item);
       // leftover -= parseFloat(value[0]);
       const resuPrice = parseFloat(Object.entries(item)[0][1]);
       paidFor += resuPrice;
@@ -575,7 +577,9 @@ const FlockList = ({product, navigation, ar, close, limited = true, randomId}) =
       <View style={{borderRadius: 30, justifyContent:'center', overflow: 'hidden',  borderColor: constants.ORANGE, borderWidth: 2}}>
       <View style={{position: 'absolute', left: "-40%", width: paidForPercent+ 40 + "%", height: '100%', backgroundColor: constants.ORANGE, opacity: 0.8, borderRadius: 40, transform: [{ scaleX: 1 }, { scaleY: 1.3 }] }} />
       <TouchableOpacity style={{paddingLeft: 10, paddingRight: 10,}}
-      onPress={tempFunc}>
+      onPress={()=>{
+        console.log('going')
+        tempFunc();}}>
         
       <Text style={{color: 'black', fontFamily: constants.FONT, fontWeight: 'bold', fontSize: 13}}>${(ar[i].product.price - paidFor).toFixed(2)} to go</Text>
       </TouchableOpacity>

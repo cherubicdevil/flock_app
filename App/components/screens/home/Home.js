@@ -36,6 +36,7 @@ import Carousel from 'App/components/screens/videopage/Carousel'
 import VideoPage from 'App/components/screens/videopage/VideoPage';
 import NewVideoPage from 'App/components/screens/videopage/NewVideoPage';
 import {useDispatch, useSelector, useStore} from 'react-redux';
+import {au} from 'App/firebase/config';
 import { fetchAlbums, fetchFlockables, fetchRentables, shuffle, fetchFlockablesFirst, fetchRentablesFirst } from '../../../utils';
 import FeatherPanResponder from 'App/components/FeatherPanResponder';
 import ResizeableImage from 'App/components/ResizeableImage';
@@ -140,6 +141,10 @@ const HomeTabSwipe = ({videoData, navigation, route}) => {
 
   const [coverfade, setCoverFade] = useState(new Animated.Value(1));
   const [coverheight, setCoverHeight] = useState(new Animated.Value(Dimensions.get('window').height));
+
+  useEffect(()=>{
+    au.currentUser.reload();
+  },[]);
   // React.useEffect(() => {
   //   // this should make it so that on creating new listener with new limit, the previous one is gone.
   //     if (unsubscribeCurrent) {

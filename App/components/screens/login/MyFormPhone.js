@@ -151,7 +151,7 @@ if (code.length == 6) {
             width: '100%',
             paddingVertical: 15,
           }}>
-          <Text style={styles.submitButton}>{confirm?"send code":"resend code"}</Text>
+          <Text style={styles.submitButton}>{confirm?"resend code":"send code"}</Text>
           </LinearGradient>
         </TouchableOpacity>
         {/* <TouchableOpacity
