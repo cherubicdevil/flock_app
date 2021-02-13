@@ -450,7 +450,7 @@ const JoinDialog = ({navigation, data, setCreditModal, initialDialog, setInitial
   return <Dialog.Container visible={initialDialog}>
   <Dialog.Title>Set Your Price</Dialog.Title>
   <Dialog.Description>
-    Please set your initial price. You can always change it later.
+    The more you pay, the more you own. The more you can use.
     <View style={{alignItems: 'center', flexDirection: 'row', height: 45,paddingTop: 10, justifyContent: 'center'}}>
     <View style={{borderRadius: 40, backgroundColor: constants.ORANGE, width: 25, height: 25, justifyContent: 'center', alignItems: 'center'}}>
         <TouchableOpacity onPress={()=>{
