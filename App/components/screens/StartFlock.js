@@ -12,6 +12,7 @@ import {firebase, db} from 'App/firebase/config';
 import ShareSocial from 'App/components/ShareSocial';
 import { set } from 'react-native-reanimated';
 import {CommonActions, useFocusEffect} from '@react-navigation/native';
+import PriceSlider from 'App/components/PriceSlider';
 
 
 const StartFlock = ({navigation, route}) => {
@@ -60,6 +61,7 @@ const StartFlock = ({navigation, route}) => {
           memberIds: [user.uid],
           likes: 0,
           comments: 0,
+          id: flockId,
         };
         // const maximums = [{}];
         // maximums[0][user.uid] = route.params.data.maxPrice;
@@ -80,7 +82,7 @@ const StartFlock = ({navigation, route}) => {
         // });
         //navigation.navigate("Carousel");
         firebase.firestore().collection("chatGroups").doc(flockId).set(data).then((docRef)=>{
-            data["id"] = docRef.id;
+            // data["id"] = docRef.id;
             console.log(docRef.id, "IDDDDDD");
             db.collection('users').doc(firebase.auth().currentUser.uid).update({
                 chatIds: firebase.firestore.FieldValue.arrayUnion(docRef.id)
@@ -93,15 +95,20 @@ const StartFlock = ({navigation, route}) => {
             console.log("make start flock eeorr", err);
         });
 
-        // navigation.dispatch(
-        //     CommonActions.reset({
-        //       index: 0,
-        //       routes: [
-        //         { name: 'Product', params:{album: route.params.product, id: route.params.data.id} },
-        //       ],
-        //     })
-        //   );
-        navigation.goBack();
+        navigation.dispatch(
+            CommonActions.reset({
+              index: 2,
+              routes: [
+                { name: 'Product', params:{album: route.params.product, data: route.params.data, id: route.params.data.id} },
+                { name: 'Carousel'},
+                {name: 'ChatInterface', params:{data:data}},
+
+
+
+              ],
+            })
+          );
+        // navigation.goBack();
     }}
   />
     {ar[route.params.index]}
@@ -126,31 +133,13 @@ const PageOne = ({product, data, setCanNext}) => {
 const PageTwo = ({product, data, setCanNext}) => {
     const [errorMessage, setErrorMessage] = useState("");
     const [priceValue, setPriceValue] = useState((product.price / 2).toFixed(2));
+    data.maxPrice = priceValue;
     return <View style={styles.container}>
         <Text style={{color: 'red'}}>{errorMessage}</Text>
-    <Text style={{fontWeight: 'bold', marginBottom: 20}}>Enter your price. Minimum: ${(product.price/40).toFixed(2)}.</Text>
-    <View style={[{flexDirection: 'row', height: 25, alignItems: 'center'}]}>
-        <Text style={{color:constants.DARKGREY, marginRight: 5, marginTop:1, fontWeight: 'bold'}}>USD</Text>
-    <View style={[styles.inputBox,{flex: 1, height: 35, paddingLeft: 5, marginLeft: 1, flexDirection: 'row', alignItems: 'center', borderWidth: 2, borderColor: constants.DARKGREY}]}>
-    <Text style={{color: constants.DARKGREY}}>$</Text>
-    <View style={{width: 100}}>
-    <BasicInputText setOutsideValue={setPriceValue} numeric = {true} data={data} title="maxPrice" defaultValue = {(product.price / 2).toFixed(2)} style={[styles.inputBox,{flex: 1, paddingLeft: 0, marginLeft: 3, borderWidth: 0}]} 
-    setFunc={(numString)=>{
-        if (numString === "") {
-            setErrorMessage("Please insert a price.");
-            setCanNext(false);
-        } else if (parseInt(numString.replace(".","")) < product.price/40 * 100) {
-            setErrorMessage("Please insert a price greater than the minimum");
-            setCanNext(false);
-        } else {
-            setErrorMessage("");
-            setCanNext(true);
-        }
-    }}
-    /></View>
-    </View>
-    <Text style={{color: constants.GREYORANGE, marginLeft: 30, width: 150}}>{(parseInt(priceValue.replace(".","")) / product.price)>100?"100%":(parseInt(priceValue.replace(".","")) / product.price).toFixed(0) + "%"} ownership</Text>
-    </View>
+    <Text style={{fontWeight: 'bold', marginBottom: 20}}>Enter your price. Minimum: ${(product.price/25 * 1.4).toFixed(2)}.</Text>
+    
+    <PriceSlider priceShareInitialPercent={50} productPrice ={product.price} remainingPercent={100} maximums={{}} setOutsideState={setPriceValue} confirm = {false} />
+    
     
 
     <Text style={{marginTop: 20, marginBottom: 20, }}>The more you pay, the more you own, and the more frequently you can use this item compared to your co-flockers.</Text>
@@ -229,7 +218,7 @@ const ProductPreview = ({product}) => {
         <Image style={{width: 50, height: null, marginRight: 10}} source={{uri: product.image}} />
         <View style={{flex:1}}>
             <Text style={{fontWeight: 'bold'}}>{product.title}</Text>
-            <Text style = {{textDecorationLine: 'line-through', color: 'red', }}>${product.price}</Text>
+            <Text style = {{textDecorationLine: 'line-through', color: constants.ORANGE, }}>${product.price}</Text>
             <LinearGradient
           colors={[constants.YELLOW, constants.ORANGE]}
           start={{ x: 0, y: 1 }} end={{ x: 1, y: 1 }}
@@ -239,7 +228,7 @@ const ProductPreview = ({product}) => {
             paddingLeft: 10,
             paddingTop: 10,
             paddingBottom: 10
-          }}><Text style={{color: 'white', fontSize: 14, fontFamily: constants.FONTBOLD}}>{"As low as $" + Math.floor(product.price / 25) + " when you split with flockers"}</Text>
+          }}><Text style={{color: 'white', fontSize: 14, fontFamily: constants.FONTBOLD}}>{"$" + (product.price / 25 * 1.4).toFixed(2) + " to flock"}</Text>
 </LinearGradient>
         </View>
     </View>
