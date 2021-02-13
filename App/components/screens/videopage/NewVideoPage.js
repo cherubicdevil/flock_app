@@ -237,7 +237,7 @@ useEffect(()=>{
               <ResizeableImage aspectRatio={0.5} optimize={true} source={{uri: data?.product?.image || ''}} limitHorizontal={false} wLimit = {Dimensions.get('window').width} hLimit={viewHeight * 1.1} />
               </View>
               <View style={{position: 'absolute', bottom: 0, zIndex: -30}}>
-              <ResizeableImage blurred={true} source={{uri: data?.product?.image || ''}} limitHorizontal={false} hLimit={viewHeight} />
+              <ResizeableImage blurred={true} source={{uri: data?.product?.image || ''}} limitHorizontal={false} hLimit={viewHeight+100} />
               </View>
               </View>
               <View style={{width: '100%', position: 'absolute', bottom: 0}}>
@@ -255,7 +255,9 @@ useEffect(()=>{
           </TouchableOpacity>
            :<></>}
 </View>
-          <TouchableOpacity  onPress={()=>{
+          <TouchableOpacity 
+          style={{marginBottom: 10}}
+          onPress={()=>{
               const video = data.video;
               console.log(dataType);
               if (dataType==="flock" || dataType==="video") {
