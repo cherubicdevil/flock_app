@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, Alert} from 'react-native';
 import AnimatedSplash from 'react-native-animated-splash-screen';
-import {firebase, auth} from 'App/firebase/config';
+import {firebase, au} from 'App/firebase/config';
 import {Provider} from 'react-redux';
 import {createStore} from 'redux';
 
@@ -20,7 +20,7 @@ class App extends React.Component {
   componentDidMount() {
     //firebase.firestore().collection('post').get();
     this.setState({isLoaded: true});
-    auth.onAuthStateChanged((user) => {
+    au.onAuthStateChanged((user) => {
       if (user) {
         fetchUserData(user).then((user) => {
           this.setState({loggedIn: true, userData: user});

@@ -18,10 +18,11 @@ import LottieView from 'lottie-react-native';
 import Myform from './Myform';
 import Social from './Social';
 import { TouchableWithoutFeedback } from 'react-native';
+import MyFormPhone from './MyFormPhone';
 import LoginCommon from './LoginCommon';
 const Login = ({navigation}) => {
     return (
-      <LoginCommon content={<Myform navigation={navigation} registration= {false} />} />
+      <LoginCommon content={<MyFormPhone navigation={navigation} registration= {false} />} />
  
 
 

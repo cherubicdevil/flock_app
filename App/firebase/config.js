@@ -1,10 +1,14 @@
-import * as firebase from 'firebase';
-import '@firebase/auth';
-import '@firebase/firestore';
-
+// import * as firebase from 'firebase';
+// import '@firebase/auth';
+import auth from '@react-native-firebase/auth';
+// import '@firebase/firestore';
+import firebase from '@react-native-firebase/app';
+import firestore from '@react-native-firebase/firestore';
 const firebaseConfig = {
+  appId: 'flock-46ffc',
   apiKey: 'AIzaSyD3celqNOwXBr_5MArkv4ccgSeYJsDEqFo',
-  authDomain: 'flock-46ffc.firebaseapp.com',
+  // authDomain: 'flock-46ffc.firebaseapp.com',
+  authDomain: 'shopwithflock.com',
   databaseURL: 'https://flock-46ffc.firebaseio.com',
   projectId: 'flock-46ffc',
   storageBucket: 'flock-46ffc.appspot.com',
@@ -15,7 +19,9 @@ if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
 }
 
-const db = firebase.firestore();
-const auth = firebase.auth();
+// firebase.initializeApp(firebaseConfig, {name: 'Flock'});
 
-export {firebase, db, auth};
+const db = firestore();
+const au = auth();
+
+export {firebase, db, au};
