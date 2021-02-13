@@ -27,7 +27,7 @@ const MyFormPhone = ({registration, navigation}) => {
 
   // Handle the button press
   async function signInWithPhoneNumber() {
-    const confirmation = await auth().signInWithPhoneNumber(phone);
+    const confirmation = await auth().signInWithPhoneNumber("+1"+phone);
     setConfirm(confirmation);
   }
 
@@ -110,17 +110,20 @@ if (code.length == 6) {
       <View style={styles.container}>
         {/* <Text style={{fontSize: 17, marginLeft: 10, color: 'white', fontFamily: constants.FONT}}>{registration?"Create an account.":"Have an account? Login."}</Text> */}
         <Text style={{color: 'red', marginLeft: 10, fontFamily: constants.FONT}}>{errorMessage}</Text>
-        {!confirm?<Input
+        {!confirm?
+        <View style={[styles.input, {flexDirection: 'row', alignItems: 'center', paddingVertical:0}]}>
+            {phone.length>0?<Text style={{fontSize: 16, marginRight: 5}}>+1</Text>:<></>}
+        <TextInput
           label=""
-          
-          placeholder="+1 650 555 1234"
+          maxLength={10}
+          placeholder="Enter phone number"
           onChangeText={(text) => {
             setPhone(text);
           }}
           value={phone}
-          style={styles.input}
-        
-        />:
+          style={{flex:1}}
+        />
+        </View>:
         <EnterCode setCode={setCode} />
         }
         {/* <Input
@@ -349,6 +352,7 @@ const styles = StyleSheet.create({
     // backgroundColor: '#fff',
     paddingLeft: 10,
     marginBottom: 10,
+    backgroundColor:'rgba(255,255,255,0.2)',
   borderRadius: 35,
   },
   buttoncontainer: {
