@@ -161,7 +161,7 @@ const Product = ({route, navigation}) => {
         <Text style={{fontFamily: constants.FONTBOLD, fontSize: 14, color: 'black'}}>
           Product information, description, and details
         </Text>
-        <Icon name="chevron-right" color = {constants.LIGHTGREY} size={25} />
+        <Icon name="chevron-right" color = {constants.DARKGREY} size={25} />
       </TouchableOpacity>
     );
   };
@@ -173,7 +173,7 @@ const Product = ({route, navigation}) => {
         <Text style={{fontWeight: 'bold'}}>{route.params.album.brand?route.params.album.brand+" ":""}</Text>{route.params.album.title}
         </Text>
         <View style={{flexDirection:'row', alignItems: 'center'}}>
-        <Text style={{textDecorationLine: 'line-through', fontFamily: constants.FONTBOLD, color: constants.ORANGE, fontSize: 16}}>
+        <Text style={{textDecorationLine: 'line-through', fontFamily: constants.FONTBOLD, color: constants.ORANGE, fontSize: 15}}>
           ${route.params.album.price}
         </Text>
         {/*<Text style={styles.descriptionText}>50 flockers have bought</Text>*/}
@@ -182,10 +182,11 @@ const Product = ({route, navigation}) => {
           colors={[constants.YELLOW, constants.ORANGE]}
           start={{ x: 0, y: 1 }} end={{ x: 1, y: 1 }}
           style={{
+            alignSelf: 'center',
             marginLeft: 10, 
             borderRadius: 30,
             zIndex: 40,
-          }}><TouchableOpacity style={{borderRadius: 30, color: 'white', justifyContent: 'center', alignItems:'center', paddingBottom: 5, paddingTop: 3,paddingLeft: 10, paddingRight: 10}}><Text style={{color: 'white', fontSize: 14, fontFamily: constants.FONTBOLD}}>{"$" + Math.round(parseFloat(route.params.album.price) / 25 * 1.4) + " when you flock"}</Text></TouchableOpacity>
+          }}><TouchableOpacity style={{borderRadius: 30, color: 'white', justifyContent: 'center', alignItems:'center',paddingVertical: 5, paddingLeft: 10, paddingRight: 10}}><Text style={{color: 'white', fontSize: 14, fontFamily: constants.FONTBOLD}}>{"$" + (parseFloat(route.params.album.price) / 25 * 1.4).toFixed(2) + " when you flock"}</Text></TouchableOpacity>
 </LinearGradient>
       <View style={{position: 'absolute', right: 0}}>
         <HelpDialog text="Incorrect or missing title, description, or product picture? Notify us below." context={{uid: au.currentUser.uid, name: au.currentUser.displayName, productName: route.params.album.title, productId: route.params.album.id}} />
@@ -255,7 +256,7 @@ const Product = ({route, navigation}) => {
 
   const renderBackOrClose = () => {
     if (!route.params.tutorial) { //  means its from startflock
-      return <TouchableOpacity style={{resizeMode: 'cover', zIndex: 50, height: 30, width: 50,position: 'absolute', top: 40, left: 30}} onPress={navigation.goBack}><Icon color={constants.LIGHTGREY} name="chevron-left" style={{width: 35, height: 35, tintColor: constants.LIGHTGREY}} size={35} /></TouchableOpacity>
+      return <TouchableOpacity style={{resizeMode: 'cover', zIndex: 50, height: 30, width: 50,position: 'absolute', top: 40, left: 30}} onPress={navigation.goBack}><Icon color={constants.DARKGREY} name="chevron-left" size={25} /></TouchableOpacity>
     } else {
       return <TouchableOpacity style={{resizeMode: 'cover', zIndex: 50, height: 30, width: 50,position: 'absolute', top: 40, left: 30}} onPress={()=>{
                   navigation.dispatch(
@@ -363,30 +364,34 @@ const Product = ({route, navigation}) => {
         </View>
       </View>
       </TouchableOpacity>
-                <View style={{flexDirection: 'row', height: 40, marginBottom: 30, marginRight: 10, marginLeft:20, justifyContent: 'space-between', alignItems: 'center', }}>
+                <View style={{flexDirection: 'row', marginBottom: 30, marginRight: 10, marginLeft:20, justifyContent: 'space-between', alignItems: 'center', }}>
 
-            
+                <View style={{flexDirection: 'row', flex: 1, justifyContent: 'space-between', marginRight: 20}}>
+                <View style={{justifyContent: 'center', alignItems: 'center', shadowOpacity: 0.3, shadowColor: '#555', shadowOffset: {height: 2, width: 0},}}>
+                  <Image source = {require('App/Assets/Images/heart.png')} style={{width: 30, height: 30,  shadowOpacity: 0.2, shadowOffset: {height:1 , width: 0}}} />
+                <Text style={{position: 'absolute', top: 12,fontSize: 12, textAlign: 'center', color: constants.LAVENDER}}>{route.params.data.likes}</Text>
+                </View>
+
                 <TouchableOpacity style={{shadowOpacity: 0.3, shadowColor: '#555', shadowOffset: {height: 2, width: 0},}} onPress={()=>{
                   setCommentsVisible(true);
                 }}>
                 <Image
-              style={{height: 30, width: 30, aspectRatio: 1, marginTop: 3}}
+              style={{height: 35, width: 35, aspectRatio: 1, marginTop: 3}}
               source={require('App/Assets/Images/Comment_Icon_White.png')}
             />
               </TouchableOpacity>
                 
-                <View style={{justifyContent: 'center', alignItems: 'center', shadowOpacity: 0.3, shadowColor: '#555', shadowOffset: {height: 2, width: 0},}}><Image source = {require('App/Assets/Images/heart.png')} style={{width: 25, height: 25,  shadowOpacity: 0.2, shadowOffset: {height:1 , width: 0}}} />
-                <Text style={{position: 'absolute', top: 5,fontSize: 12}}>{route.params.data.likes}</Text>
-                </View>
+                
                 <TouchableOpacity  onPress={()=>{
                   navigation.navigate('ShareSocial', {product:route.params.album, data:{}, flockId: route.params.id})
                 }}>
                 <Image 
-                style={{shadowOpacity: 0.3, shadowOffset:{height:2, width:0},  width: 30, height: 30, aspectRatio:1}}
+                style={{shadowOpacity: 0.3, shadowOffset:{height:2, width:0},  width: 35, height: 35, aspectRatio:1}}
                 source={require('App/Assets/Images/Share_Icon_White_Earn.png') } />
               </TouchableOpacity>
+              </View>
               
-              <View style={{shadowOpacity: 1, shadowColor: '#555', shadowOffset: {height: 2, width: 0}, borderRadius: 30, overflow: 'hidden', flex: 0.8, flexDirection: 'row', backgroundColor: constants.ORANGE, height: 50, alignItems: 'center', marginRight: 10,}}>
+              <View style={{shadowOpacity: 1, shadowColor: '#555', shadowOffset: {height: 2, width: 0}, borderRadius: 30, overflow: 'hidden', flex: 1.5, flexDirection: 'row', backgroundColor: constants.ORANGE, alignItems: 'center', marginRight: 10,}}>
               {flockAr.length > 0?<LinearGradient
               colors={[constants.YELLOW, constants.LIGHTORANGE]}
               start={{ x: 0, y: 1 }} end={{ x: 1, y: 1 }}
@@ -397,7 +402,7 @@ const Product = ({route, navigation}) => {
                 height: '100%',
                 flex: 1,
               }}>
-                <View style={{flex: 1, height: '100%', justifyContent:'center'}}>
+                <View style={{flex: 1, height: 50, justifyContent:'center'}}>
                   <TouchableOpacity onPress={()=>{
             //         Linking.openURL(
             //   'https://shopwithflock.com/redirect/?url=' +
@@ -417,7 +422,7 @@ const Product = ({route, navigation}) => {
                 height: '100%',
                 flex: 1,
               }}>
-              <View style={{flex:1, height: '100%', justifyContent: 'center'}}>
+              <View style={{flex:1, height: 50, justifyContent: 'center'}}>
                 <TouchableOpacity style={{height: "100%", justifyContent: 'center'}} onPress= {() => {
 
                   navigation.navigate('StartFlock', {index: 0, product: route.params.album, data:{}, flockId: randomId});
@@ -425,7 +430,7 @@ const Product = ({route, navigation}) => {
                 }}
     
                   >
-                    <Text style={{textAlign: 'center', color: 'white', fontWeight: 'bold', fontSize: 13}}>Start Your Flock</Text>
+                    <Text style={{textAlign: 'center', color: 'white', fontWeight: 'bold', fontSize: 13}}>Start Flock</Text>
                 </TouchableOpacity>
                 </View>
                 </LinearGradient>
@@ -565,7 +570,7 @@ const FlockList = ({product, navigation, ar, close, limited = true, randomId}) =
     paidFor = paidFor.toFixed(2);
     var paidForPercent = Math.round(100 * paidFor/ar[i].product.price);
     result.push(  
-      <View style={{flexDirection: 'row', height: 50, justifyContent: 'space-between', paddingTop: 10, borderTopWidth:i==0?0:2, borderColor: constants.GREY, paddingBottom:3}}>
+      <View style={{flexDirection: 'row', height: 50, justifyContent: 'space-between', paddingTop: 10, borderTopWidth:i==0?0:2, borderColor: constants.GREY, paddingBottom:3, alignItems: 'center'}}>
       <View style={{flex: 1}}>
     <Text numberOfLines = {1} style={{fontWeight: 'bold', fontSize:15,width: 80, height: 20, }}>@{ar[i].members[0].name}</Text>
       {ar[i].members.length>1?<Text>and {ar[i].members.length-1} others</Text>:<></>}
@@ -574,9 +579,9 @@ const FlockList = ({product, navigation, ar, close, limited = true, randomId}) =
       <View style={{flex:1, marginRight: 15}}>
       <Countdown dateObj = {ar[i].time} />
       </View>
-      <View style={{borderRadius: 30, justifyContent:'center', overflow: 'hidden',  borderColor: constants.ORANGE, borderWidth: 2}}>
+      <View style={{borderRadius: 30, justifyContent:'center', overflow: 'hidden',  borderColor: constants.ORANGE, borderWidth: 2, marginTop: -2}}>
       <View style={{position: 'absolute', left: "-40%", width: paidForPercent+ 40 + "%", height: '100%', backgroundColor: constants.ORANGE, opacity: 0.8, borderRadius: 40, transform: [{ scaleX: 1 }, { scaleY: 1.3 }] }} />
-      <TouchableOpacity style={{paddingLeft: 10, paddingRight: 10,}}
+      <TouchableOpacity style={{paddingLeft: 10, paddingRight: 10, paddingVertical: 5}}
       onPress={()=>{
         console.log('going')
         tempFunc();}}>
@@ -588,7 +593,7 @@ const FlockList = ({product, navigation, ar, close, limited = true, randomId}) =
       </View>
     );
   }
-  return <ScrollView decelerationRate={0.5} ref={scrollRef} pagingEnabled={limited} showsVerticalScrollIndicator={false} style={{padding:0, paddingBottom: 10, height: limited?100:'100%'}}>
+  return <ScrollView decelerationRate={0.5} ref={scrollRef} pagingEnabled={limited} showsVerticalScrollIndicator={false} style={{padding:0, paddingBottom: 10, height: limited?(result.length<=1?50:100):'100%'}}>
   {result.length > 0?<>{result}<View style={{height: 50}} /></>:(<View style={{height: 60}}>
     <View style={{borderTopWidth: 1, borderColor: constants.PINK_BACKGROUND_OPAQUE, paddingTop: 15, paddingLeft:20, marginTop: 10, alignItems: 'center', flexDirection: 'row'}}>
     <Text>No current flocks.</Text>
@@ -597,7 +602,7 @@ const FlockList = ({product, navigation, ar, close, limited = true, randomId}) =
             flexDirection: 'row',
             backgroundColor: constants.ORANGE,
             height: '100%',
-            height: 30,
+            paddingVertical: 14,
             width: 30,
             justifyContent: 'center',
             alignItems: 'center',
@@ -610,7 +615,7 @@ const FlockList = ({product, navigation, ar, close, limited = true, randomId}) =
   <TouchableOpacity onPress= {() => {
     navigation.navigate('StartFlock', {index: 0, product: product, flockId: randomId});
 
-  }}><Text style={{textAlign: 'center', color: 'white', fontWeight: 'bold', fontSize: 13}}>Start Your Flock</Text>
+  }}><Text style={{textAlign: 'center', color: 'white', fontWeight: 'bold', fontSize: 14}}>Start Your Flock</Text>
   </TouchableOpacity></View></View></View>)}</ScrollView>;
 
 

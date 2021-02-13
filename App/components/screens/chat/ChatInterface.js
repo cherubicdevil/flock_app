@@ -395,7 +395,7 @@ return <ScrollView  style={{marginLeft: 15, overflow: 'visible', backgroundColor
         onSend={onSend}
         user={{_id: 1}}
       /></View>
-      <JoinDialog navigation={navigation} data={route.params.data} setCreditModal={setCreditModal} initialDialog={initialDialog} setInitialDialog={setInitialDialog} setPartOf = {setPartOf} completeFunc = {completeFunc} maxPercent = {remainingPercent} />
+      <JoinDialog navigation={navigation} data={route.params.data} setCreditModal={setCreditModal} initialDialog={initialDialog} setInitialDialog={setInitialDialog} setPartOf = {setPartOf} completeFunc = {completeFunc} maxPercent = {remainingPercent} productPrice={route.params.data.product.price} />
       {partOf?<></>:<View style={{position: 'absolute', bottom: 0, width: '100%', height: 100, backgroundColor: 'white'}}><View style={{height: '100%', backgroundColor: constants.PINK_BACKGROUND }}>
         <TouchableOpacity style={{width: '90%', height: 50, backgroundColor: constants.ORANGE, alignSelf: 'center', borderRadius: 30, justifyContent: 'center'}} onPress={()=>{
           setInitialDialog(true);
@@ -441,7 +441,7 @@ return <ScrollView  style={{marginLeft: 15, overflow: 'visible', backgroundColor
   );
 }
 
-const JoinDialog = ({navigation, data, setCreditModal, initialDialog, setInitialDialog, setPartOf, completeFunc, minPercent=8, maxPercent}) =>{
+const JoinDialog = ({navigation, data, setCreditModal, initialDialog, setInitialDialog, setPartOf, completeFunc, minPercent=8, maxPercent, productPrice}) =>{
   const store = useStore();
   const dispatch = useDispatch();
 
@@ -451,7 +451,7 @@ const JoinDialog = ({navigation, data, setCreditModal, initialDialog, setInitial
   <Dialog.Title>Set Your Price</Dialog.Title>
   <Dialog.Description>
     Please set your initial price. You can always change it later.
-    <View style={{alignItems: 'center', flexDirection: 'row', height: 45,paddingTop: 10}}>
+    <View style={{alignItems: 'center', flexDirection: 'row', height: 45,paddingTop: 10, justifyContent: 'center'}}>
     <View style={{borderRadius: 40, backgroundColor: constants.ORANGE, width: 25, height: 25, justifyContent: 'center', alignItems: 'center'}}>
         <TouchableOpacity onPress={()=>{
           if (initialPercent > minPercent) {
@@ -462,7 +462,10 @@ const JoinDialog = ({navigation, data, setCreditModal, initialDialog, setInitial
           <Icon name="minus" color="white" size={20} />
         </TouchableOpacity>
       </View>
-      <Text style={{width: 80,textAlign: 'center',fontSize:24, fontWeight: 'bold'}}>{initialPercent}%</Text>
+      <View style={{width: 100, alignSelf: 'center'}}>
+      <Text style={{width: 100, textAlign: 'center',fontSize:14, fontWeight: 'bold'}}>${(parseFloat(productPrice) * initialPercent/100).toFixed(2)}</Text>
+      <Text style={{width: 120,textAlign: 'center',fontSize:14, fontWeight: 'bold', alignSelf: 'center'}}>({initialPercent}% yours)</Text>
+      </View>
       <View style={{borderRadius: 40, backgroundColor: constants.ORANGE, width: 25, height: 25, justifyContent: 'center', alignItems: 'center'}}>
         <TouchableOpacity onPress={()=>{
           if (initialPercent < maxPercent) {

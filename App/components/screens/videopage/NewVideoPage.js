@@ -277,7 +277,7 @@ useEffect(()=>{
               <View style={{flex: 1}}>
               <Text numberOfLines={2}><Text style={{fontWeight: 'bold'}}>{data?.product?.brand?data?.product?.brand+" ":""}</Text>{data?.product?.title}</Text>
               <Text></Text>
-              <Text style={{color: dataType==="rent"?constants.LAVENDER:constants.GREYORANGE}}>{dataType==="rent"?"$"+(data?.product?.price / 25).toFixed(2)+" to borrow ($0.00 for flocker)":(1.4 * data?.product?.price / 25).toFixed(2) + " to flock"}</Text>
+              <Text style={{color: dataType==="rent"?constants.LAVENDER:constants.GREYORANGE}}>{dataType==="rent"?"$"+(data?.product?.price / 25).toFixed(2)+" to borrow ($0.00 for flocker)":"$"+(1.4 * data?.product?.price / 25).toFixed(2) + " to flock"}</Text>
               <Text style={{color: "grey"}}>${data?.product?.price} original</Text>
               </View>
               <Icon color={dataType==="rent"?constants.LAVENDER:constants.GREYORANGE} name="chevron-right" size={30} />

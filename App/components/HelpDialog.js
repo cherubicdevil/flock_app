@@ -18,8 +18,8 @@ const [message, setMessage] = useState("");
     return <><TouchableOpacity onPress={()=>{
         openSendDialog(true);
       }}>
-      <View style={{padding: 5, borderRadius:35, width: 25, height: 25, backgroundColor: constants.DARKGREY, alignItems:'center'}}>
-        <Icon  name="exclamation" size={15} color="white" />
+      <View style={{borderRadius:35, width: 20, height: 20, backgroundColor: 'white', borderWidth: 1, borderColor: constants.DARKGREY, alignItems:'center', justifyContent:'center'}}>
+        <Icon  name="question" size={12} color={constants.DARKGREY} />
         </View>
         </TouchableOpacity>
         <Dialog.Container visible={sendDialog}>
