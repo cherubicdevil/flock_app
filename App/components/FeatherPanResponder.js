@@ -10,6 +10,7 @@ const data = ["hello",'world', 'data', 'i', 'am', 'so', 'sad'];
 
 
 const FeatherList = ({navigation, route, data=data, viewHeight, type="flock"}) => {
+
     const store = useStore();
     const dispatch = useDispatch();
     // const select = useSelector(state=>state.videopage);
@@ -70,7 +71,7 @@ const FeatherList = ({navigation, route, data=data, viewHeight, type="flock"}) =
 
 }
 const FeatherPanResponder = React.memo(({index, positions, currIndex, setCurrentIndex, content, viewHeight, type}) => {
-    
+    const select = useSelector(state=>state.miscel);
     const dispatch = useDispatch();
     
     var previouspercentage = 1;
@@ -233,10 +234,12 @@ const FeatherPanResponder = React.memo(({index, positions, currIndex, setCurrent
       var isUp = false;
       var isDown = false;
       const panResponder = PanResponder.create({
-          onPanResponderTerminationRequest:(event, gesture) => false,
-        onMoveShouldSetPanResponderCapture:(event, gesture)=>Math.abs(gesture.dy)/Math.abs(gesture.dx)>2,
+          onPanResponderTerminationRequest:(event, gesture) => true,
+        // onMoveShouldSetPanResponderCapture:(event, gesture)=>Math.abs(gesture.dy)/Math.abs(gesture.dx)>2,
+        onMoveShouldSetPanResponder:(event, gesture)=> !select.commentsModal && Math.abs(gesture.dy)/Math.abs(gesture.dx)>2,
         // onStartShouldSetPanResponder: (event, gesture) => true,
         onPanResponderMove: (event, gesture) => {
+            console.log('modal visible', select.commentsModal)
             if (gesture.dy > 0) {
                 if (isUp) return;
                 isDown = true;

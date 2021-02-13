@@ -5,6 +5,7 @@ import VidReducer from './VidReducer';
 import ModalReducer from './ModalReducer';
 import UserInfoReducer from './UserInfoReducer';
 import ChatReducer from './ChatReducer';
+import MiscellaneousReducer from './MiscellaneousReducer';
 
 export default combineReducers({
   auth: AuthReducer,
@@ -14,4 +15,5 @@ export default combineReducers({
   modal: ModalReducer,
   userInfo: UserInfoReducer,
   chat: ChatReducer,
+  miscel: MiscellaneousReducer,
 });

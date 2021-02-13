@@ -176,6 +176,7 @@ useEffect(()=>{
             onPress={function () {
               dispatch({type: 'toggle'});
               setModalVisible(true);
+              dispatch({type: 'TOGGLE_COMMENTS'});
             }}>
             <Image
               style={{height: ICON_SIZE, width: ICON_SIZE}}
@@ -255,19 +256,23 @@ useEffect(()=>{
           </TouchableOpacity>
            :<></>}
 </View>
-          <TouchableOpacity 
-          style={{marginBottom: 10}}
-          onPress={()=>{
-              const video = data.video;
-              console.log(dataType);
-              if (dataType==="flock" || dataType==="video") {
-                  console.log('pressing')
-              navigation.navigate("Product", {album: data.product, video: {video}, data: data, id: data.id})
-              } else if (dataType==="rent") {
-                  
-                  navigation.navigate("FlockReserve", {data: data});
-              }
-          }}><View style={{flexDirection: 'row',alignItems: 'center', backgroundColor: 'rgba(255,255,255,1)', marginTop: 20, marginLeft: 10, marginRight: 10, marginBottom: 10, padding: 10, paddingLeft: 30, borderRadius: 100, borderWidth: 3, borderColor: dataType==="rent"?constants.LAVENDER:constants.GREYORANGE}} >
+          <View 
+          onStartShouldSetResponder={()=>true}
+          onResponderTerminationRequest={()=>true}
+          onMoveShouldSetResponder={()=>false}
+          onResponderRelease={()=>{
+            const video = data.video;
+            console.log(dataType);
+            if (dataType==="flock" || dataType==="video") {
+                console.log('pressing')
+            navigation.navigate("Product", {album: data.product, video: {video}, data: data, id: data.id})
+            } else if (dataType==="rent") {
+                
+                navigation.navigate("FlockReserve", {data: data});
+            }
+        }}
+          
+          style={{flexDirection: 'row',alignItems: 'center', marginBottom: 10, backgroundColor: 'rgba(255,255,255,1)', marginTop: 20, marginLeft: 10, marginRight: 10, marginBottom: 10, padding: 10, paddingLeft: 30, borderRadius: 100, borderWidth: 3, borderColor: dataType==="rent"?constants.LAVENDER:constants.GREYORANGE}} >
               <View style={{flex: 1}}>
               <Text numberOfLines={2}><Text style={{fontWeight: 'bold'}}>{data?.product?.brand}</Text>{data?.product?.title}</Text>
               <Text></Text>
@@ -276,7 +281,7 @@ useEffect(()=>{
               </View>
               <Icon color={dataType==="rent"?constants.LAVENDER:constants.GREYORANGE} name="chevron-right" size={30} />
           </View>
-          </TouchableOpacity>
+
           </View>
 
         </View>
@@ -307,6 +312,7 @@ useEffect(()=>{
           data={data}
           toggleFunc={() => {
             setModalVisible(false);
+            dispatch({type: 'TOGGLE_COMMENTS'});
           }}
           modalVisible={modalVisible}
         />

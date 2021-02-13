@@ -247,7 +247,7 @@ const CommentsModal = ({modalVisible, data, toggleFunc}) => {
       });
   };
 
-  const sendOgComment = (event) => {
+  var sendOgComment = (event) => {
     if (event.nativeEvent.text.trim() !== '') {
       const user = firebase.auth().currentUser;
       const db = firebase.firestore();
@@ -273,6 +273,10 @@ const CommentsModal = ({modalVisible, data, toggleFunc}) => {
       setComment('');
     }
   };
+
+  var sendOgComment = () => {
+    console.log('sending og comment');
+  }
 
   useEffect(() => {
     fetchComments();
@@ -341,8 +345,8 @@ const CommentsModal = ({modalVisible, data, toggleFunc}) => {
             </View>
             <View
               onStartShouldSetResponder={() => true}
-              onResponderTerminationRequest={() => false}
-              onResponderGrant={throttle(() => {
+              onResponderTerminationRequest={() => true}
+              onResponderRelease={throttle(() => {
                 setReplyPlaceholder(`Reply to ${item.user.name}`);
                 inputEl.current.focus();
                 console.log('hello i am currently the responder');
@@ -370,8 +374,10 @@ const CommentsModal = ({modalVisible, data, toggleFunc}) => {
                       children: item.children,
                     });
                     //inputEl.value = '';
+                    console.log('sending reply');
                   }
                 };
+
                 console.log(sendFunction);
               }, 500)}>
               <Text style={styles.commentTextStyle}>{item.text}</Text>
@@ -472,6 +478,7 @@ const CommentsModal = ({modalVisible, data, toggleFunc}) => {
               width: '100%',
               height: 100,
               zIndex: -10,
+              
             }}>
             {/* <LinearGradient
               colors={[
@@ -490,6 +497,9 @@ const CommentsModal = ({modalVisible, data, toggleFunc}) => {
           </View>
           <Text style={styles.modalText}>Comments ({comments.length}) </Text>
           <ScrollView
+          onStartShouldSetResponder={()=>true}
+          onMoveShouldSetResponder={()=>true}
+          onResponderTerminationRequest={()=>false}
             showsVerticalScrollIndicator={false}
             onScrollEndDrag={(e) => {
               let paddingToBottom = 950;
@@ -568,7 +578,7 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 0,
     borderBottomRightRadius: 0,
     padding: 0,
-    paddingTop: 30,
+    paddingTop: 10,
     alignItems: 'flex-start',
     // shadowColor: '#000',
     // shadowOffset: {
@@ -650,11 +660,10 @@ const styles = StyleSheet.create({
     borderTopWidth: 0.2,
     borderColor: '#777',
     paddingBottom: 20,
-    height: 60,
+    height: 100,
     width: '100%',
     backgroundColor: '#fff',
-    position: 'absolute',
-    bottom: 0,
+
   },
 });
 
