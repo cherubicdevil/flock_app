@@ -15,6 +15,7 @@ import {
   Keyboard,
   TouchableWithoutFeedback,
 } from 'react-native';
+import {debounce, throttle} from 'lodash';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import LinearGradient from 'react-native-linear-gradient';
 import {firebase} from 'App/firebase/config';
@@ -341,7 +342,7 @@ const CommentsModal = ({modalVisible, data, toggleFunc}) => {
             <View
               onStartShouldSetResponder={() => true}
               onResponderTerminationRequest={() => false}
-              onResponderGrant={() => {
+              onResponderGrant={throttle(() => {
                 setReplyPlaceholder(`Reply to ${item.user.name}`);
                 inputEl.current.focus();
                 console.log('hello i am currently the responder');
@@ -372,7 +373,7 @@ const CommentsModal = ({modalVisible, data, toggleFunc}) => {
                   }
                 };
                 console.log(sendFunction);
-              }}>
+              }, 500)}>
               <Text style={styles.commentTextStyle}>{item.text}</Text>
             </View>
           </View>
@@ -405,10 +406,10 @@ const CommentsModal = ({modalVisible, data, toggleFunc}) => {
               />
               <View
                 onStartShouldSetResponder={() => true}
-                onResponderGrant={() => {
+                onResponderGrant={throttle(() => {
                   console.log('view replies');
                   setShowReplies(false);
-                }}>
+                }, 500)}>
                 <Text style={styles.textBoldHide}>Hide Replies</Text>
               </View>
             </View>
@@ -445,16 +446,16 @@ const CommentsModal = ({modalVisible, data, toggleFunc}) => {
           style={styles.modalView}
           onStartShouldSetResponderCapture={() => false}
           onMoveShouldSetResponder={() => false}
-          onStartShouldSetResponder={() => {
+          onStartShouldSetResponder={throttle(() => {
             Keyboard.dismiss();
             console.log('tapping');
             sendFunction = sendOgComment;
             setReplyPlaceholder('Add comment...');
             return false;
-          }}
-          onResponderGrant={() => {
-            console.log('tappingggg');
-          }}
+          }, 500)}
+          // onResponderGrant={throttle(() => {
+          //   // console.log('tappingggg');
+          // }, 2000)}
           onResponderReject={() => {
             console.log('nothing happening');
           }}

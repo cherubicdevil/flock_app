@@ -271,7 +271,7 @@ useEffect(()=>{
               <View style={{flex: 1}}>
               <Text numberOfLines={2}><Text style={{fontWeight: 'bold'}}>{data?.product?.brand}</Text>{data?.product?.title}</Text>
               <Text></Text>
-              <Text style={{color: dataType==="rent"?constants.LAVENDER:constants.GREYORANGE}}>{dataType==="rent"?"$"+(data?.product?.price / 25).toFixed(2)+" to borrow ($0.00 for flocker)":"As low as $" + (1.4 * data?.product?.price / 25).toFixed(2) + " when you split with flockers"}</Text>
+              <Text style={{color: dataType==="rent"?constants.LAVENDER:constants.GREYORANGE}}>{dataType==="rent"?"$"+(data?.product?.price / 25).toFixed(2)+" to borrow ($0.00 for flocker)":(1.4 * data?.product?.price / 25).toFixed(2) + " to flock"}</Text>
               <Text style={{color: "grey"}}>${data?.product?.price} original</Text>
               </View>
               <Icon color={dataType==="rent"?constants.LAVENDER:constants.GREYORANGE} name="chevron-right" size={30} />
@@ -401,7 +401,7 @@ const ScrollCount = ({data}) => {
     },[])
     return <ScrollView ref = {scrollRef} pagingEnabled={true} horizontal={false} style={{left: 10, position: 'absolute', bottom: 0, zIndex: 300, height: 100,width: 250}}>
     {data.map((item)=> {
-        return <View style={{flexDirection: 'row', height: 40, borderRadius: 40, backgroundColor: 'rgba(255,220,200,0.4)',alignItems:'center',justifyContent:'space-around', margin:5}}>
+        return <View style={{flexDirection: 'row', height: 40, borderRadius: 40, backgroundColor: 'rgba(255,220,200,0.7)',alignItems:'center',justifyContent:'space-around', margin:5}}>
             <Text>{item.members.length} flocking</Text>
             <Countdown dateObj={item.time} />
             

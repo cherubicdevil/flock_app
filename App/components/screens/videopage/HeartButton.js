@@ -73,7 +73,7 @@ const HeartIcon = ({data}) => {
             source={require('App/Assets/Images/Heart_Icon_White.png')}
           />
         </TouchableOpacity>
-        <Text style={styles.buttonText}>{data.likes}</Text>
+        <Text style={styles.buttonText}>{data.likes>0?data.likes:""}</Text>
       </View>
     );
   };
