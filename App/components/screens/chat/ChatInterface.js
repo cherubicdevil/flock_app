@@ -451,7 +451,7 @@ const JoinDialog = ({navigation, data, setCreditModal, initialDialog, setInitial
   <Dialog.Title>Set Your Price</Dialog.Title>
   <Dialog.Description>
     Please set your initial price. You can always change it later.
-    <View style={{alignItems: 'center', flexDirection: 'row', marginTop: 10, height: 25}}>
+    <View style={{alignItems: 'center', flexDirection: 'row', height: 45,paddingTop: 10}}>
     <View style={{borderRadius: 40, backgroundColor: constants.ORANGE, width: 25, height: 25, justifyContent: 'center', alignItems: 'center'}}>
         <TouchableOpacity onPress={()=>{
           if (initialPercent > minPercent) {
