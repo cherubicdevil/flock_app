@@ -127,7 +127,8 @@ useEffect(()=>{
     .get().then(function(querySnapshot) {
       const arr = [];
       querySnapshot.forEach(function(doc) {
-        if (doc.data().completed === false) {
+        const data = doc.data();
+        if (data.completed === false && data.time >= Date.now()/1000 - 60*60*24*7) {
         arr.push(doc.data());
         }
       });
@@ -274,7 +275,7 @@ useEffect(()=>{
           
           style={{flexDirection: 'row',alignItems: 'center', marginBottom: 10, backgroundColor: 'rgba(255,255,255,1)', marginTop: 20, marginLeft: 10, marginRight: 10, marginBottom: 10, padding: 10, paddingLeft: 30, borderRadius: 100, borderWidth: 3, borderColor: dataType==="rent"?constants.LAVENDER:constants.GREYORANGE}} >
               <View style={{flex: 1}}>
-              <Text numberOfLines={2}><Text style={{fontWeight: 'bold'}}>{data?.product?.brand}</Text>{data?.product?.title}</Text>
+              <Text numberOfLines={2}><Text style={{fontWeight: 'bold'}}>{data?.product?.brand?data?.product?.brand+" ":""}</Text>{data?.product?.title}</Text>
               <Text></Text>
               <Text style={{color: dataType==="rent"?constants.LAVENDER:constants.GREYORANGE}}>{dataType==="rent"?"$"+(data?.product?.price / 25).toFixed(2)+" to borrow ($0.00 for flocker)":(1.4 * data?.product?.price / 25).toFixed(2) + " to flock"}</Text>
               <Text style={{color: "grey"}}>${data?.product?.price} original</Text>

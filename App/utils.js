@@ -295,7 +295,7 @@ const fetchFlockablesFirst = async () => {
   return new Promise((resolve) => {
     db.collection('chatGroups')
       .limit(10)
-      .orderBy("createdAt", "desc")
+      .orderBy("time", "desc")
       .where('completed', '==', false)
       .get()
       .then((querySnapshot) => {
@@ -321,7 +321,7 @@ const fetchFlockables = async () => {
   return new Promise((resolve) => {
     db.collection('chatGroups')
       .limit(10)
-      .orderBy("createdAt", "desc")
+      .orderBy("time", "desc")
       .where('completed', '==', false)
       .startAfter(lastVisibleFlock)
       .get()
@@ -347,7 +347,7 @@ const fetchRentables = async () => {
   return new Promise((resolve) => {
     db.collection('chatGroups')
       .limit(10)
-      .orderBy("createdAt", "desc")
+      .orderBy("time", "desc")
       .where('completed', '==', true)
       .startAfter(lastVisibleRent)
       .get()
@@ -372,7 +372,7 @@ const fetchRentablesFirst = async () => {
   return new Promise((resolve) => {
     db.collection('chatGroups')
       .limit(10)
-      .orderBy("createdAt", "desc")
+      .orderBy("time", "desc")
       .where('completed', '==', true)
       .get()
       .then((querySnapshot) => {

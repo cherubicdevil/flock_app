@@ -105,7 +105,7 @@ const Product = ({route, navigation}) => {
       const arr = [];
       querySnapshot.forEach(function(doc) {
         console.log("FOUNDDDDDD");
-        if (doc.data().completed === false) {
+        if (doc.data().completed === false  && doc.data().time >= Date.now()/1000 - 60*60*24*7) {
         arr.push({...doc.data(), id:doc.id});
 
           // doc.data() is never undefined for query doc snapshots
@@ -170,7 +170,7 @@ const Product = ({route, navigation}) => {
     return (
       <View>
         <Text style={{fontSize: 14, marginBottom: 5,}}>
-          <Text style={{fontWeight:'bold'}}>{route.params.album.brand}</Text> {route.params.album.title}
+        <Text style={{fontWeight: 'bold'}}>{route.params.album.brand?route.params.album.brand+" ":""}</Text>{route.params.album.title}
         </Text>
         <View style={{flexDirection:'row', alignItems: 'center'}}>
         <Text style={{textDecorationLine: 'line-through', fontFamily: constants.FONTBOLD, color: constants.ORANGE, fontSize: 16}}>
