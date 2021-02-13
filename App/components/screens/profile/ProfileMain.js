@@ -77,6 +77,7 @@ const ProfilePicture = () => {
 const ProfileMain = ({navigation}) => {
   const select = useSelector(state=>state);
   // au.currentUser.reload();
+
   const userInfo = {
     username: au.currentUser.displayName,
     bio: select.userInfo.bio || "This user likes to keep an air of mystery",

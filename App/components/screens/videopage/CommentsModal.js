@@ -84,7 +84,7 @@ const CommentsModal = ({modalVisible, data, toggleFunc}) => {
 
   const [didMount, setDidMount] = useState(false);
 
-  var sendFunction;
+  
 
   const fetchCommentsFromFirebase = () => {
     const ar = [];
@@ -334,7 +334,7 @@ const CommentsModal = ({modalVisible, data, toggleFunc}) => {
           />
           <View>
             <View style={{flex: 1, flexDirection: 'row'}}>
-              <Text style={styles.textBold}>{item.user.name}</Text>
+              <Text style={styles.textBold}>@{item.user.name}</Text>
               <Text style={styles.textBold}>
                 {renderPostTime(new Date(), item.date)}
               </Text>
@@ -624,7 +624,7 @@ const styles = StyleSheet.create({
     marginRight: 10,
     width: 30,
     height: 30,
-    borderRadius: 10,
+    borderRadius: 100,
   },
   commentTextStyle: {
     marginTop: 5,

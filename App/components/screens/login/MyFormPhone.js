@@ -200,7 +200,7 @@ const EnterCode = ({setCode}) =>{
     const [v6, setV6] = useState("");
 
     return <View style={{flexDirection: 'row',  justifyContent: 'space-between'}}>
-        <TextInput style={styles.smsbox} ref={box1} value={v1} maxLength={1}
+        <TextInput keyboardType="numeric" style={styles.smsbox} ref={box1} value={v1} maxLength={1}
         onKeyPress={(event) => {
             if (event.nativeEvent.key === "Backspace") {
                 setV1("");
@@ -222,7 +222,7 @@ const EnterCode = ({setCode}) =>{
                 box2.current.focus();
             }
         }} />
-                <TextInput style={styles.smsbox} ref={box2} value={v2} maxLength={1}
+                <TextInput  keyboardType="numeric" style={styles.smsbox} ref={box2} value={v2} maxLength={1}
                         onKeyPress={(event) => {
                             if (event.nativeEvent.key === "Backspace") {
                                 setV2("");
@@ -244,7 +244,7 @@ const EnterCode = ({setCode}) =>{
 
             }
         }} />
-                <TextInput style={styles.smsbox} ref={box3} value={v3} maxLength={1}
+                <TextInput keyboardType="numeric" style={styles.smsbox} ref={box3} value={v3} maxLength={1}
                 onKeyPress={(event) => {
                     if (event.nativeEvent.key === "Backspace") {
                         setV3("");
@@ -266,7 +266,7 @@ const EnterCode = ({setCode}) =>{
                 box4.current.focus();
             }
         }} />
-                <TextInput style={styles.smsbox} ref={box4} value={v4} maxLength={1}
+                <TextInput keyboardType="numeric" style={styles.smsbox} ref={box4} value={v4} maxLength={1}
                 onKeyPress={(event) => {
                     if (event.nativeEvent.key === "Backspace") {
                         setV4("");
@@ -287,7 +287,7 @@ const EnterCode = ({setCode}) =>{
                 box5.current.focus();
             }
         }} />
-                <TextInput style={styles.smsbox} ref={box5} value={v5} maxLength={1}
+                <TextInput keyboardType="numeric" style={styles.smsbox} ref={box5} value={v5} maxLength={1}
                 onKeyPress={(event) => {
                     if (event.nativeEvent.key === "Backspace") {
                         setV5("");
@@ -308,7 +308,7 @@ const EnterCode = ({setCode}) =>{
                 box6.current.focus();
             }
         }} />
-                <TextInput style={styles.smsbox} ref={box6} value={v6} maxLength={1}
+                <TextInput keyboardType="numeric" style={styles.smsbox} ref={box6} value={v6} maxLength={1}
                 onKeyPress={(event) => {
                     if (event.nativeEvent.key === "Backspace") {
                         setV6("");
