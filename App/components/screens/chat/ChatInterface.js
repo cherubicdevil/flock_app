@@ -14,8 +14,10 @@ import {
   View,
   Modal,
   TouchableWithoutFeedback,
-  TextInput
+  TextInput,
+  KeyboardAvoidingView
 } from 'react-native';
+import SmartCheckout from "App/components/SmartCheckout";
 import HeaderGradient from 'App/components/HeaderGradient';
 import Icon from 'react-native-vector-icons/FontAwesome';
 // import Slider from '@react-native-community/slider';
@@ -61,9 +63,13 @@ const systemMessages = [];
 function ChatInterface({route, navigation}) {
 
   const [creditModal, setCreditModal] = useState(false);
+
+  const [creditEmail, setCreditEmail] = useState(au.currentUser.email);
+
   const [priceShare, setPriceShare] = useState(route.params.data.maximums[au.currentUser.uid] || 0);
   const [initialDialog, setInitialDialog] = useState(false);
   const [remainingPercent, setRemainingPercent] = useState(0);
+
   // const [UUID, setUUID] = useState(0);
   console.log('remaning percent', remainingPercent);
 
@@ -406,35 +412,45 @@ return <ScrollView  style={{marginLeft: 15, overflow: 'visible', backgroundColor
       }}><Text style={{color: 'white', alignSelf: 'center', fontWeight: 'bold'}}>JOIN</Text></TouchableOpacity></View></View>}
     
     </SafeAreaView>
-    <AnimatedModal colored={true} colors={[constants.ORANGE, constants.GREYORANGE]} nested={false} visible={creditModal} close={()=>setCreditModal(false)} navigation={navigation} content={<Checkout navigation={navigation} route={route} doneFunc={(token)=> {
-      fetch(constants.CUSTOMER_ENDPOINT + "?token=" + token).then((response)=>response.json().then((res)=> {
-        console.log(res.id, "customerid");
-        dispatch({type: "UPDATE_DATA", payload: ['customerId',null, null,res.id]})
-        db.collection('users').doc(au.currentUser.uid).update({customerId: res.id});
-
-        const memberInfo = {name: au.currentUser.displayName, uid: au.currentUser.uid};
-        db.collection('users').doc(au.currentUser.uid).update({
-          chatIds: firebase.firestore.FieldValue.arrayUnion(route.params.data.id)
-        });
-        route.params.data.maximums[firebase.auth().currentUser.uid] = priceShare;
-        db.collection('chatGroups').doc(route.params.data.id).update({
-          members: firebase.firestore.FieldValue.arrayUnion(memberInfo),
-          maximums: route.params.data.maximums,
-        });
-        setPartOf(true);
-      dispatch({type: "UPDATE_DATA", payload: ["chatIds", "add", "array", route.params.data.id]});
-      dispatch({type: "UPDATE_DATA", payload: ["chatGroups", "add", "array", route.params.data]});
-        route.params.data.members.push(memberInfo);
-
-
-        completeFunc(res.id);
-        setCreditModal(false);
-      }).catch((err)=>{
-        console.log(err);
-      }));
-      
-      
-      }} price = {0}/>} />
+    <AnimatedModal upPercent="70%" colored={true} colors={[constants.ORANGE, constants.GREYORANGE]} nested={false} visible={creditModal} close={()=>setCreditModal(false)} navigation={navigation} 
+     >
+       <KeyboardAvoidingView behavior="position" style={{flex: 1}} keyboardVerticalOffset={-200}>
+<ScrollView>
+  
+       <SmartCheckout billingOnly={true} confirmFunc={(customerId)=>{
+setPartOf(true);
+dispatch({type: "UPDATE_DATA", payload: ["chatIds", "add", "array", route.params.data.id]});
+dispatch({type: "UPDATE_DATA", payload: ["chatGroups", "add", "array", route.params.data]});
+  route.params.data.members.push(memberInfo);
+  completeFunc(customerId);
+  setCreditModal(false);
+       }} 
+       cancelFunc={()=>{
+         
+       }}
+       >
+         <View style={{marginHorizontal: 30, marginTop: 10}}>
+         <Text>Email</Text>
+         <TextInput style={{paddingLeft: 20, borderWidth: 1, borderColor: constants.DARKGREY, borderRadius: 40, paddingVertical: 5, marginTop: 15}} keyboardType="email-address" defaultValue={au.currentUser.email} 
+         value={creditEmail}
+         onChangeText={(text)=>{
+          setCreditEmail(text);
+         }}
+         />
+         </View>
+       </SmartCheckout>
+       <View style={{marginHorizontal: 30, marginTop: 20}}>
+              <Text >
+              * Your credit card will only be charged if combined ownership reaches 100%. You can change how much you want to pay any time before the flock takes off.
+       </Text>
+       <Text style={{marginTop: 20}}>
+         ** Your email is necessary for receiving receipts and tracking updates.
+       </Text>
+       </View>
+       
+       </ScrollView>
+       </KeyboardAvoidingView>
+       </AnimatedModal>
       {/* <Modal transparent={false} visible={creditModal}>
         <TouchableOpacity  style = {{marginTop: 400}} onPress={()=>setCreditModal(false)}>
           <Text>touch me</Text>

@@ -125,7 +125,7 @@ const Checkout = ({navigation, route}) => {
 
             
         </View> */}
-        <SmartCheckout confirmFunc = {confirmFunc} >
+        <SmartCheckout confirmFunc = {confirmFunc} billingOnly={true} shippingOnly={true} >
 
         <View style={[styles.row, {borderBottomWidth: 0}]}>
                 <Text style={{fontWeight: 'bold'}}>Summary</Text>

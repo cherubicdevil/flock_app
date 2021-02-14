@@ -34,7 +34,20 @@ const showCardIcon = (brand, color)=>{
     return cardIcons[brand];
     }
 
-const SmartCheckout = ({confirmFunc, cancelFunc, children}) => {
+const SmartCheckout = ({confirmFunc, cancelFunc, children, billingOnly=false, shippingOnly=false, showSummary=true, allowConfirm = (creditCardChanged, shippingChanged, )=>{
+  if (billingOnly && shippingOnly) { //  both needed
+    return changed && creditCardChanged;
+  }
+  
+  if (billingOnly) {
+    return creditCardChanged;
+  } else if (shippingOnly) {
+    return shippingChanged;
+  } else { // default. neither needed. in profile perhaps false && false
+    return true;
+  }
+  return true;
+}}) => {
 console.log("HAS ID", hasId)
 const [billModal, setBillModal] = useState(false);
 const [shipModal, setShipModal] = useState(false);
@@ -99,9 +112,10 @@ const [creditInfo, setCreditInfo] = useState({
   addressZip: '',
 });
 
-
-return <><View style={{flex: 1, marginTop: 5,}} >
+const allowed = allowConfirm(creditCardChanged, changed);
+return <><View style={{marginTop: 5,}} >
         <View style={[styles.row, {justifyContent: 'space-between'}]}>
+            {!shippingOnly?
             <TouchableOpacity 
             style={{marginRight: 10,width: '100%', justifyContent: 'space-between', flexDirection:'row'}}
             onPress={()=>{
@@ -115,11 +129,16 @@ return <><View style={{flex: 1, marginTop: 5,}} >
             </View>
             :<Text style={{color: constants.RED}}>Needs Action</Text>}
             </View>
-            <Icon name="chevron-right" size={20} />
+            <Icon name="chevron-right" size={20} color={constants.DARKGREY} style={{marginRight: 20}} />
             </View>
             </TouchableOpacity>
+            :
+            <></>
+            }
         </View>
+                  {!billingOnly?
         <View style={[styles.row, {justifyContent: 'space-between'}]}>
+
             <TouchableOpacity 
             style={{marginRight: 10,width: '100%', justifyContent: 'space-between', flexDirection:'row'}}
             onPress={()=>{
@@ -134,11 +153,15 @@ return <><View style={{flex: 1, marginTop: 5,}} >
             </View>
             :<Text style={{color: constants.RED, textAlign: 'right'}}>Needs Action</Text>}
             </View>
+            <View style={{marginRight: 20}}>
             <Icon name="chevron-right" size={20} />
             </View>
+            </View>
             </TouchableOpacity>
-            
         </View>
+        :
+            <></>
+            }
         {children}
         <View style={{justifyContent: 'center', flexDirection: 'row', marginTop: 50}}>
           <TouchableOpacity
@@ -152,11 +175,12 @@ return <><View style={{flex: 1, marginTop: 5,}} >
               paddingTop: 3,
               // borderColor: '#aaa',
               backgroundColor: '#d8d8d8',
+              justifyContent: 'center'
             }}
             onPress={cancelFunc}>
             <Text
               style={{
-                color: '#000',
+                color: constants.LIGHTGREY,
                 textAlign: 'center',
                 fontFamily: 'Nunito-Bold',
               }}>
@@ -173,9 +197,11 @@ return <><View style={{flex: 1, marginTop: 5,}} >
               padding: 5,
               borderColor: 'white',
               backgroundColor: constants.ORANGE,
+              opacity: allowed?1:0.2,
             }}
             onPress={() => {
-                console.log('pressed');
+                console.log('pressed creditcard changed, changed',creditCardChanged, changed);
+                if (!allowConfirm(creditCardChanged, changed)) return;
               if (hasId && creditCardChanged) {
                   console.log('has id and creditcardchanged');
                 updateCard(select.customerId, creditInfo);
@@ -193,6 +219,10 @@ return <><View style={{flex: 1, marginTop: 5,}} >
                       confirmFunc(select.customerId);
                   } else {
                       console.log('doesnt have id');
+                      if (!changed && !creditCardChanged) {
+                        confirmFunc(null);
+                        return;
+                      }
                     createOrUpdate(hasId, select.customerId, info).then((id)=>{
                         dispatch({type:'UPDATE_DATA', payload: ["customerId", null, null, id]});
                         console.log('done in profile change');
@@ -551,7 +581,9 @@ const BillingModal = ({state, setState, close, setChanged}) => {
       borderWidth: 1,
     },
     textbox: {borderWidth: 1, borderColor: constants.DARKGREY, borderRadius: 30, padding: 10, paddingVertical: 10, fontSize: 18},
-    row: {width: '100%', marginLeft: 10, borderBottomWidth: 2, borderColor: constants.PINK_BACKGROUND,paddingHorizontal:20, paddingVertical:20},
+    row: {width: '100%', marginLeft: 10, borderBottomWidth: 2,
+    borderColor: constants.PINK_BACKGROUND,
+    paddingHorizontal:20, paddingVertical:20},
   });
 
 
