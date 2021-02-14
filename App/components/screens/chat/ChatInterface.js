@@ -418,6 +418,8 @@ return <ScrollView  style={{marginLeft: 15, overflow: 'visible', backgroundColor
 <ScrollView>
   
        <SmartCheckout billingOnly={true} confirmFunc={(customerId)=>{
+         au.currentUser.updateEmail(creditEmail);
+         console.log('conffirrrrrm');
 setPartOf(true);
 dispatch({type: "UPDATE_DATA", payload: ["chatIds", "add", "array", route.params.data.id]});
 dispatch({type: "UPDATE_DATA", payload: ["chatGroups", "add", "array", route.params.data]});

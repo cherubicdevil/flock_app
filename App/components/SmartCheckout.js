@@ -238,6 +238,17 @@ return <><View style={{marginTop: 5,}} >
                         confirmFunc(id);
                         setErrorMessage("");
                       });
+
+                    } else if (billingOnly && creditCardChanged) {
+                      console.log(creditInfo['exp_month'], parseInt(creditInfo.exp_month));
+                      console.log("credit", {...creditInfo, exp_month: parseInt(creditInfo.exp_month), exp_year: parseInt(creditInfo.exp_year)});
+                      // createOrUpdate(hasId, select.customerId, info).then((id)=>{
+                      createOrUpdate(hasId, select.customerId, {...creditInfo, exp_month: parseInt(creditInfo.expMonth), exp_year: parseInt(creditInfo.expYear)}).then((id)=>{
+                        dispatch({type:'UPDATE_DATA', payload: ["customerId", null, null, id]});
+                        console.log('done in profile change');
+                        confirmFunc(id);
+                        setErrorMessage("");
+                      });
                     } else {
                       setErrorMessage("Please fill out both billing and shipping information");
                       return;
