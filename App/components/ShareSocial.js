@@ -29,14 +29,24 @@ const ShareSocial = ({product, data={}, flockId, shareApp=false, showImage=true,
     {/* <ShareRow label="Text" app="text" product = {product} data={data} toggle={false} egg={true} shareApp={shareApp} /> */}
     {/* <ShareRow label="Email" app="email" product = {product} data={data} toggle={false} egg={true} shareApp={shareApp} /> */}
 
-    {!shareApp?<ViewShot ref={img} options={{ result: "base64", format: "jpg", quality: 0.9 }}>
+    {!shareApp?<ViewShot style={{marginTop:20}} ref={img} options={{ result: "base64", format: "jpg", quality: 0.9 }}>
         {product?.image?
         <>
+        <Text style={{fontFamily: constants.FONT, fontSize:20, paddingHorizontal: 15}}>
+            Co-own this with me for <Text style={{textDecorationLine:'line-through'}}>${product.price}</Text> ${(parseFloat(product.price)/25 * 1.4).toFixed(2)}
+        </Text>
         <ResizeableImage source = {{uri: product.image}} wLimit={Dimensions.get('window').width} />
-        <View style={{position:'absolute', bottom: 20, right: 20, justifyContent: 'center', }}>
-        <Image style={{height: 55, width: 150}} source={require('App/Assets/Images/Flock_Watermark.png')}/>
-<Text style={{marginTop: -15, alignSelf: 'flex-end', width: 85, shadowColor: 'white', shadowOpacity: 1, shadowOffset:{height:0}, fontFamily: 'Nunito', fontWeight: 'bold', fontSize: 8}}>search {<Text style={{color: 'black'}}>%{flockId.padStart(5,'0').substring(0,5)}</Text>} in app</Text>
-        </View></>:<></>}
+        <View style={{ position:'absolute', height:'100%', width:'100%', justifyContent:'center', alignItems:'center',}}>
+        <View style={{justifyContent: 'center', 
+        backgroundColor: "rgba(255,255,255,0.4)", paddingVertical:5,
+        shadowColor: 'white', shadowOpacity: 100, shadowRadius: 5, shadowOffset:{height:0}, }}>
+        <Image style={{height: 120, width: 300}} source={require('App/Assets/Images/Flock_Watermark.png')}/>
+<Text style={{marginTop: -35, alignSelf: 'flex-end', width: 170, 
+shadowColor: 'white', shadowOpacity: 1, shadowOffset:{height:0}, 
+fontFamily: 'Nunito', fontWeight: 'bold', fontSize: 16}}>search {<Text style={{color: 'black'}}>%{flockId.padStart(5,'0').substring(0,5)}</Text>} in app</Text>
+        </View>
+        </View>
+        </>:<></>}
       </ViewShot>:
       <ViewShot ref={img} options={{ result: "base64", format: "jpg", quality: 0.9 }}>
       {/* <ResizeableImage source = {{uri: product.image}} wLimit={Dimensions.get('window').width} /> */}

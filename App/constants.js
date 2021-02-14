@@ -40,7 +40,8 @@ export const constants = {
   PURPLEORANGE: '#b72c51', // 183,44,81
   LIGHTGREY: 'rgb(99,99,102)',
   PURPLE: '#b72c51',
-  RED: '#f05054',
+  // RED: '#f05054',
+  RED:'#ff8f97',
   HEIGHT: Dimensions.get('window').height * 2,
   DARKGREY: 'rgb(174,174,178)',
   BGGREY: 'rgb(242,242,242)',
