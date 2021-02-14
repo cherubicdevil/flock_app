@@ -29,6 +29,7 @@ import ResizeableImage from 'App/components/ResizeableImage';
 import AnimatedModal from 'App/components/AnimatedModal';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import HeaderGradient from 'App/components/HeaderGradient';
+import {CommonActions, useFocusEffect} from '@react-navigation/native';
 //import Base64 from 'base-64';
 
 // global.atob = Base64.encode;
@@ -76,8 +77,12 @@ const ProfilePicture = () => {
 };
 const ProfileMain = ({navigation}) => {
   const select = useSelector(state=>state);
-  // au.currentUser.reload();
+  au.currentUser.reload();
 
+  // useFocusEffect(()=>{
+  //   au.currentUser.reload();
+  //   console.log('hello')
+  // }, []);
   const userInfo = {
     username: au.currentUser.displayName,
     bio: select.userInfo.bio || "This user likes to keep an air of mystery",

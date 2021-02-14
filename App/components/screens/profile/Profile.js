@@ -325,7 +325,7 @@ const Profile = ({navigation}) => {
     db.collection('users').doc(au.currentUser.uid).update({
       bio: bio,
     });
-    au.currentUser.reload();
+    user.reload();
     navigation.goBack();
   }
 
