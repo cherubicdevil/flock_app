@@ -203,7 +203,8 @@ return <><View style={{marginTop: 5,}} >
             }}
             onPress={() => {
                 console.log('pressed creditcard changed, changed',creditCardChanged, changed);
-                setErrorMessage("");
+                console.log("creditInfo", creditInfo);
+                // setErrorMessage("");
                 if (!allowConfirm(creditCardChanged, changed)) return;
               if (hasId && creditCardChanged) {
                   console.log('has id and creditcardchanged');
@@ -212,7 +213,7 @@ return <><View style={{marginTop: 5,}} >
                 setErrorMessage("");
               } else if (changed) { // update shipping info
                 console.log('changed shipping');
-                createOrUpdate(hasId, select.customerId, info).then((id)=>{
+                createOrUpdate(hasId, select.customerId, creditInfo).then((id)=>{
                   dispatch({type:'UPDATE_DATA', payload: ["customerId", null, null, id]});
                   console.log('done in profile change');
                   confirmFunc(id);
