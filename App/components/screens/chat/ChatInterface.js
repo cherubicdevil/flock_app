@@ -525,7 +525,8 @@ const JoinDialog = ({navigation, data, setCreditModal, initialDialog, setInitial
     // dispatch({type: "UPDATE_DATA", payload: ["chatGroups", "add", "array", data]});
       data.members.push(memberInfo);
       completeFunc(store.getState().userInfo.customerId);
-      navigation.navigate("ChatInterface", {data: data})
+      setInitialDialog(false);
+      navigation.navigate("ChatInterface", {data: data});
     } else {
 
       setInitialDialog(false);
