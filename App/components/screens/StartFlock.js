@@ -28,7 +28,7 @@ const StartFlock = ({navigation, route}) => {
     const Tab = createMaterialTopTabNavigator();
     console.log('start flock index is', route.params);
     var ar = [<PageOne product = {route.params.product} data = {route.params.data} setCanNext={setCanNext} />, <PageTwo product = {route.params.product} data = {route.params.data} setCanNext={setCanNext} />, <ShareSocial product = {route.params.product} data = {route.params.data} flockId={flockId} />, <PageFour product = {route.params.product} data = {route.params.data} />];
-    return <ScrollView scrollEnabled={false} keyboardShouldPersistTaps="never"><ProgressHeader
+    return <ScrollView scrollEnabled={false} keyboardShouldPersistTaps="never" style={{backgroundColor: constants.PINK_BACKGROUND}}><ProgressHeader
     idText={"%"+flockId}
     nextRoute="StartFlock"
     backRoute="StartFlock"
@@ -108,7 +108,18 @@ const StartFlock = ({navigation, route}) => {
         navigation.goBack();
     }}
   />
+  <View style={{backgroundColor: 'white', overflow: 'hidden', marginTop: 10, backgroundColor: 'white', borderBottomLeftRadius: 40, borderBottomRightRadius: 40}}>
     {ar[route.params.index]}
+    </View>
+    <View style={{marginTop: 10, width: '90%', alignSelf: 'center'}}>
+        <Text style={{textAlign: 'center'}}>
+            Start a Flock
+        </Text>
+        <Text style={{marginTop: 20}}>Want a specific size, color, or specification? Start your own flock!</Text>
+        <Text style={{marginTop: 20}}>When enough flockers join and ownership reaches 100%, your flock takes flight!</Text>
+        <Text style={{marginTop: 20}}>We will order the item. When you want to use it, just choose the dates, and it will be shipped to you.</Text>
+        <Text style={{marginTop: 20}}>When another flocker requests it, you will ship it to them using the shipping label we provide.</Text>
+    </View>
   </ScrollView>
 }
 
@@ -215,19 +226,22 @@ const ProductPreview = ({product}) => {
         <Image style={{width: 50, height: null, marginRight: 10}} source={{uri: product.image}} />
         <View style={{flex:1}}>
             <Text style={{fontWeight: 'bold'}}>{product.title}</Text>
-            <Text style = {{textDecorationLine: 'line-through', color: constants.ORANGE, }}>${product.price}</Text>
+            <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 15}}>
+            <Text style = {{textDecorationLine: 'line-through', color: constants.ORANGE, marginRight: 10,}}>${product.price}</Text>
             <LinearGradient
           colors={[constants.YELLOW, constants.ORANGE]}
           start={{ x: 0, y: 1 }} end={{ x: 1, y: 1 }}
           style={{
             borderRadius: 30,
             //alignItems: 'center',
-            paddingLeft: 10,
-            paddingTop: 10,
-            paddingBottom: 10
+            paddingVertical: 5,
+            width: 130,
+            alignItems: 'center'
           }}><Text style={{color: 'white', fontSize: 14, fontFamily: constants.FONTBOLD}}>{"$" + (product.price / 25 * 1.4).toFixed(2) + " to flock"}</Text>
 </LinearGradient>
+</View>
         </View>
+        
     </View>
 }
 

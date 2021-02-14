@@ -7,6 +7,7 @@ import {
   ImageBackground,
   Image,
 } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import {constants} from 'App/constants';
 
 const renderCircle = (localIndex, globalIndex) => {
@@ -74,10 +75,7 @@ const ProgressHeader = ({
               navigation.navigate(backRoute, {index: index-1, data: data});
             }
           }}>
-          <Image
-            source={require('App/Assets/Images/Back_Icon.png')}
-            style={{height: 30, width: 30, marginBottom: 25, tintColor: constants.DARKGREY}}
-          />
+          <Icon name="chevron-left" color={constants.DARKGREY} size={30} style={{marginBottom: 20}} />
         </TouchableOpacity>
       );
     }

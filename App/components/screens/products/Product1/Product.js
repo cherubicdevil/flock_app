@@ -344,11 +344,11 @@ const Product = ({route, navigation}) => {
       
       <View style={{fontFamily: constants.FONT, paddingLeft: 10, paddingRight: 15}}>
 <Text style={{alignSelf: 'center', marginTop: 20, fontSize: 16}}>How Flock Works</Text>
-<Text style={{fontFamily: constants.FONT, marginTop: 10}}>Step 1: Drooling over an item but sobbing at the price? Add it onto our app!</Text>
-<Text style={{fontFamily: constants.FONT, marginTop: 10}}>Step 2: You can split the cost with other flockers who also want it. </Text>
-<Text style={{fontFamily: constants.FONT, marginTop: 10}}>Step 3: You co-own the item and store it with us. We’ll take care of the cleaning too.</Text>
-<Text style={{fontFamily: constants.FONT, marginTop: 10}}>Step 4: Whenever you want, we’ll send it to you. </Text>
-<Text style={{fontFamily: constants.FONT, marginTop: 10}}>Anything you want at a fraction of the cost, that is the magic of Flock!</Text>
+<Text style={{fontFamily: constants.FONT, marginTop: 10}}>Drooling over an item but sobbing at the price? Flock it on our app!</Text>
+<Text style={{fontFamily: constants.FONT, marginTop: 10}}>Share the item, and share the cost with other flockers who want it too.</Text>
+<Text style={{fontFamily: constants.FONT, marginTop: 10}}>We make sure the item is shared proportionate to ownership.</Text>
+<Text style={{fontFamily: constants.FONT, marginTop: 10}}>When you want, it will be shipped to you. When another flocker wants it, you ship it to them.</Text>
+<Text style={{fontFamily: constants.FONT, marginTop: 10}}>You also make money when the item is borrowed by other people!</Text>
 </View>
       </ScrollView>
       

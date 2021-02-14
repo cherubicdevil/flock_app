@@ -1,5 +1,5 @@
 import React, {useState, useRef, useEffect} from 'react';
-import {View, Text, SafeAreaView, Image, Modal, Button, TouchableOpacity} from 'react-native';
+import {View, Text, SafeAreaView, Image, Modal, Button, TouchableOpacity, ScrollView, Dimensions} from 'react-native';
 import {Calendar} from 'react-native-calendars';
 import moment from 'moment';
 import {firebase, db, au} from 'App/firebase/config';
@@ -48,28 +48,44 @@ const FlockReserve = ({navigation, route}) => {
     console.log(requestTypeIsRent,'rent?', route.params.data.memberIds, au.currentUser.uid);;
     const colors = (requestTypeIsRent)?[constants.LAVENDER, constants.PURPINK]:['#ff4d00', constants.PEACH];
     return <SafeAreaView style={{flex: 1, backgroundColor: constants.PINK_BACKGROUND}}>
+      
       {/* <Text>{requestTypeIsRent?"Borrow":"Flock"}</Text> */}
         {/* <Button title="back" onPress={()=>navigation.goBack()} style={{position: 'absolute', top: '10'}}/> */}
         {/* <View style={{height: 100, width: '100%', position: 'absolute', top: 0, zIndex: 400, backgroundColor: constants.TRANSLUCENT, borderBottomRightRadius: 30, borderBottomLeftRadius: 30}}> */}
         <HeaderGradient navigation={navigation} absolute={true} />
         {/* </View> */}
-        <View style={{backgroundColor: 'white', borderBottomLeftRadius: 60, borderBottomRightRadius: 60, overflow: 'hidden'}}>
-        <View style={{width: '100%', height: percent, borderBottomRightRadius: 60, borderBottomLeftRadius: 60, overflow: 'hidden'}}>
+        
+        <ScrollView style={{height:500, width: '100%', flex:1}}>
+        <View style={{width: '100%', height: 0.6 * Dimensions.get('window').height, borderBottomRightRadius: 0, borderBottomLeftRadius: 0, overflow: 'hidden'}}>
         <Image blurRadius={5} style = {{position: 'absolute', width: '100%', height: '100%', zIndex: -20}} source = {{uri: route.params.data.product.image}} />
         <Image style = {{width: '100%', height: '100%', resizeMode: 'contain'}} source = {{uri: route.params.data.product.image}} />
         
         </View>
-         <View style={{paddingHorizontal: 20, paddingVertical:10, backgroundColor: 'white'}}>
+        <View style={{backgroundColor: 'white', borderBottomLeftRadius: 60, borderBottomRightRadius: 60, overflow: 'hidden', paddingBottom:20}}>
+         <View style={{paddingHorizontal: 20, backgroundColor: 'white'}}>
         <Text style={{fontFamily: constants.FONT, fontWeight: 'bold'}}>{route.params.data.product.title}</Text>
-        <Text>Price: ${route.params.data.product.price}</Text>
-    {requestTypeIsRent?<Text>Rent Price: ${subtotal}</Text>:<Text>Price for Flocker: ${subtotal} + shipping</Text>}
+        <Text>Original Retail: <Text style={{textDecorationLine:'line-through'}}>${route.params.data.product.price}</Text></Text>
+    {requestTypeIsRent?<Text>Borrow Price: ${subtotal}</Text>:<Text>Price for Flocker: ${subtotal} + shipping</Text>}
     {requestTypeIsRent?<></>:<View style={{flexDirection: 'row', alignItems: 'center', marginTop: 20,}}><Text>You are in this flock.</Text><TouchableOpacity style={{padding: 10, backgroundColor: constants.ORANGE, borderRadius: 30, marginLeft:10}} onPress={()=>{
       navigation.navigate("FlockChatComplete",{data:route.params.data})
     }} >
       <Text style={{color: 'white'}}>Go to chat</Text>
       </TouchableOpacity></View>}
         </View>
+
         </View>
+        <View style={{paddingHorizontal: 10, paddingVertical: 20, marginHorizontal:10 }}>
+          <Text style={{textAlign: 'center'}}>
+            How Borrowing Works
+          </Text>
+          <Text style={{fontFamily: constants.FONT, marginTop: 10}}>Choose your item.</Text>
+          <Text style={{fontFamily: constants.FONT, marginTop: 10}}>Select the dates you want to use it.</Text>
+          <Text style={{fontFamily: constants.FONT, marginTop: 10}}>On the last day, ship the item using the mailing label we provide.</Text>
+
+          
+        </View>
+        </ScrollView>
+        
         
         <View style={{position: 'absolute', bottom: 30,width: '100%', flexDirection: 'row', marginBottom: 0, justifyContent: 'space-between', paddingLeft: 20, paddingRight: 20, alignItems: 'center', }}>
 
@@ -114,6 +130,8 @@ source={require('App/Assets/Images/Share_Icon_White_Earn.png') } />
 
         </View>
         </View>
+
+
         <AnimatedModal colored={true} colors={colors} visible={modalOpen} behind={true} close={()=>setModalOpen(false)} content={<ReserveCalendar navigation = {navigation} close={()=>{setModalOpen(false)}} route={route} myMarkedDates={myMarkedDates} setMyMarkedDates={setMyMarkedDates} othersMarkedDates={othersMarkedDates} subtotal={subtotal} />} />
         <CommentsModal data={route.params.data} modalVisible={commentsModalVisible} toggleFunc={()=>setCommentsModalVisible(false)} />
         </SafeAreaView>;
