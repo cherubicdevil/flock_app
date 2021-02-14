@@ -100,6 +100,10 @@ function ChatInterface({route, navigation}) {
       unsub();
     }
   },[])
+
+  useFocusEffect(()=>{
+    setPartOf(part);
+  }, []);
   const completeFunc = (customerId) => {
     // send to socket, which pushes a broadcast
     // test signal, send test, on receive, console log "RECEIVED"
@@ -418,12 +422,10 @@ return <ScrollView  style={{marginLeft: 15, overflow: 'visible', backgroundColor
 <ScrollView>
   
        <SmartCheckout billingOnly={true} confirmFunc={(customerId)=>{
-         au.currentUser.updateEmail(creditEmail);
+        //  au.currentUser.updateEmail(creditEmail);
          console.log('conffirrrrrm');
 setPartOf(true);
-dispatch({type: "UPDATE_DATA", payload: ["chatIds", "add", "array", route.params.data.id]});
-dispatch({type: "UPDATE_DATA", payload: ["chatGroups", "add", "array", route.params.data]});
-  route.params.data.members.push(memberInfo);
+  route.params.data.memberIds.push(au.currentUser.uid);
   completeFunc(customerId);
   setCreditModal(false);
        }} 

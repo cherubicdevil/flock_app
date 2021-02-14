@@ -35,6 +35,8 @@ const showCardIcon = (brand, color)=>{
     }
 
 const SmartCheckout = ({confirmFunc, cancelFunc, children, billingOnly=false, shippingOnly=false, showSummary=true, allowConfirm = (creditCardChanged, shippingChanged, )=>{
+
+
   if (billingOnly && shippingOnly) { //  both needed
     return changed && creditCardChanged;
   }
@@ -49,6 +51,7 @@ const SmartCheckout = ({confirmFunc, cancelFunc, children, billingOnly=false, sh
   return true;
 }}) => {
 console.log("HAS ID", hasId)
+const dispatch = useDispatch();
 const [billModal, setBillModal] = useState(false);
 const [shipModal, setShipModal] = useState(false);
 
@@ -115,6 +118,7 @@ const [creditInfo, setCreditInfo] = useState({
 });
 
 const allowed = allowConfirm(creditCardChanged, changed);
+console.log(allowed);
 return <><View style={{marginTop: 5,}} >
         <View style={[styles.row, {justifyContent: 'space-between'}]}>
             {!shippingOnly?
@@ -205,7 +209,12 @@ return <><View style={{marginTop: 5,}} >
                 console.log('pressed creditcard changed, changed',creditCardChanged, changed);
                 console.log("creditInfo", creditInfo);
                 // setErrorMessage("");
-                if (!allowConfirm(creditCardChanged, changed)) return;
+                if (!allowed) {
+                  setErrorMessage("Please fill out all required fields.");
+                  return;
+                } else {
+                  setErrorMessage("");
+                }
               if (hasId && creditCardChanged) {
                   console.log('has id and creditcardchanged');
                 updateCard(select.customerId, creditInfo);
@@ -217,44 +226,36 @@ return <><View style={{marginTop: 5,}} >
                   dispatch({type:'UPDATE_DATA', payload: ["customerId", null, null, id]});
                   console.log('done in profile change');
                   confirmFunc(id);
-                  setErrorMessage("");
                 })
               } else { // (!hasId || !creditCardChanged) && !changed == !hasId?
                   if (hasId) {
                       console.log('hasId');
                       confirmFunc(select.customerId);
-                      setErrorMessage("");
                   } else {
                       console.log('doesnt have id');
                       if (!changed && !creditCardChanged) {
                         confirmFunc(null);
-                        setErrorMessage("");
                         return;
                       }
                       if (changed && creditCardChanged) {
-                    createOrUpdate(hasId, select.customerId, info).then((id)=>{
+                    createOrUpdate(hasId, select.customerId, creditInfo).then((id)=>{
                         dispatch({type:'UPDATE_DATA', payload: ["customerId", null, null, id]});
                         console.log('done in profile change');
                         confirmFunc(id);
-                        setErrorMessage("");
                       });
 
                     } else if (billingOnly && creditCardChanged) {
-                      console.log(creditInfo['exp_month'], parseInt(creditInfo.exp_month));
-                      console.log("credit", {...creditInfo, exp_month: parseInt(creditInfo.exp_month), exp_year: parseInt(creditInfo.exp_year)});
+                      // console.log(creditInfo['exp_month'], parseInt(creditInfo.expMonth));
+                      const tempCredit = {...creditInfo, exp_month: parseInt(creditInfo.expMonth), exp_year: parseInt(creditInfo.expYear),expMonth: parseInt(creditInfo.expMonth), expYear: parseInt(creditInfo.expYear)};
+                      console.log("credit", tempCredit);
                       // createOrUpdate(hasId, select.customerId, info).then((id)=>{
-                      createOrUpdate(hasId, select.customerId, {...creditInfo, exp_month: parseInt(creditInfo.expMonth), exp_year: parseInt(creditInfo.expYear)}).then((id)=>{
+                      createOrUpdate(hasId, select.customerId, tempCredit).then((id)=>{
                         dispatch({type:'UPDATE_DATA', payload: ["customerId", null, null, id]});
                         console.log('done in profile change');
                         confirmFunc(id);
-                        setErrorMessage("");
                       });
-                    } else {
-                      setErrorMessage("Please fill out both billing and shipping information");
-                      return;
                     }
                   }
-                  setErrorMessage("");
                   
               }
 
