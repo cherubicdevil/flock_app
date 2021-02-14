@@ -57,7 +57,7 @@ const EggItem = ({image, text}) => {
     dispatch({type:'getEggs', payload: 10});
   }
   return <>
-  <View style={{marginBottom:-1, marginTop: 1,}}>
+  <View style={{marginBottom:-1, marginTop: 1,flex:1}}>
   <TouchableOpacity style={{flex: 1}} onPress={()=>setEggModalOpen(true)}>
   <InItem image={image} text={text} color={constants.GREYORANGE} />
   </TouchableOpacity>

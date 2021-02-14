@@ -192,18 +192,20 @@ const CamScreenTwo = ({navigation, route}) => {
             {/* <Text>Click to change product picture</Text> */}
             
             </View>
-            </View>
-            
+
             <TouchableOpacity onPress={()=>{
                     if (pinned) {
 
                     openChangePicture(true);
                     }
                   }}>
-            <View style={{height: 30, marginTop: 10, width: '80%', alignSelf:'center', backgroundColor:constants.PINK_BACKGROUND, borderRadius:40, paddingVertical:7}}>
-              <Text style={{color: constants.LAVENDER, textAlign:'center'}}>Change</Text>
+            <View style={{height: 30, paddingHorizontal: 5, marginTop: 10, width: '80%', alignSelf:'center', backgroundColor:constants.PINK_BACKGROUND, borderRadius:40, paddingVertical:7}}>
+              <Text style={{color: constants.LAVENDER, textAlign:'center'}}>Choose Image</Text>
             </View>
             </TouchableOpacity>
+            </View>
+            
+            
             </View>
             <View style={{justifyContent: 'flex-start', flex: 1, marginTop: 5,}}>
             <View style={{marginBottom: 10}}>
@@ -505,7 +507,7 @@ const CamScreenTwo = ({navigation, route}) => {
                     console.log(err);
                   }
                 }}>
-                <Icon name="chevron-left" size={25} />
+                <Icon name="chevron-left" size={25} color={constants.LAVENDER} />
                 </TouchableOpacity>
                 <TouchableOpacity style={{backgroundColor: 'yello'}} onPress={()=>{
                   try {
@@ -514,7 +516,7 @@ const CamScreenTwo = ({navigation, route}) => {
                     console.log(err);
                   }
                 }}>
-                <Icon name="chevron-right" size={25} />
+                <Icon name="chevron-right" size={25} color={constants.LAVENDER}/>
                 </TouchableOpacity>
               </View>
                 </View>

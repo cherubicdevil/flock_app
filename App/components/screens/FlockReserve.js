@@ -10,6 +10,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import { rentPrice } from '../../utils';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import HeaderGradient from '../HeaderGradient';
+import CommentsModal from 'App/components/screens/videopage/CommentsModal';
 
 
 const FlockReserve = ({navigation, route}) => {
@@ -17,6 +18,7 @@ const FlockReserve = ({navigation, route}) => {
     
     const [othersMarkedDates, setOthersMarkedDates] = useState({});
     const [myMarkedDates, setMyMarkedDates] = useState({});
+    const [commentsModalVisible, setCommentsModalVisible] = useState(false);
 
       useEffect(()=> {
         console.log(route.params.data.id, "DATA ID");
@@ -39,11 +41,11 @@ const FlockReserve = ({navigation, route}) => {
 
 
     const [modalOpen, setModalOpen] = useState(false);
-    
-    console.log(route.params);
+    const requestTypeIsRent = !route.params.data.memberIds.includes(au.currentUser.uid);
+    // console.log(route.params);
     const subtotal = requestTypeIsRent?rentPrice(route.params.data.product.price):"0.00"
-    const requestTypeIsRent = route.params.data.memberIds.includes(au.currentUser.uid);
-    console.log(requestTypeIsRent,'rent?');;
+
+    console.log(requestTypeIsRent,'rent?', route.params.data.memberIds, au.currentUser.uid);;
     const colors = (requestTypeIsRent)?[constants.LAVENDER, constants.PURPINK]:['#ff4d00', constants.PEACH];
     return <SafeAreaView style={{flex: 1, backgroundColor: constants.PINK_BACKGROUND}}>
       {/* <Text>{requestTypeIsRent?"Borrow":"Flock"}</Text> */}
@@ -71,22 +73,37 @@ const FlockReserve = ({navigation, route}) => {
         
         <View style={{position: 'absolute', bottom: 30,width: '100%', flexDirection: 'row', marginBottom: 0, justifyContent: 'space-between', paddingLeft: 20, paddingRight: 20, alignItems: 'center', }}>
 
-            <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-{/* <Image source={constants.PLACEHOLDER_IMAGE } style={{width: 30, aspectRatio:1, marginRight: 10,}}/> */}
+        <View style={{flexDirection: 'row',height: '100%', flex: 1,marginRight: 10, marginLeft:20, justifyContent: 'space-between', alignItems: 'center', }}>
 
-<View style={{justifyContent: 'center', alignItems: 'center', marginRight: 10,}}><Image source = {require('App/Assets/Images/heart.png')} style={{width: 35, height: 35,  shadowOpacity: 0.2, shadowOffset: {height:1 , width: 0}}} />
-<Text style={{position: 'absolute', top: 10,fontSize: 16}}>34</Text>
+<View style={{flexDirection: 'row', flex: 1, justifyContent: 'space-between', marginRight: 20}}>
+<View style={{justifyContent: 'center', alignItems: 'center', shadowOpacity: 0.3, shadowColor: '#555', shadowOffset: {height: 2, width: 0},}}>
+  <Image source = {require('App/Assets/Images/heart.png')} style={{width: 30, height: 30,  shadowOpacity: 0.2, shadowOffset: {height:1 , width: 0}}} />
+<Text style={{position: 'absolute', top: 12,fontSize: 12, textAlign: 'center', color: constants.LAVENDER}}>{route.params.data.likes}</Text>
 </View>
+
+<TouchableOpacity style={{shadowOpacity: 0.3, shadowColor: '#555', shadowOffset: {height: 2, width: 0},}} onPress={()=>{
+  setCommentsModalVisible(true);
+}}>
+<Image
+style={{height: 35, width: 35, aspectRatio: 1, marginTop: 3}}
+source={require('App/Assets/Images/Comment_Icon_White.png')}
+/>
+</TouchableOpacity>
+
 
 <TouchableOpacity  onPress={()=>{
   navigation.navigate('ShareSocial', {product:route.params.data.product, data:{}, flockId: route.params.data.id})
 }}>
 <Image 
-style={{shadowOpacity: 0.4, shadowOffset:{height:2, width:0},  width: 40, height: 40, aspectRatio:1}}
+style={{shadowOpacity: 0.3, shadowOffset:{height:2, width:0},  width: 35, height: 35, aspectRatio:1}}
 source={require('App/Assets/Images/Share_Icon_White_Earn.png') } />
 </TouchableOpacity>
+</View>
+
+
 
 </View>
+<View>
         <TouchableOpacity style={{justifyContent: 'center', alignItems: 'center', width: 150, height: 50, backgroundColor: constants.ORANGE, borderRadius: 40, overflow: 'hidden'}} onPress={()=>{
           setModalOpen(true);
         }}>
@@ -94,8 +111,11 @@ source={require('App/Assets/Images/Share_Icon_White_Earn.png') } />
           <Text style={{fontWeight: 'bold', color: 'white', fontSize: 14, fontFamily: constants.FONT}}>Check Availability</Text>
         </LinearGradient>
         </TouchableOpacity>
+
+        </View>
         </View>
         <AnimatedModal colored={true} colors={colors} visible={modalOpen} behind={true} close={()=>setModalOpen(false)} content={<ReserveCalendar navigation = {navigation} close={()=>{setModalOpen(false)}} route={route} myMarkedDates={myMarkedDates} setMyMarkedDates={setMyMarkedDates} othersMarkedDates={othersMarkedDates} subtotal={subtotal} />} />
+        <CommentsModal data={route.params.data} modalVisible={commentsModalVisible} toggleFunc={()=>setCommentsModalVisible(false)} />
         </SafeAreaView>;
 }
 
@@ -116,7 +136,9 @@ const ReserveCalendar = ({navigation, route, close, myMarkedDates, othersMarkedD
     setMyMarkedDates(marked);
 } 
 
-const requestTypeIsRent = route.params.data.members.includes({name: au.currentUser.displayName, uid: au.currentUser.uid});
+const requestTypeIsRent = !route.params.data.memberIds.includes(au.currentUser.uid);
+console.log('HELOOOOOOO');
+console.log(requestTypeIsRent, route.params.data.members);
 const numDays = requestTypeIsRent?4:8;
 
 const handleDayPress = (day) => {
@@ -149,7 +171,7 @@ const handleDayPress = (day) => {
         var startOrEnd = marking['startingDay'] || marking['endingDay'];
         console.log(date);
         var color = requestTypeIsRent?constants.PURPLE:constants.ORANGE;
-        var fadedColor = "rgba(255, 221, 214, 1)";
+        var fadedColor = requestTypeIsRent?constants.PINK_BACKGROUND_OPAQUE:"rgba(255, 221, 214, 1)";
         var isAfter = inRange(date.dateString); // moment(date.dateString).isAfter(moment(new Date()));
         // add two months/four months is also disqualified...
         var disqualified = Object.entries(marking).length === 0 || !isAfter;
@@ -230,7 +252,7 @@ const handleDayPress = (day) => {
           }
         } else if (marking['type'] === 'otherReserved') {
           textStyle['textDecorationLine'] = 'line-through';
-          textStyle['textDecorationLineColor'] = fadedColor;
+          // textStyle['textDecorationLineColor'] = fadedColor;
           textStyle['color'] = fadedColor;
           // markStyle['backgroundColor'] = fadedColor;
         }

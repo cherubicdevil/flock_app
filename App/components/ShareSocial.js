@@ -48,7 +48,7 @@ fontFamily: 'Nunito', fontWeight: 'bold', fontSize: 16}}>search {<Text style={{c
         </View>
         </>:<></>}
       </ViewShot>:
-      <ViewShot ref={img} options={{ result: "base64", format: "jpg", quality: 0.9 }}>
+      <ViewShot ref={img} options={{ result: "base64", format: "jpg", quality: 1 }}>
       {/* <ResizeableImage source = {{uri: product.image}} wLimit={Dimensions.get('window').width} /> */}
       <View style={{marginTop: 40, overflow: 'hidden', resizeMode: 'contain'}}>
           {/* <Text style={{fontSize: 24, textAlign: 'center',fontWeight: 'bold'}}>Shop with friends</Text> */}
