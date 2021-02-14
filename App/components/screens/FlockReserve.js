@@ -11,6 +11,7 @@ import { rentPrice } from '../../utils';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import HeaderGradient from '../HeaderGradient';
 import CommentsModal from 'App/components/screens/videopage/CommentsModal';
+import Description from 'App/components/Description';
 
 
 const FlockReserve = ({navigation, route}) => {
@@ -61,11 +62,15 @@ const FlockReserve = ({navigation, route}) => {
         <Image style = {{width: '100%', height: '100%', resizeMode: 'contain'}} source = {{uri: route.params.data.product.image}} />
         
         </View>
+
         <View style={{backgroundColor: 'white', borderBottomLeftRadius: 60, borderBottomRightRadius: 60, overflow: 'hidden', paddingBottom:20}}>
          <View style={{paddingHorizontal: 20, backgroundColor: 'white'}}>
-        <Text style={{fontFamily: constants.FONT, fontWeight: 'bold'}}>{route.params.data.product.title}</Text>
+           <Description colors={[constants.LAVENDER, constants.GREYBLUE]} brand={route.params.data.product.brand} title={route.params.data.product.title} price={route.params.data.product.price} bannerText={(price)=>{
+              return requestTypeIsRent?subtotal +" to borrow":"$0.00 for flocker" 
+           }} />
+        {/* <Text style={{fontFamily: constants.FONT, fontWeight: 'bold'}}>{route.params.data.product.title}</Text>
         <Text>Original Retail: <Text style={{textDecorationLine:'line-through'}}>${route.params.data.product.price}</Text></Text>
-    {requestTypeIsRent?<Text>Borrow Price: ${subtotal}</Text>:<Text>Price for Flocker: ${subtotal} + shipping</Text>}
+    {bannerText(subtotal)} */}
     {requestTypeIsRent?<></>:<View style={{flexDirection: 'row', alignItems: 'center', marginTop: 20,}}><Text>You are in this flock.</Text><TouchableOpacity style={{padding: 10, backgroundColor: constants.ORANGE, borderRadius: 30, marginLeft:10}} onPress={()=>{
       navigation.navigate("FlockChatComplete",{data:route.params.data})
     }} >

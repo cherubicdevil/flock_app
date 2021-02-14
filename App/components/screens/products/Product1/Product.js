@@ -13,6 +13,7 @@ import {
   Dimensions,
   Animated
 } from 'react-native';
+import Description from 'App/components/Description';
 import HowTo from 'App/HowTo';
 import CommentsModal from 'App/components/screens/videopage/CommentsModal';
 import { CommonActions } from '@react-navigation/native';
@@ -167,36 +168,7 @@ const Product = ({route, navigation}) => {
     );
   };
 
-  const renderDescription = () => {
-    return (
-      <View>
-        <Text style={{fontSize: 14, marginBottom: 5,}}>
-        <Text style={{fontWeight: 'bold'}}>{route.params.album.brand?route.params.album.brand+" ":""}</Text>{route.params.album.title}
-        </Text>
-        <View style={{flexDirection:'row', alignItems: 'center'}}>
-        <Text style={{textDecorationLine: 'line-through', fontFamily: constants.FONTBOLD, color: constants.ORANGE, fontSize: 15}}>
-          ${route.params.album.price}
-        </Text>
-        {/*<Text style={styles.descriptionText}>50 flockers have bought</Text>*/}
-        {/*<Text style={styles.descriptionText}>Recommended by username</Text>*/}
-        <LinearGradient
-          colors={[constants.YELLOW, constants.ORANGE]}
-          start={{ x: 0, y: 1 }} end={{ x: 1, y: 1 }}
-          style={{
-            alignSelf: 'center',
-            marginLeft: 10, 
-            borderRadius: 30,
-            zIndex: 40,
-          }}><TouchableOpacity style={{borderRadius: 30, color: 'white', justifyContent: 'center', alignItems:'center',paddingVertical: 5, paddingLeft: 10, paddingRight: 10}}><Text style={{color: 'white', fontSize: 14, fontFamily: constants.FONTBOLD}}>{"$" + (parseFloat(route.params.album.price) / 25 * 1.4).toFixed(2) + " when you flock"}</Text></TouchableOpacity>
-</LinearGradient>
-      <View style={{position: 'absolute', right: 0}}>
-        <HelpDialog text="Incorrect or missing title, description, or product picture? Notify us below." context={{uid: au.currentUser.uid, name: au.currentUser.displayName, productName: route.params.album.title, productId: route.params.album.id}} />
-          </View>
-        </View>
-        
-      </View>
-    );
-  };
+
 
    const renderNavigator = () => {
     return (
@@ -315,7 +287,7 @@ const Product = ({route, navigation}) => {
               //backgroundColor: 'white',
             }}>
             
-            <View style={styles.productRow}>{renderDescription()}</View>
+            <View style={styles.productRow}><Description brand={route.params.album.brand} price={route.params.album.price} title={route.params.album.title} productId={route.params?.data?.id} /></View>
             <View style={[styles.productRow, {backgroundColor: 'white'}]}>
             <Text style={{fontWeight: 'bold'}}>{flockAr.reduce((total, item)=>total + item.members.length, 0)} people are currently flocking.</Text>
             <TouchableOpacity onPress={()=>{
