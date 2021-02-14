@@ -83,7 +83,7 @@ const StartFlock = ({navigation, route}) => {
         //navigation.navigate("Carousel");
         firebase.firestore().collection("chatGroups").doc(flockId).set(data).then((docRef)=>{
             // data["id"] = docRef.id;
-            console.log(docRef.id, "IDDDDDD");
+            // console.log(docRef.id, "IDDDDDD");
             db.collection('users').doc(firebase.auth().currentUser.uid).update({
                 chatIds: firebase.firestore.FieldValue.arrayUnion(docRef.id)
               }).catch(err=>{
@@ -95,20 +95,17 @@ const StartFlock = ({navigation, route}) => {
             console.log("make start flock eeorr", err);
         });
 
-        navigation.dispatch(
-            CommonActions.reset({
-              index: 2,
-              routes: [
-                { name: 'Product', params:{album: route.params.product, data: route.params.data, id: route.params.data.id} },
-                { name: 'Carousel'},
-                {name: 'ChatInterface', params:{data:data}},
-
-
-
-              ],
-            })
-          );
-        // navigation.goBack();
+        // navigation.dispatch(
+        //     CommonActions.reset({
+        //       index: 2,
+        //       routes: [
+        //         { name: 'Product', params:{album: route.params.product, data: route.params.data, id: route.params.data.id} },
+        //         { name: 'Carousel'},
+        //         {name: 'ChatInterface', params:{data:data}},
+        //       ],
+        //     })
+        //   );
+        navigation.goBack();
     }}
   />
     {ar[route.params.index]}

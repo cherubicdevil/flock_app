@@ -16,6 +16,7 @@ import {
   TouchableWithoutFeedback,
   TextInput
 } from 'react-native';
+import HowTo from 'App/HowTo';
 import HeaderGradient from 'App/components/HeaderGradient';
 import Icon from 'react-native-vector-icons/FontAwesome';
 // import Slider from '@react-native-community/slider';
@@ -171,7 +172,9 @@ const PriceSlider = ({priceShareInitialPercent, completeFunc=()=>{}, productPric
       </View>
       {/* <Text style={{color:'white', marginBottom: 10, fontWeight: 'bold'}}>Have it now if you  ${(route.params.data.product.price / route.params.data.members.length).toFixed(2)}.</Text>
       <Text style={{color:'white', marginBottom: 10, fontWeight: 'bold'}}>Want to pay less? Get more people to join!</Text> */}
-      <AnimatedModal colored={true} colors={[constants.PEACH, constants.GREYORANGE]} nested={true} visible={infoModal} close={()=>{setInfoModal(false)}}></AnimatedModal>
+      <AnimatedModal colored={true} colors={[constants.PEACH, constants.GREYORANGE]} nested={true} visible={infoModal} close={()=>{setInfoModal(false)}}>
+          <HowTo />
+      </AnimatedModal>
       </>;
   
     } else {
