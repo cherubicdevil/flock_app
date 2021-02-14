@@ -57,6 +57,8 @@ const [creditCardChanged, setCreditCardChanged] = useState(false);
 const [hasId, setHasId] = useState(false);
 const select = useSelector(state=>state.userInfo);
 
+const [errorMessage, setErrorMessage] = useState("");
+
 useEffect(()=>{
   if (select.customerId === "none" || select.customerId === undefined) {
     console.log("NOETAPPLCABE", select.customerId);
@@ -154,7 +156,7 @@ return <><View style={{marginTop: 5,}} >
             :<Text style={{color: constants.RED, textAlign: 'right'}}>Needs Action</Text>}
             </View>
             <View style={{marginRight: 20}}>
-            <Icon name="chevron-right" size={20} />
+            <Icon name="chevron-right" size={20} color={constants.DARKGREY} />
             </View>
             </View>
             </TouchableOpacity>
@@ -201,34 +203,46 @@ return <><View style={{marginTop: 5,}} >
             }}
             onPress={() => {
                 console.log('pressed creditcard changed, changed',creditCardChanged, changed);
+                setErrorMessage("");
                 if (!allowConfirm(creditCardChanged, changed)) return;
               if (hasId && creditCardChanged) {
                   console.log('has id and creditcardchanged');
                 updateCard(select.customerId, creditInfo);
                 confirmFunc(select.customerId);
+                setErrorMessage("");
               } else if (changed) { // update shipping info
                 console.log('changed shipping');
                 createOrUpdate(hasId, select.customerId, info).then((id)=>{
                   dispatch({type:'UPDATE_DATA', payload: ["customerId", null, null, id]});
                   console.log('done in profile change');
                   confirmFunc(id);
+                  setErrorMessage("");
                 })
               } else { // (!hasId || !creditCardChanged) && !changed == !hasId?
                   if (hasId) {
                       console.log('hasId');
                       confirmFunc(select.customerId);
+                      setErrorMessage("");
                   } else {
                       console.log('doesnt have id');
                       if (!changed && !creditCardChanged) {
                         confirmFunc(null);
+                        setErrorMessage("");
                         return;
                       }
+                      if (changed && creditCardChanged) {
                     createOrUpdate(hasId, select.customerId, info).then((id)=>{
                         dispatch({type:'UPDATE_DATA', payload: ["customerId", null, null, id]});
                         console.log('done in profile change');
                         confirmFunc(id);
+                        setErrorMessage("");
                       });
+                    } else {
+                      setErrorMessage("Please fill out both billing and shipping information");
+                      return;
+                    }
                   }
+                  setErrorMessage("");
                   
               }
 
@@ -245,6 +259,7 @@ return <><View style={{marginTop: 5,}} >
             </Text>
           </TouchableOpacity>
         </View>
+        <Text style={{textAlign: 'center', color: constants.RED}}>{errorMessage}</Text>
         </View>
         <AnimatedModal nested = {true} keyboard={true} upPercent="60%" colored={true} colors={[constants.ORANGE, constants.GREYORANGE]} visible={billModal} close={()=>setBillModal(false)} state={info} setState={setInfo} content={<BillingModal state={creditInfo} setState={setCreditInfo} setChanged={setCreditCardChanged} close={()=>setBillModal(false)}/>}/>
 <AnimatedModal nested = {true} keyboard={true} colored={true} colors={[constants.ORANGE, constants.GREYORANGE]} visible={shipModal} close={()=>setShipModal(false)} state={info} setState={setInfo} content={<ShippingModal state={info} setState={setInfo} setChanged={setChanged} close={()=>setShipModal(false)}/>}/>
