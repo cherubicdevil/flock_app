@@ -30,16 +30,18 @@ const StartFlock = ({navigation, route}) => {
     const [canNext, setCanNext] = useState(true);
 
     const [creditEmail, setCreditEmail] = useState(select.email);
+    const [localEmail, setLocalEmail] = useState(creditEmail);
     const [creditModal, setCreditModal] = useState(false);
 
 
     const Tab = createMaterialTopTabNavigator();
     console.log('start flock index is', route.params);
     console.log('customer email', select.email);
+    console.log('data', route.params.data);
 
     useEffect(()=>{
         setCreditEmail(select.email);
-    }, select);
+    }, [select]);
     var ar = [<PageOne product = {route.params.product} data = {route.params.data} setCanNext={setCanNext} />, <PageTwo product = {route.params.product} data = {route.params.data} setCanNext={setCanNext} />, <ShareSocial product = {route.params.product} data = {route.params.data} flockId={flockId} />, <PageFour product = {route.params.product} data = {route.params.data} />];
     return <ScrollView scrollEnabled={false} keyboardShouldPersistTaps="never" style={{backgroundColor: constants.PINK_BACKGROUND}}>
     <ProgressHeader
@@ -150,25 +152,25 @@ const StartFlock = ({navigation, route}) => {
        cancelFunc={()=>{
            setCreditModal(false);
        }}
-       confirmFunc={()=>{
-           setCreditModal(false);
-       }}
+
        allowConfirm={(creditChanged, shippingChanged, hasId)=>{
          const validEmail = (em)=>{
           return em !== "" && em !== undefined && em.indexOf("@") != -1;
          }
-         console.log("valid email????", validEmail(creditEmail));
-         console.log((creditChanged || hasId) && validEmail(creditEmail))
-         return (creditChanged || hasId) && validEmail(creditEmail);
-       }} confirmFunc={(customerId)=>{
+         console.log("valid email????", validEmail(localEmail));
+         console.log((creditChanged || hasId) && validEmail(localEmail))
+         return (creditChanged || hasId) && validEmail(localEmail);
+       }} 
+       
+       confirmFunc={(customerId)=>{
         //  au.currentUser.updateEmail(creditEmail);
         console.log("YYYYYYYYYYYYYYYYY");
-        dispatch({type:'UPDATE_DATA', payload: ["email", null, null, creditEmail]});
+        dispatch({type:'UPDATE_DATA', payload: ["email", null, null, localEmail]});
         db.collection('users').doc(au.currentUser.uid).update({
-          email: creditEmail,
+          email: localEmail,
         });
-         
-         data.maxValue = priceValue;
+        //  console.log("dAtA",data);
+        //  route.params.data.maxValue = priceValue;
          // console.log('route  id', route.params.data.id);
         //  db.collection('chatGroups').doc(data.id).update({
         //   //  members: firebase.firestore.FieldValue.arrayUnion(memberInfo),
@@ -181,19 +183,22 @@ const StartFlock = ({navigation, route}) => {
 //   }, 500);
     // navigation.navigate("ChatInterface", {data:route.params.data});
     setCreditModal(false);
+    setCreditEmail(localEmail);
 
   // setCreditModal(false);
        }} 
+
+
        cancelFunc={()=>{
-         
+            setCreditModal(false);
        }}
        >
          <View style={{marginHorizontal: 30, marginTop: 10}}>
          <Text>Email</Text>
          <TextInput keyboardType="email-address" style={{paddingLeft: 20, borderWidth: 1, borderColor: constants.DARKGREY, borderRadius: 40, paddingVertical: 5, marginTop: 15}} keyboardType="email-address" defaultValue={au.currentUser.email} 
-         value={creditEmail}
+         value={localEmail}
          onChangeText={(text)=>{
-          setCreditEmail(text.toLowerCase());
+          setLocalEmail(text.toLowerCase());
          }}
          />
          </View>
@@ -229,6 +234,7 @@ const PageOne = ({product, data, setCanNext}) => {
 }
 
 const PageTwo = ({product, data, setCanNext}) => {
+    console.log("DATA", data);
 
 
     const [errorMessage, setErrorMessage] = useState("");
@@ -239,12 +245,13 @@ const PageTwo = ({product, data, setCanNext}) => {
     useFocusEffect(()=>{
         setCanNext
     }, []);
-    data.maxPrice = priceValue;
+    // data = {...data, maxPrice: priceValue};
+    const maxPricePercentage = Math.round(100 * parseFloat(priceValue) / (1.4 * parseFloat(product.price)));
     return <View style={styles.container}>
         <Text style={{color: 'red'}}>{errorMessage}</Text>
     <Text style={{fontWeight: 'bold', marginBottom: 20}}>Enter your price. Minimum: ${(product.price/25 * 1.4).toFixed(2)}.</Text>
     
-    <PriceSlider priceShareInitialPercent={50} productPrice ={product.price} remainingPercent={100} maximums={{}} setOutsideState={setPriceValue} confirm = {false} />
+    <PriceSlider priceShareInitialPercent={maxPricePercentage} productPrice ={product.price} remainingPercent={100} maximums={{}} setOutsideState={setPriceValue} confirm = {false} />
     
     
 

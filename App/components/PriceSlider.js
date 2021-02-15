@@ -115,7 +115,7 @@ const PriceSlider = ({priceShareInitialPercent, completeFunc=()=>{}, productPric
             onValuesChange={(stuff)=>{
               // setPriceShare((parseInt(stuff[0])/100 * productPrice).toFixed(2));
               // if (!changeable) return;
-              if (stuff[0] >= 8 && stuff[0] <= 100) {
+              if (stuff[0] >= 4 && stuff[0] <= 100) {
               setPricePercent(stuff[0]);
               }
               // console.log(stuff);
