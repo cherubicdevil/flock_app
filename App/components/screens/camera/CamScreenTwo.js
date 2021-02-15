@@ -193,6 +193,8 @@ const CamScreenTwo = ({navigation, route}) => {
             
             </View>
 
+
+            </View>
             <TouchableOpacity onPress={()=>{
                     if (pinned) {
 
@@ -203,8 +205,6 @@ const CamScreenTwo = ({navigation, route}) => {
               <Text style={{color: constants.LAVENDER, textAlign:'center'}}>Choose Image</Text>
             </View>
             </TouchableOpacity>
-            </View>
-            
             
             </View>
             <View style={{justifyContent: 'flex-start', flex: 1, marginTop: 5,}}>

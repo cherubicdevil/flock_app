@@ -38,7 +38,7 @@ const SmartCheckout = ({confirmFunc, cancelFunc, children, billingOnly=false, sh
 
 
   if (billingOnly && shippingOnly) { //  both needed
-    return changed && creditCardChanged;
+    return shippingChanged && creditCardChanged;
   }
   
   if (billingOnly) {
@@ -130,7 +130,7 @@ const allowed = allowConfirm(creditCardChanged, changed, hasId);
 console.log("??????????", allowed);
 return <><View style={{marginTop: 5,}} >
         <View style={[styles.row, {justifyContent: 'space-between'}]}>
-            {!shippingOnly?
+            {!shippingOnly || (billingOnly && shippingOnly)?
             <TouchableOpacity 
             style={{marginRight: 10,width: '100%', justifyContent: 'space-between', flexDirection:'row'}}
             onPress={()=>{
@@ -151,7 +151,7 @@ return <><View style={{marginTop: 5,}} >
             <></>
             }
         </View>
-                  {!billingOnly?
+                  {!billingOnly || (billingOnly && shippingOnly) ?
         <View style={[styles.row, {justifyContent: 'space-between'}]}>
 
             <TouchableOpacity 

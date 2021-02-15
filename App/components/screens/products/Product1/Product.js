@@ -195,15 +195,17 @@ const Product = ({route, navigation}) => {
           <View style={styles.coverImage}>
 
             <View style={{resizeMode: 'cover'}}>
-            <Image
+            <ResizeableImage
               style={{
-                width: '100%',
-                resizeMode: 'cover',
-                aspectRatio: 1,
-                height: '100%',
+                // width: '100%',
+                // resizeMode: 'contain',
+                aspectRatio: 0.5,
+                // height: 500,
                 //height: 200,
+                marginTop: 50,
                 alignSelf: 'center',
               }}
+              
               source={{uri: route.params.album.image}}
             />
             </View>
@@ -566,7 +568,7 @@ const FlockList = ({product, navigation, ar, close, limited = true, randomId}) =
       </View>
     );
   }
-  return <ScrollView decelerationRate={0.5} ref={scrollRef} pagingEnabled={limited} showsVerticalScrollIndicator={false} style={{padding:0, paddingBottom: 10, height: limited?(result.length<=1?50:100):'100%'}}>
+  return <ScrollView decelerationRate={0.5} ref={scrollRef} pagingEnabled={limited} showsVerticalScrollIndicator={false} style={{padding:0, paddingBottom: 10, height: limited?(result.length==1?50:100):'100%'}}>
   {result.length > 0?<>{result}<View style={{height: 50}} /></>:(<View style={{height: 60}}>
     <View style={{borderTopWidth: 1, borderColor: constants.PINK_BACKGROUND_OPAQUE, paddingTop: 15, paddingLeft:20, marginTop: 10, alignItems: 'center', flexDirection: 'row'}}>
     <Text>No current flocks.</Text>
