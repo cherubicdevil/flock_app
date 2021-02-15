@@ -454,10 +454,9 @@ return <ScrollView  style={{marginLeft: 15, overflow: 'visible', backgroundColor
 setPartOf(true);
   route.params.data.memberIds.push(au.currentUser.uid);
   completeFunc(customerId);
-  setTimeout(()=>{
-    setCreditModal(false);
     navigation.navigate("ChatInterface", {data:route.params.data});
-  }, 1000)
+    setCreditModal(false);
+
   // setCreditModal(false);
        }} 
        cancelFunc={()=>{
