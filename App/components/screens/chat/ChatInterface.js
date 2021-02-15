@@ -45,6 +45,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {useSelector, useDispatch} from 'react-redux';
 import LinearGradient from 'react-native-linear-gradient';
 import Countdown from 'App/components/Countdown';
+import HowTo from 'App/HowTo';
 
 const barHeight = 25;
 var initialPercentTemp;
@@ -597,7 +598,10 @@ const [infoModal, setInfoModal] = useState(false);
   </TouchableOpacity>
   </View>
   </View>
-    <AnimatedModal colored={true} colors={[constants.PEACH, constants.GREYORANGE]} nested={true} visible={infoModal} close={()=>{setInfoModal(false)}}></AnimatedModal>
+    <AnimatedModal colored={true} colors={[constants.PEACH, constants.GREYORANGE]} nested={true} visible={infoModal} close={()=>{setInfoModal(false)}}>
+      <HowTo />
+
+    </AnimatedModal>
   </>;
 }
 

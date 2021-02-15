@@ -56,7 +56,9 @@ const FlockReserve = ({navigation, route}) => {
         <HeaderGradient navigation={navigation} absolute={true} />
         {/* </View> */}
         
-        <ScrollView style={{height:500, width: '100%', flex:1}}>
+        <ScrollView 
+        showsVerticalScrollIndicator={false}
+        style={{height:500, width: '100%', flex:1}}>
         <View style={{width: '100%', height: 0.6 * Dimensions.get('window').height, borderBottomRightRadius: 0, borderBottomLeftRadius: 0, overflow: 'hidden'}}>
         <Image blurRadius={5} style = {{position: 'absolute', width: '100%', height: '100%', zIndex: -20}} source = {{uri: route.params.data.product.image}} />
         <Image style = {{width: '100%', height: '100%', resizeMode: 'contain'}} source = {{uri: route.params.data.product.image}} />
@@ -66,7 +68,7 @@ const FlockReserve = ({navigation, route}) => {
         <View style={{backgroundColor: 'white', borderBottomLeftRadius: 60, borderBottomRightRadius: 60, overflow: 'hidden', paddingBottom:20}}>
          <View style={{paddingHorizontal: 20, backgroundColor: 'white'}}>
            <Description colors={[constants.LAVENDER, constants.GREYBLUE]} brand={route.params.data.product.brand} title={route.params.data.product.title} price={route.params.data.product.price} bannerText={(price)=>{
-              return requestTypeIsRent?"Borrow price: "+ subtotal +" to borrow":"$0.00 for flocker" 
+              return requestTypeIsRent?subtotal +" to borrow":"$0.00 for flocker" 
            }} />
         {/* <Text style={{fontFamily: constants.FONT, fontWeight: 'bold'}}>{route.params.data.product.title}</Text>
         <Text>Original Retail: <Text style={{textDecorationLine:'line-through'}}>${route.params.data.product.price}</Text></Text>
