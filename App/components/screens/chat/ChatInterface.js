@@ -162,9 +162,9 @@ function ChatInterface({route, navigation}) {
   const socket = useRef(null);
   const [testMessages, setTestMessages] = useState("");
   const [recvMessages, setRecvMessages] = useState(route.params.data.messages);
-  useFocusEffect(()=>{
-    // setRecvMessages(route.params.data.messages);
-  }, []);
+  // useFocusEffect(()=>{
+  //   setRecvMessages(route.params.data.messages);
+  // }, []);
   //const [recvMessages, setRecvMessages] = useState([testSystemMessage]);
   const [dummyState, setDummyState] = useState(0);
   const dispatch = useDispatch();

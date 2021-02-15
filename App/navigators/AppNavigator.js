@@ -43,6 +43,7 @@ const AppNavigator5 = () => {
         //initialRouteName="ProfileMain"
         screenOptions={{
           headerShown: false,
+          unmountOnBlur: true,
           //animationEnabled: false,
         }}>
         <Tab.Screen
