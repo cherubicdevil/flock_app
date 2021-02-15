@@ -127,7 +127,7 @@ const [creditInfo, setCreditInfo] = useState({
 });
 
 const allowed = allowConfirm(creditCardChanged, changed);
-console.log(allowed);
+console.log("??????????", allowed);
 return <><View style={{marginTop: 5,}} >
         <View style={[styles.row, {justifyContent: 'space-between'}]}>
             {!shippingOnly?

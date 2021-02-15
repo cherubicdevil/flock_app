@@ -426,11 +426,17 @@ return <ScrollView  style={{marginLeft: 15, overflow: 'visible', backgroundColor
        <KeyboardAvoidingView behavior="position" style={{flex: 1}} keyboardVerticalOffset={-200}>
 <ScrollView>
   
-       <SmartCheckout billingOnly={true} confirmFunc={(customerId)=>{
+       <SmartCheckout billingOnly={true} allowConfirm={(creditChanged, )=>{
+         const validEmail = (em)=>{
+          return em !== "" && em.indexOf("@") != -1;
+         }
+         console.log("valid email????", validEmail(creditEmail));
+         return creditChanged && validEmail(creditEmail);
+       }} confirmFunc={(customerId)=>{
         //  au.currentUser.updateEmail(creditEmail);
         dispatch({type:'UPDATE_DATA', payload: ["email", null, null, creditEmail]});
         db.collection('users').doc(au.currentUser.uid).update({
-          emai: creditEmail,
+          email: creditEmail,
         });
          console.log('conffirrrrrm');
 setPartOf(true);
