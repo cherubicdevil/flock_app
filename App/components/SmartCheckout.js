@@ -34,21 +34,21 @@ const showCardIcon = (brand, color)=>{
     return cardIcons[brand];
     }
 
-const SmartCheckout = ({confirmFunc, cancelFunc, children, billingOnly=false, shippingOnly=false, showSummary=true, allowConfirm = (creditCardChanged, shippingChanged, )=>{
+const SmartCheckout = ({confirmFunc, cancelFunc, children, billingOnly=false, shippingOnly=false, showSummary=true, allowConfirm = (creditCardChanged, shippingChanged, allowed, setAllowed)=>{
 
-
+var val;
   if (billingOnly && shippingOnly) { //  both needed
-    return changed && creditCardChanged;
+    val = changed && creditCardChanged;
   }
   
   if (billingOnly) {
-    return creditCardChanged;
+    val = creditCardChanged;
   } else if (shippingOnly) {
-    return shippingChanged;
+    val = shippingChanged;
   } else { // default. neither needed. in profile perhaps false && false
-    return true;
+    val = true;
   }
-  return true;
+  setAllowed(val);
 }}) => {
 console.log("HAS ID", hasId)
 const dispatch = useDispatch();
@@ -63,6 +63,8 @@ const select = useSelector(state=>state.userInfo);
 const [errorMessage, setErrorMessage] = useState("");
 
 const [updating, setUpdating] = useState(false);
+
+const [allowed, setAllowed] = useState(false);
 
 useEffect(()=>{
   if (select.customerId === "none" || select.customerId === undefined) {
@@ -126,7 +128,7 @@ const [creditInfo, setCreditInfo] = useState({
   addressZip: '',
 });
 
-const allowed = allowConfirm(creditCardChanged, changed);
+allowConfirm(creditCardChanged, changed, allowed, setAllowed);
 console.log("??????????", allowed);
 return <><View style={{marginTop: 5,}} >
         <View style={[styles.row, {justifyContent: 'space-between'}]}>
@@ -328,6 +330,8 @@ const BillingModal = ({state, setState, close, setChanged}) => {
     // const [sec, setSec] = useState('');
     
     // const [name, setName] = useState('');
+    const scrollRef = useRef();
+
     const [valid, setValid] = useState(false);
     const [error, setError] = useState(false);
 
@@ -340,7 +344,7 @@ const BillingModal = ({state, setState, close, setChanged}) => {
     // const placeholderColor = localState.number === ''?'grey':'black';
     // const numberPlaceholder= localState.number=== ''?'4242424242424242':localState.number;
     // const expirationPlaceholder = localState.expMonth === ''?"MM/YY":localState.expMonth+"/"+localState.expYear;
-    return <ScrollView style={{paddingLeft: 30, paddingRight: 30, borderTopLeftRadius: 40, borderTopRightRadius: 40, backgroundColor:'white', zIndex: 50}}>
+    return <ScrollView ref={scrollRef}  style={{paddingLeft: 30, paddingRight: 30, borderTopLeftRadius: 40, borderTopRightRadius: 40, backgroundColor:'white', zIndex: 50}}>
            
            <Text style={{color: 'red', opacity: error?1:0}}>Please review your information for errors</Text>
            <Text style={{alignSelf: 'center',fontSize: 15, fontFamily: constants.FONT, fontWeight: 'bold'}}>Billing Information</Text>
@@ -396,7 +400,11 @@ const BillingModal = ({state, setState, close, setChanged}) => {
             </View> */}
             </View>            
             <Text style={{marginLeft: 10, marginTop: 15, marginBottom: 5}}>Zip Code</Text>
-            <TextInput value={zip} maximumLength={5} keyboardType="numeric" onChangeText={(text)=> {
+            <TextInput value={zip} maximumLength={5} keyboardType="numeric" 
+            onBlur={()=>{
+              scrollRef.current.scrollToEnd({animated: true});
+            }}
+            onChangeText={(text)=> {
                 setZip(text);
             }} style={styles.textbox} />
 

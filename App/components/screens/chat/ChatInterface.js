@@ -152,7 +152,7 @@ function ChatInterface({route, navigation}) {
   const store = useStore();
   const select = useSelector((state) => state);
 
-  const [creditEmail, setCreditEmail] = useState(select.userInfo.email);
+  const [creditEmail, setCreditEmail] = useState(select.userInfo.email || "");
   const socket = useRef(null);
   const [recvMessages, setRecvMessages] = useState(route.params.data.messages);
   useFocusEffect(()=>{
@@ -426,12 +426,12 @@ return <ScrollView  style={{marginLeft: 15, overflow: 'visible', backgroundColor
        <KeyboardAvoidingView behavior="position" style={{flex: 1}} keyboardVerticalOffset={-200}>
 <ScrollView>
   
-       <SmartCheckout billingOnly={true} allowConfirm={(creditChanged, )=>{
+       <SmartCheckout billingOnly={true} allowConfirm={(creditChanged, shippingChanged, allowed, setAllowed)=>{
          const validEmail = (em)=>{
           return em !== "" && em.indexOf("@") != -1;
          }
          console.log("valid email????", validEmail(creditEmail));
-         return creditChanged && validEmail(creditEmail);
+         setAllowed(creditChanged && validEmail(creditEmail));
        }} confirmFunc={(customerId)=>{
         //  au.currentUser.updateEmail(creditEmail);
         dispatch({type:'UPDATE_DATA', payload: ["email", null, null, creditEmail]});
@@ -439,10 +439,21 @@ return <ScrollView  style={{marginLeft: 15, overflow: 'visible', backgroundColor
           email: creditEmail,
         });
          console.log('conffirrrrrm');
+         data.maximums[au.currentUser.uid] = (initialPercent/100 * parseFloat(data.product.price)).toFixed(2);
+         // console.log('route  id', route.params.data.id);
+         db.collection('chatGroups').doc(data.id).update({
+           members: firebase.firestore.FieldValue.arrayUnion(memberInfo),
+           memberIds: firebase.firestore.FieldValue.arrayUnion(memberInfo.uid),
+           maximums: data.maximums,
+         });
 setPartOf(true);
   route.params.data.memberIds.push(au.currentUser.uid);
   completeFunc(customerId);
-  setCreditModal(false);
+  setTimeout(()=>{
+    setCreditModal(false);
+    navigation.navigate("ChatInterface", {data:data});
+  }, 1000)
+  // setCreditModal(false);
        }} 
        cancelFunc={()=>{
          
