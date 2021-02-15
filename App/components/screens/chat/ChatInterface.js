@@ -28,6 +28,7 @@ import io from 'socket.io-client';
 import NavBar from 'App/components/common/NavBar';
 import {GiftedChat} from 'react-native-gifted-chat';
 import AnimatedModal from 'App/components/AnimatedModal';
+
 import Checkout from 'App/components/Checkout';
 import {useFocusEffect} from '@react-navigation/native';
 import PriceSlider from 'App/components/PriceSlider';
@@ -154,6 +155,9 @@ function ChatInterface({route, navigation}) {
   const [creditEmail, setCreditEmail] = useState(select.userInfo.email);
   const socket = useRef(null);
   const [recvMessages, setRecvMessages] = useState(route.params.data.messages);
+  useFocusEffect(()=>{
+    setRecvMessages(route.params.data.messages);
+  }, []);
   //const [recvMessages, setRecvMessages] = useState([testSystemMessage]);
   const [dummyState, setDummyState] = useState(0);
   const dispatch = useDispatch();
