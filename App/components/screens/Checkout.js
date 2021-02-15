@@ -65,7 +65,8 @@ const Checkout = ({navigation, route}) => {
       const reductionDollars = Math.min(dollars, shipConst);
       const reductionEggs = Math.round(reductionDollars * constants.EGG_RATIO);
       const shipMain = tog?((shipConst - reductionDollars).toFixed(2)):shipConst;
-      const amount = parseFloat(shipMain + route.params.subtotal).toFixed(2);
+      const amount = (parseFloat(shipMain) + parseFloat(route.params.subtotal)).toFixed(2);
+    //   console.log(amount, route.params.subtotal, (parseFloat(shipMain) + parseFloat(route.params.subtotal)).toFixed(2))
 
       const confirmFunc = (cid) => {
             var chargeCustomerEndpoint = constants.CHARGE_CUSTOMER + "?id="+cid+"&amount="+ amount*100;

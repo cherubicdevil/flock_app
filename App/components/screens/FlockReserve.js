@@ -229,7 +229,7 @@ const handleDayPress = (day) => {
         var markStyle = {
           backgroundColor: 'transparent',
           width: '150%',
-          height: '75%',
+          height: '65%',
           alignItems: 'center',
           justifyContent: 'center',
         };
