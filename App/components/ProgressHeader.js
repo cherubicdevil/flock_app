@@ -53,7 +53,10 @@ const ProgressHeader = ({
   },
   closeFunc = ()=>{
     navigation.goBack();
-  }
+  },
+  checkIndex=1,
+  checkOpen=()=>{},
+  checkFunc=()=>{return true},
 }) => {
   const renderGoBack = () => {
 
@@ -144,8 +147,12 @@ const ProgressHeader = ({
             return;
           }
           if (canGoNext) {
+            if (checkIndex == index && !checkFunc()) {
+              checkOpen();
+            } else {
             nextFunc();
             navigation.navigate(nextRoute, {index: index+1, data: data, flockId: idText.replace("%","")});
+            }
           }
         }}>
         {/* <ImageBackground

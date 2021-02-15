@@ -1,18 +1,20 @@
 import React, {useState, useRef, useEffect} from 'react';
-import {View, ScrollView, Text, Switch, TextInput, Image,} from 'react-native';
+import {View, ScrollView, Text, Switch, TextInput, Image, KeyboardAvoidingView} from 'react-native';
 import ProgressHeader from 'App/components/ProgressHeader';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import {constants} from 'App/constants';
 import LinearGradient from 'react-native-linear-gradient';
 import {shareActions} from 'App/utils';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import ViewShot from 'react-native-view-shot';
 import Animation from 'lottie-react-native';
-import {firebase, db} from 'App/firebase/config';
+import {firebase, db, au} from 'App/firebase/config';
 import ShareSocial from 'App/components/ShareSocial';
 import { set } from 'react-native-reanimated';
 import {CommonActions, useFocusEffect} from '@react-navigation/native';
 import PriceSlider from 'App/components/PriceSlider';
+import AnimatedModal from 'App/components/AnimatedModal';
+import SmartCheckout from 'App/components/SmartCheckout';
 
 
 const StartFlock = ({navigation, route}) => {
@@ -24,11 +26,17 @@ const StartFlock = ({navigation, route}) => {
     //     // }
     // },[route.params.data]);
     const dispatch = useDispatch();
+    const select = useSelector(state=>state.userInfo);
     const [canNext, setCanNext] = useState(true);
+
+    const [creditEmail, setCreditEmail] = useState("");
+    const [creditModal, setCreditModal] = useState(false);
+
     const Tab = createMaterialTopTabNavigator();
     console.log('start flock index is', route.params);
     var ar = [<PageOne product = {route.params.product} data = {route.params.data} setCanNext={setCanNext} />, <PageTwo product = {route.params.product} data = {route.params.data} setCanNext={setCanNext} />, <ShareSocial product = {route.params.product} data = {route.params.data} flockId={flockId} />, <PageFour product = {route.params.product} data = {route.params.data} />];
-    return <ScrollView scrollEnabled={false} keyboardShouldPersistTaps="never" style={{backgroundColor: constants.PINK_BACKGROUND}}><ProgressHeader
+    return <ScrollView scrollEnabled={false} keyboardShouldPersistTaps="never" style={{backgroundColor: constants.PINK_BACKGROUND}}>
+    <ProgressHeader
     idText={"%"+flockId}
     nextRoute="StartFlock"
     backRoute="StartFlock"
@@ -38,6 +46,13 @@ const StartFlock = ({navigation, route}) => {
     navigation={navigation}
     index={route.params.index}
     number={3}
+    checkIndex={1}
+    checkFunc = {()=>{
+        return select.customerId !== "none" && select.customerId !== undefined && select.email !== "";
+    }}
+    checkOpen={()=>{
+        setCreditModal(true);
+    }}
     data={route.params.data}
     closeText="done"
     closeFunc={()=> {
@@ -120,52 +135,7 @@ const StartFlock = ({navigation, route}) => {
         <Text style={{marginTop: 20}}>We will order the item. When you want to use it, just choose the dates, and it will be shipped to you.</Text>
         <Text style={{marginTop: 20}}>When another flocker requests it, you will ship it to them using the shipping label we provide.</Text>
     </View>
-  </ScrollView>
-}
-
-const PageOne = ({product, data, setCanNext}) => {
-    const [can1, setCan1] = useState(data['specifications']!==undefined && data['specifications'].length > 0);
-    const [can2, setCan2] = useState(data['description']!==undefined && data['description'].length > 0);
-    useEffect(()=>{
-        setCanNext(can1 && can2);
-    }, [can1, can2]);
-
-    return <View style={{width:'100%', backgroundColor: 'white', marginTop: 5, padding: 20}}>
-        <InputText data = {data} title = "specifications" numLines = {2} setCanNext={setCan1} placeholder = "Size 4? Size 10? Red? Green?" label="List specifications like size and color if applicable." />
-        <InputText data = {data} title = "description" numLines = {4}  setCanNext={setCan2}  placeholder = "What do you want others to know about this product? Hype it up so they join your flock and lower your price!" label="Message"/>
-        <ProductPreview product = {product} toggle={true} egg={true} />
-
-    </View>;
-}
-
-const PageTwo = ({product, data, setCanNext}) => {
-    const [creditEmail, setCreditEmail] = useState("");
-    const [creditModal, setCreditModal] = useState(false);
-
-    const [errorMessage, setErrorMessage] = useState("");
-    const [priceValue, setPriceValue] = useState((product.price / 2).toFixed(2));
-
-    const select = useSelector(state=>state.userInfo);
-
-    useFocusEffect(()=>{
-        return ()=>{
-            if (select.customerId === "none" || !select?.customerId) {
-                setCreditModal(true);
-            }
-        }
-    }, []);
-    data.maxPrice = priceValue;
-    return <View style={styles.container}>
-        <Text style={{color: 'red'}}>{errorMessage}</Text>
-    <Text style={{fontWeight: 'bold', marginBottom: 20}}>Enter your price. Minimum: ${(product.price/25 * 1.4).toFixed(2)}.</Text>
-    
-    <PriceSlider priceShareInitialPercent={50} productPrice ={product.price} remainingPercent={100} maximums={{}} setOutsideState={setPriceValue} confirm = {false} />
-    
-    
-
-    <Text style={{marginTop: 20, marginBottom: 20, }}>The more you pay, the more you own, and the more frequently you can use this item compared to your co-flockers.</Text>
-    <ProductPreview product = { product } />
-    <AnimatedModal upPercent="70%" colored={true} colors={[constants.ORANGE, constants.GREYORANGE]} nested={false} visible={creditModal} close={()=>setCreditModal(false)} navigation={navigation} 
+    <AnimatedModal upPercent="70%" colored={true} colors={[constants.ORANGE, constants.GREYORANGE]} nested={false} visible={creditModal} close={()=>setCreditModal(false)} 
      >
        <KeyboardAvoidingView behavior="position" style={{flex: 1}} keyboardVerticalOffset={-200}>
 <ScrollView>
@@ -226,6 +196,47 @@ const PageTwo = ({product, data, setCanNext}) => {
        </ScrollView>
        </KeyboardAvoidingView>
        </AnimatedModal>
+  </ScrollView>
+}
+
+const PageOne = ({product, data, setCanNext}) => {
+    const [can1, setCan1] = useState(data['specifications']!==undefined && data['specifications'].length > 0);
+    const [can2, setCan2] = useState(data['description']!==undefined && data['description'].length > 0);
+    useEffect(()=>{
+        setCanNext(can1 && can2);
+    }, [can1, can2]);
+
+    return <View style={{width:'100%', backgroundColor: 'white', marginTop: 5, padding: 20}}>
+        <InputText data = {data} title = "specifications" numLines = {2} setCanNext={setCan1} placeholder = "Size 4? Size 10? Red? Green?" label="List specifications like size and color if applicable." />
+        <InputText data = {data} title = "description" numLines = {4}  setCanNext={setCan2}  placeholder = "What do you want others to know about this product? Hype it up so they join your flock and lower your price!" label="Message"/>
+        <ProductPreview product = {product} toggle={true} egg={true} />
+
+    </View>;
+}
+
+const PageTwo = ({product, data, setCanNext}) => {
+
+
+    const [errorMessage, setErrorMessage] = useState("");
+    const [priceValue, setPriceValue] = useState((product.price / 2).toFixed(2));
+
+    const select = useSelector(state=>state.userInfo);
+
+    useFocusEffect(()=>{
+        setCanNext
+    }, []);
+    data.maxPrice = priceValue;
+    return <View style={styles.container}>
+        <Text style={{color: 'red'}}>{errorMessage}</Text>
+    <Text style={{fontWeight: 'bold', marginBottom: 20}}>Enter your price. Minimum: ${(product.price/25 * 1.4).toFixed(2)}.</Text>
+    
+    <PriceSlider priceShareInitialPercent={50} productPrice ={product.price} remainingPercent={100} maximums={{}} setOutsideState={setPriceValue} confirm = {false} />
+    
+    
+
+    <Text style={{marginTop: 20, marginBottom: 20, }}>The more you pay, the more you own, and the more frequently you can use this item compared to your co-flockers.</Text>
+    <ProductPreview product = { product } />
+ 
     </View>
 }
 

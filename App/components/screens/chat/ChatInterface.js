@@ -439,7 +439,7 @@ return <ScrollView  style={{marginLeft: 15, overflow: 'visible', backgroundColor
           email: creditEmail,
         });
          console.log('conffirrrrrm');
-         route.params.data.maximums[au.currentUser.uid] = (10/100 * parseFloat(route.params.data.product.price)).toFixed(2);
+         route.params.data.maximums[au.currentUser.uid] = (initialPercentTemp/100 * parseFloat(route.params.data.product.price)).toFixed(2);
          // console.log('route  id', route.params.data.id);
          db.collection('chatGroups').doc(route.params.data.id).update({
           //  members: firebase.firestore.FieldValue.arrayUnion(memberInfo),
