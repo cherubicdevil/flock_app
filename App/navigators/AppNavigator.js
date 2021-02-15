@@ -43,7 +43,7 @@ const AppNavigator5 = () => {
         //initialRouteName="ProfileMain"
         screenOptions={{
           headerShown: false,
-          unmountOnBlur: true,
+          // unmountOnBlur: true,
           //animationEnabled: false,
         }}>
         <Tab.Screen
@@ -163,6 +163,7 @@ const AppNavigator5 = () => {
           name="ChatInterface"
           component={ChatInterface}
           options={{
+            unmountOnBlur: true,
             tabBarVisible: false,
           }}
         />

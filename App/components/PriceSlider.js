@@ -14,7 +14,8 @@ import {
   View,
   Modal,
   TouchableWithoutFeedback,
-  TextInput
+  TextInput,
+  Dimensions,
 } from 'react-native';
 import HowTo from 'App/HowTo';
 import HeaderGradient from 'App/components/HeaderGradient';
@@ -130,7 +131,7 @@ const PriceSlider = ({priceShareInitialPercent, completeFunc=()=>{}, productPric
     markerContainerStyle={{alignSelf: 'center', marginTop: 7.5}}
     // markerStyle={{marginTop: 15,justifyContent: 'center', alignItems: 'center'}}
     smoothSnapped={true}
-    sliderLength={Dimensions.get('window').width - 50 * remainingPercent/100}
+    sliderLength={Dimensions.get('window').width *.65 * remainingPercent/100}
     step = {4}
     min={0}
     max={remainingPercent+4}

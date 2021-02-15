@@ -2035,6 +2035,11 @@
   resolved "https://registry.yarnpkg.com/@react-native-firebase/firestore/-/firestore-10.7.0.tgz#eb7ebb0ab9a192af1a7d448327b99a4a87d8a4c7"
   integrity sha512-wDH78SdmDEdWebFqujinqTqfJMVDcx9W57cEzY09PQcmI5xjdalSyU4gj8AXDTB0718/kDK6C7nhzOHZOjln0w==
 
+"@react-native-firebase/storage@^10.8.0":
+  version "10.8.0"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/storage/-/storage-10.8.0.tgz#89f41d644c98463350dc175085586db779173cc6"
+  integrity sha512-7u8MYBUy62j8TYngVpipNrLDdIO7kAgHXUU/xhV5x2Gsm3jO2VQLFvh+0rO80wBftlPKgfPzoZGyDKteLXRQFA==
+
 "@react-navigation/bottom-tabs@^5.9.2":
   version "5.11.1"
   resolved "https://registry.yarnpkg.com/@react-navigation/bottom-tabs/-/bottom-tabs-5.11.1.tgz#58c4f784d3262f7fb6f3075b41f64e9617054087"

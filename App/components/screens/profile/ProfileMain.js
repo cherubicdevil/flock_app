@@ -76,6 +76,7 @@ const ProfilePicture = () => {
   );
 };
 const ProfileMain = ({navigation}) => {
+  console.log('imageEEEEE', au.currentUser.photoURL);
   const select = useSelector(state=>state);
   // au.currentUser.reload();
 

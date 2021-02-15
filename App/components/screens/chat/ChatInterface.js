@@ -367,6 +367,9 @@ return <ScrollView  style={{marginLeft: 15, overflow: 'visible', backgroundColor
           </LinearGradient>
           </ScrollView>
         </View>
+        <Text style={{marginLeft: 85, marginBottom: -20}}>
+          {route.params.data.description}
+        </Text>
       <View style={{marginTop: 20, flexDirection: 'row',
       shadowColor: constants.GREYBLUE, shadowOffset: {height: 5, width: 0}, shadowOpacity: 0.42, elevation: 13, shadowRadius: 8.30,
     }}>

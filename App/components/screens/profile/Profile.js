@@ -12,6 +12,7 @@ import {
   ScrollView,
   KeyboardAvoidingView,
 } from 'react-native';
+import storage from '@react-native-firebase/storage';
 import {PaymentCardTextField} from 'tipsi-stripe';
 import SmartCheckout from 'App/components/SmartCheckout';
 import {createOrUpdate, fetchCustomerInfo} from 'App/utils';
@@ -86,7 +87,7 @@ const ProfilePicture = () => {
           // justifyContent: 'center',
         }}>
         <Image
-          style={{width: 120, height: 120, borderRadius: 60, }}
+          style={{width: 120, height: 120, }}
           source={avatar}
           defaultSource={constants.PLACEHOLDER_IMAGE}
         />
@@ -134,7 +135,7 @@ const uploadImage = async ({data, filename, uri}) => {
   const ext = uri.split('.').pop();
   const name = uri.split('/').pop();
   const path = `${user.uid}_${name}`;
-  const storageRef = firebase.storage().ref(`profiles/${path}`);
+  const storageRef = storage().ref(`profiles/${path}`);
 
   // var url = 'data:image/jpeg;base64,' + data;
   // var blob = Base64.decode(data, 0);
