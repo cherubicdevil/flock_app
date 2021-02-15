@@ -972,6 +972,14 @@ const fetchCustomerInfo = (customerId) =>{
 });
 };
 
+const fetchShipping = (userId) =>{
+  return new Promise((resolve) => {
+      db.collection('users').doc(userId).get().then((doc)=>{
+        resolve(doc.doc().shipping);
+      })
+});
+};
+
 function cc_brand_id(cur_val) {
   // the regular expressions check for possible matches as you type, hence the OR operators based on the number of chars
   // regexp string length {0} provided for soonest detection of beginning of the card numbers this way it could be used for BIN CODE detection also
@@ -1047,6 +1055,7 @@ export {
   validateCard,
   createOrUpdate,
   fetchCustomerInfo,
+  fetchShipping,
   cc_brand_id,
   updateCard,
   pickImage,

@@ -64,7 +64,6 @@ function ChatInterface({route, navigation}) {
 
   const [creditModal, setCreditModal] = useState(false);
 
-  const [creditEmail, setCreditEmail] = useState(au.currentUser.email);
 
   const [priceShare, setPriceShare] = useState(route.params.data.maximums[au.currentUser.uid] || 0);
   const [initialDialog, setInitialDialog] = useState(false);
@@ -151,6 +150,8 @@ function ChatInterface({route, navigation}) {
   };
   const store = useStore();
   const select = useSelector((state) => state);
+
+  const [creditEmail, setCreditEmail] = useState(select.userInfo.email);
   const socket = useRef(null);
   const [recvMessages, setRecvMessages] = useState(route.params.data.messages);
   //const [recvMessages, setRecvMessages] = useState([testSystemMessage]);
@@ -369,7 +370,7 @@ return <ScrollView  style={{marginLeft: 15, overflow: 'visible', backgroundColor
       
       <View style={{backgroundColor: constants.PINK_BACKGROUND, flex: 1}}>
       <GiftedChat
-      
+      key={route.params.data.id}
         renderSystemMessage={(props) => {
           //console.log("SYSTEM MESSAGE PROPS", props);
           return (
@@ -423,6 +424,10 @@ return <ScrollView  style={{marginLeft: 15, overflow: 'visible', backgroundColor
   
        <SmartCheckout billingOnly={true} confirmFunc={(customerId)=>{
         //  au.currentUser.updateEmail(creditEmail);
+        dispatch({type:'UPDATE_DATA', payload: ["email", null, null, creditEmail]});
+        db.collection('users').doc(au.currentUser.uid).update({
+          emai: creditEmail,
+        });
          console.log('conffirrrrrm');
 setPartOf(true);
   route.params.data.memberIds.push(au.currentUser.uid);

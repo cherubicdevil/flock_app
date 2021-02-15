@@ -319,7 +319,11 @@ const Profile = ({navigation}) => {
 
   const confirmFunc = () => {
     user.updateProfile({displayName: username});
-    user.updateEmail(email);
+    // user.updateEmail(email);
+    dispatch({type:'UPDATE_DATA', payload: ["email", null, null, email]});
+    db.collection('users').doc(au.currentUser.uid).update({
+      email: email,
+    });
     // update bio
     dispatch({type:'UPDATE_DATA', payload: ["bio", null, null, bio]});
     db.collection('users').doc(au.currentUser.uid).update({

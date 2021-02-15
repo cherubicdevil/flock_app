@@ -13,7 +13,7 @@ import {
   KeyboardAvoidingView,
 } from 'react-native';
 import {PaymentCardTextField} from 'tipsi-stripe';
-import {createOrUpdate, fetchCustomerInfo} from 'App/utils';
+import {createOrUpdate, fetchCustomerInfo, fetchShipping} from 'App/utils';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import AnimatedModal from 'App/components/AnimatedModal';
 import ImagePicker from 'react-native-image-picker';
@@ -21,7 +21,7 @@ import {constants} from 'App/constants';
 import LinearGradient from 'react-native-linear-gradient';
 import {useSelector} from 'react-redux';
 //import Input from 'App/components/common/Input';
-import {firebase, auth, db} from 'App/firebase/config';
+import {firebase, au, db} from 'App/firebase/config';
 import OptionsModal from 'App/navigators/OptionsModal';
 import {useDispatch} from 'react-redux';
 import {validateCard, cc_brand_id, updateCard} from 'App/utils';
@@ -62,6 +62,8 @@ const select = useSelector(state=>state.userInfo);
 
 const [errorMessage, setErrorMessage] = useState("");
 
+const [updating, setUpdating] = useState(false);
+
 useEffect(()=>{
   if (select.customerId === "none" || select.customerId === undefined) {
     console.log("NOETAPPLCABE", select.customerId);
@@ -72,16 +74,22 @@ useEffect(()=>{
     // hasId = true;
     setHasId(true);
     fetchCustomerInfo(select.customerId).then((data)=>{
-        setInfo(data.customer);
+        // setInfo(data.customer);
         console.log("ADDRESSSS");
         console.log("CUSTOMER INFO", data.customer);
         setCreditInfo(data.card);
       // console.log(data.card,"MY CARD");
-      })
+      });
+    fetchShipping(au.currentUser.uid).then((data)=>{
+      if (data !== "none") {
+        setInfo(data);
+      }
+      
+    })
   }
 }, [select.customerId]);
 
-const [info, setInfo] = useState({
+const defaultInfo = {
   // mandatory
   number: '',
   exp_month: null,
@@ -97,7 +105,8 @@ const [info, setInfo] = useState({
   addressState: '',
   addressCountry: 'USA',
   addressZip: '',
-});
+};
+const [info, setInfo] = useState(defaultInfo);
 console.log(info);
 
 const [creditInfo, setCreditInfo] = useState({
@@ -222,11 +231,22 @@ return <><View style={{marginTop: 5,}} >
                 setErrorMessage("");
               } else if (changed) { // update shipping info
                 console.log('changed shipping');
-                createOrUpdate(hasId, select.customerId, creditInfo).then((id)=>{
-                  dispatch({type:'UPDATE_DATA', payload: ["customerId", null, null, id]});
-                  console.log('done in profile change');
-                  confirmFunc(id);
-                })
+                setUpdating(true);
+                const tempCredit = {...creditInfo, exp_month: parseInt(creditInfo.expMonth), exp_year: parseInt(creditInfo.expYear),expMonth: parseInt(creditInfo.expMonth), expYear: parseInt(creditInfo.expYear)};
+                // createOrUpdate(hasId, select.customerId, tempCredit).then((id)=>{
+                //   dispatch({type:'UPDATE_DATA', payload: ["customerId", null, null, id]});
+                //   console.log('done in profile change');
+                //   setUpdating(false);
+                //   confirmFunc(id);
+                // })
+                db.collection('users').doc(au.currentUser.uid).update({
+                  shipping: info
+                }).then(()=>{
+                  setUpdating(false);
+                });
+                confirmFunc(select.customerId);
+
+
               } else { // (!hasId || !creditCardChanged) && !changed == !hasId?
                   if (hasId) {
                       console.log('hasId');
@@ -238,21 +258,34 @@ return <><View style={{marginTop: 5,}} >
                         return;
                       }
                       if (changed && creditCardChanged) {
-                    createOrUpdate(hasId, select.customerId, creditInfo).then((id)=>{
+                        setUpdating(true);
+                        const tempCredit = {...creditInfo, exp_month: parseInt(creditInfo.expMonth), exp_year: parseInt(creditInfo.expYear),expMonth: parseInt(creditInfo.expMonth), expYear: parseInt(creditInfo.expYear)};
+                    createOrUpdate(hasId, select.customerId, tempCredit).then((id)=>{
                         dispatch({type:'UPDATE_DATA', payload: ["customerId", null, null, id]});
                         console.log('done in profile change');
+                        setUpdating(false);
                         confirmFunc(id);
+                      });
+
+                      db.collection('users').doc(au.currentUser.uid).update({
+                        shipping: info
                       });
 
                     } else if (billingOnly && creditCardChanged) {
                       // console.log(creditInfo['exp_month'], parseInt(creditInfo.expMonth));
                       const tempCredit = {...creditInfo, exp_month: parseInt(creditInfo.expMonth), exp_year: parseInt(creditInfo.expYear),expMonth: parseInt(creditInfo.expMonth), expYear: parseInt(creditInfo.expYear)};
                       console.log("credit", tempCredit);
+                      setUpdating(true);
                       // createOrUpdate(hasId, select.customerId, info).then((id)=>{
                       createOrUpdate(hasId, select.customerId, tempCredit).then((id)=>{
+                        setUpdating(false);
                         dispatch({type:'UPDATE_DATA', payload: ["customerId", null, null, id]});
                         console.log('done in profile change');
                         confirmFunc(id);
+                      });
+                    } else if (shippingOnly && changed) {
+                      db.collection('users').doc(au.currentUser.uid).update({
+                        shipping: info
                       });
                     }
                   }
@@ -271,8 +304,12 @@ return <><View style={{marginTop: 5,}} >
               Confirm
             </Text>
           </TouchableOpacity>
+
         </View>
         <Text style={{textAlign: 'center', color: constants.RED}}>{errorMessage}</Text>
+        <View style={{position: 'absolute', zIndex: 200, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(255,255,255,0.7)', height: updating?'100%':0, width: updating?'100%':0}}>
+            <Text style={{fontWeight: 'bold', color: constants.LAVENDER}}>Updating</Text>
+          </View>
         </View>
         <AnimatedModal nested = {true} keyboard={true} upPercent="60%" colored={true} colors={[constants.ORANGE, constants.GREYORANGE]} visible={billModal} close={()=>setBillModal(false)} state={info} setState={setInfo} content={<BillingModal state={creditInfo} setState={setCreditInfo} setChanged={setCreditCardChanged} close={()=>setBillModal(false)}/>}/>
 <AnimatedModal nested = {true} keyboard={true} colored={true} colors={[constants.ORANGE, constants.GREYORANGE]} visible={shipModal} close={()=>setShipModal(false)} state={info} setState={setInfo} content={<ShippingModal state={info} setState={setInfo} setChanged={setChanged} close={()=>setShipModal(false)}/>}/>
