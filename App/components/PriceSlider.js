@@ -69,7 +69,7 @@ const PriceSlider = ({priceShareInitialPercent, completeFunc=()=>{}, productPric
         </View>:<View style={{opacity:0,padding: 10, marginRight:30}} ><Text>Cancel</Text></View>}
       <View style={{alignItems: 'center', width: 175}}>
       <Text style={{color:'black'}}>You are paying</Text>
-        <Text style={{fontSize: 18, color: 'black'}}>${(parseFloat(productPrice) * pricePercent/100).toFixed(2)} ({pricePercent.toFixed(0)}%)</Text>
+        <Text style={{fontSize: 18, color: 'black'}}>${(parseFloat(productPrice) * pricePercent/100).toFixed(2)} ({pricePercent>remainingPercent?remainingPercent:pricePercent.toFixed(0)}%)</Text>
       </View>
       {changed && confirm?<View style={{backgroundColor: constants.DONE, marginLeft: 30, justifyContent: 'center', borderRadius: 40, padding:10}}>
           <TouchableOpacity onPress={()=>{
@@ -112,7 +112,7 @@ const PriceSlider = ({priceShareInitialPercent, completeFunc=()=>{}, productPric
             onValuesChange={(stuff)=>{
               // setPriceShare((parseInt(stuff[0])/100 * productPrice).toFixed(2));
               // if (!changeable) return;
-              if (stuff[0] >= 8) {
+              if (stuff[0] >= 8 && stuff[0] <= 100) {
               setPricePercent(stuff[0]);
               }
               // console.log(stuff);
@@ -142,7 +142,7 @@ const PriceSlider = ({priceShareInitialPercent, completeFunc=()=>{}, productPric
   </View>
   <View style={{borderRadius: 40, backgroundColor: constants.ORANGE, width: 30, height: 30, marginLeft: 10, justifyContent: 'center', alignItems: 'center', zIndex: -40}}>
           <TouchableOpacity onPress={()=>{
-            if (pricePercent < remainingPercent+4) {
+            if (pricePercent < remainingPercent && pricePercent < 100) {
               setPricePercent(pricePercent+4);
               setOutsideState(((pricePercent+4)*productPrice).toFixed(2))
               setChanged(true);
