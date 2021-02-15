@@ -32,6 +32,7 @@ import AnimatedModal from 'App/components/AnimatedModal';
 import Checkout from 'App/components/Checkout';
 import {useFocusEffect} from '@react-navigation/native';
 import PriceSlider from 'App/components/PriceSlider';
+import {toDateTime} from 'App/utils';
 // import NumericTextInput from 'App/components'
 import {
   DrawerContentScrollView,
@@ -380,6 +381,15 @@ return <ScrollView  style={{marginLeft: 15, overflow: 'visible', backgroundColor
       
       <View style={{backgroundColor: constants.PINK_BACKGROUND, flex: 1}}>
       <GiftedChat
+      renderTime={(props) => {
+        // console.log('time object', toDateTime(props.currentMessage.createdAt.seconds));
+        return <Text style={{color: 'white', fontSize: 12, marginRight: 10}}>{toDateTime(props.currentMessage.createdAt.seconds)}</Text>
+        // return <View style={props.containerStyle}>
+        //   <CText size={10} style={{marginHorizontal: 10, marginBottom: 5}} bold color={props.position === "left" ? 'gray' : 'white'}>
+        //     {`${props.currentMessage.createdAt.toDate().toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })}`}
+        //   </CText>
+        // </View>
+}}
       // key={route.params.data.id}
         // renderSystemMessage={(props) => {
         //   //console.log("SYSTEM MESSAGE PROPS", props);

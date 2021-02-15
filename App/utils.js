@@ -41,6 +41,7 @@
 */
 
 import {constants} from 'App/constants';
+import moment from 'moment';
 import {firebase, db, au} from 'App/firebase/config';
 import ImagePicker from 'react-native-image-picker';
 import {Animated, Share, Linking} from 'react-native';
@@ -1029,6 +1030,12 @@ function cc_brand_id(cur_val) {
   return sel_brand;
 }
 
+function toDateTime(secs) {
+  var t = new Date(Date.UTC(1970, 0, 1)); // Epoch
+  t.setUTCSeconds(secs);
+  return moment(t).local().format('YYYY-MM-DD HH:mm');
+}
+
 export {
   rentPrice,
   fetchStreamableSource,
@@ -1059,4 +1066,5 @@ export {
   cc_brand_id,
   updateCard,
   pickImage,
+  toDateTime,
 };
