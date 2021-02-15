@@ -223,6 +223,13 @@ function ChatInterface({route, navigation}) {
   console.log(route.params.data);
   const user = firebase.auth().currentUser;
   var part = route.params.data.memberIds.includes(au.currentUser.uid);
+  part = route.params.data.memberIds.includes(user.uid);
+for (const member of route.params.data.members) {
+if (user.uid === member.uid) {
+part = true;
+break;
+}
+}
   const [partOf, setPartOf] = useState(part);
   // console.log(route.params.data.maximums, user.uid);
 
