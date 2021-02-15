@@ -55,15 +55,15 @@ class App extends React.Component {
   }
   render() {
     return (
-      <AnimatedSplash
-        translucent={true}
-        isLoaded={this.state.isLoaded}
-        logoImage={require('App/Assets/Images/flockicon3.png')}
-        backgroundColor={'#262626'}
-        logoHeight={150}
-        logoWidth={150}>
+      // <AnimatedSplash
+      //   translucent={true}
+      //   isLoaded={this.state.isLoaded}
+      //   logoImage={require('App/Assets/Images/flockicon3.png')}
+      //   backgroundColor={'#262626'}
+      //   logoHeight={150}
+      //   logoWidth={150}>
         <View style={{flex: 1}}>{this.renderContent()}</View>
-      </AnimatedSplash>
+      // </AnimatedSplash>
     );
   }
 }

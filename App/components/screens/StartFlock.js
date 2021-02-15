@@ -29,7 +29,7 @@ const StartFlock = ({navigation, route}) => {
     const select = useSelector(state=>state.userInfo);
     const [canNext, setCanNext] = useState(true);
 
-    const [creditEmail, setCreditEmail] = useState("");
+    const [creditEmail, setCreditEmail] = useState(select.email);
     const [creditModal, setCreditModal] = useState(false);
 
     const Tab = createMaterialTopTabNavigator();

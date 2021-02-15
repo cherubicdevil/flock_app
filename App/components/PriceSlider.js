@@ -52,6 +52,8 @@ const PriceSlider = ({priceShareInitialPercent, completeFunc=()=>{}, productPric
     const [changed, setChanged] = useState(false);
     const [infoModal, setInfoModal] = useState(false);
     const select = useSelector(state=>state.userInfo);
+
+    
   
     var changeable = false;
     console.log('remaining', remainingPercent);
@@ -69,13 +71,13 @@ const PriceSlider = ({priceShareInitialPercent, completeFunc=()=>{}, productPric
         </View>:<View style={{opacity:0,padding: 10, marginRight:30}} ><Text>Cancel</Text></View>}
       <View style={{alignItems: 'center', width: 175}}>
       <Text style={{color:'black'}}>You are paying</Text>
-        <Text style={{fontSize: 18, color: 'black'}}>${(parseFloat(productPrice) * pricePercent/100).toFixed(2)} ({pricePercent>remainingPercent?remainingPercent:pricePercent.toFixed(0)}%)</Text>
+        <Text style={{fontSize: 18, color: 'black'}}>${(parseFloat(productPrice)*1.4 * pricePercent/100).toFixed(2)} ({pricePercent>remainingPercent?remainingPercent:pricePercent.toFixed(0)}%)</Text>
       </View>
       {changed && confirm?<View style={{backgroundColor: constants.DONE, marginLeft: 30, justifyContent: 'center', borderRadius: 40, padding:10}}>
           <TouchableOpacity onPress={()=>{
             setInitialPercent(pricePercent);
             console.log(select.customerId);
-            maximums[au.currentUser.uid] = (pricePercent/100 * productPrice).toFixed(2);
+            maximums[au.currentUser.uid] = (pricePercent/100 * productPrice * 1.4).toFixed(2);
             completeFunc(select.customerId);
             setChanged(false);
             
@@ -128,7 +130,7 @@ const PriceSlider = ({priceShareInitialPercent, completeFunc=()=>{}, productPric
     markerContainerStyle={{alignSelf: 'center', marginTop: 7.5}}
     // markerStyle={{marginTop: 15,justifyContent: 'center', alignItems: 'center'}}
     smoothSnapped={true}
-    sliderLength={280 * remainingPercent/100}
+    sliderLength={Dimensions.get('window').width - 50 * remainingPercent/100}
     step = {4}
     min={0}
     max={remainingPercent+4}
