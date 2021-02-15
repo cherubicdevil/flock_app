@@ -34,21 +34,21 @@ const showCardIcon = (brand, color)=>{
     return cardIcons[brand];
     }
 
-const SmartCheckout = ({confirmFunc, cancelFunc, children, billingOnly=false, shippingOnly=false, showSummary=true, allowConfirm = (creditCardChanged, shippingChanged, allowed, setAllowed)=>{
+const SmartCheckout = ({confirmFunc, cancelFunc, children, billingOnly=false, shippingOnly=false, showSummary=true, allowConfirm = (creditCardChanged, shippingChanged, )=>{
 
-var val;
+
   if (billingOnly && shippingOnly) { //  both needed
-    val = changed && creditCardChanged;
+    return changed && creditCardChanged;
   }
   
   if (billingOnly) {
-    val = creditCardChanged;
+    return creditCardChanged;
   } else if (shippingOnly) {
-    val = shippingChanged;
+    return shippingChanged;
   } else { // default. neither needed. in profile perhaps false && false
-    val = true;
+    return true;
   }
-  setAllowed(val);
+  return true;
 }}) => {
 console.log("HAS ID", hasId)
 const dispatch = useDispatch();
@@ -63,8 +63,6 @@ const select = useSelector(state=>state.userInfo);
 const [errorMessage, setErrorMessage] = useState("");
 
 const [updating, setUpdating] = useState(false);
-
-const [allowed, setAllowed] = useState(false);
 
 useEffect(()=>{
   if (select.customerId === "none" || select.customerId === undefined) {
@@ -128,7 +126,7 @@ const [creditInfo, setCreditInfo] = useState({
   addressZip: '',
 });
 
-allowConfirm(creditCardChanged, changed, allowed, setAllowed);
+const allowed = allowConfirm(creditCardChanged, changed);
 console.log("??????????", allowed);
 return <><View style={{marginTop: 5,}} >
         <View style={[styles.row, {justifyContent: 'space-between'}]}>
@@ -214,7 +212,7 @@ return <><View style={{marginTop: 5,}} >
               padding: 5,
               borderColor: 'white',
               backgroundColor: constants.ORANGE,
-              opacity: allowed?1:0.2,
+              // opacity: allowed?1:0.2,
             }}
             onPress={() => {
                 console.log('pressed creditcard changed, changed',creditCardChanged, changed);

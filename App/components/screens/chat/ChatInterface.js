@@ -47,6 +47,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import Countdown from 'App/components/Countdown';
 
 const barHeight = 25;
+var initialPercentTemp;
 
 var eventify = function (arr, callback) {
   arr.push = function (e) {
@@ -426,12 +427,12 @@ return <ScrollView  style={{marginLeft: 15, overflow: 'visible', backgroundColor
        <KeyboardAvoidingView behavior="position" style={{flex: 1}} keyboardVerticalOffset={-200}>
 <ScrollView>
   
-       <SmartCheckout billingOnly={true} allowConfirm={(creditChanged, shippingChanged, allowed, setAllowed)=>{
+       <SmartCheckout billingOnly={true} allowConfirm={(creditChanged, )=>{
          const validEmail = (em)=>{
           return em !== "" && em.indexOf("@") != -1;
          }
          console.log("valid email????", validEmail(creditEmail));
-         setAllowed(creditChanged && validEmail(creditEmail));
+         return creditChanged && validEmail(creditEmail);
        }} confirmFunc={(customerId)=>{
         //  au.currentUser.updateEmail(creditEmail);
         dispatch({type:'UPDATE_DATA', payload: ["email", null, null, creditEmail]});
@@ -439,12 +440,12 @@ return <ScrollView  style={{marginLeft: 15, overflow: 'visible', backgroundColor
           email: creditEmail,
         });
          console.log('conffirrrrrm');
-         data.maximums[au.currentUser.uid] = (initialPercent/100 * parseFloat(data.product.price)).toFixed(2);
+         route.params.data.maximums[au.currentUser.uid] = (initialPercentTemp/100 * parseFloat(route.params.data.product.price)).toFixed(2);
          // console.log('route  id', route.params.data.id);
-         db.collection('chatGroups').doc(data.id).update({
-           members: firebase.firestore.FieldValue.arrayUnion(memberInfo),
-           memberIds: firebase.firestore.FieldValue.arrayUnion(memberInfo.uid),
-           maximums: data.maximums,
+         db.collection('chatGroups').doc(route.params.data.id).update({
+          //  members: firebase.firestore.FieldValue.arrayUnion(memberInfo),
+           memberIds: firebase.firestore.FieldValue.arrayUnion(au.currentUser.uid),
+           maximums: route.params.data.maximums,
          });
 setPartOf(true);
   route.params.data.memberIds.push(au.currentUser.uid);
@@ -554,7 +555,7 @@ const JoinDialog = ({navigation, data, setCreditModal, initialDialog, setInitial
       setInitialDialog(false);
       navigation.navigate("ChatInterface", {data: data});
     } else {
-
+      initialPercentTemp = initialPercent;
       setInitialDialog(false);
       setTimeout(()=>{
         setCreditModal(true);
