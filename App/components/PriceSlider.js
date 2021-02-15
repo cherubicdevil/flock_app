@@ -99,7 +99,7 @@ const PriceSlider = ({priceShareInitialPercent, completeFunc=()=>{}, productPric
           </TouchableOpacity>
         </View>
   
-      <View style={{flex: 1, flexDirection: 'row', paddingLeft: 10, alignItems: 'center', justifyContent: 'center', alignSelf: 'center'}}>
+      <View style={{flex: 1, marginLeft: 15, flexDirection: 'row', paddingLeft: 10, alignItems: 'center', justifyContent: 'center', alignSelf: 'center'}}>
               
               <View style={{flex: 100-remainingPercent,  height: 15, backgroundColor: constants.GREYORANGE, borderBottomLeftRadius: 40, borderTopLeftRadius: 40}}/>
             <View style={{flex:remainingPercent, marginRight: 0, paddingRight: 0}}>

@@ -258,9 +258,14 @@ const Profile = ({navigation}) => {
         numberOfLines={numberOfLines}
           defaultValue={defaultValue}
           placeholder={placeholder}
+          keyboardType={label==="Email"?"email-address":"default"}
           value = {state}
           onChangeText={(text) => {
+            if (label === "Email") {
+              setState(text.toLowerCase());
+            } else {
             setState(text);
+            }
           }}
           style={{
             //margin: 10,

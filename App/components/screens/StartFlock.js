@@ -32,9 +32,14 @@ const StartFlock = ({navigation, route}) => {
     const [creditEmail, setCreditEmail] = useState(select.email);
     const [creditModal, setCreditModal] = useState(false);
 
+
     const Tab = createMaterialTopTabNavigator();
     console.log('start flock index is', route.params);
     console.log('customer email', select.email);
+
+    useEffect(()=>{
+        setCreditEmail(select.email);
+    }, select);
     var ar = [<PageOne product = {route.params.product} data = {route.params.data} setCanNext={setCanNext} />, <PageTwo product = {route.params.product} data = {route.params.data} setCanNext={setCanNext} />, <ShareSocial product = {route.params.product} data = {route.params.data} flockId={flockId} />, <PageFour product = {route.params.product} data = {route.params.data} />];
     return <ScrollView scrollEnabled={false} keyboardShouldPersistTaps="never" style={{backgroundColor: constants.PINK_BACKGROUND}}>
     <ProgressHeader
@@ -143,7 +148,7 @@ const StartFlock = ({navigation, route}) => {
   
        <SmartCheckout billingOnly={true} allowConfirm={(creditChanged, )=>{
          const validEmail = (em)=>{
-          return em !== "" && em.indexOf("@") != -1;
+          return em !== "" && em !== undefined && em.indexOf("@") != -1;
          }
          console.log("valid email????", validEmail(creditEmail));
          return creditChanged && validEmail(creditEmail);
@@ -177,10 +182,10 @@ const StartFlock = ({navigation, route}) => {
        >
          <View style={{marginHorizontal: 30, marginTop: 10}}>
          <Text>Email</Text>
-         <TextInput style={{paddingLeft: 20, borderWidth: 1, borderColor: constants.DARKGREY, borderRadius: 40, paddingVertical: 5, marginTop: 15}} keyboardType="email-address" defaultValue={au.currentUser.email} 
+         <TextInput keyboardType="email-address" style={{paddingLeft: 20, borderWidth: 1, borderColor: constants.DARKGREY, borderRadius: 40, paddingVertical: 5, marginTop: 15}} keyboardType="email-address" defaultValue={au.currentUser.email} 
          value={creditEmail}
          onChangeText={(text)=>{
-          setCreditEmail(text);
+          setCreditEmail(text.toLowerCase());
          }}
          />
          </View>
