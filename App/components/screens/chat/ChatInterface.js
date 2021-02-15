@@ -370,41 +370,41 @@ return <ScrollView  style={{marginLeft: 15, overflow: 'visible', backgroundColor
       
       <View style={{backgroundColor: constants.PINK_BACKGROUND, flex: 1}}>
       <GiftedChat
-      key={route.params.data.id}
-        renderSystemMessage={(props) => {
-          //console.log("SYSTEM MESSAGE PROPS", props);
-          return (
-            <TouchableOpacity
-              onPress={() => {
-                navigation.navigate('Info', {
-                  openId: props.currentMessage.openId,
-                });
-              }}>
-              <View
-                style={{
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  //borderWidth: 1,
-                  shadowOpacity: 0.2,
-                  shadowOffset: {height: 5, width: 2},
-                  backgroundColor: '#22a',
-                  borderRadius: 2,
-                  paddingRight: 15,
-                  paddingLeft: 15,
-                  paddingTop: 10,
-                  paddingBottom: 10,
-                  alignSelf: 'center',
-                  marginBottom: 10,
+      // key={route.params.data.id}
+        // renderSystemMessage={(props) => {
+        //   //console.log("SYSTEM MESSAGE PROPS", props);
+        //   return (
+        //     <TouchableOpacity
+        //       onPress={() => {
+        //         navigation.navigate('Info', {
+        //           openId: props.currentMessage.openId,
+        //         });
+        //       }}>
+        //       <View
+        //         style={{
+        //           justifyContent: 'center',
+        //           alignItems: 'center',
+        //           //borderWidth: 1,
+        //           shadowOpacity: 0.2,
+        //           shadowOffset: {height: 5, width: 2},
+        //           backgroundColor: '#22a',
+        //           borderRadius: 2,
+        //           paddingRight: 15,
+        //           paddingLeft: 15,
+        //           paddingTop: 10,
+        //           paddingBottom: 10,
+        //           alignSelf: 'center',
+        //           marginBottom: 10,
 
-                  width: '75%',
-                }}>
-                <Text style={{textAlign: 'center', color: 'white'}}>
-                  {props.currentMessage.text}
-                </Text>
-              </View>
-            </TouchableOpacity>
-          );
-        }}
+        //           width: '75%',
+        //         }}>
+        //         <Text style={{textAlign: 'center', color: 'white'}}>
+        //           {props.currentMessage.text}
+        //         </Text>
+        //       </View>
+        //     </TouchableOpacity>
+        //   );
+        // }}
         messages={recvMessages}
         onSend={onSend}
         user={{_id: 1}}
