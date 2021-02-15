@@ -435,6 +435,7 @@ return <ScrollView  style={{marginLeft: 15, overflow: 'visible', backgroundColor
          return creditChanged && validEmail(creditEmail);
        }} confirmFunc={(customerId)=>{
         //  au.currentUser.updateEmail(creditEmail);
+        console.log("YYYYYYYYYYYYYYYYY");
         dispatch({type:'UPDATE_DATA', payload: ["email", null, null, creditEmail]});
         db.collection('users').doc(au.currentUser.uid).update({
           email: creditEmail,
@@ -452,7 +453,7 @@ setPartOf(true);
   completeFunc(customerId);
   setTimeout(()=>{
     setCreditModal(false);
-    navigation.navigate("ChatInterface", {data:data});
+    navigation.navigate("ChatInterface", {data:route.params.data});
   }, 1000)
   // setCreditModal(false);
        }} 

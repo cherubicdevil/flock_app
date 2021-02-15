@@ -131,7 +131,7 @@ const PriceSlider = ({priceShareInitialPercent, completeFunc=()=>{}, productPric
     sliderLength={280 * remainingPercent/100}
     step = {4}
     min={0}
-    max={remainingPercent}
+    max={remainingPercent+4}
     markerSize={100}
     showSteps={true}
     containerStyle={{width: 30}}
@@ -142,7 +142,7 @@ const PriceSlider = ({priceShareInitialPercent, completeFunc=()=>{}, productPric
   </View>
   <View style={{borderRadius: 40, backgroundColor: constants.ORANGE, width: 30, height: 30, marginLeft: 10, justifyContent: 'center', alignItems: 'center', zIndex: -40}}>
           <TouchableOpacity onPress={()=>{
-            if (pricePercent < 100) {
+            if (pricePercent < remainingPercent+4) {
               setPricePercent(pricePercent+4);
               setOutsideState(((pricePercent+4)*productPrice).toFixed(2))
               setChanged(true);
