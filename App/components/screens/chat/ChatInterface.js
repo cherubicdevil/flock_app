@@ -554,7 +554,7 @@ const JoinDialog = ({navigation, data, setCreditModal, initialDialog, setInitial
       data.members.push(memberInfo);
       completeFunc(store.getState().userInfo.customerId);
       setInitialDialog(false);
-      navigation.navigate("ChatInterface", {data: data});
+      navigation.navigate("ChatInterface", {data: {...data}, refreshKey: Math.random()});
     } else {
       initialPercentTemp = initialPercent;
       setInitialDialog(false);
