@@ -211,6 +211,7 @@ function ChatInterface({route, navigation}) {
       id: route.params.data.id,
     });
     console.log(route.params.data);
+    console.log(messages[0].text);
     updateCache(route.params.data.id, recvMessages);
       //data["id"] = docRef.id;
       console.log("DAT", route.params.data);
