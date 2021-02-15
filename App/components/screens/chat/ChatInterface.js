@@ -221,13 +221,7 @@ function ChatInterface({route, navigation}) {
 
   console.log(route.params.data);
   const user = firebase.auth().currentUser;
-  var part = false;
-  for (const member of route.params.data.members) {
-    if (user.uid === member.uid) {
-      part = true;
-      break;
-    }
-  }
+  var part = route.params.data.memberIds.includes(au.currentUser.uid);
   const [partOf, setPartOf] = useState(part);
   // console.log(route.params.data.maximums, user.uid);
 
@@ -302,7 +296,7 @@ return <ScrollView  style={{marginLeft: 15, overflow: 'visible', backgroundColor
   </ScrollView>
   }
   
-  console.log("PARTOF?", partOf, part);
+  console.log("PARTOF?", partOf, part, route.params.data.memberIds, au.currentUser.uid);
   console.log("ID", route.params.data.id);
   console.log("priceshare", priceShare);
   console.log(creditModal, "open?");
@@ -444,7 +438,7 @@ return <ScrollView  style={{marginLeft: 15, overflow: 'visible', backgroundColor
           email: creditEmail,
         });
          console.log('conffirrrrrm');
-         route.params.data.maximums[au.currentUser.uid] = (initialPercentTemp/100 * parseFloat(route.params.data.product.price)).toFixed(2);
+         route.params.data.maximums[au.currentUser.uid] = (10/100 * parseFloat(route.params.data.product.price)).toFixed(2);
          // console.log('route  id', route.params.data.id);
          db.collection('chatGroups').doc(route.params.data.id).update({
           //  members: firebase.firestore.FieldValue.arrayUnion(memberInfo),
@@ -454,7 +448,10 @@ return <ScrollView  style={{marginLeft: 15, overflow: 'visible', backgroundColor
 setPartOf(true);
   route.params.data.memberIds.push(au.currentUser.uid);
   completeFunc(customerId);
-    navigation.navigate("ChatInterface", {data:route.params.data});
+  setTimeout(()=>{
+    navigation.navigate("ChatInterface", {data:{...route.params.data}});
+  }, 500);
+    // navigation.navigate("ChatInterface", {data:route.params.data});
     setCreditModal(false);
 
   // setCreditModal(false);
