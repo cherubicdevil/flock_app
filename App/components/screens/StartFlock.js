@@ -146,12 +146,20 @@ const StartFlock = ({navigation, route}) => {
        <KeyboardAvoidingView behavior="position" style={{flex: 1}} keyboardVerticalOffset={-200}>
 <ScrollView>
   
-       <SmartCheckout billingOnly={true} allowConfirm={(creditChanged, )=>{
+       <SmartCheckout billingOnly={true} 
+       cancelFunc={()=>{
+           setCreditModal(false);
+       }}
+       confirmFunc={()=>{
+           setCreditModal(false);
+       }}
+       allowConfirm={(creditChanged, shippingChanged, hasId)=>{
          const validEmail = (em)=>{
           return em !== "" && em !== undefined && em.indexOf("@") != -1;
          }
          console.log("valid email????", validEmail(creditEmail));
-         return creditChanged && validEmail(creditEmail);
+         console.log((creditChanged || hasId) && validEmail(creditEmail))
+         return (creditChanged || hasId) && validEmail(creditEmail);
        }} confirmFunc={(customerId)=>{
         //  au.currentUser.updateEmail(creditEmail);
         console.log("YYYYYYYYYYYYYYYYY");

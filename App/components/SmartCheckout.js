@@ -34,7 +34,7 @@ const showCardIcon = (brand, color)=>{
     return cardIcons[brand];
     }
 
-const SmartCheckout = ({confirmFunc, cancelFunc, children, billingOnly=false, shippingOnly=false, showSummary=true, allowConfirm = (creditCardChanged, shippingChanged, )=>{
+const SmartCheckout = ({confirmFunc, cancelFunc, children, billingOnly=false, shippingOnly=false, showSummary=true, allowConfirm = (creditCardChanged, shippingChanged, hasId)=>{
 
 
   if (billingOnly && shippingOnly) { //  both needed
@@ -126,7 +126,7 @@ const [creditInfo, setCreditInfo] = useState({
   addressZip: '',
 });
 
-const allowed = allowConfirm(creditCardChanged, changed);
+const allowed = allowConfirm(creditCardChanged, changed, hasId);
 console.log("??????????", allowed);
 return <><View style={{marginTop: 5,}} >
         <View style={[styles.row, {justifyContent: 'space-between'}]}>
@@ -215,7 +215,7 @@ return <><View style={{marginTop: 5,}} >
               // opacity: allowed?1:0.2,
             }}
             onPress={() => {
-                console.log('pressed creditcard changed, changed',creditCardChanged, changed);
+                console.log('pressed creditcard changed, changed',creditCardChanged, changed, hasId);
                 console.log("creditInfo", creditInfo);
                 // setErrorMessage("");
                 if (!allowed) {
@@ -280,8 +280,10 @@ return <><View style={{marginTop: 5,}} >
                       createOrUpdate(hasId, select.customerId, tempCredit).then((id)=>{
                         setUpdating(false);
                         dispatch({type:'UPDATE_DATA', payload: ["customerId", null, null, id]});
-                        console.log('done in profile change');
+                        // console.log('done in profile change');
                         confirmFunc(id);
+                      }).catch((err)=>{
+                        console.log("update credit error", err);
                       });
                     } else if (shippingOnly && changed) {
                       db.collection('users').doc(au.currentUser.uid).update({
@@ -311,7 +313,7 @@ return <><View style={{marginTop: 5,}} >
             <Text style={{fontWeight: 'bold', color: constants.LAVENDER}}>Updating</Text>
           </View>
         </View>
-        <AnimatedModal nested = {true} keyboard={true} upPercent="60%" colored={true} colors={[constants.ORANGE, constants.GREYORANGE]} visible={billModal} close={()=>setBillModal(false)} state={info} setState={setInfo} content={<BillingModal state={creditInfo} setState={setCreditInfo} setChanged={setCreditCardChanged} close={()=>setBillModal(false)}/>}/>
+        <AnimatedModal nested = {true} keyboard={true} upPercent="80%" colored={true} colors={[constants.ORANGE, constants.GREYORANGE]} visible={billModal} close={()=>setBillModal(false)} state={info} setState={setInfo} content={<BillingModal state={creditInfo} setState={setCreditInfo} setChanged={setCreditCardChanged} close={()=>setBillModal(false)}/>}/>
 <AnimatedModal nested = {true} keyboard={true} colored={true} colors={[constants.ORANGE, constants.GREYORANGE]} visible={shipModal} close={()=>setShipModal(false)} state={info} setState={setInfo} content={<ShippingModal state={info} setState={setInfo} setChanged={setChanged} close={()=>setShipModal(false)}/>}/>
 </>
 
