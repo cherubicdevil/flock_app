@@ -238,7 +238,7 @@ const PageTwo = ({product, data, setCanNext}) => {
 
 
     const [errorMessage, setErrorMessage] = useState("");
-    const [priceValue, setPriceValue] = useState((product.price / 2).toFixed(2));
+    const [priceValue, setPriceValue] = useState((1.4 * product.price / 2).toFixed(2));
 
 
     const select = useSelector(state=>state.userInfo);
@@ -248,7 +248,14 @@ const PageTwo = ({product, data, setCanNext}) => {
     }, []);
     
     console.log("newPCE", priceValue);
-    const maxPricePercentage = Math.round(100 * parseFloat(data['maxPrice']) / (1.4 * parseFloat(product.price)));
+    // data['maxPrice'] = priceValue;
+    var initialMax;
+    if (!data['maxPrice']) {
+        initialMax = priceValue;
+    } else {
+        initialMax = data['maxPrice'];
+    }
+    const maxPricePercentage = Math.round(100 * parseFloat(initialMax) / (1.4 * parseFloat(product.price)));
     data['maxPrice'] = priceValue;
     return <View style={styles.container}>
         <Text style={{color: 'red'}}>{errorMessage}</Text>
