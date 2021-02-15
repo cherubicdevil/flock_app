@@ -2,6 +2,7 @@ import React, {useEffect, useState, useRef} from 'react';
 import {constants} from 'App/constants';
 import Collapsible from 'react-native-collapsible';
 import {useStore} from 'react-redux';
+import { Bubble } from 'react-native-gifted-chat'
 import {
   Button,
   Image,
@@ -390,6 +391,16 @@ return <ScrollView  style={{marginLeft: 15, overflow: 'visible', backgroundColor
       
       <View style={{backgroundColor: constants.PINK_BACKGROUND, flex: 1}}>
       <GiftedChat
+      renderBubble={(props)=>{
+        return <Bubble
+        {...props}
+        wrapperStyle={{
+          right: {
+            backgroundColor: constants.PEACH
+          }
+        }}
+      />
+      }}
 //       renderTime={(props) => {
 //         // console.log('time object', toDateTime(props.currentMessage.createdAt.seconds));
 //         return <Text style={{color: 'white', fontSize: 12, marginRight: 10}}>{toDateTime(props.currentMessage.createdAt.seconds)}</Text>
