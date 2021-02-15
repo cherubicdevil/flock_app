@@ -160,15 +160,17 @@ function ChatInterface({route, navigation}) {
 
   const [creditEmail, setCreditEmail] = useState(select.userInfo.email || "");
   const socket = useRef(null);
+  const [testMessages, setTestMessages] = useState("");
   const [recvMessages, setRecvMessages] = useState(route.params.data.messages);
   useFocusEffect(()=>{
-    setRecvMessages(route.params.data.messages);
+    // setRecvMessages(route.params.data.messages);
   }, []);
   //const [recvMessages, setRecvMessages] = useState([testSystemMessage]);
   const [dummyState, setDummyState] = useState(0);
   const dispatch = useDispatch();
   //firebase.firestore().collection("posts").get();
   useEffect(function () {
+    console.log('hillo');
     //firebase.firestore().collection("posts").get();
     eventify(systemMessages, (message) => {
       console.log('adding');
@@ -219,6 +221,8 @@ function ChatInterface({route, navigation}) {
           messages: firebase.firestore.FieldValue.arrayUnion({sender: {name: firebase.auth().currentUser.displayName, uid: firebase.auth().currentUser.uid}, ...messages[0], createdAt: Date.parse(messages[0].createdAt)}),
         });
         //console.log("messages format",recvMessages);
+        setTestMessages(messages[0].text);
+        console.log('whwyywywwyywy', recvMessages);
     setRecvMessages((prevState) => GiftedChat.append(prevState, messages));
   };
 
@@ -319,6 +323,7 @@ return <ScrollView  style={{marginLeft: 15, overflow: 'visible', backgroundColor
   <View style={{marginBottom:-10}}>
 <Text style={{fontSize: 14, textAlign: 'center'}}>%{route.params.data.id}</Text>
   <Countdown dateObj={route.params.data.time} />
+  {/* <Text>{testMessages}</Text> */}
   </View>
 </HeaderGradient>
       <View style={{ position: 'absolute', zIndex: 200, top: 100, width: '100%', borderRadius: 0, borderBottomRightRadius: 70, borderBottomLeftRadius: 70}}>
