@@ -240,13 +240,16 @@ const PageTwo = ({product, data, setCanNext}) => {
     const [errorMessage, setErrorMessage] = useState("");
     const [priceValue, setPriceValue] = useState((product.price / 2).toFixed(2));
 
+
     const select = useSelector(state=>state.userInfo);
 
     useFocusEffect(()=>{
         setCanNext
     }, []);
-    // data = {...data, maxPrice: priceValue};
-    const maxPricePercentage = Math.round(100 * parseFloat(priceValue) / (1.4 * parseFloat(product.price)));
+    
+    console.log("newPCE", priceValue);
+    const maxPricePercentage = Math.round(100 * parseFloat(data['maxPrice']) / (1.4 * parseFloat(product.price)));
+    data['maxPrice'] = priceValue;
     return <View style={styles.container}>
         <Text style={{color: 'red'}}>{errorMessage}</Text>
     <Text style={{fontWeight: 'bold', marginBottom: 20}}>Enter your price. Minimum: ${(product.price/25 * 1.4).toFixed(2)}.</Text>

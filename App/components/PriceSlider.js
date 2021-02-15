@@ -57,6 +57,7 @@ const PriceSlider = ({priceShareInitialPercent, completeFunc=()=>{}, productPric
     
   
     var changeable = false;
+    console.log(pricePercent, "%")
     console.log('remaining', remainingPercent);
   
     if (true) {
@@ -117,6 +118,9 @@ const PriceSlider = ({priceShareInitialPercent, completeFunc=()=>{}, productPric
               // if (!changeable) return;
               if (stuff[0] >= 4 && stuff[0] <= 100) {
               setPricePercent(stuff[0]);
+              }
+              if (confirm == false) {
+                setOutsideState((stuff[0]/100*1.4*parseFloat(productPrice)).toFixed(2));
               }
               // console.log(stuff);
               setChanged(true);
