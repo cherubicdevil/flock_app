@@ -2,7 +2,7 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:testFBSDK.xcodeproj">
+      location = "group:/Users/mountaindrake/flock-proj/untitled folder/example/ios/Flock.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:Pods/Pods.xcodeproj">
