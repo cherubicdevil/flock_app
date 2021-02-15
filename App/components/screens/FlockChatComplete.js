@@ -14,7 +14,7 @@ import {
   Modal,
   TouchableWithoutFeedback,
 } from 'react-native';
-import {firebase, db, auth} from 'App/firebase/config';
+import {firebase, db, au} from 'App/firebase/config';
 import io from 'socket.io-client';
 import NavBar from 'App/components/common/NavBar';
 import {GiftedChat} from 'react-native-gifted-chat';
@@ -109,14 +109,9 @@ function FlockChatComplete({route, navigation}) {
 
   console.log(route.params.data);
   const user = firebase.auth().currentUser;
-  var part = false;
-  for (const member of route.params.data.members) {
-    if (user.uid === member.uid) {
-      part = true;
-      break;
-    }
-  }
+  var part = route.params.data.memberIds.includes(au.currentUser.uid);
   const [partOf, setPartOf] = useState(part);
+  console.log(part, route.params.data.memberIds, au.currentUser.uid);
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
       <HeaderGradient navigation={navigation} >
@@ -160,7 +155,7 @@ function FlockChatComplete({route, navigation}) {
       <View style={{marginTop: 20, flexDirection: 'row'}}>
         <Image style = {{marginLeft: 10, width: 40, height: 40, marginRight: 20, borderRadius: 40,
         shadowColor: constants.GREYBLUE, shadowOffset: {height: 10, width: 0}, shadowOpacity: 0.82, elevation: 13, shadowRadius: 18.30,
-        }} defaultSource={constants.PLACEHOLDER_IMAGE} source ={{uri:auth.currentUser.photoURL }} />
+        }} defaultSource={constants.PLACEHOLDER_IMAGE} source ={{uri:au.currentUser.photoURL }} />
         <View style={{borderRadius: 30, flex: 1, backgroundColor: constants.GREYBLUE, padding: 20, marginRight: 20, 
           shadowColor: constants.GREYBLUE, shadowOffset: {height: 10, width: 0}, shadowOpacity: 0.82, elevation: 13, shadowRadius: 18.30,
           }}><Text>{route.params.data.description}</Text></View>
@@ -209,7 +204,7 @@ function FlockChatComplete({route, navigation}) {
         user={{_id: 1}}
       /></View>
       
-      {partOf?<></>:<View style={{position: 'absolute', bottom: 0, width: '100%', height: 100, backgroundColor: 'white'}}><View style={{height: '100%', backgroundColor: constants.PINK_BACKGROUND }}>
+      {part?<></>:<View style={{position: 'absolute', bottom: 0, width: '100%', height: 100, backgroundColor: 'white'}}><View style={{height: '100%', backgroundColor: constants.PINK_BACKGROUND }}>
         <TouchableOpacity style={{width: '90%', height: 50, backgroundColor: constants.ORANGE, alignSelf: 'center', borderRadius: 30, justifyContent: 'center'}} onPress={()=>{
           const memberInfo = {name: firebase.auth().currentUser.displayName, uid: firebase.auth().currentUser.uid, max: 50};
           // check if the flock is completed

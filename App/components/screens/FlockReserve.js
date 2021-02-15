@@ -66,12 +66,12 @@ const FlockReserve = ({navigation, route}) => {
         <View style={{backgroundColor: 'white', borderBottomLeftRadius: 60, borderBottomRightRadius: 60, overflow: 'hidden', paddingBottom:20}}>
          <View style={{paddingHorizontal: 20, backgroundColor: 'white'}}>
            <Description colors={[constants.LAVENDER, constants.GREYBLUE]} brand={route.params.data.product.brand} title={route.params.data.product.title} price={route.params.data.product.price} bannerText={(price)=>{
-              return requestTypeIsRent?subtotal +" to borrow":"$0.00 for flocker" 
+              return requestTypeIsRent?"Borrow price: "+ subtotal +" to borrow":"$0.00 for flocker" 
            }} />
         {/* <Text style={{fontFamily: constants.FONT, fontWeight: 'bold'}}>{route.params.data.product.title}</Text>
         <Text>Original Retail: <Text style={{textDecorationLine:'line-through'}}>${route.params.data.product.price}</Text></Text>
     {bannerText(subtotal)} */}
-    {requestTypeIsRent?<></>:<View style={{flexDirection: 'row', alignItems: 'center', marginTop: 20,}}><Text>You are in this flock.</Text><TouchableOpacity style={{padding: 10, backgroundColor: constants.ORANGE, borderRadius: 30, marginLeft:10}} onPress={()=>{
+    {requestTypeIsRent?<></>:<View style={{flexDirection: 'row', alignItems: 'center', marginTop: 20,}}><Text>You are in this flock.</Text><TouchableOpacity style={{padding: 10, backgroundColor: constants.LAVENDER, borderRadius: 30, marginLeft:10}} onPress={()=>{
       navigation.navigate("FlockChatComplete",{data:route.params.data})
     }} >
       <Text style={{color: 'white'}}>Go to chat</Text>
@@ -79,7 +79,7 @@ const FlockReserve = ({navigation, route}) => {
         </View>
 
         </View>
-        <View style={{paddingHorizontal: 10, paddingVertical: 20, marginHorizontal:10 }}>
+        <View style={{paddingHorizontal: 10, paddingVertical: 20, marginHorizontal:10, marginBottom: 40}}>
           <Text style={{textAlign: 'center'}}>
             How Borrowing Works
           </Text>
