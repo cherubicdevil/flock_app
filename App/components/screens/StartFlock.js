@@ -139,8 +139,21 @@ const PageOne = ({product, data, setCanNext}) => {
 }
 
 const PageTwo = ({product, data, setCanNext}) => {
+    const [creditEmail, setCreditEmail] = useState("");
+    const [creditModal, setCreditModal] = useState(false);
+
     const [errorMessage, setErrorMessage] = useState("");
     const [priceValue, setPriceValue] = useState((product.price / 2).toFixed(2));
+
+    const select = useSelector(state=>state.userInfo);
+
+    useFocusEffect(()=>{
+        return ()=>{
+            if (select.customerId === "none" || !select?.customerId) {
+                setCreditModal(true);
+            }
+        }
+    }, []);
     data.maxPrice = priceValue;
     return <View style={styles.container}>
         <Text style={{color: 'red'}}>{errorMessage}</Text>
@@ -152,6 +165,67 @@ const PageTwo = ({product, data, setCanNext}) => {
 
     <Text style={{marginTop: 20, marginBottom: 20, }}>The more you pay, the more you own, and the more frequently you can use this item compared to your co-flockers.</Text>
     <ProductPreview product = { product } />
+    <AnimatedModal upPercent="70%" colored={true} colors={[constants.ORANGE, constants.GREYORANGE]} nested={false} visible={creditModal} close={()=>setCreditModal(false)} navigation={navigation} 
+     >
+       <KeyboardAvoidingView behavior="position" style={{flex: 1}} keyboardVerticalOffset={-200}>
+<ScrollView>
+  
+       <SmartCheckout billingOnly={true} allowConfirm={(creditChanged, )=>{
+         const validEmail = (em)=>{
+          return em !== "" && em.indexOf("@") != -1;
+         }
+         console.log("valid email????", validEmail(creditEmail));
+         return creditChanged && validEmail(creditEmail);
+       }} confirmFunc={(customerId)=>{
+        //  au.currentUser.updateEmail(creditEmail);
+        console.log("YYYYYYYYYYYYYYYYY");
+        dispatch({type:'UPDATE_DATA', payload: ["email", null, null, creditEmail]});
+        db.collection('users').doc(au.currentUser.uid).update({
+          email: creditEmail,
+        });
+         
+         data.maxValue = priceValue;
+         // console.log('route  id', route.params.data.id);
+        //  db.collection('chatGroups').doc(data.id).update({
+        //   //  members: firebase.firestore.FieldValue.arrayUnion(memberInfo),
+        //    memberIds: firebase.firestore.FieldValue.arrayUnion(au.currentUser.uid),
+        //    maximums: data.maximums,
+        //  });
+    //   data.memberIds.push(au.currentUser.uid);
+//   setTimeout(()=>{
+//     navigation.navigate("ChatInterface", {data:{...route.params.data}});
+//   }, 500);
+    // navigation.navigate("ChatInterface", {data:route.params.data});
+    setCreditModal(false);
+
+  // setCreditModal(false);
+       }} 
+       cancelFunc={()=>{
+         
+       }}
+       >
+         <View style={{marginHorizontal: 30, marginTop: 10}}>
+         <Text>Email</Text>
+         <TextInput style={{paddingLeft: 20, borderWidth: 1, borderColor: constants.DARKGREY, borderRadius: 40, paddingVertical: 5, marginTop: 15}} keyboardType="email-address" defaultValue={au.currentUser.email} 
+         value={creditEmail}
+         onChangeText={(text)=>{
+          setCreditEmail(text);
+         }}
+         />
+         </View>
+       </SmartCheckout>
+       <View style={{marginHorizontal: 30, marginTop: 20}}>
+              <Text >
+              * Your credit card will only be charged if combined ownership reaches 100%. You can change how much you want to pay any time before the flock takes off.
+       </Text>
+       <Text style={{marginTop: 20}}>
+         ** Your email is necessary for receiving receipts and tracking updates.
+       </Text>
+       </View>
+       
+       </ScrollView>
+       </KeyboardAvoidingView>
+       </AnimatedModal>
     </View>
 }
 
