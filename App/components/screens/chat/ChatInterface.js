@@ -162,7 +162,7 @@ function ChatInterface({route, navigation}) {
   const [creditEmail, setCreditEmail] = useState(select.userInfo.email || "");
   const socket = useRef(null);
   const [testMessages, setTestMessages] = useState("");
-  const [recvMessages, setRecvMessages] = useState(route.params.data.messages);
+  const [recvMessages, setRecvMessages] = useState(route.params.data.messages.reverse());
   // useFocusEffect(()=>{
   //   setRecvMessages(route.params.data.messages);
   // }, []);
@@ -177,8 +177,8 @@ function ChatInterface({route, navigation}) {
       console.log('adding');
       setRecvMessages((prevState) => GiftedChat.append(prevState, message));
     });
-    //socket.current = io('https://enigmatic-bastion-86695.herokuapp.com/');
-    socket.current = io('http://10.0.0.228:5000');
+    socket.current = io('https://enigmatic-bastion-86695.herokuapp.com/');
+    // socket.current = io('http://10.0.0.228:5000');
     console.log('WHY IS THIS RUNNING AGAIN');
     socket.current.emit('join', route.params.data.id);
     socket.current.on('message', (message) => {
@@ -317,6 +317,11 @@ return <ScrollView  style={{marginLeft: 15, overflow: 'visible', backgroundColor
   console.log(creditModal, "open?");
   console.log(parseFloat(priceShare) / parseFloat(route.params.data.product.price) * 100);
   // console.log("prices", priceShare, route.params.data.product.price, parseFloat(priceShare) / parseFloat(route.params.data.product.price) * 100);
+  
+  const giftedRef = useRef();
+  // useEffect(()=>{
+  //   giftedRef.current.scrollToBottom();
+  // },[]);
   return (<>
     <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
       
@@ -389,15 +394,38 @@ return <ScrollView  style={{marginLeft: 15, overflow: 'visible', backgroundColor
       </View>
       </View>
       
-      <View style={{backgroundColor: constants.PINK_BACKGROUND, flex: 1}}>
+      <View style={{backgroundColor: constants.PINK_BACKGROUND, flex: 1, justifyContent: 'flex-end'}}>
       <GiftedChat
+      scrollToBottom={true}
+      // ref={giftedRef}
+      style={{alignSelf: 'flex-end'}}
+      // inverted={false}
       renderBubble={(props)=>{
         return <Bubble
         {...props}
         wrapperStyle={{
+          left: {
+            backgroundColor: constants.PEACH,
+          },
           right: {
             backgroundColor: constants.PEACH
           }
+        }}
+        textStyle={{
+          right: {
+            color: "white"
+          },
+          left: {
+            color: "white"
+          }
+        }}
+        timeTextStyle={{
+          left: {
+            color: 'white',
+          },
+          right: {
+            color: 'white',
+          },
         }}
       />
       }}
@@ -446,8 +474,9 @@ return <ScrollView  style={{marginLeft: 15, overflow: 'visible', backgroundColor
         //   );
         // }}
         messages={recvMessages}
+        renderUsernameOnMessage={true}
         onSend={onSend}
-        user={{_id: 1}}
+        user={{_id: au.currentUser.uid, name: au.currentUser.displayName, avatar: au.currentUser.photoURL}}
       /></View>
       <JoinDialog navigation={navigation} data={route.params.data} setCreditModal={setCreditModal} initialDialog={initialDialog} setInitialDialog={setInitialDialog} setPartOf = {setPartOf} completeFunc = {completeFunc} maxPercent = {remainingPercent} productPrice={route.params.data.product.price} />
       {partOf?<></>:<View style={{position: 'absolute', bottom: 0, width: '100%', height: 100, backgroundColor: 'white'}}><View style={{height: '100%', backgroundColor: constants.PINK_BACKGROUND }}>
