@@ -215,7 +215,7 @@ function ChatInterface({route, navigation}) {
       //data["id"] = docRef.id;
       console.log("DAT", route.params.data);
       db.collection('chatGroups').doc(route.params.data.id).update({
-          messages: firebase.firestore.FieldValue.arrayUnion({sender: {name: firebase.auth().currentUser.displayName, uid: firebase.auth().currentUser.uid}, ...messages[0]}),
+          messages: firebase.firestore.FieldValue.arrayUnion({sender: {name: firebase.auth().currentUser.displayName, uid: firebase.auth().currentUser.uid}, ...messages[0], createdAt: Date.parse(messages[0].createdAt)}),
         });
         //console.log("messages format",recvMessages);
     setRecvMessages((prevState) => GiftedChat.append(prevState, messages));
@@ -381,15 +381,15 @@ return <ScrollView  style={{marginLeft: 15, overflow: 'visible', backgroundColor
       
       <View style={{backgroundColor: constants.PINK_BACKGROUND, flex: 1}}>
       <GiftedChat
-      renderTime={(props) => {
-        // console.log('time object', toDateTime(props.currentMessage.createdAt.seconds));
-        return <Text style={{color: 'white', fontSize: 12, marginRight: 10}}>{toDateTime(props.currentMessage.createdAt.seconds)}</Text>
-        // return <View style={props.containerStyle}>
-        //   <CText size={10} style={{marginHorizontal: 10, marginBottom: 5}} bold color={props.position === "left" ? 'gray' : 'white'}>
-        //     {`${props.currentMessage.createdAt.toDate().toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })}`}
-        //   </CText>
-        // </View>
-}}
+//       renderTime={(props) => {
+//         // console.log('time object', toDateTime(props.currentMessage.createdAt.seconds));
+//         return <Text style={{color: 'white', fontSize: 12, marginRight: 10}}>{toDateTime(props.currentMessage.createdAt.seconds)}</Text>
+//         // return <View style={props.containerStyle}>
+//         //   <CText size={10} style={{marginHorizontal: 10, marginBottom: 5}} bold color={props.position === "left" ? 'gray' : 'white'}>
+//         //     {`${props.currentMessage.createdAt.toDate().toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })}`}
+//         //   </CText>
+//         // </View>
+// }}
       // key={route.params.data.id}
         // renderSystemMessage={(props) => {
         //   //console.log("SYSTEM MESSAGE PROPS", props);
