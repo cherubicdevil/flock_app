@@ -71,15 +71,18 @@ function ChatInterface({route, navigation}) {
   const [initialDialog, setInitialDialog] = useState(false);
   const [remainingPercent, setRemainingPercent] = useState(0);
 
+
   // const [UUID, setUUID] = useState(0);
   console.log('remaning percent', remainingPercent);
+  console.log('importants', route.params.data.maximums);
 
   useFocusEffect(()=>{
     // setUUID(Math.random());
     setPriceShare(route.params.data.maximums[au.currentUser.uid]);
+
     console.log(route.params.data.id, route.params.data.maximums[au.currentUser.uid]);
   }, []);
-  useEffect(()=>{
+  useFocusEffect(()=>{
     const unsub = db.collection('chatGroups').doc(route.params.data.id).onSnapshot(docSnapshot => {
       const data = docSnapshot.data();
       const members = data.memberIds;
