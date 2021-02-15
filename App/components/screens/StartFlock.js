@@ -1,5 +1,5 @@
 import React, {useState, useRef, useEffect} from 'react';
-import {View, ScrollView, Text, Switch, TextInput, Image, KeyboardAvoidingView} from 'react-native';
+import {View, ScrollView, Text, Switch, TextInput, Image, KeyboardAvoidingView,Dimensions} from 'react-native';
 import ProgressHeader from 'App/components/ProgressHeader';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import {constants} from 'App/constants';
@@ -34,6 +34,7 @@ const StartFlock = ({navigation, route}) => {
 
     const Tab = createMaterialTopTabNavigator();
     console.log('start flock index is', route.params);
+    console.log('customer email', select.email);
     var ar = [<PageOne product = {route.params.product} data = {route.params.data} setCanNext={setCanNext} />, <PageTwo product = {route.params.product} data = {route.params.data} setCanNext={setCanNext} />, <ShareSocial product = {route.params.product} data = {route.params.data} flockId={flockId} />, <PageFour product = {route.params.product} data = {route.params.data} />];
     return <ScrollView scrollEnabled={false} keyboardShouldPersistTaps="never" style={{backgroundColor: constants.PINK_BACKGROUND}}>
     <ProgressHeader

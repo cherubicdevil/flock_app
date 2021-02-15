@@ -183,6 +183,7 @@ const uploadImage = async ({data, filename, uri}) => {
 const Profile = ({navigation}) => {
 
   const [openModal, setOpenModal] = useState(false);
+  const select = useSelector(state=>state.userInfo);
 
 
   const dispatch = useDispatch();
@@ -224,8 +225,8 @@ const Profile = ({navigation}) => {
   // const [modalOpen, setModalOpen] = useState(false);
 
   const [username, setUserName] = useState(user.displayName || '');
-  const [email, setEmail] = useState(user.email || '');
-  const [bio, setBio] = useState("")
+  const [email, setEmail] = useState(select.email || '');
+  const [bio, setBio] = useState(select.bio || "")
   //settings.username.ref.current = user.displayName;
   console.log('my ref', settings.username.ref.current);
   //console.log('photoURL', user.photoURL);
