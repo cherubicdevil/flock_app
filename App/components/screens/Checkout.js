@@ -60,7 +60,7 @@ const Checkout = ({navigation, route}) => {
       });
     
       
-      const shipConst = 23.99;
+      const shipConst = 8.99;
       const dollars = parseFloat((select.eggCoins / constants.EGG_RATIO).toFixed(2));
       const reductionDollars = Math.min(dollars, shipConst);
       const reductionEggs = Math.round(reductionDollars * constants.EGG_RATIO);
@@ -126,7 +126,7 @@ const Checkout = ({navigation, route}) => {
 
             
         </View> */}
-        <SmartCheckout confirmFunc = {confirmFunc} billingOnly={true} shippingOnly={true} >
+        <SmartCheckout confirmFunc = {confirmFunc} cancelFunc={cancelFunc} billingOnly={true} shippingOnly={true} >
 
         <View style={[styles.row, {borderBottomWidth: 0}]}>
                 <Text style={{fontWeight: 'bold'}}>Summary</Text>

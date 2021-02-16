@@ -186,6 +186,7 @@ const AppNavigator5 = () => {
           component={Checkout}
           options={{
             tabBarVisible: false,
+            unmountOnBlur: true,
           }}
         />
         <Tab.Screen
@@ -201,6 +202,7 @@ const AppNavigator5 = () => {
           options={{
             title: 'ProfileMain',
             cap: 'you',
+            unmountOnBlur: true,
             image: require('App/Assets/Images/cute_duck_silhouette.png'),
           }}
         />

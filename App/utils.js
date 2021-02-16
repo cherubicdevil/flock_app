@@ -976,7 +976,7 @@ const fetchCustomerInfo = (customerId) =>{
 const fetchShipping = (userId) =>{
   return new Promise((resolve) => {
       db.collection('users').doc(userId).get().then((doc)=>{
-        resolve(doc.doc().shipping);
+        resolve(doc.data().shipping);
       })
 });
 };

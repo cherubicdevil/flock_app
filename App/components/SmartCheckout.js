@@ -77,12 +77,16 @@ useEffect(()=>{
         // setInfo(data.customer);
         console.log("ADDRESSSS");
         console.log("CUSTOMER INFO", data.customer);
+        console.log("CREDIT CARD INFO", data.card);
         setCreditInfo(data.card);
       // console.log(data.card,"MY CARD");
       });
+      console.log('hello');
     fetchShipping(au.currentUser.uid).then((data)=>{
+      console.log('shipping non?', data);
       if (data !== "none") {
         setInfo(data);
+        console.log('shipping', data);
       }
       
     })
@@ -127,7 +131,7 @@ const [creditInfo, setCreditInfo] = useState({
 });
 
 const allowed = allowConfirm(creditCardChanged, changed, hasId);
-console.log("??????????", allowed);
+console.log("??????????", allowed, creditCardChanged, changed, hasId, 'stuff');
 return <><View style={{marginTop: 5,}} >
         <View style={[styles.row, {justifyContent: 'space-between'}]}>
             {!shippingOnly || (billingOnly && shippingOnly)?
@@ -144,7 +148,7 @@ return <><View style={{marginTop: 5,}} >
             </View>
             :<Text style={{color: constants.RED}}>Needs Action</Text>}
             </View>
-            <Icon name="chevron-right" size={20} color={constants.DARKGREY} style={{marginRight: 20}} />
+            <Icon name="chevron-right" size={20} color={constants.DARKGREY} style={{marginRight: 10}} />
             </View>
             </TouchableOpacity>
             :
@@ -168,7 +172,7 @@ return <><View style={{marginTop: 5,}} >
             </View>
             :<Text style={{color: constants.RED, textAlign: 'right'}}>Needs Action</Text>}
             </View>
-            <View style={{marginRight: 20}}>
+            <View style={{marginRight: 10}}>
             <Icon name="chevron-right" size={20} color={constants.DARKGREY} />
             </View>
             </View>
@@ -222,14 +226,15 @@ return <><View style={{marginTop: 5,}} >
                   setErrorMessage("Please fill out all required fields.");
                   return;
                 } else {
-                  setErrorMessage("");
+                  // setErrorMessage("");
                 }
               if (hasId && creditCardChanged) {
                   console.log('has id and creditcardchanged');
                 updateCard(select.customerId, creditInfo);
                 confirmFunc(select.customerId);
                 setErrorMessage("");
-              } else if (changed) { // update shipping info
+              } 
+              if (changed) { // update shipping info
                 console.log('changed shipping');
                 setUpdating(true);
                 const tempCredit = {...creditInfo, exp_month: parseInt(creditInfo.expMonth), exp_year: parseInt(creditInfo.expYear),expMonth: parseInt(creditInfo.expMonth), expYear: parseInt(creditInfo.expYear)};
@@ -239,19 +244,24 @@ return <><View style={{marginTop: 5,}} >
                 //   setUpdating(false);
                 //   confirmFunc(id);
                 // })
+                console.log('updateShipping');
                 db.collection('users').doc(au.currentUser.uid).update({
+                  
                   shipping: info
                 }).then(()=>{
+                  console.log('updaing shipping');
                   setUpdating(false);
+                }).catch((errr)=>{
+                  console.log("UPDATING SHIP ERR:", errr);
                 });
                 confirmFunc(select.customerId);
 
 
-              } else { // (!hasId || !creditCardChanged) && !changed == !hasId?
+              }
                   if (hasId) {
                       console.log('hasId');
                       confirmFunc(select.customerId);
-                  } else {
+                  } else { // doesn't have id, credit card changed
                       console.log('doesnt have id');
                       if (!changed && !creditCardChanged) {
                         confirmFunc(null);
@@ -285,12 +295,8 @@ return <><View style={{marginTop: 5,}} >
                       }).catch((err)=>{
                         console.log("update credit error", err);
                       });
-                    } else if (shippingOnly && changed) {
-                      db.collection('users').doc(au.currentUser.uid).update({
-                        shipping: info
-                      });
                     }
-                  }
+                  
                   
               }
 
@@ -313,7 +319,7 @@ return <><View style={{marginTop: 5,}} >
             <Text style={{fontWeight: 'bold', color: constants.LAVENDER}}>Updating</Text>
           </View>
         </View>
-        <AnimatedModal nested = {true} keyboard={true} upPercent="80%" colored={true} colors={[constants.ORANGE, constants.GREYORANGE]} visible={billModal} close={()=>setBillModal(false)} state={info} setState={setInfo} content={<BillingModal state={creditInfo} setState={setCreditInfo} setChanged={setCreditCardChanged} close={()=>setBillModal(false)}/>}/>
+        <AnimatedModal nested = {true} keyboard={true} upPercent="55%" colored={true} colors={[constants.ORANGE, constants.GREYORANGE]} visible={billModal} close={()=>setBillModal(false)} state={info} setState={setInfo} content={<BillingModal state={creditInfo} setState={setCreditInfo} setChanged={setCreditCardChanged} close={()=>setBillModal(false)}/>}/>
 <AnimatedModal nested = {true} keyboard={true} colored={true} colors={[constants.ORANGE, constants.GREYORANGE]} visible={shipModal} close={()=>setShipModal(false)} state={info} setState={setInfo} content={<ShippingModal state={info} setState={setInfo} setChanged={setChanged} close={()=>setShipModal(false)}/>}/>
 </>
 
@@ -336,14 +342,17 @@ const BillingModal = ({state, setState, close, setChanged}) => {
     const [error, setError] = useState(false);
 
 
-    const [address, setAddress] = useState(state.address?.line1);
-    const [geostate, setGeostate] = useState(state.address?.state);
-    const [city, setCity] = useState(state.address?.city);
-    const [zip, setZip] = useState(state.address?.postal_code);
+    const [address, setAddress] = useState(state.address_line1);
+    const [geostate, setGeostate] = useState(state.address_state);
+    const [city, setCity] = useState(state.address_city);
+    const [zip, setZip] = useState(state.address_zip);
   
     // const placeholderColor = localState.number === ''?'grey':'black';
     // const numberPlaceholder= localState.number=== ''?'4242424242424242':localState.number;
     // const expirationPlaceholder = localState.expMonth === ''?"MM/YY":localState.expMonth+"/"+localState.expYear;
+
+    console.log("credit info ", localState);
+
     return <ScrollView ref={scrollRef}  style={{paddingLeft: 30, paddingRight: 30, borderTopLeftRadius: 40, borderTopRightRadius: 40, backgroundColor:'white', zIndex: 50}}>
            
            <Text style={{color: 'red', opacity: error?1:0}}>Please review your information for errors</Text>
@@ -374,8 +383,8 @@ const BillingModal = ({state, setState, close, setChanged}) => {
                 localState.name = text;
             }} style={styles.textbox} />
 
-<Text style={{marginLeft: 10, marginTop: 15, marginBottom: 5}}>Address</Text>
-            <TextInput value = {address}  onChangeText={(text)=> {
+{/* <Text style={{marginLeft: 10, marginTop: 15, marginBottom: 5}}>Address</Text>
+            <TextInput defaultValue={localState.addressLine1} value = {address}  onChangeText={(text)=> {
                 setAddress(text);
             }} style={styles.textbox} />
   
@@ -392,12 +401,12 @@ const BillingModal = ({state, setState, close, setChanged}) => {
                 setGeostate(text);
             }} style={styles.textbox} />
                         </View>
-                        {/* <View>
+                        <View>
                         <Text style={{marginLeft: 10, marginTop: 15, marginBottom: 5}}>Country</Text>
             <TextInput defaultValue={localState.addressCountry} onChangeText={(text)=> {
                 localState.addressCountry = text;
             }} style={styles.textbox} />
-            </View> */}
+            </View>
             </View>            
             <Text style={{marginLeft: 10, marginTop: 15, marginBottom: 5}}>Zip Code</Text>
             <TextInput value={zip} maximumLength={5} keyboardType="numeric" 
@@ -406,7 +415,7 @@ const BillingModal = ({state, setState, close, setChanged}) => {
             }}
             onChangeText={(text)=> {
                 setZip(text);
-            }} style={styles.textbox} />
+            }} style={styles.textbox} /> */}
 
             <TouchableOpacity style={{marginTop:30, marginBottom: 40, borderRadius: 40, overflow: 'hidden',  height: 35, width: "100%", alignSelf:'center', backgroundColor:constants.ORANGE, justifyContent:'center', alignItems: 'center', borderRadius:30}} onPress={()=>{
                  // if (!(validateCard(cardNumber(cardNumber)) && validateExp(expMonth, expYear)))
@@ -417,7 +426,9 @@ const BillingModal = ({state, setState, close, setChanged}) => {
                     return;
                 }
                 const cardString = localState.number;
-                setState({...localState, brand: localState.brand, last4: cardString.substring(cardString.length - 4, cardString.length)});
+                setState({...localState, brand: localState.brand, last4: cardString.substring(cardString.length - 4, cardString.length),
+                address_city: city, address_country:"US", address_line1: address, address_state: geostate, address_zip:zip
+                });
                 setChanged(true);
                 close();
                 }}>
@@ -436,11 +447,11 @@ const BillingModal = ({state, setState, close, setChanged}) => {
   
   const ShippingModal = ({state, setState, close, setChanged}) => {
     const [localState, setLocalState] = useState(state);
-    const [address, setAddress] = useState(state.address?.line1);
-    const [geostate, setGeostate] = useState(state.address?.state);
-    const [city, setCity] = useState(state.address?.city);
-    const [zip, setZip] = useState(state.address?.postal_code)
-    const [name, setName] = useState("");
+    const [address, setAddress] = useState(state.line1);
+    const [geostate, setGeostate] = useState(state.state);
+    const [city, setCity] = useState(state.city);
+    const [zip, setZip] = useState(state.postal_code)
+    const [name, setName] = useState(state.name);
   
     // const [cardNumber, setCardNumber] = useState('');
     // const [expMonth, setExpMonth] = useState('');
@@ -457,6 +468,10 @@ const BillingModal = ({state, setState, close, setChanged}) => {
             <TextInput value = {name} defaultValue={state.name} onChangeText={(text)=> {
                 setName(text);
             }} style={styles.textbox} /> */}
+                        <Text style={{marginLeft: 10, marginTop: 10, marginBottom: 5}}>Full Name</Text>
+            <TextInput onChangeText={(text)=> {
+                setName(text);
+            }} style={styles.textbox} />
             <Text style={{marginLeft: 10, marginTop: 15, marginBottom: 5}}>Address</Text>
             <TextInput value = {address}  onChangeText={(text)=> {
                 setAddress(text);
@@ -501,6 +516,7 @@ const BillingModal = ({state, setState, close, setChanged}) => {
                   state: geostate,
                   country: "US",
                   postal_code: zip,
+                  name: name,
                 }});
                 setChanged(true);
                 close();

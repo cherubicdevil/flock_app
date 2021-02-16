@@ -569,8 +569,8 @@ const FlockList = ({product, navigation, ar, close, limited = true, randomId}) =
     );
   }
   return <ScrollView decelerationRate={0.5} ref={scrollRef} pagingEnabled={limited} showsVerticalScrollIndicator={false} style={{padding:0, paddingBottom: 10, height: limited?(result.length==1?50:100):'100%'}}>
-  {result.length > 0?<>{result}<View style={{height: 50}} /></>:(<View style={{height: 60}}>
-    <View style={{borderTopWidth: 1, borderColor: constants.PINK_BACKGROUND_OPAQUE, paddingTop: 15, paddingLeft:20, marginTop: 10, alignItems: 'center', flexDirection: 'row'}}>
+  {result.length > 0?<>{result}<View style={{height: 50}} /></>:(<View style={{height: 100,justifyContent: 'center', borderTopWidth: 2, borderColor: constants.PINK_BACKGROUND_OPAQUE,}}>
+    <View style={{paddingLeft:20, marginTop: 10, alignItems: 'center', flexDirection: 'row'}}>
     <Text>No current flocks.</Text>
     <View
           style={{

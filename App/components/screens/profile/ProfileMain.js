@@ -153,6 +153,7 @@ const ProfileMain = ({navigation}) => {
   }
 
   const Products = () => {
+
     return (
       <View style={{backgroundColor: constants.PINK_BACKGROUND, flex: 1}}>
         <FlatList
@@ -253,9 +254,10 @@ const ProfileMain = ({navigation}) => {
     .limit(20)
     .get()
     .then((snapshot)=>{
+      console.log(snapshot.length);
       const ar = [];
       snapshot.forEach((doc)=>{
-        ar.push({...doc.doc(), id: doc.id});
+        ar.push({...doc.data(), id: doc.id});
       });
       setProductData(ar);
     })

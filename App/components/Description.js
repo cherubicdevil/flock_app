@@ -42,7 +42,7 @@ const Description = ({brand, title, productId, price, colors=[constants.YELLOW, 
         </Text>
         <View style={{flexDirection:'row', alignItems: 'center'}}>
         <Text style={{textDecorationLine: 'line-through', fontFamily: constants.FONTBOLD, color: colors[0], fontSize: 15}}>
-        ${price} original
+        ${price} <Text>original</Text>
         </Text>
         {/*<Text style={styles.descriptionText}>50 flockers have bought</Text>*/}
         {/*<Text style={styles.descriptionText}>Recommended by username</Text>*/}
