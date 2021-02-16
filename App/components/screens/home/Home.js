@@ -481,7 +481,7 @@ const MiniCarouselRenting = ({navigation, route}) => {
     backgroundColor: constants.PINK_BACKGROUND, height: '100%', width: '100%',
     justifyContent: 'center', alignItems: 'center',
 }}/>
-<Image source={require('App/Assets/Images/flock-anim.gif')} style={{width: 200, height: 200, position: 'absolute', top: '30%', left: '30%'}} />
+<Image source={require('App/Assets/Images/flock_gif.gif')} style={{width: 300, height: 300, resizeMode:'contain', position: 'absolute', top: '30%', left: '30%'}} />
 </Animated.View>
   <View 
 
@@ -611,8 +611,10 @@ const MiniCarouselFlocking = ({navigation, route}) => {
     <Animated.View style={{backgroundColor: 'white', position: 'absolute', left: 0, bottom: 0, width:'100%', height: cover?"100%":0, opacity: coverFade, zIndex: 10000}} ><View style={{
     backgroundColor: constants.PINK_BACKGROUND, height: '100%', width: '100%',
     justifyContent: 'center', alignItems: 'center',
+    // resizeMode:'contain'
+    overflow:'visible'
 }}/>
-<Image source={require('App/Assets/Images/flock-anim.gif')} style={{width: 200, height: 200, position: 'absolute', top: '30%', left: '30%'}} />
+<Image source={require('App/Assets/Images/flock_gif.gif')} style={{width: 300, height: 300, resizeMode:'contain', alignSelf: 'center', position: 'absolute', top:'20%'}} />
 </Animated.View><View 
 style={{flex: 1}}
 onLayout = {(event) => {
