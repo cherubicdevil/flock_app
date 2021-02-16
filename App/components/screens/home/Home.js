@@ -143,7 +143,9 @@ const HomeTabSwipe = ({videoData, navigation, route}) => {
   const [coverheight, setCoverHeight] = useState(new Animated.Value(Dimensions.get('window').height));
 
   useEffect(()=>{
+    if (au?.currentUser) {
     au.currentUser.reload();
+    }
   },[]);
   // React.useEffect(() => {
   //   // this should make it so that on creating new listener with new limit, the previous one is gone.
