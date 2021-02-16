@@ -27,8 +27,16 @@ const MyFormPhone = ({registration, navigation}) => {
 
   // Handle the button press
   async function signInWithPhoneNumber() {
+    try {
     const confirmation = await auth().signInWithPhoneNumber("+1"+phone);
     setConfirm(confirmation);
+    } catch (err) {
+      if (err.code === "auth/too-many-requests") {
+        setErrorMessage("Unusual login activity. Try again in a few minutes.");
+      } else {
+        setErrorMessage("Something went wrong.");
+      }
+    }
   }
 
   async function confirmCode() {
@@ -116,6 +124,7 @@ if (code.length == 6) {
         <TextInput
           label=""
           maxLength={10}
+          keyboardType="numeric"
           placeholder="Enter phone number"
           onChangeText={(text) => {
             setPhone(text);
@@ -140,7 +149,11 @@ if (code.length == 6) {
 
         <TouchableOpacity
           style={styles.buttoncontainer}
-          onPress={signInWithPhoneNumber}>
+          onPress={()=>{
+            signInWithPhoneNumber();
+            setErrorMessage("");
+          }
+          }>
             <LinearGradient
           colors={[registration?"#ff6009":"#728cb1", registration?constants.ORANGE:"#8a86aa"]}
           start={{ x: 0, y: 1 }} end={{ x: 1, y: 1 }}
@@ -154,6 +167,8 @@ if (code.length == 6) {
           <Text style={styles.submitButton}>{confirm?"resend code":"send code"}</Text>
           </LinearGradient>
         </TouchableOpacity>
+
+        {/* <Text style={{textAlign:'center', color: constants.RED}}>{errorMessage}</Text> */}
         {/* <TouchableOpacity
           style={styles.buttoncontainer}
           onPress={confirmCode}>
@@ -200,7 +215,7 @@ const EnterCode = ({setCode}) =>{
     const [v6, setV6] = useState("");
 
     return <View style={{flexDirection: 'row',  justifyContent: 'space-between'}}>
-        <TextInput keyboardType="numeric" style={styles.smsbox} ref={box1} value={v1} maxLength={1}
+        <TextInput multiline={false} numberOfLines={1} keyboardType="numeric" style={styles.smsbox} ref={box1} value={v1} maxLength={6}
         onKeyPress={(event) => {
             if (event.nativeEvent.key === "Backspace") {
                 setV1("");
@@ -214,6 +229,21 @@ const EnterCode = ({setCode}) =>{
         }}
         
         onChangeText={(text)=>{
+          console.log('initial change');
+          if (text.length == 6) {
+            console.log('inside 6')
+            const [n1,n2,n3,n4,n5,n6] = text.split("");
+            console.log(n1,n2,n3,n4,n5,n6);
+            setV1(n1);
+            setV2(n2);
+            setV3(n3);
+            setV4(n4);
+            setV5(n5);
+            setV6(n6);
+            // box1.current.blur();
+            box6.current.focus();
+            setCode(text)
+          } else {
             setV1(text);
             setCode(text+v2+v3+v4+v5+v6);
             if (text.length == 0) {
@@ -221,6 +251,7 @@ const EnterCode = ({setCode}) =>{
             } else if (text.length == 1) {
                 box2.current.focus();
             }
+          }
         }} />
                 <TextInput  keyboardType="numeric" style={styles.smsbox} ref={box2} value={v2} maxLength={1}
                         onKeyPress={(event) => {
@@ -315,6 +346,9 @@ const EnterCode = ({setCode}) =>{
                         box5.current.focus();
                     }
                 }}
+                onBlur={()=>{
+                  setCode(v1+v2+v3+v4+v5+v6);
+                }}
                 onChangeText={(text)=>{
             setV6(text);
             setCode(v1+v2+v3+v4+v5+text);
@@ -344,6 +378,8 @@ const styles = StyleSheet.create({
     borderColor: constants.LAVENDER,
     borderRadius: 20,
     width: 50, height: 80,
+    paddingVertical: 20,
+    paddingHorizontal: 17,
     justifyContent: 'center', 
     alignItems: 'center'
   },
