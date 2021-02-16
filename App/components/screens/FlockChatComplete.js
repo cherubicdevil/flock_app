@@ -31,6 +31,7 @@ import {useSelector, useDispatch} from 'react-redux';
 import LinearGradient from 'react-native-linear-gradient';
 import Countdown from 'App/components/Countdown';
 import HeaderGradient from 'App/components/HeaderGradient';
+import ChatComponent from 'App/components/ChatComponent';
 
 var eventify = function (arr, callback) {
   arr.push = function (e) {
@@ -48,64 +49,10 @@ const systemMessages = [];
 function FlockChatComplete({route, navigation}) {
   // console.log(auth.currentUser.photoURL, "PHOTO");
   const select = useSelector((state) => state);
-  const socket = useRef(null);
-  const [recvMessages, setRecvMessages] = useState(route.params.data.messages);
-  //const [recvMessages, setRecvMessages] = useState([testSystemMessage]);
-  const [dummyState, setDummyState] = useState(false);
+
   const dispatch = useDispatch();
-  //firebase.firestore().collection("posts").get();
-  useEffect(function () {
-    //firebase.firestore().collection("posts").get();
-    eventify(systemMessages, (message) => {
-      console.log('adding');
-      setRecvMessages((prevState) => GiftedChat.append(prevState, message));
-    });
-    //socket.current = io('https://enigmatic-bastion-86695.herokuapp.com/');
-    socket.current = io('http://10.0.0.228:5000');
-    console.log('WHY IS THIS RUNNING AGAIN');
-    socket.current.emit('join', route.params.data.id);
-    socket.current.on('message', (message) => {
-      console.log(message);
-      setRecvMessages((prevState) => GiftedChat.append(prevState, message));
-    });
-    socket.current.on('complete', () => {
-      console.log('completingggg');
-      navigation.navigate('VideoMasonry');
-    });
-    console.log("MESSAGES");
-    setRecvMessages(route.params.data.messages);
-    dispatch({type: 'emptySystemMessages'});
-  }, []);
+  const socket = useRef(null);
 
-  useEffect(() => {
-    for (const message of select.chat.systemMessages) {
-      setRecvMessages((prevState) => GiftedChat.append(prevState, message));
-    }
-  }, [select.chat.systemMessages]);
-
-  // const setRecvMessages = (messages) => {
-  //   recvMessages = messages;
-  //   setDummyState(!dummyState);
-  // };
-  const onSend = (messages) => {
-    if (route.params.data.id === 'self') {
-      setRecvMessages((prevState) => GiftedChat.append(prevState, messages));
-      return;
-    }
-    socket.current.emit('message', {
-      text: messages[0].text,
-      id: route.params.data.id,
-    });
-    console.log(route.params.data);
-    updateCache(route.params.data.id, recvMessages);
-      //data["id"] = docRef.id;
-      console.log("DAT", route.params.data);
-      db.collection('chatGroups').doc(route.params.data.id).update({
-          messages: firebase.firestore.FieldValue.arrayUnion({sender: {name: firebase.auth().currentUser.displayName, uid: firebase.auth().currentUser.uid}, ...messages[0]}),
-        });
-        //console.log("messages format",recvMessages);
-    setRecvMessages((prevState) => GiftedChat.append(prevState, messages));
-  };
 
   console.log(route.params.data);
   const user = firebase.auth().currentUser;
@@ -163,46 +110,8 @@ function FlockChatComplete({route, navigation}) {
       </View>
       
       <View style={{backgroundColor: constants.PINK_BACKGROUND, flex: 1}}>
-      <GiftedChat
-      
-        renderSystemMessage={(props) => {
-          //console.log("SYSTEM MESSAGE PROPS", props);
-          return (
-            <TouchableOpacity
-              onPress={() => {
-                navigation.navigate('Info', {
-                  openId: props.currentMessage.openId,
-                });
-              }}>
-              <View
-                style={{
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  //borderWidth: 1,
-                  shadowOpacity: 0.2,
-                  shadowOffset: {height: 5, width: 2},
-                  backgroundColor: '#22a',
-                  borderRadius: 2,
-                  paddingRight: 15,
-                  paddingLeft: 15,
-                  paddingTop: 10,
-                  paddingBottom: 10,
-                  alignSelf: 'center',
-                  marginBottom: 10,
-
-                  width: '75%',
-                }}>
-                <Text style={{textAlign: 'center', color: 'white'}}>
-                  {props.currentMessage.text}
-                </Text>
-              </View>
-            </TouchableOpacity>
-          );
-        }}
-        messages={recvMessages}
-        onSend={onSend}
-        user={{_id: 1}}
-      /></View>
+        <ChatComponent route={route} socket={socket} />
+</View>
       
       {part?<></>:<View style={{position: 'absolute', bottom: 0, width: '100%', height: 100, backgroundColor: 'white'}}><View style={{height: '100%', backgroundColor: constants.PINK_BACKGROUND }}>
         <TouchableOpacity style={{width: '90%', height: 50, backgroundColor: constants.ORANGE, alignSelf: 'center', borderRadius: 30, justifyContent: 'center'}} onPress={()=>{
