@@ -8,6 +8,8 @@ export default function setVidVisible(
 		carIndexRent: 0,
 		carIndexFlock: 0,
 		leave: false,
+		resetFlock: false,
+		resetRent: false,
 	},
 	action,
 ) {
@@ -29,6 +31,10 @@ export default function setVidVisible(
 			return {...state, carIndexFlock: action.payload};
 		case 'leave':
 			return {...state, leave: action.payload};
+		case 'resetFlock':
+			return {...state, resetFlock: !state.resetFlock}
+			case 'resetRent':
+				return {...state, resetRent: !state.resetRent}
 		default:
 			return state;
 	}

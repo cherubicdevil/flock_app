@@ -72,6 +72,7 @@ const FeatherList = ({navigation, route, data=data, viewHeight, type="flock"}) =
 }
 const FeatherPanResponder = React.memo(({index, positions, currIndex, setCurrentIndex, content, viewHeight, type}) => {
     const select = useSelector(state=>state.miscel);
+    const resetSelector = useSelector(state=>state.videopage);
     const dispatch = useDispatch();
     
     var previouspercentage = 1;
@@ -134,7 +135,31 @@ const FeatherPanResponder = React.memo(({index, positions, currIndex, setCurrent
     const [topAnim, setTopAnim] = useState(new Animated.Value(previoustop));
     // const widthAnim = new Animated.Value(top);
 
-    
+    useEffect(()=>{
+        if (type ==="flock") {
+            // console.log('hellooooooo please reset');
+            // Animated.timing(positions[index], {
+            //     useNativeDriver: false,
+            //     toValue: {y:0, x: 0},
+            //     delay: 0,
+            //     duration: 200,
+            //   }).start();
+            setCurrentIndex({curr:9, prev: 8});
+        }
+    }, [resetSelector.resetFlock]);
+
+    useEffect(()=>{
+        if (type ==="rent") {
+            // Animated.timing(positions[index], {
+            //     useNativeDriver: false,
+            //     toValue: {y:0, x: 0},
+            //     delay: 0,
+            //     duration: 200,
+            //   }).start();
+            setCurrentIndex({curr:9, prev: 8});
+        }
+    }, [resetSelector.resetRent]);
+
     useEffect(()=>{
         const animations = [];
         const pararr = [];

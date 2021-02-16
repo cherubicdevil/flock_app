@@ -412,7 +412,8 @@ const MiniCarouselRenting = ({navigation, route}) => {
   const [cover, setCover] = useState(false);
   const [coverFade, setCoverFade] = useState(new Animated.Value(1));
 
-  const [finalAr, setFinalAr] = useState([]);
+  // const [finalAr, setFinalAr] = useState([]);
+  var finalAr;
   useEffect(()=>{
     fetchRentablesFirst().then((ar) => {
       setFinalAr(ar);
@@ -431,12 +432,13 @@ const MiniCarouselRenting = ({navigation, route}) => {
 
   if (select.carIndexRent < 0) {
     console.log('reached the end');
-    
+    dispatch({type:'sendCarouselRentIndex', payload: 9});
+    dispatch({type:'resetRent'});
     fetchRentables().then((ar) => {
       setKeyArrRent([...ar,...keyArrRent]);
-      setFinalAr([...ar,...keyArrRent, ]);
-      dispatch({type:'sendCarouselRentIndex', payload: ar.length});
-      console.log('done');
+      // setFinalAr([...ar,...keyArrRent, ]);
+      // dispatch({type:'sendCarouselRentIndex', payload: ar.length});
+      // console.log('done');
       // setFinishedLoading(true);
       // Animated.timing(coverFade, {
       //   toValue: 0,
@@ -451,6 +453,7 @@ const MiniCarouselRenting = ({navigation, route}) => {
 
 
   // var finalAr = keyArrRent;
+  var finalAr = keyArrRent.slice(keyArrRent.length-10, keyArrRent.length);
   var res = [];
   for (const item of finalAr) {
     res.push(<View style={{height: '100%', width: '100%', borderWidth: 0, borderOpacity: 0.1,borderBottomWidth: 0,}}>
@@ -518,9 +521,10 @@ const MiniCarouselFlocking = ({navigation, route}) => {
   },[]);
 
   useEffect(()=>{
-    console.log('changing sthit', select.carIndexFlock);
-    if (select.carIndexFlock < 1) {
+    // console.log('changing sthit', select.carIndexFlock);
+    if (select.carIndexFlock < 0) {
     dispatch({type:'sendCarouselFlockIndex', payload: 9});
+    dispatch({type:'resetFlock'});
     fetchFlockables().then((ar) => {
       setKeyArrFlock([...keyArrFlock, ...ar]);
       // setFinalAr([...keyArrFlock, ]);
@@ -531,15 +535,15 @@ const MiniCarouselFlocking = ({navigation, route}) => {
       console.log("finalAr", ar);
       console.log('done');
       // dispatch({type:'sendCarouselFlockIndex', payload: 9});
-      setCover(false);
+      // setCover(false);
       // setFinishedLoading(true);
-      Animated.timing(coverFade, {
-        toValue: 0,
-        duration: 500,
-        delay: 1000,
-        useNativeDriver: false,
-      }).start();
-      setTimeout(()=>setCover(false), 2500);
+      // Animated.timing(coverFade, {
+      //   toValue: 0,
+      //   duration: 500,
+      //   delay: 1000,
+      //   useNativeDriver: false,
+      // }).start();
+      // setTimeout(()=>setCover(false), 2500);
 
     });
     // dispatch({type:'sendCarouselFlockIndex', payload: 7});
