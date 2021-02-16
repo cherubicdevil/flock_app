@@ -18,7 +18,7 @@ import {throttle} from 'lodash';
 
 
 const Checkout = ({navigation, route}) => {
-    const [email, setEmail] = useState(null);
+
 
     const [shipModal, setShipModal] = useState(false);
     const [billModal, setBillModal] = useState(false);
@@ -30,6 +30,7 @@ const Checkout = ({navigation, route}) => {
 
     // const store = useStore();
     const select = useSelector(state=>state.userInfo);
+    const [email, setEmail] = useState(select.email);
     const dispatch = useDispatch();
     // const customerId = store.getState().userInfo.customerId;
     const customerId = select.customerId;
