@@ -76,11 +76,26 @@ const Checkout = ({navigation, route}) => {
             var chargeCustomerEndpoint = constants.CHARGE_CUSTOMER + "?id="+cid+"&amount="+ amount*100;
             dispatch({type: "UPDATE_DATA", payload: ['customerId',null, null,cid]});
             console.log('customer id, cid', cid);
-      fetch(chargeCustomerEndpoint).then(()=>{
-          console.log('done');
-      }).catch(err=>{
-          console.log(err);
-      });
+    //   fetch(chargeCustomerEndpoint).then(()=>{
+    //       console.log('done');
+    //   }).catch(err=>{
+    //       console.log(err);
+    //   });
+    // var chargeCustomerEndpoint
+    const chargeData = {
+        amount: amount* 100,
+        id: cid,
+        chatId: route.params.id,
+        product: route.params.product,
+        type: 'request',
+        userId: au.currentUser.uid,
+        
+    }
+    fetch(constants.CHARGE_CUSTOMER_POST, {
+        method: 'POST',
+        body: JSON.stringify(chargeData),
+        headers: { 'Content-Type': 'application/json' }
+    });
       if (route.params.doneFunc) {
         route.params.doneFunc();
     }
