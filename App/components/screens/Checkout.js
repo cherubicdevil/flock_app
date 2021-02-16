@@ -89,7 +89,7 @@ const Checkout = ({navigation, route}) => {
         product: route.params.product,
         type: 'request',
         userId: au.currentUser.uid,
-        members: route.params.data.members,
+        members: route.params.data.memberIds,
     }
     fetch(constants.CHARGE_CUSTOMER_POST, {
         method: 'POST',
