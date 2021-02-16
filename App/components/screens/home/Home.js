@@ -500,10 +500,10 @@ const MiniCarouselFlocking = ({navigation, route}) => {
   const [cover, setCover] = useState(true);
   const [coverFade, setCoverFade] = useState(new Animated.Value(1));
 
-  const [finalAr, setFinalAr] = useState([]);
+  var finalAr;
   useEffect(()=>{
     fetchFlockablesFirst().then((ar) => {
-      setFinalAr(ar);
+      // setFinalAr(ar);
       setKeyArrFlock(ar);
       dispatch({type:'sendCarouselFlockIndex', payload: ar.length - 1});
       // setKeyFinishedLoading(false);
@@ -521,6 +521,28 @@ const MiniCarouselFlocking = ({navigation, route}) => {
     console.log('changing sthit', select.carIndexFlock);
     if (select.carIndexFlock < 1) {
     dispatch({type:'sendCarouselFlockIndex', payload: 9});
+    fetchFlockables().then((ar) => {
+      setKeyArrFlock([...keyArrFlock, ...ar]);
+      // setFinalAr([...keyArrFlock, ]);
+      console.log('donneeeee');
+      // setFinalAr([...ar,...k]);
+      // dispatch({type:'sendCarouselFlockIndex', payload: ar.length-1});
+      console.log(ar.length);
+      console.log("finalAr", ar);
+      console.log('done');
+      // dispatch({type:'sendCarouselFlockIndex', payload: 9});
+      setCover(false);
+      // setFinishedLoading(true);
+      Animated.timing(coverFade, {
+        toValue: 0,
+        duration: 500,
+        delay: 1000,
+        useNativeDriver: false,
+      }).start();
+      setTimeout(()=>setCover(false), 2500);
+
+    });
+    // dispatch({type:'sendCarouselFlockIndex', payload: 7});
   }
   }, [select.carIndexFlock]);
   // console.log(store.getState().videopage.carIndex);
@@ -559,6 +581,7 @@ const MiniCarouselFlocking = ({navigation, route}) => {
   }
 
   var res = [];
+  var finalAr = keyArrFlock.slice(keyArrFlock.length-10, keyArrFlock.length);
   for (const item of finalAr) {
     res.push(<View style={{height: '100%', width: '100%', borderWidth: 0, borderOpacity: 0.1,borderBottomWidth: 0,}}>
     {/* <Text>{item?.product?.title || item.flock}</Text> */}
