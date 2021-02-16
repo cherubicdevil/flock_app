@@ -156,15 +156,39 @@ const uploadImage = async ({data, filename, uri}) => {
   //console.log(data.substring(0, 20));
   const dataURL = 'data:image/jpeg;base64,' + data;
   urlToBlob(dataURL).then((blob) => {
-    storageRef
-      .put(blob)
-      .then(function (snapshot) {
-        const downloadURL = snapshot.ref.getDownloadURL().then((link) => {
-          console.log('link: ', link);
-          user.updateProfile({photoURL: link});
-        });
-      })
-      .then(() => console.log('SUCESS'));
+    const uploadTask = storageRef
+      .put(blob);
+      // var uploadTask = storageRef.child('images/rivers.jpg').put(file);
+
+      // Register three observers:
+      // 1. 'state_changed' observer, called any time the state changes
+      // 2. Error observer, called on failure
+      // 3. Completion observer, called on successful completion
+      uploadTask.on('state_changed', 
+        (snapshot) => {
+          // Observe state change events such as progress, pause, and resume
+          // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+        }, 
+        (error) => {
+          // Handle unsuccessful uploads
+        }, 
+        () => {
+          // Handle successful uploads on complete
+          // For instance, get the download URL: https://firebasestorage.googleapis.com/...
+          uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
+            // console.log('File available at', downloadURL);
+            user.updateProfile({photoURL: downloadURL});
+          });
+        }
+      );
+      // .then(function (snapshot) {
+      //   console.log('snapshot', snapshot);
+      //   const downloadURL = snapshot.snapshot.ref.getDownloadURL().then((link) => {
+      //     console.log('link: ', link);
+      //     user.updateProfile({photoURL: link});
+      //   });
+      // })
+      // .then(() => console.log('SUCESS'));
   });
 
   // storageRef
