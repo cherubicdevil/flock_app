@@ -331,7 +331,7 @@ const handleDayPress = (day) => {
     // }).then(res => res.json())
     //   .then(json => console.log(json));
     //     console.log('payment done!');
-      }, start: start, end:end, subtotal: parseFloat(subtotal), id: route.params.data.id, product: route.params.data.product}, );
+      }, start: start, end:end, subtotal: parseFloat(subtotal), id: route.params.data.id, product: route.params.data.product, data: route.params.data}, );
       close();
     }} >
       
