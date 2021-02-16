@@ -42,6 +42,7 @@
 
 import {constants} from 'App/constants';
 import moment from 'moment';
+import {throttle} from 'lodash';
 import {firebase, db, au} from 'App/firebase/config';
 import ImagePicker from 'react-native-image-picker';
 import {Animated, Share, Linking} from 'react-native';

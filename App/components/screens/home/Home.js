@@ -516,36 +516,46 @@ const MiniCarouselFlocking = ({navigation, route}) => {
       setTimeout(()=>setCover(false), 2500);
     });
   },[]);
-  console.log(store.getState().videopage.carIndex);
-  // if (store.getState().videopage.carIndex < 0) {
-  if (select.carIndexFlock < 0 && !cover) {
-    console.log('reached the end');
-    
-    fetchFlockables().then((ar) => {
-      setKeyArrFlock([...keyArrFlock, ...ar]);
-      // setFinalAr([...ar,...keyArrFlock, ]);
-      console.log('donneeeee');
-      setFinalAr([...ar]);
-      dispatch({type:'sendCarouselFlockIndex', payload: ar.length-1});
-      console.log('done');
-      setCover(false);
-      // setFinishedLoading(true);
-      Animated.timing(coverFade, {
-        toValue: 0,
-        duration: 500,
-        delay: 1000,
-        useNativeDriver: false,
-      }).start();
-      setTimeout(()=>setCover(false), 2500);
 
-    });
-    setCover(true);
-    Animated.timing(coverFade, {
-      toValue: 1,
-      duration: 200,
-      delay: 0,
-      useNativeDriver: false,
-    }).start();
+  useEffect(()=>{
+    console.log('changing sthit', select.carIndexFlock);
+    if (select.carIndexFlock < 1) {
+    dispatch({type:'sendCarouselFlockIndex', payload: 9});
+  }
+  }, [select.carIndexFlock]);
+  // console.log(store.getState().videopage.carIndex);
+  // if (store.getState().videopage.carIndex < 0) {
+    // console.log(select.carIndexFlock, 'fasdfasdfasdfasfd', !cover);
+  if (select.carIndexFlock < 1) {
+    console.log('reached the end');
+    // dispatch({type:'sendCarouselFlockIndex', payload: 9});
+    // fetchFlockables().then((ar) => {
+    //   setKeyArrFlock([...keyArrFlock, ...ar]);
+    //   // setFinalAr([...ar,...keyArrFlock, ]);
+    //   console.log('donneeeee');
+    //   setFinalAr([...ar]);
+    //   // dispatch({type:'sendCarouselFlockIndex', payload: ar.length-1});
+    //   console.log(ar.length);
+    //   console.log("finalAr", ar);
+    //   console.log('done');
+    //   setCover(false);
+    //   // setFinishedLoading(true);
+    //   Animated.timing(coverFade, {
+    //     toValue: 0,
+    //     duration: 500,
+    //     delay: 1000,
+    //     useNativeDriver: false,
+    //   }).start();
+    //   setTimeout(()=>setCover(false), 2500);
+
+    // });
+    // setCover(true);
+    // Animated.timing(coverFade, {
+    //   toValue: 1,
+    //   duration: 200,
+    //   delay: 0,
+    //   useNativeDriver: false,
+    // }).start();
   }
 
   var res = [];

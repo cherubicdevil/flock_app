@@ -14,7 +14,6 @@ const HeartIcon = ({data}) => {
     var liked = selector.userInfo.likedVideos.some(
       (item) => item.title === data.title,
     );
-    console.log('heartcolor', liked, data.id, selector.userInfo.likedVideos);
     const [heartColor, setHeartColor] = useState(liked);
     useFocusEffect(() => {
       var original = liked;

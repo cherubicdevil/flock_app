@@ -397,7 +397,6 @@ const ScrollCount = ({data}) => {
     useFocusEffect(()=>{
       var interval;
         if (data !== null && data.length >= 2) {
-          console.log('setp')
         interval = setInterval(callback, 2000);
         }
         return ()=>{

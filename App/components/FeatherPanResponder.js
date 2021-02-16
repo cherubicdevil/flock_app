@@ -239,7 +239,6 @@ const FeatherPanResponder = React.memo(({index, positions, currIndex, setCurrent
         onMoveShouldSetPanResponder:(event, gesture)=> !select.commentsModal && Math.abs(gesture.dy)/Math.abs(gesture.dx)>2,
         // onStartShouldSetPanResponder: (event, gesture) => true,
         onPanResponderMove: (event, gesture) => {
-            console.log('modal visible', select.commentsModal)
             if (gesture.dy > 0) {
                 if (isUp) return;
                 isDown = true;
@@ -286,7 +285,7 @@ const FeatherPanResponder = React.memo(({index, positions, currIndex, setCurrent
                 
                 // dispatch({type: 'sendCarouselIndex', payload: currentIndex - 1});
 
-                console.log("changing flock carindex", currentIndex - 1);
+                // console.log("changing flock carindex", currentIndex - 1);
             } else if (gesture.dy < 0) {
                 if (!isTop) {
                     Animated.timing(positions[index+1], {

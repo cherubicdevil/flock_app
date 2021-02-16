@@ -96,7 +96,7 @@ var shareContainer = <View style={{alignItems: 'center', flexDirection: 'row'}}>
         setShowEgg(false); // should be false
         setToggle(false);
     }}>
-    <Image style={{width: 20, height: 20, resizeMode:'contain'}} source={constants.EGG_GOLD} />
+    <View style={{flexDirection: 'row', alignItems: 'center'}}><Text style={{color: constants.ORANGE, fontSize: 12}}>You've earned +10 eggs!</Text><Image style={{width: 20, height: 20, resizeMode:'contain'}} source={constants.EGG_GOLD} /></View>
     </TouchableOpacity>
     :<View />}{shareAction}</View>;
     return <>
