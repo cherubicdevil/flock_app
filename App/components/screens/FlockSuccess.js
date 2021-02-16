@@ -35,19 +35,19 @@ import HeaderGradient from 'App/components/HeaderGradient';
 const FlockSuccess = ({navigation, route}) => {
     return <SafeAreaView>
             <HeaderGradient navigation={navigation} closeX={true} absolute={false}>
-        <Text>Success</Text>
+        {/* <Text style={{fontSize: 18, fontFamily: constants.FONT, marginTop: -10}}>Success</Text> */}
     </HeaderGradient>
-    <View style={{paddingVertical:10, paddingHorizontal:20}}>
+    <View style={{paddingVertical:10, paddingHorizontal:20, backgroundColor: constants.PINK_BACKGROUND_OPAQUE, height: '100%'}}>
     <Text style={{alignSelf: 'center'}}>
         Congratulations! Your flock succeeded!
     </Text>
 
     <Text style={{marginTop: 20,}}>
-    Tap below to begin using your item. Note, there will be around a two week delay while we order your product. We will notify you in your flock chat and by email when the item has arrived and we can start shipping the product to you.
+    We will order your item immediately and notify you in Flock chat, text, and email when it arrives at Flock headquarters. Tap below to book your item for use. 
     </Text>
 
     <Text style={{marginTop: 20}}>
-        You can find all your completed flocks in your profile page, under Flocks.
+    You can find all your completed Flocks on your Profile page.
     </Text>
 
     <TouchableOpacity style={{marginTop: 20, }} onPress={()=>{
@@ -56,7 +56,7 @@ const FlockSuccess = ({navigation, route}) => {
       <View style={{padding: 20, marginBottom: 15, paddingLeft: 30, borderRadius: 50, shadowRadius: 2.62, backgroundColor: 'white', borderWidth: 2, borderColor: constants.ORANGE, shadowOpacity: 0.23, shadowOffset:{height: 2,width:0}, elevation: 1}}>
       <View style={{flexDirection:'row', paddingRight: 30}}>
       <Image style={{width: 50, height: 50}} source={{uri: route.params.data.product.image}} />
-      <View>
+      <View style={{marginLeft: 5}}>
         <Text numberOfLines={2} style={{flex:1}}>{route.params.data.product.title}</Text>
       </View>
       </View>

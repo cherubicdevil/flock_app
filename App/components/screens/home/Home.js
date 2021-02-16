@@ -418,7 +418,7 @@ const MiniCarouselRenting = ({navigation, route}) => {
   var finalAr;
   useEffect(()=>{
     fetchRentablesFirst().then((ar) => {
-      setFinalAr(ar);
+      // setFinalAr(ar);
       setKeyArrRent(ar);
       // setKeyFinishedLoading(false);
       dispatch({type:'sendCarouselRentIndex', payload: ar.length - 1});

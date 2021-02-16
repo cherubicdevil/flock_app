@@ -6,16 +6,20 @@ import AnimatedModal from 'App/components/AnimatedModal';
 import {constants} from 'App/constants';
 import HeaderGradient from '../HeaderGradient';
 import {useStore, useDispatch, useSelector} from 'react-redux';
-import {firebase, auth, db} from 'App/firebase/config';
+import {firebase, au, db} from 'App/firebase/config';
 import {useFocusEffect} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import moment from 'moment';
 import LinearGradient from 'react-native-linear-gradient';
 import {createOrUpdate, fetchCustomerInfo} from 'App/utils';
 import SmartCheckout from 'App/components/SmartCheckout';
+import {throttle} from 'lodash';
+
 
 
 const Checkout = ({navigation, route}) => {
+    const [email, setEmail] = useState(null);
+
     const [shipModal, setShipModal] = useState(false);
     const [billModal, setBillModal] = useState(false);
     const [changed, setChanged] = useState(false);
@@ -82,7 +86,9 @@ const Checkout = ({navigation, route}) => {
     }
     console.log('done');
     dispatch({type:'spendEggs', payload: reductionEggs});
-    navigation.navigate('Success');
+    db.collection('users').doc(au.currentUser.uid).update({email: email});
+    dispatch({type: "UPDATE_DATA", payload: ['email',null, null,email]});
+    navigation.navigate('Success', {amount: "$"+amount, period: route.params.start+ " to " +route.params.end});
     };
 
     const cancelFunc = () => {
@@ -94,7 +100,7 @@ const Checkout = ({navigation, route}) => {
         <HeaderGradient title="Checkout" navigation={navigation} absolute={false} >
         {/* <Text style={{fontFamily: constants.FONT, fontSize: 18, marginTop: -10}}>Checkout</Text> */}
         </HeaderGradient>
-
+    <ScrollView keyboardShouldPersistTaps="never">
         {/* <View style={{flex: 1, backgroundColor: constants.PINK_BACKGROUND,}}> */}
 
         {/* <View style={{height: '100%', marginTop: 10, }}> */}
@@ -127,7 +133,6 @@ const Checkout = ({navigation, route}) => {
             
         </View> */}
         <SmartCheckout confirmFunc = {confirmFunc} cancelFunc={cancelFunc} billingOnly={true} shippingOnly={true} >
-
         <View style={[styles.row, {borderBottomWidth: 0}]}>
                 <Text style={{fontWeight: 'bold'}}>Summary</Text>
         <Text>Arriving {["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"][moment(route.params.start).day()]} {route.params.start}</Text>
@@ -156,6 +161,20 @@ const Checkout = ({navigation, route}) => {
     style={{ transform: [{ scaleX: .8 }, { scaleY: .8 }] }} />
     </View>
             </View>
+            <View style={{marginHorizontal:20, marginTop: 10,
+            flexDirection:'row',
+            backgroundColor: 'rgba(255,255,255,0.2)', borderColor: constants.LAVENDER, borderWidth: 1, marginTop: 5, borderRadius: 40, paddingVertical: 5, height: 35, paddingLeft: 20,
+            alignItems: 'center'
+            }}>
+                <Text>Send receipt to: </Text>
+                {/* <Text style={{marginLeft: 0}}>Email to receive receipt</Text> */}
+            <TextInput value={email} onChangeText={throttle((text)=>{
+                setEmail(text.toLowerCase());
+            }, 500)} 
+            placeholder="Email to receive receipt"  keyboardType="email-address" defaultValue={select.email}
+            style={{width: '100%'}}
+            ></TextInput>
+            </View>
             </SmartCheckout >
             
             {/* </View> */}
@@ -178,7 +197,7 @@ const Checkout = ({navigation, route}) => {
         {/* </View> */}
 
 {/* </View> */}
-
+</ScrollView>
     </SafeAreaView>
     <AnimatedModal colored={true} keyboard = {true} colors={[constants.ORANGE, constants.GREYORANGE]} visible={billModal} close={()=>setBillModal(false)} state={info} setState={setInfo} content={<BillingModal state={info} setState={setInfo} setChanged={setChanged} close={()=>setBillModal(false)}/>}/>
         <AnimatedModal colored={true} keyboard = {true} colors={[constants.ORANGE, constants.GREYORANGE]} visible={shipModal} close={()=>setShipModal(false)} state={info} setState={setInfo} content={<ShippingModal state={info} setState={setInfo} setChanged={setChanged} close={()=>setShipModal(false)}/>}/>

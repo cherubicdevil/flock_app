@@ -34,17 +34,17 @@ const showCardIcon = (brand, color)=>{
     return cardIcons[brand];
     }
 
-const SmartCheckout = ({confirmFunc, cancelFunc, children, billingOnly=false, shippingOnly=false, showSummary=true, allowConfirm = (creditCardChanged, shippingChanged, hasId)=>{
+const SmartCheckout = ({confirmFunc, cancelFunc, children, billingOnly=false, shippingOnly=false, showSummary=true, allowConfirm = (creditCardChanged, shippingChanged, hasId, hasShipping)=>{
 
 
   if (billingOnly && shippingOnly) { //  both needed
-    return shippingChanged && creditCardChanged;
+    return (shippingChanged || hasShipping)  && (creditCardChanged || hasId);
   }
   
   if (billingOnly) {
-    return creditCardChanged;
+    return creditCardChanged || hasId;
   } else if (shippingOnly) {
-    return shippingChanged;
+    return shippingChanged || hasShipping;
   } else { // default. neither needed. in profile perhaps false && false
     return true;
   }
@@ -82,14 +82,18 @@ useEffect(()=>{
       // console.log(data.card,"MY CARD");
       });
       console.log('hello');
-    fetchShipping(au.currentUser.uid).then((data)=>{
-      console.log('shipping non?', data);
-      if (data !== "none") {
-        setInfo(data);
-        console.log('shipping', data);
-      }
+    // fetchShipping(au.currentUser.uid).then((data)=>{
+    //   console.log('shipping non?', data);
+    //   if (data !== "none") {
+    //     setInfo(data);
+    //     console.log('shipping', data);
+    //   }
       
-    })
+    // })
+    const shipping = select.shipping;
+    if (shipping !== undefined && shipping !== "none") {
+      setInfo(shipping);
+    }
   }
 }, [select.customerId]);
 
@@ -130,8 +134,9 @@ const [creditInfo, setCreditInfo] = useState({
   addressZip: '',
 });
 
-const allowed = allowConfirm(creditCardChanged, changed, hasId);
-console.log("??????????", allowed, creditCardChanged, changed, hasId, 'stuff');
+const hasShipping = select.shipping !== undefined && select.shipping !== "none";
+const allowed = allowConfirm(creditCardChanged, changed, hasId, hasShipping);
+console.log("??????????", allowed, creditCardChanged, changed, hasId, hasShipping, 'stuff');
 return <><View style={{marginTop: 5,}} >
         <View style={[styles.row, {justifyContent: 'space-between'}]}>
             {!shippingOnly || (billingOnly && shippingOnly)?
@@ -245,6 +250,7 @@ return <><View style={{marginTop: 5,}} >
                 //   confirmFunc(id);
                 // })
                 console.log('updateShipping');
+                dispatch({type:'UPDATE_DATA', payload: ["shipping", null, null, info]});
                 db.collection('users').doc(au.currentUser.uid).update({
                   
                   shipping: info
@@ -280,6 +286,7 @@ return <><View style={{marginTop: 5,}} >
                       db.collection('users').doc(au.currentUser.uid).update({
                         shipping: info
                       });
+                      dispatch({type:'UPDATE_DATA', payload: ["shipping", null, null, info]});
 
                     } else if (billingOnly && creditCardChanged) {
                       // console.log(creditInfo['exp_month'], parseInt(creditInfo.expMonth));
