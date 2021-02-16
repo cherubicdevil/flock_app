@@ -2,6 +2,7 @@ import React from 'react';
 import {View, Image, Text} from 'react-native';
 import {constants} from 'App/constants';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import {rentPrice} from 'App/utils';
 
 const ProductBlurb = ({data}) => {
   // Possible FLOCK_BUG
@@ -27,7 +28,7 @@ const ProductBlurb = ({data}) => {
     }}>
       <Text numberOfLines={1} style={{flex: 1, color: 'black', fontWeight:'bold'}}>{data?.product?.title}</Text>
       <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-      <Text style={{color: constants.ORANGE, fontWeight: 'bold'}}>${data?.product?.price / data?.members?.length}</Text>
+      <Text style={{color: constants.ORANGE, fontWeight: 'bold'}}>${(data?.product?.price / 25 * 1.4).toFixed(2)}</Text>
       <Text>{data?.members?.length} flocking</Text>
       </View>
     </View>;
@@ -38,7 +39,7 @@ const ProductBlurb = ({data}) => {
       }}>
         <Text numberOfLines={1} style={{flex: 1, color: 'black', fontWeight:'bold'}}>{data?.product?.title}</Text>
         <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-        <Text style={{color: "#8484a8", fontWeight: 'bold'}}>${(.15 * data?.product?.price + data?.product?.price / data?.members?.length).toFixed(2)}</Text>
+        <Text style={{color: "#8484a8", fontWeight: 'bold'}}>${rentPrice(data?.product?.price)}</Text>
         <Text>borrowable</Text>
         </View>
       </View>;

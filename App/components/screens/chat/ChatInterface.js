@@ -171,7 +171,7 @@ function ChatInterface({route, navigation}) {
   const dispatch = useDispatch();
   //firebase.firestore().collection("posts").get();
   useEffect(function () {
-    console.log('hillo');
+    // console.log('hillo');
     //firebase.firestore().collection("posts").get();
     eventify(systemMessages, (message) => {
       console.log('adding');
@@ -183,7 +183,9 @@ function ChatInterface({route, navigation}) {
     socket.current.emit('join', route.params.data.id);
     socket.current.on('message', (message) => {
       console.log(message);
-      setRecvMessages((prevState) => GiftedChat.append(prevState, message));
+      // setRecvMessages((prevState) => GiftedChat.append(prevState, 
+      //   [{"_id": "f61e10e5-195e-451c-9ca5-d14c09a9a43c", "createdAt": 1234, "text": "Hihi", "user": {"_id": "oBLYqqDl6VQE2wb4Onov8Itqot93", "avatar": 6, "name": "flockeroBLYq"}}, {"_id": "c770d2ae-4f18-4eb6-aaaa-a22d0d0e218f", "createdAt": 1613435750000, "sender": {"name": "flockeriYKdJ", "uid": "iYKdJi48AQdJkyMvh0GHjW2IwPw2"}, "text": "Hiiiiiii", "user": {"_id": "iYKdJi48AQdJkyMvh0GHjW2IwPw2", "avatar": null, "name": "flockeriYKdJ"}}, {"_id": "f8bcd914-4939-44c7-aeb9-de2eeec2bb79", "createdAt": 1613436082000, "sender": {"name": "flockeroBLYq", "uid": "oBLYqqDl6VQE2wb4Onov8Itqot93"}, "text": "Ello", "user": {"_id": "oBLYqqDl6VQE2wb4Onov8Itqot93", "avatar": 6, "name": "flockeroBLYq"}}, {"_id": "0a9b92e6-cd56-4a54-b6d1-7def00c34a22", "createdAt": 1613436256000, "sender": {"name": "flockeroBLYq", "uid": "oBLYqqDl6VQE2wb4Onov8Itqot93"}, "text": "Ello", "user": {"_id": "oBLYqqDl6VQE2wb4Onov8Itqot93", "avatar": 6, "name": "flockeroBLYq"}}, {"_id": "c4e7005f-f676-45c3-9aaf-f647421a56f5", "createdAt": 1613436273000, "sender": {"name": "flockeriYKdJ", "uid": "iYKdJi48AQdJkyMvh0GHjW2IwPw2"}, "text": "Llo llo", "user": {"_id": "iYKdJi48AQdJkyMvh0GHjW2IwPw2", "avatar": null, "name": "flockeriYKdJ"}}]
+      // ));
     });
     socket.current.on('complete', () => {
       console.log('completingggg');
@@ -419,6 +421,9 @@ return <ScrollView  style={{marginLeft: 15, overflow: 'visible', backgroundColor
             color: "white"
           }
         }}
+        usernameStyle={{
+          color: 'white',
+        }}
         timeTextStyle={{
           left: {
             color: 'white',
@@ -476,7 +481,7 @@ return <ScrollView  style={{marginLeft: 15, overflow: 'visible', backgroundColor
         messages={recvMessages}
         renderUsernameOnMessage={true}
         onSend={onSend}
-        user={{_id: au.currentUser.uid, name: au.currentUser.displayName, avatar: au.currentUser.photoURL}}
+        user={{_id: au.currentUser.uid, name: au.currentUser.displayName, avatar: au.currentUser.photoURL || constants.PLACEHOLDER_IMAGE}}
       /></View>
       <JoinDialog navigation={navigation} data={route.params.data} setCreditModal={setCreditModal} initialDialog={initialDialog} setInitialDialog={setInitialDialog} setPartOf = {setPartOf} completeFunc = {completeFunc} maxPercent = {remainingPercent} productPrice={route.params.data.product.price} />
       {partOf?<></>:<View style={{position: 'absolute', bottom: 0, width: '100%', height: 100, backgroundColor: 'white'}}><View style={{height: '100%', backgroundColor: constants.PINK_BACKGROUND }}>

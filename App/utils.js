@@ -885,7 +885,7 @@ return data;
 }
 
 const rentPrice = (totalPrice) => {
-return (totalPrice /25 * 1.4 + 23.99).toFixed(2);
+return (.15 * 1.4 * totalPrice).toFixed(2);
 }
 
 function validateCard (value) {
