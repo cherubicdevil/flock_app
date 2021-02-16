@@ -70,7 +70,7 @@ function ChatInterface({route, navigation}) {
 
   const [creditModal, setCreditModal] = useState(false);
 
-
+  const [priceStartPercent, setPriceStartPercent] = useState(0);
   const [priceShare, setPriceShare] = useState(route.params.data.maximums[au.currentUser.uid] || 0);
   const [initialDialog, setInitialDialog] = useState(false);
   const [remainingPercent, setRemainingPercent] = useState(0);
@@ -80,14 +80,14 @@ function ChatInterface({route, navigation}) {
   console.log('remaning percent', remainingPercent);
   console.log('importants', route.params.data.maximums);
 
-  useEffect(()=>{
+  useFocusEffect(()=>{
     // setUUID(Math.random());
     setPriceShare(route.params.data.maximums[au.currentUser.uid]);
 
     console.log(route.params.data.id, route.params.data.maximums[au.currentUser.uid]);
   }, []);
   console.log("PRICE SHAre", priceShare);
-  useEffect(()=>{
+  useFocusEffect(()=>{
     const unsub = db.collection('chatGroups').doc(route.params.data.id).onSnapshot(docSnapshot => {
       const data = docSnapshot.data();
       const members = data.memberIds;
@@ -336,7 +336,7 @@ return <ScrollView  style={{marginLeft: 15, overflow: 'visible', backgroundColor
       <View style={{backgroundColor: constants.PINK_BACKGROUND, flex: 1, justifyContent: 'flex-end'}}>
         <ChatComponent route={route} socket={socket} />
  </View>
-      <JoinDialog navigation={navigation} data={route.params.data} setCreditModal={setCreditModal} initialDialog={initialDialog} setInitialDialog={setInitialDialog} setPartOf = {setPartOf} completeFunc = {completeFunc} maxPercent = {remainingPercent} productPrice={route.params.data.product.price} />
+      <JoinDialog navigation={navigation} data={route.params.data} setCreditModal={setCreditModal} initialDialog={initialDialog} setInitialDialog={setInitialDialog} setPriceStartPercent={setPriceStartPercent} setPartOf = {setPartOf} completeFunc = {completeFunc} maxPercent = {remainingPercent} productPrice={route.params.data.product.price} />
       {partOf?<></>:<View style={{position: 'absolute', bottom: 0, width: '100%', height: 100, backgroundColor: 'white'}}><View style={{height: '100%', backgroundColor: constants.PINK_BACKGROUND }}>
         <TouchableOpacity style={{width: '90%', height: 50, backgroundColor: constants.ORANGE, alignSelf: 'center', borderRadius: 30, justifyContent: 'center'}} onPress={()=>{
           setInitialDialog(true);
@@ -365,6 +365,8 @@ return <ScrollView  style={{marginLeft: 15, overflow: 'visible', backgroundColor
          console.log('conffirrrrrm');
          route.params.data.maximums[au.currentUser.uid] = (initialPercentTemp/100 * parseFloat(route.params.data.product.price)).toFixed(2);
          // console.log('route  id', route.params.data.id);
+         console.log(initialPercentTemp)
+         route.params.data.maximums[au.currentUser.uid] = (priceStartPercent/100 * parseFloat(route.params.data.product.price)).toFixed(2);
          db.collection('chatGroups').doc(route.params.data.id).update({
           //  members: firebase.firestore.FieldValue.arrayUnion(memberInfo),
            memberIds: firebase.firestore.FieldValue.arrayUnion(au.currentUser.uid),
@@ -483,6 +485,7 @@ const JoinDialog = ({navigation, data, setCreditModal, initialDialog, setInitial
       navigation.navigate("ChatInterface", {data: {...data}, refreshKey: Math.random()});
     } else {
       initialPercentTemp = initialPercent;
+      setPriceStartPercent(initialPercent);
       setInitialDialog(false);
       setTimeout(()=>{
         setCreditModal(true);
