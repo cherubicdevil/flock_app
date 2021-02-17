@@ -251,7 +251,7 @@ const Product = ({route, navigation}) => {
     return (
       <View style={{flex: 1, backgroundColor: constants.PINK_BACKGROUND}}>
                             {renderBackOrClose()}
-      <ScrollView pagingEnabled={true} showsVerticalScrollIndicator style={styles.mainViewStyle}>
+      <ScrollView pagingEnabled={true} showsVerticalScrollIndicator={false} style={styles.mainViewStyle}>
         {/* <LinearGradient
           colors={['rgba(0,0,0,0)', 'rgba(40,60,81, 0.4)']}
           style={{
