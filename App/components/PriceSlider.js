@@ -46,7 +46,7 @@ import Countdown from 'App/components/Countdown';
 
 
 
-const PriceSlider = ({priceShareInitialPercent, completeFunc=()=>{}, productPrice, remainingPercent, maximums, setOutsideState=()=>{}, confirm=true}) => {
+const PriceSlider = ({priceShareInitialPercent, completeFunc=()=>{}, productPrice, remainingPercent, maximums, setOutsideState=()=>{}, confirm=true, showInfo = true}) => {
     console.log(priceShareInitialPercent+"%");
     const [initialPercent, setInitialPercent] = useState(priceShareInitialPercent);
     const [pricePercent, setPricePercent] = useState(initialPercent);
@@ -164,13 +164,13 @@ const PriceSlider = ({priceShareInitialPercent, completeFunc=()=>{}, productPric
   
   <View style={{alignItems: 'center',marginTop: -10, paddingTop: 10, justifyContent: 'center'}}>
   <Text style={{color:'black', marginBottom: 10, textAlign: 'center', alignSelf: 'center'}}>Increase to own more and use more.</Text>
-  <View style={{width: 20, height: 20, justifyContent: 'center', alignItems: 'center', borderRadius: 50, position: 'absolute', right: 25, borderWidth:1, borderColor: constants.LAVENDER}}>
+  {showInfo?<View style={{width: 20, height: 20, justifyContent: 'center', alignItems: 'center', borderRadius: 50, position: 'absolute', right: 25, borderWidth:1, borderColor: constants.LAVENDER}}>
     <TouchableOpacity style={{height:'100%', width: '100%', justifyContent:'center',alignItems:'center'}} onPress={()=>{
       setInfoModal(true);
     }}>
   <Icon name="info" size={10} color={constants.LAVENDER} />
   </TouchableOpacity>
-  </View>
+  </View>:<></>}
   </View>
       <View style={{flexDirection: 'row'}}>
         
@@ -179,9 +179,9 @@ const PriceSlider = ({priceShareInitialPercent, completeFunc=()=>{}, productPric
       </View>
       {/* <Text style={{color:'white', marginBottom: 10, fontWeight: 'bold'}}>Have it now if you  ${(route.params.data.product.price / route.params.data.members.length).toFixed(2)}.</Text>
       <Text style={{color:'white', marginBottom: 10, fontWeight: 'bold'}}>Want to pay less? Get more people to join!</Text> */}
-      <AnimatedModal colored={true} colors={[constants.PEACH, constants.GREYORANGE]} nested={true} visible={infoModal} close={()=>{setInfoModal(false)}}>
+      {showInfo?<AnimatedModal colored={true} colors={[constants.PEACH, constants.GREYORANGE]} nested={true} visible={infoModal} close={()=>{setInfoModal(false)}}>
           <HowTo />
-      </AnimatedModal>
+      </AnimatedModal>:<></>}
       </>;
   
     } else {

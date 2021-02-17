@@ -39,7 +39,8 @@ const ShareSocial = ({product, data={}, flockId, shareApp=false, showImage=true,
         <View style={{ position:'absolute', height:'100%', width:'100%', justifyContent:'center', alignItems:'center',}}>
         <View style={{justifyContent: 'center', 
         backgroundColor: "rgba(255,255,255,0.4)", paddingVertical:5,
-        shadowColor: 'white', shadowOpacity: 100, shadowRadius: 5, shadowOffset:{height:0}, }}>
+        shadowColor: 'white', shadowOpacity: 100, shadowRadius: 5, shadowOffset:{height:0},
+         }}>
         <Image style={{height: 120, width: 300}} source={require('App/Assets/Images/Flock_Watermark.png')}/>
 <Text style={{marginTop: -35, alignSelf: 'flex-end', width: 170, 
 shadowColor: 'white', shadowOpacity: 1, shadowOffset:{height:0}, 

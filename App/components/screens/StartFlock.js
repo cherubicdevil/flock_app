@@ -1,5 +1,5 @@
 import React, {useState, useRef, useEffect} from 'react';
-import {View, ScrollView, Text, Switch, TextInput, Image, KeyboardAvoidingView,Dimensions} from 'react-native';
+import {View, ScrollView, Text, Switch, TextInput, Image, KeyboardAvoidingView,Dimensions, TouchableOpacity} from 'react-native';
 import ProgressHeader from 'App/components/ProgressHeader';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import {constants} from 'App/constants';
@@ -15,6 +15,7 @@ import {CommonActions, useFocusEffect} from '@react-navigation/native';
 import PriceSlider from 'App/components/PriceSlider';
 import AnimatedModal from 'App/components/AnimatedModal';
 import SmartCheckout from 'App/components/SmartCheckout';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 
 const StartFlock = ({navigation, route}) => {
@@ -236,6 +237,7 @@ const PageOne = ({product, data, setCanNext}) => {
 const PageTwo = ({product, data, setCanNext}) => {
     console.log("DATA", data);
 
+    const [openInfo, setOpenInfo] = useState(false);
 
     const [errorMessage, setErrorMessage] = useState("");
     const [priceValue, setPriceValue] = useState((1.4 * product.price / 2).toFixed(2));
@@ -259,15 +261,42 @@ const PageTwo = ({product, data, setCanNext}) => {
     data['maxPrice'] = priceValue;
     return <View style={styles.container}>
         <Text style={{color: 'red'}}>{errorMessage}</Text>
-    <Text style={{fontWeight: 'bold', marginBottom: 20}}>Enter your price. Minimum: ${(product.price/25 * 1.4).toFixed(2)}.</Text>
-    
-    <PriceSlider priceShareInitialPercent={maxPricePercentage} productPrice ={product.price} remainingPercent={100} maximums={{}} setOutsideState={setPriceValue} confirm = {false} />
+        <View style={{marginBottom: 20}}>
+    <Text style={{fontWeight: 'bold'}}>Enter your price. Minimum: ${(product.price/25 * 1.4).toFixed(2)}.</Text>
+    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+    <Text style={{color: constants.DARKGREY, fontSize: 14}}>Why is the maximum higher?</Text>
+    <TouchableOpacity onPress={()=>{
+        setOpenInfo(true);
+    }}>
+    <View style={{justifyContent: 'center', alignItems: 'center', borderRadius: 20, width: 15, height: 15, marginLeft: 5, borderWidth: 1, borderColor: constants.DARKGREY}}>
+    <Icon name="question" size={12} color={constants.DARKGREY} />
+
+    </View></TouchableOpacity>
+    </View>
+    </View>
+    <PriceSlider showInfo={false} priceShareInitialPercent={maxPricePercentage} productPrice ={product.price} remainingPercent={100} maximums={{}} setOutsideState={setPriceValue} confirm = {false} />
     
     
 
     <Text style={{marginTop: 20, marginBottom: 20, }}>The more you pay, the more you own, and the more frequently you can use this item compared to your co-flockers.</Text>
     <ProductPreview product = { product } />
- 
+    
+    <AnimatedModal visible={openInfo} colored = {true} colors={[constants.PEACH, constants.ORANGE]} nested={true} close={()=>{setOpenInfo(false)}} >
+        <View style={{marginLeft: 20, marginRight: 20}}>
+            <Text style={{textAlign: 'center', fontWeight: 'bold'}}>
+                Why is the Max Higher than the Retail Price?
+            </Text>
+            <Text style = {{marginTop: 20}}>
+                The markup for the total price takes care of shipping fees, cleaning fees, and storage fees.
+            </Text>
+            <Text style = {{marginTop: 20}}>
+                But don't worry, the total doesn't affect how much you choose to pay, you do! Choose your price. Other flockers will flock to you, and together you'll reach the total.
+            </Text>
+            <Text style = {{marginTop: 20}}>
+                It doesn't matter how expensive the item is. When you flock, you can buy anything.
+            </Text>
+        </View>
+    </AnimatedModal>
     </View>
 }
 

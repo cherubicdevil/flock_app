@@ -328,6 +328,7 @@ return <><View style={{marginTop: 5,}} >
         </View>
         <AnimatedModal nested = {true} keyboard={true} upPercent="55%" colored={true} colors={[constants.ORANGE, constants.GREYORANGE]} visible={billModal} close={()=>setBillModal(false)} state={info} setState={setInfo} content={<BillingModal state={creditInfo} setState={setCreditInfo} setChanged={setCreditCardChanged} close={()=>setBillModal(false)}/>}/>
 <AnimatedModal nested = {true} keyboard={true} colored={true} colors={[constants.ORANGE, constants.GREYORANGE]} visible={shipModal} close={()=>setShipModal(false)} state={info} setState={setInfo} content={<ShippingModal state={info} setState={setInfo} setChanged={setChanged} close={()=>setShipModal(false)}/>}/>
+
 </>
 
 
@@ -447,7 +448,7 @@ const BillingModal = ({state, setState, close, setChanged}) => {
                     <Text style={{color: 'white'}}>confirm</Text>
                     </LinearGradient>
                     </TouchableOpacity>
-                
+                    <Image  style={{alignSelf: 'center',height: 25, resizeMode: 'contain'}} source={require('App/Assets/Images/stripe-logo.png')}/>
             </ScrollView>
             
   }
@@ -536,8 +537,9 @@ const BillingModal = ({state, setState, close, setChanged}) => {
                     <Text style={{color: 'white'}}>confirm</Text>
                     </LinearGradient>
                     </TouchableOpacity>
-                
+                    
             </ScrollView>
+            
             
   
   }

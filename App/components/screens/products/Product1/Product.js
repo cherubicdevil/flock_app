@@ -545,7 +545,7 @@ const FlockList = ({product, navigation, ar, close, limited = true, randomId}) =
     }
   }
     paidFor = paidFor.toFixed(2);
-    var paidForPercent = Math.round(100 * paidFor/ar[i].product.price);
+    var paidForPercent = Math.round(100 * paidFor/(1.4*ar[i].product.price));
     result.push(  
       <View style={{flexDirection: 'row', height: 50, justifyContent: 'space-between', paddingTop: 10, borderTopWidth:i==0?0:2, borderColor: constants.GREY, paddingBottom:3, alignItems: 'center'}}>
       <View style={{flex: 1}}>
@@ -563,7 +563,7 @@ const FlockList = ({product, navigation, ar, close, limited = true, randomId}) =
         console.log('going')
         tempFunc();}}>
         
-      <Text style={{color: 'black', fontFamily: constants.FONT, fontWeight: 'bold', fontSize: 13}}>${(ar[i].product.price - paidFor).toFixed(2)} to go</Text>
+      <Text style={{color: 'black', fontFamily: constants.FONT, fontWeight: 'bold', fontSize: 13}}>${(1.4 * ar[i].product.price - paidFor).toFixed(2)} to go</Text>
       </TouchableOpacity>
       </View>
       </View>
