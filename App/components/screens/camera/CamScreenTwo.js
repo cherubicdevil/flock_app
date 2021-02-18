@@ -48,7 +48,8 @@ const CamScreenTwo = ({navigation, route}) => {
 
   const [canNext, setCanNext] = useState(pinned);
   const [searchResultPlaceholder, setSearchResultPlaceholder] = useState("Search for a product on the internet.");
-
+  const [canGoBack, setCanGoBack] = useState(false);
+  const [canGoForward, setCanGoForward] = useState(false);
 
   
 
@@ -107,7 +108,7 @@ const CamScreenTwo = ({navigation, route}) => {
     } else {
       url = `https://www.google.com/search?q=${searchUrl}`;
     }
-    console.log(url, searchUrl);
+    // console.log(url, searchUrl);
     setUrlState(url);
     //setSearchUrl(url);
   };
@@ -184,7 +185,7 @@ const CamScreenTwo = ({navigation, route}) => {
                 }}>
                   
               <View style={{width: 150, height: 150, alignItems: 'center', resizeMode: 'contain'}}>
-                <View style={{borderWidth:2, borderColor: constants.DARKGREY,borderRadius:30,overflow: 'hidden', }}>
+                <View style={{borderWidth:0, borderColor: constants.DARKGREY,borderRadius:30,overflow: 'hidden', }}>
             <ResizeableImage
               defaultSource={require('App/Assets/Images/Blank_Photo_Icon.png')}
               source={
@@ -334,8 +335,9 @@ const CamScreenTwo = ({navigation, route}) => {
     }
   };
 
-  
+  console.log(canGoBack, canGoForward);
   const headerCloseFunc=()=>{
+    console.log('pressed');
     if (!pinned) {
       return;
     }
@@ -352,6 +354,7 @@ const CamScreenTwo = ({navigation, route}) => {
     db.collection("posts").add({...route.params.data, createdBy: au.currentUser.uid, createdAt: Date.now()})
   .then(function(docRef) {
       console.log("Document written with ID: ", docRef.id);
+      route.params.data.id = docRef.id;
   })
   .catch(function(error) {
       console.error("Error adding document: ", error);
@@ -365,7 +368,7 @@ const CamScreenTwo = ({navigation, route}) => {
   //     ],
   //   })
   // );
-  navigation.navigate("Product", {album: route.params.data.product, data: route.params.data, id: route.params.data.id, tutorial: true});
+  navigation.navigate("Product", {album: route.params.data.product, data: route.params.data, id: route.params.data.id || Math.random() * 10000, tutorial: true});
   };
 
   return (
@@ -374,7 +377,7 @@ const CamScreenTwo = ({navigation, route}) => {
     <KeyboardAvoidingView
       style={{flex: 1, backgroundColor: constants.PINK_BACKGROUND_OPAQUE}}
       behavior="padding"
-      keyboardVerticalOffset={100}>
+      keyboardVerticalOffset={0}>
         
       <View behavior="height" keyboardVerticalOffset={0} style={{flex: 1}}>
         <View
@@ -397,16 +400,19 @@ const CamScreenTwo = ({navigation, route}) => {
         </View>
 
 <HeaderGradient navigation={navigation} absolute={false}>
-  <View style={{flexDirection: 'row', justifyContent: 'center', width:'100%', alignItems: 'center'}}>
-    <Text style={{fontSize: 16, position: 'absolute', bottom: 5}}>
+  <View style={{flexDirection: 'row', justifyContent: 'center', width:'100%', height: 300, alignItems: 'center'}}>
+    <Text style={{fontSize: 16, position: 'absolute', bottom: 5,}}>
       Add Product
     </Text>
-<View style={{
+
+      </View>
+      <View style={{
           position: 'absolute',
           right: 20,
           justifyContent: 'center',
           alignItems: 'center',
-          bottom: 0,
+          zIndex: 200,
+          bottom: 20,
           height: 30,
            backgroundColor: constants.ORANGE, width: 60, borderRadius: 30, opacity: pinned?1:0.2,
 
@@ -432,7 +438,6 @@ const CamScreenTwo = ({navigation, route}) => {
           </View>
       </TouchableOpacity>
       </View>
-      </View>
 </HeaderGradient>
         
         <ScrollView scrollEnabled={false} style={{flex: 1, zIndex: -100, backgroundColor: constants.PINK_BACKGROUND_OPAQUE, marginTop: 10}}>
@@ -441,7 +446,7 @@ const CamScreenTwo = ({navigation, route}) => {
             <TouchableOpacity style={[{padding: 10, backgroundColor: 'white', borderRadius: 50, borderWidth: 1, borderColor: constants.DARKGREY}]} value={""} onPress={()=>{
               setModalOpen(true);
             }}>
-              <Text style={{fontFamily: constants.FONT, color: constants.LIGHTGREY}}>
+              <Text style={{fontFamily: constants.FONT, color: constants.LIGHTGREY}} numberOfLines={1}>
                 {searchResultPlaceholder}
               </Text>
             </TouchableOpacity>
@@ -510,6 +515,8 @@ const CamScreenTwo = ({navigation, route}) => {
                   setSearchUrl(webViewState.url);
                   console.log('WEBVIEWTATE', webViewState);
                   
+                  setCanGoBack(webViewState.canGoBack);
+                  setCanGoForward(webViewState.canGoForward);
                 }}
                 style={{
                   backgroundColor: enlarge ? 'white' : 'transparent',
@@ -524,7 +531,7 @@ const CamScreenTwo = ({navigation, route}) => {
                     console.log(err);
                   }
                 }}>
-                <Icon name="chevron-left" size={25} color={constants.LAVENDER} />
+                <Icon name="chevron-left" size={25} color={canGoBack?constants.LAVENDER:constants.PINK_BACKGROUND} />
                 </TouchableOpacity>
                 {urlState !== ""?<TouchableOpacity 
         style={{paddingLeft: 15, paddingRight: 15, height: 40, justifyContent:'center', alignItems:'center', backgroundColor:constants.ORANGE, borderRadius: 50,}}
@@ -554,7 +561,7 @@ const CamScreenTwo = ({navigation, route}) => {
                   }
                 }}>
 
-                <Icon name="chevron-right" size={25} color={constants.LAVENDER}/>
+                <Icon name="chevron-right" size={25} color={canGoForward?constants.LAVENDER:constants.PINK_BACKGROUND}/>
                 </TouchableOpacity>
               </View>
                 </View>

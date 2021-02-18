@@ -7,11 +7,24 @@ import algoliasearch from 'algoliasearch';
 import {constants} from "App/constants";
 // import { Touchable } from 'react-native';
 import ResizeableImage from 'App/components/ResizeableImage';
+// import Icon from 'react-native-vector-icons/FontAwesome';
 const KeyContext = createContext();
+
+const NoResults = () => {
+    return <View style={{alignSelf: 'center', width: 200,marginBottom: 100,}}>
+        <Text style={{color: constants.LAVENDER, textAlign: 'center'}}>Can't find what you're looking for? Add it yourself!</Text>
+        <View style={{alignSelf: 'center', paddingTop: 20}}>
+        <Icon name="arrow-circle-o-down" size={25} color={constants.LAVENDER} />
+        </View>
+    </View>
+}
 
 const SearchPage = ({navigation, route}) => {
     const [search, setSearch] = useState("");
     const [results, setResults] = useState([]);
+
+
+    console.log('no results', search!=="" && results.length ==0 )
     return <Fragment><SafeAreaView style={{ flex: 0, backgroundColor: constants.TRANSLUCENT }} /><SafeAreaView style={{ flex: 1, backgroundColor: constants.PINK_BACKGROUND_OPAQUE }}>
         <LinearGradient
     colors={[constants.TRANSLUCENT, 'white']}
@@ -85,7 +98,7 @@ const SearchPage = ({navigation, route}) => {
     }}
     />
     </ScrollView>
-
+    {search !== "" && results.length == 0?<NoResults />:<></>}
     </SafeAreaView></Fragment>
 };
 

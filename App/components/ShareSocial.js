@@ -89,7 +89,7 @@ const ShareRow = ({toggle, label, app, egg, product, data={}, shareApp, onSucces
     var shareAction = toggle?<Switch value={tog}
     onValueChange={toggleFunc}
     trackColor={{ false: constants.DARKGREY, true: constants.ORANGE }}
-    style={{ transform: [{ scaleX: .8 }, { scaleY: .8 }] }} />:<Image source={require('App/Assets/Images/Front_Icon.png')} style={{width:20, height: 20, tintColor: constants.DARKGREY}} />;
+    style={{ transform: [{ scaleX: .8 }, { scaleY: .8 }]}} />:<Image source={require('App/Assets/Images/Front_Icon.png')} style={{width:20, height: 20, tintColor: constants.DARKGREY}} />;
 var shareContainer = <View style={{alignItems: 'center', flexDirection: 'row'}}>
     {showEgg?
     <TouchableOpacity onPress={()=>{
@@ -100,10 +100,10 @@ var shareContainer = <View style={{alignItems: 'center', flexDirection: 'row'}}>
     <View style={{flexDirection: 'row', alignItems: 'center'}}><Text style={{color: constants.ORANGE, fontSize: 12}}>You've earned +10 eggs!</Text><Image style={{width: 20, height: 20, resizeMode:'contain'}} source={constants.EGG_GOLD} /></View>
     </TouchableOpacity>
     :<View />}{shareAction}</View>;
-    return <>
+    // return <>
     {/* <LottieView style={{backgroundColor:'black'}} speed = { 1.5} source={require('App/Assets/coins.json')} autoPlay loop /> */}
     
-    <View style={{alignItems: 'center', backgroundColor: 'white', flexDirection: 'row', justifyContent: 'space-between', marginTop: 2, paddingLeft: 20, paddingRight: 20, height: 40}}>
+    return <View style={{alignItems: 'center', backgroundColor: 'white', flexDirection: 'row', justifyContent: 'space-between', marginTop: 2, paddingLeft: 20, paddingRight: 20, height: 40, borderBottomLeftRadius:100, overflow:'hidden', borderWidth: 0}}>
         <Text style={{fontWeight: 'bold'}}>
             {label}
         </Text>
@@ -112,7 +112,6 @@ var shareContainer = <View style={{alignItems: 'center', flexDirection: 'row'}}>
         {/* <Animation ref={animation} style= {{position: 'absolute', right: 20, width: 50, height: 50, }}source={require('App/Assets/coins.json')} /> */}
         </View>
         
-        </>
 }
 export default ShareSocial;
 

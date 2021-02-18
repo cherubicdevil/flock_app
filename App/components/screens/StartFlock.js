@@ -68,6 +68,7 @@ const StartFlock = ({navigation, route}) => {
         
         const user  = firebase.auth().currentUser;
         const salt = Math.random(100).toFixed(10);
+        route.params.product.id = "%"+flockId;
         const data = {
             specifications: route.params.data.specifications,
             description: route.params.data.description,

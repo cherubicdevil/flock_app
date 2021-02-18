@@ -93,6 +93,7 @@ useEffect(()=>{
     const shipping = select.shipping;
     if (shipping !== undefined && shipping !== "none") {
       setInfo(shipping);
+      console.log('shipping', shipping);
     }
   }
 }, [select.customerId]);
@@ -144,7 +145,7 @@ return <><View style={{marginTop: 5,}} >
             style={{marginRight: 10,width: '100%', justifyContent: 'space-between', flexDirection:'row'}}
             onPress={()=>{
                 setBillModal(true);
-            }}><Text>Billing information</Text>
+            }}><Text>Billing Information</Text>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <View style={{marginRight: 10}}>
             {creditInfo.last4?
@@ -167,13 +168,13 @@ return <><View style={{marginTop: 5,}} >
             style={{marginRight: 10,width: '100%', justifyContent: 'space-between', flexDirection:'row'}}
             onPress={()=>{
                 setShipModal(true);
-            }}><Text>Shipping information</Text>
+            }}><Text>Shipping Information</Text>
 
             <View style={{flexDirection: 'row'}}>
               <View style={{marginRight: 10}}>
             {info?.address?.line1?
             <View style={{flexDirection: 'row', alignItems: 'center',}}>
-            <Text>{info.address.line1}</Text>
+            <Text numberOfLines={1} style={{width: 120}}>{info.address.line1}</Text>
             </View>
             :<Text style={{color: constants.RED, textAlign: 'right'}}>Needs Action</Text>}
             </View>
@@ -326,8 +327,8 @@ return <><View style={{marginTop: 5,}} >
             <Text style={{fontWeight: 'bold', color: constants.LAVENDER}}>Updating</Text>
           </View>
         </View>
-        <AnimatedModal nested = {true} keyboard={true} upPercent="55%" colored={true} colors={[constants.ORANGE, constants.GREYORANGE]} visible={billModal} close={()=>setBillModal(false)} state={info} setState={setInfo} content={<BillingModal state={creditInfo} setState={setCreditInfo} setChanged={setCreditCardChanged} close={()=>setBillModal(false)}/>}/>
-<AnimatedModal nested = {true} keyboard={true} colored={true} colors={[constants.ORANGE, constants.GREYORANGE]} visible={shipModal} close={()=>setShipModal(false)} state={info} setState={setInfo} content={<ShippingModal state={info} setState={setInfo} setChanged={setChanged} close={()=>setShipModal(false)}/>}/>
+        <AnimatedModal nested = {true} keyboard={true} upPercent="75%" colored={true} colors={[constants.ORANGE, constants.GREYORANGE]} visible={billModal} close={()=>setBillModal(false)} state={info} setState={setInfo} content={<BillingModal state={creditInfo} setState={setCreditInfo} setChanged={setCreditCardChanged} close={()=>setBillModal(false)}/>}/>
+<AnimatedModal upPercent="75%" nested = {true} keyboard={true} colored={true} colors={[constants.ORANGE, constants.GREYORANGE]} visible={shipModal} close={()=>setShipModal(false)} state={info} setState={setInfo} content={<ShippingModal state={info} setState={setInfo} setChanged={setChanged} close={()=>setShipModal(false)}/>}/>
 
 </>
 
@@ -459,11 +460,11 @@ const BillingModal = ({state, setState, close, setChanged}) => {
   
   const ShippingModal = ({state, setState, close, setChanged}) => {
     const [localState, setLocalState] = useState(state);
-    const [address, setAddress] = useState(state.line1);
-    const [geostate, setGeostate] = useState(state.state);
-    const [city, setCity] = useState(state.city);
-    const [zip, setZip] = useState(state.postal_code)
-    const [name, setName] = useState(state.name);
+    const [address, setAddress] = useState(state.address?.line1);
+    const [geostate, setGeostate] = useState(state.address?.state);
+    const [city, setCity] = useState(state.address?.city);
+    const [zip, setZip] = useState(state.address?.postal_code)
+    const [name, setName] = useState(state.address?.name);
   
     // const [cardNumber, setCardNumber] = useState('');
     // const [expMonth, setExpMonth] = useState('');
@@ -481,7 +482,7 @@ const BillingModal = ({state, setState, close, setChanged}) => {
                 setName(text);
             }} style={styles.textbox} /> */}
                         <Text style={{marginLeft: 10, marginTop: 10, marginBottom: 5}}>Full Name</Text>
-            <TextInput onChangeText={(text)=> {
+            <TextInput value={name} onChangeText={(text)=> {
                 setName(text);
             }} style={styles.textbox} />
             <Text style={{marginLeft: 10, marginTop: 15, marginBottom: 5}}>Address</Text>
