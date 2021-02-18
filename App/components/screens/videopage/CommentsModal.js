@@ -446,7 +446,7 @@ const CommentsModal = ({modalVisible, data, toggleFunc}) => {
     }
   };
   return (
-    <AnimatedModal nested={true} keyboard={true} behavior="padding" fade={true} colored={true} colors={[constants.PEACH, constants.GREYORANGE]} modalAnimationType="slide" transparent={true} visible={modalVisible} close={()=>toggleFunc(false)}>
+    <AnimatedModal upPercent="65%" nested={true} keyboard={true} behavior="padding" fade={true} colored={true} colors={[constants.PEACH, constants.GREYORANGE]} modalAnimationType="slide" transparent={true} visible={modalVisible} close={()=>toggleFunc(false)}>
       {/* <KeyboardAvoidingView behavior="padding" style={styles.centeredView}> */}
         <View
           style={styles.modalView}
@@ -526,6 +526,8 @@ const CommentsModal = ({modalVisible, data, toggleFunc}) => {
 						</ScrollView>*/}
           <TextInput
             type="reset"
+            multiline
+            
             elevation={2}
             placeholder={replyPlaceholder}
             placeholderTextColor="#777"
@@ -656,9 +658,12 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     paddingTop: 0,
     shadowColor: '#ddd',
-
-    borderTopWidth: 0.2,
-    borderColor: '#777',
+    borderRadius: 20,
+    // borderTopWidth: 0.2,
+    borderWidth: 1,
+    borderBottomLeftRadius:0,
+    borderBottomRightRadius:0,
+    borderColor: constants.DARKGREY,
     paddingBottom: 20,
     height: 100,
     width: '100%',

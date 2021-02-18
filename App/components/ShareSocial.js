@@ -80,7 +80,10 @@ const ShareRow = ({toggle, label, app, egg, product, data={}, shareApp, onSucces
         
         //animation.play();
         var content;
-            var content = {product: product, shareApp: shareApp, data: data, successCallBack: ()=>{setShowEgg(true)}};
+            var content = {product: product, shareApp: shareApp, data: data, successCallBack: ()=>{
+                setShowEgg(true);
+                onSuccess();
+            }};
             // onSuccess();
       shareActions[app](content, onFailure);
 
@@ -93,11 +96,13 @@ const ShareRow = ({toggle, label, app, egg, product, data={}, shareApp, onSucces
 var shareContainer = <View style={{alignItems: 'center', flexDirection: 'row'}}>
     {showEgg?
     <TouchableOpacity onPress={()=>{
-        onSuccess();
+        // onSuccess();
         setShowEgg(false); // should be false
         setToggle(false);
     }}>
-    <View style={{flexDirection: 'row', alignItems: 'center'}}><Text style={{color: constants.ORANGE, fontSize: 12}}>You've earned +10 eggs!</Text><Image style={{width: 20, height: 20, resizeMode:'contain'}} source={constants.EGG_GOLD} /></View>
+    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+        {/* <Text style={{color: constants.ORANGE, fontSize: 12}}>You've earned +10 eggs!</Text> */}
+        <Image style={{width: 20, height: 20, resizeMode:'contain'}} source={constants.EGG_GOLD} /></View>
     </TouchableOpacity>
     :<View />}{shareAction}</View>;
     // return <>
