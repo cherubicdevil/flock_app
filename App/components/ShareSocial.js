@@ -16,7 +16,7 @@ const ShareSocial = ({product, data={}, flockId, shareApp=false, showImage=true,
 
     data['imgRef'] = img;
     return <View style={{height: Dimensions.get('window').height - constants.NAVBARHEIGHT - constants.HEADERHEIGHT - 50, borderBottomLeftRadius: 60, borderBottomRightRadius: 60, overflow:'hidden'}}>
-    <ScrollView style={{paddingBottom:20, backgroundColor:'white', marginTop:10}}><View style={[styles.container, {marginBottom: -2,}]}>
+    <ScrollView style={{paddingBottom:30, backgroundColor:'white', marginTop:10,}}><View style={[styles.container, {marginBottom: -2,}]}>
         <Text style={{fontWeight:'bold'}}>Want to pay less? Get more people to join, and earn eggs when you share!</Text>
     </View>
     {/* <ShareRow label="Tag a flocker"  product = {product} data={data} toggle={false} egg={false} shareApp={shareApp}/> */}

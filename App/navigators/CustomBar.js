@@ -63,6 +63,7 @@ const EggItem = ({image, text}) => {
   </TouchableOpacity>
   </View>
 <AnimatedModal 
+
 fadeOpacity={0.90}
 contentTop={
   <View style={{width: '80%', alignSelf: 'center', padding: 10, justifyContent: 'center', alignItems: 'center'}}>
@@ -84,7 +85,7 @@ contentTop={
   </View>
 }
 viewParams={{bottom: 0, height: Dimensions.get('window').height, width:Dimensions.get('window').width + 300, left: -400}}
-colored={true} colors={[constants.ORANGE, constants.GREYORANGE]} behind={false} upPercent="60%" visible={eggModalOpen} fade={false} close={()=>{setEggModalOpen(false)}} content={<View style={{flex: 1}}>
+colored={true} colors={[constants.ORANGE, constants.GREYORANGE]} behind={false} upPercent="65%" visible={eggModalOpen} fade={false} close={()=>{setEggModalOpen(false)}} content={<View style={{flex: 1}}>
 
   <ShareSocial flockId="1234" product={null} shareApp={true} onSuccess={onSuccessfulShare}/>
   {/* <Button title="spend" onPress={()=>{
