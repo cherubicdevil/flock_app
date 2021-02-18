@@ -341,7 +341,7 @@ const Product = ({route, navigation}) => {
         </View>
       </View>
       </TouchableOpacity>
-                <View style={{flexDirection: 'row', marginBottom: 30, marginRight: 10, marginLeft:20, justifyContent: 'space-between', alignItems: 'center', }}>
+                <View style={{flexDirection: 'row', marginBottom: 30, paddingTop: 10, marginRight: 10, marginLeft:20, justifyContent: 'space-between', alignItems: 'center', }}>
 
                 <View style={{flexDirection: 'row', flex: 1, justifyContent: 'space-between', marginRight: 20}}>
                 <View style={{justifyContent: 'center', alignItems: 'center', shadowOpacity: 0.3, shadowColor: '#555', shadowOffset: {height: 2, width: 0},}}>
