@@ -6,7 +6,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import {CommonActions} from '@react-navigation/native';
 
 const HeaderGradient = ({navigation, children, absolute=true, closeX = false, title=""}) => {
-    return <View style={{width: '100%', height: absolute?100:constants.HEADERHEIGHT, position:absolute?'absolute':'relative', top: 0, zIndex: 500,backgroundColor: constants.TRANSLUCENT, borderBottomRightRadius: 30, borderBottomLeftRadius: 30}}>
+    return <View style={{width: '100%', height: absolute?50:constants.HEADERHEIGHT, position:absolute?'absolute':'relative', top: 0, zIndex: 500,backgroundColor: constants.TRANSLUCENT, borderBottomRightRadius: 30, borderBottomLeftRadius: 30}}>
           <LinearGradient
     colors={[constants.TRANSLUCENT, 'white']}
     start={{ x: 0, y: 0 }} end={{ x: 0, y: 1 }}

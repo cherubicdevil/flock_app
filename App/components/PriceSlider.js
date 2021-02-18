@@ -59,6 +59,14 @@ const PriceSlider = ({priceShareInitialPercent, completeFunc=()=>{}, productPric
     var changeable = false;
     console.log(pricePercent, "%")
     console.log('remaining', remainingPercent);
+    console.log(zeroWarning, 'zero')
+
+    var zeroWarning;
+    if (pricePercent == 0) {
+      zeroWarning = "If you pay $0.00, you will be unable to use this item.";
+    } else if (pricePercent == remainingPercent) {
+      zeroWarning = "Press confirm now to buy your item immediately.";
+    }
   
     if (true) {
       // console.log(priceShare, "priceShare");
@@ -86,24 +94,31 @@ const PriceSlider = ({priceShareInitialPercent, completeFunc=()=>{}, productPric
           }}><Text>Confirm</Text></TouchableOpacity>
         </View>:<View style={{opacity:0,padding: 10, marginLeft:30}} ><Text>Confirm</Text></View>}
       </View>
+      <View style={{alignItems: 'center'}}>
+      <Text style={{color: constants.RED, alignText: 'center', padding:-20, height: 16, fontSize: 12, marginBottom: -10}}>{zeroWarning}
+      </Text></View>
       <View style={{flexDirection: 'row', alignItems: 'center'}}>
+
       <View style={{borderRadius: 40, backgroundColor: constants.ORANGE, width: 30, height: 30, justifyContent: 'center', alignItems: 'center'}}>
           <TouchableOpacity onPress={()=>{
-            if (pricePercent>4) {
+            if (pricePercent>=0) {
               setPricePercent(pricePercent-4);
               setOutsideState(((pricePercent-4)*productPrice).toFixed(2));
               setChanged(true);
             }
+
             
           }}>
             <Icon name="minus" color="white" size={27} />
           </TouchableOpacity>
         </View>
-  
+
       <View style={{flex: 1, marginLeft: 5, flexDirection: 'row', paddingLeft: 10, alignItems: 'center', justifyContent: 'center', alignSelf: 'center', alignSelf: 'center'}}>
               
               <View style={{flex: 100-remainingPercent,  height: 15, backgroundColor: constants.GREYORANGE, borderBottomLeftRadius: 40, borderTopLeftRadius: 40}}/>
             <View style={{flex:remainingPercent, marginRight: 0, paddingRight: 0}}>
+            
+            
             <MultiSlider
             values={[pricePercent]}
             // style={{flex: remainingPercent}}
@@ -116,7 +131,9 @@ const PriceSlider = ({priceShareInitialPercent, completeFunc=()=>{}, productPric
             onValuesChange={(stuff)=>{
               // setPriceShare((parseInt(stuff[0])/100 * productPrice).toFixed(2));
               // if (!changeable) return;
-              if (stuff[0] >= 4 && stuff[0] <= 100) {
+              if (
+                // stuff[0] >= 4 && 
+                stuff[0] <= 100) {
               setPricePercent(stuff[0]);
               }
               if (confirm == false) {

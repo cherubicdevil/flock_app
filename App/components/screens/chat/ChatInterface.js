@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useRef} from 'react';
+import React, {useEffect, useState, useRef,Fragment} from 'react';
 import {constants} from 'App/constants';
 import Collapsible from 'react-native-collapsible';
 import {useStore} from 'react-redux';
@@ -262,16 +262,16 @@ return <ScrollView  style={{marginLeft: 15, overflow: 'visible', backgroundColor
   //   giftedRef.current.scrollToBottom();
   // },[]);
   return (<>
-    <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
-      
-<HeaderGradient navigation={navigation} >
+  <Fragment><SafeAreaView style={{ flex: 0, backgroundColor: constants.TRANSLUCENT }} />
+    <SafeAreaView style={{flex: 1, backgroundColor: constants.PINK_BACKGROUND_OPAQUE}}>
+<HeaderGradient navigation={navigation} absolute={false} >
   <View style={{marginBottom:-10}}>
 <Text style={{fontSize: 14, textAlign: 'center'}}>%{route.params.data.id}</Text>
   <Countdown dateObj={route.params.data.time} />
   {/* <Text>{testMessages}</Text> */}
   </View>
 </HeaderGradient>
-      <View style={{ position: 'absolute', zIndex: 200, top: 100, width: '100%', borderRadius: 0, borderBottomRightRadius: 70, borderBottomLeftRadius: 70}}>
+      <View style={{zIndex: 200,width: '100%', borderRadius: 0, borderBottomRightRadius: 70, borderBottomLeftRadius: 70}}>
       <View style={{
         // shadowColor: "#ff7009", shadowOffset: {height: 0, width: 0}, shadowOpacity: 0.42, elevation: 13, shadowRadius: 28.30,
        borderBottomLeftRadius: 70, borderBottomRightRadius: 70}}>
@@ -300,7 +300,7 @@ return <ScrollView  style={{marginLeft: 15, overflow: 'visible', backgroundColor
             <TouchableOpacity onPress={()=>{
               navigation.navigate("Product", {album: route?.params?.data?.product, data: route.params.data, id: route?.params?.data?.id});
             }}>
-            <View style={{flexDirection: 'row', padding: 20, marginBottom: 15, paddingLeft: 30, paddingRight: 30,borderRadius: 50, shadowRadius: 2.62, backgroundColor: 'white', shadowOpacity: 0.23, shadowOffset:{height: 2,width:0}, elevation: 1}}>
+            <View style={{flexDirection: 'row', padding: 20, paddingLeft: 30, paddingRight: 30,borderRadius: 50, shadowRadius: 2.62, backgroundColor: 'white', shadowOpacity: 0.23, shadowOffset:{height: 2,width:0}, elevation: 1}}>
             <Image style={{width: 50, height: 50}} source={{uri: route.params.data.product.image}} />
             <View style={{flex:1, marginLeft: 5}}>
             <Text numberOfLines={2}>{route.params.data.product.title}</Text>
@@ -309,31 +309,38 @@ return <ScrollView  style={{marginLeft: 15, overflow: 'visible', backgroundColor
             </View>
             
             </TouchableOpacity>
-          </LinearGradient>
-          </ScrollView>
-        </View>
-        <Text style={{marginLeft: 85, marginBottom: -20}}>
+            {/* <View style={{marginLeft: 40}}>
+            <Text>Description and Size/Variant Information:</Text>
+            <Text style={{marginTop: 5}}>{route.params.data.description}</Text>
+            <Text style={{marginTop: 5}}>{route.params.data.specifications}</Text>
+            </View> */}
+            {/* <Text style={{marginLeft: 85, marginBottom: -20}}>
           {route.params.data.description}
-        </Text>
+        </Text> */}
       <View style={{marginTop: 20, flexDirection: 'row',
       shadowColor: constants.GREYBLUE, shadowOffset: {height: 5, width: 0}, shadowOpacity: 0.42, elevation: 13, shadowRadius: 8.30,
     }}>
         <Image style = {{width: 40, height: 40, marginRight: 20, marginLeft: 10, borderRadius: 50}} source ={constants.PLACEHOLDER_IMAGE } />
-        <View style={{borderRadius: 30, flex: 1, backgroundColor:"#9eacc5", padding: 15, marginRight: 20, 
+        <View style={{borderRadius: 30, flex: 1, backgroundColor:"#9eacc5", padding: 15, paddingVertical: 5, marginRight: 20, 
           // shadowColor: constants.GREYBLUE, shadowOffset: {height: 10, width: 0}, shadowOpacity: 0.82, elevation: 13, shadowRadius: 18.30,
           }}>
           <View>
-            <Text>Product specifications of this flock</Text>
+            <Text>Description {"&"} Size/Variant Information
+            </Text>
             <View style={{backgroundColor: 'rgba(255,255,255,0.2)', padding: 5, borderRadius: 15}}>
-              <Text>{route.params.data.specifications}</Text>
+              <Text>{route.params.data.specifications}; {route.params.data.description}</Text>
             </View>
-          {/* <Text>{route.params.data.description}</Text> */}
+
           </View>
           </View>
       </View>
+          </LinearGradient>
+          </ScrollView>
+        </View>
+
       </View>
       
-      <View style={{backgroundColor: constants.PINK_BACKGROUND, flex: 1, justifyContent: 'flex-end'}}>
+      <View style={{backgroundColor: constants.PINK_BACKGROUND_OPAQUE, flex: 1, justifyContent: 'flex-end'}}>
         <ChatComponent route={route} socket={socket} />
  </View>
       <JoinDialog navigation={navigation} data={route.params.data} setCreditModal={setCreditModal} initialDialog={initialDialog} setInitialDialog={setInitialDialog} setPriceStartPercent={setPriceStartPercent} setPartOf = {setPartOf} completeFunc = {completeFunc} maxPercent = {remainingPercent} productPrice={route.params.data.product.price} />
@@ -344,6 +351,7 @@ return <ScrollView  style={{marginLeft: 15, overflow: 'visible', backgroundColor
       }}><Text style={{color: 'white', alignSelf: 'center', fontWeight: 'bold'}}>JOIN</Text></TouchableOpacity></View></View>}
     
     </SafeAreaView>
+    </Fragment>
     <AnimatedModal upPercent="70%" colored={true} colors={[constants.ORANGE, constants.GREYORANGE]} nested={false} visible={creditModal} close={()=>setCreditModal(false)} navigation={navigation} 
      >
        <KeyboardAvoidingView behavior="position" style={{flex: 1}} keyboardVerticalOffset={-200}>

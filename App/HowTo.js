@@ -15,7 +15,7 @@ import {CommonActions, useFocusEffect} from '@react-navigation/native';
 import PriceSlider from 'App/components/PriceSlider';
 
 const HowTo = () => {
-return <View style={{fontFamily: constants.FONT, paddingLeft: 10, paddingRight: 15}}>
+return <ScrollView style={{fontFamily: constants.FONT, paddingLeft: 10, paddingRight: 15}}>
 <Text style={{alignSelf: 'center', marginTop: 20, fontSize: 16}}>How the Flock Percentage Works</Text>
 <Text style={{fontFamily: constants.FONT, marginTop: 10}}>You own a percentage of the item, depending on how much you paid.</Text>
 <Text style={{fontFamily: constants.FONT, marginTop: 10}}>We make sure you have the item in your possession for the proportionate amount of time.</Text>
@@ -25,7 +25,7 @@ return <View style={{fontFamily: constants.FONT, paddingLeft: 10, paddingRight: 
 <Text style={{fontFamily: constants.FONT, marginTop: 10}}>You will send it to  the next flocker. </Text>
 <Text style={{fontFamily: constants.FONT, marginTop: 10}}>We take care of the shipping details.</Text>
 <Text style={{fontFamily: constants.FONT, marginTop: 10}}>You will collect 4% of the profit when the item is rented by others.</Text>
-</View>
+</ScrollView>
 }
 
 export default HowTo;
