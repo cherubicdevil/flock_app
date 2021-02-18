@@ -478,6 +478,13 @@ const MiniCarouselRenting = ({navigation, route}) => {
   //       {res}
   //     </ScrollView>
   // </View>
+  if (finalAr.length == 0) {
+    return <View style={{flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: constants.PINK_BACKGROUND}}>
+      <Text style={{color: constants.LAVENDER, fontSize: 15, fontFamily: constants.FONT}}>
+        No completed flocks to borrow from yet.
+      </Text>
+    </View>
+  }
   return <>
   <Animated.View style={{backgroundColor: 'white', position: 'absolute', left: 0, bottom: 0, width:'100%', height: cover?"100%":0, opacity: coverFade, zIndex: 10000}} ><View style={{
     backgroundColor: constants.PINK_BACKGROUND, height: '100%', width: '100%',
@@ -506,6 +513,7 @@ const MiniCarouselFlocking = ({navigation, route}) => {
   const [coverFade, setCoverFade] = useState(new Animated.Value(1));
 
   var finalAr;
+
   useEffect(()=>{
     fetchFlockablesFirst().then((ar) => {
       // setFinalAr(ar);
@@ -587,7 +595,8 @@ const MiniCarouselFlocking = ({navigation, route}) => {
   }
 
   var res = [];
-  var finalAr = keyArrFlock.slice(keyArrFlock.length-10, keyArrFlock.length);
+  var finalAr = keyArrFlock.slice(keyArrFlock.length-10, keyArrFlock.length,);
+  console.log("finalAr", finalAr, keyArrFlock.length, select.carIndexFlock);
   for (const item of finalAr) {
     res.push(<View style={{height: '100%', width: '100%', borderWidth: 0, borderOpacity: 0.1,borderBottomWidth: 0,}}>
     {/* <Text>{item?.product?.title || item.flock}</Text> */}

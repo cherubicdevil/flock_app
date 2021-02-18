@@ -499,7 +499,7 @@ const CamScreenTwo = ({navigation, route}) => {
                 }}
                 source={{uri: urlState}}
               />
-              <View style={{width: '100%', backgroundColor: 'white', height: 60, justifyContent: 'space-between', flexDirection: 'row', padding: 15}}>
+              <View style={{width: '100%', backgroundColor: 'white', height: 80, justifyContent: 'space-between', flexDirection: 'row', padding: 15}}>
                 <TouchableOpacity onPress={()=>{
                   try {
                   if (webviewRef.current) webviewRef.current.goBack()

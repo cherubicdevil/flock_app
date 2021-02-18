@@ -288,7 +288,7 @@ return <><View style={{marginTop: 5,}} >
                       });
                       dispatch({type:'UPDATE_DATA', payload: ["shipping", null, null, info]});
 
-                    } else if (billingOnly && creditCardChanged) {
+                    } else if (creditCardChanged) {
                       // console.log(creditInfo['exp_month'], parseInt(creditInfo.expMonth));
                       const tempCredit = {...creditInfo, exp_month: parseInt(creditInfo.expMonth), exp_year: parseInt(creditInfo.expYear),expMonth: parseInt(creditInfo.expMonth), expYear: parseInt(creditInfo.expYear)};
                       console.log("credit", tempCredit);
@@ -360,6 +360,7 @@ const BillingModal = ({state, setState, close, setChanged}) => {
     // const expirationPlaceholder = localState.expMonth === ''?"MM/YY":localState.expMonth+"/"+localState.expYear;
 
     console.log("credit info ", localState);
+    
 
     return <ScrollView ref={scrollRef}  style={{paddingLeft: 30, paddingRight: 30, borderTopLeftRadius: 40, borderTopRightRadius: 40, backgroundColor:'white', zIndex: 50}}>
            
@@ -368,7 +369,8 @@ const BillingModal = ({state, setState, close, setChanged}) => {
             <PaymentCard
             state={state}
             onParamsChange={(valid, params) => {
-              console.log('changing');
+              console.log(au.currentUser.uid);
+              console.log('changing', params, valid);
                 // setValid(valid);
                 // setCardNumber(params.number);
                 // setSec(params.cvc);
@@ -378,8 +380,10 @@ const BillingModal = ({state, setState, close, setChanged}) => {
                     setValid(true);
                     setLocalState({
                         ...localState,
-                        ...params
-                    })
+                        ...params,
+                        exp_year: parseInt(params.expYear),
+                        exp_month: parseInt(params.expMonth),
+                    });
                     console.log(params.brand);
                 } else {
                     setValid(false);
