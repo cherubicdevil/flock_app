@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import React, {useRef, useState,Fragment} from 'react';
 import {WebView} from 'react-native-webview';
 
 import {
@@ -15,8 +15,11 @@ import {
   Keyboard,
   KeyboardAvoidingView,
   ScrollView,
-  FlatList
+  FlatList,
+
+  SafeAreaView
 } from 'react-native';
+import HeaderGradient from 'App/components/HeaderGradient';
 import Icon from "react-native-vector-icons/FontAwesome";
 const cheerio = require('react-native-cheerio')
 import ResizeableImage from 'App/components/ResizeableImage';
@@ -147,6 +150,9 @@ const CamScreenTwo = ({navigation, route}) => {
 
   const renderForm = () => {
     //console.log('foundProduct:', foundProduct);
+    if (!pinned) {
+      return <></>;
+    }
     if (!enlarge && foundProduct) {
       return (
         <View
@@ -329,8 +335,42 @@ const CamScreenTwo = ({navigation, route}) => {
   };
 
   
+  const headerCloseFunc=()=>{
+    if (!pinned) {
+      return;
+    }
+    route.params.data.product = {
+      price: priceState || "",
+      title: titleState || "",
+      image: imageState || "",
+      brand: brandState || "",
+      url: dataUrl || "",
+      
+    };
+    console.log('closing');
+    console.log(route.params.data);
+    db.collection("posts").add({...route.params.data, createdBy: au.currentUser.uid, createdAt: Date.now()})
+  .then(function(docRef) {
+      console.log("Document written with ID: ", docRef.id);
+  })
+  .catch(function(error) {
+      console.error("Error adding document: ", error);
+  });
+
+  // navigation.dispatch(
+  //   CommonActions.reset({
+  //     index: 0,
+  //     routes: [
+  //       { name: 'Home' },
+  //     ],
+  //   })
+  // );
+  navigation.navigate("Product", {album: route.params.data.product, data: route.params.data, id: route.params.data.id, tutorial: true});
+  };
+
   return (
-    <>
+    <Fragment><SafeAreaView style={{ flex: 0, backgroundColor: constants.TRANSLUCENT }} />
+    <SafeAreaView style={{flex: 1}}>
     <KeyboardAvoidingView
       style={{flex: 1, backgroundColor: constants.PINK_BACKGROUND_OPAQUE}}
       behavior="padding"
@@ -356,59 +396,47 @@ const CamScreenTwo = ({navigation, route}) => {
           />
         </View>
 
-        <ProgressHeader
-        closeText="done"
-          headerText="Find a Product"
-          goBack={true}
-          nextRoute="Product Options"
-          canGoNext={canNext}
-          number={1}
-          index={0}
-          backRoute="Add Video"
-          navigation={navigation}
-          data={route.params.data}
-          nextFunc={()=>{
-            route.params.data.product = {
-              price: priceState || "",
-              title: titleState || "",
-              image: imageState || "",
-              brand: brandState || "",
-              url: dataUrl || "",
-            };
-          }}
-          closeFunc={()=>{
-            route.params.data.product = {
-              price: priceState || "",
-              title: titleState || "",
-              image: imageState || "",
-              brand: brandState || "",
-              url: dataUrl || "",
-              
-            };
-            console.log('closing');
-            console.log(route.params.data);
-            db.collection("posts").add({...route.params.data, createdBy: au.currentUser.uid, createdAt: Date.now()})
-          .then(function(docRef) {
-              console.log("Document written with ID: ", docRef.id);
-          })
-          .catch(function(error) {
-              console.error("Error adding document: ", error);
-          });
-  
-          // navigation.dispatch(
-          //   CommonActions.reset({
-          //     index: 0,
-          //     routes: [
-          //       { name: 'Home' },
-          //     ],
-          //   })
-          // );
-          navigation.navigate("Product", {album: route.params.data.product, data: route.params.data, id: route.params.data.id, tutorial: true});
-          }}
-        />
+<HeaderGradient navigation={navigation} absolute={false}>
+  <View style={{flexDirection: 'row', justifyContent: 'center', width:'100%', alignItems: 'center'}}>
+    <Text style={{fontSize: 16, position: 'absolute', bottom: 5}}>
+      Add Product
+    </Text>
+<View style={{
+          position: 'absolute',
+          right: 20,
+          justifyContent: 'center',
+          alignItems: 'center',
+          bottom: 0,
+          height: 30,
+           backgroundColor: constants.ORANGE, width: 60, borderRadius: 30, opacity: pinned?1:0.2,
+
+          }}>
+      <TouchableOpacity
+        style={{
+          justifyContent: 'center',
+          alignItems: 'center',
+          width: '100%',
+          height: '100%',
+        }}
+        onPress={headerCloseFunc}>
+          <View>
+          <Text
+            style={{
+              textAlign: 'center',
+              fontFamily: 'Nunito-Bold',
+              color: 'white',
+              // width: 30,
+            }}>
+            done
+          </Text>
+          </View>
+      </TouchableOpacity>
+      </View>
+      </View>
+</HeaderGradient>
         
-        <ScrollView scrollEnabled={false} style={{flex: 1, zIndex: -100, backgroundColor: constants.PINK_BACKGROUND_OPAQUE}}>
-          <View style={{paddingLeft: 20, paddingTop: 10, paddingRight: 20, backgroundColor: 'white'}}>
+        <ScrollView scrollEnabled={false} style={{flex: 1, zIndex: -100, backgroundColor: constants.PINK_BACKGROUND_OPAQUE, marginTop: 10}}>
+          <View style={{paddingLeft: 20, paddingTop: 10, paddingRight: 20, backgroundColor: 'white', paddingBottom: 10, }}>
             
             <TouchableOpacity style={[{padding: 10, backgroundColor: 'white', borderRadius: 50, borderWidth: 1, borderColor: constants.DARKGREY}]} value={""} onPress={()=>{
               setModalOpen(true);
@@ -419,7 +447,8 @@ const CamScreenTwo = ({navigation, route}) => {
             </TouchableOpacity>
           </View>
           {renderForm()}
-          <Text style={{color: constants.LAVENDER, textAlign: 'center', marginTop: 25, width: 200, alignSelf: 'center'}}>Please make sure the above information is accurate.</Text>
+          <Text style={{color: constants.LAVENDER, textAlign: 'center', marginTop: 25, width: 200, alignSelf: 'center'}}>Navigate to a product you like. Press import. Edit the information.</Text>
+          {/* <Text style={{color: constants.LAVENDER, textAlign: 'center', marginTop: 25, width: 200, alignSelf: 'center'}}>Please make sure the above information is accurate.</Text> */}
         </ScrollView>
 
       </View>
@@ -431,7 +460,7 @@ const CamScreenTwo = ({navigation, route}) => {
       <View style={{alignItems: 'center', width: '100%', height: 50, flexDirection: 'row'}}>
 
         <TouchableOpacity 
-        style={{marginRight: 10, marginLeft: 10, paddingLeft: 15, paddingRight: 15, height: 40, justifyContent:'center', alignItems:'center', backgroundColor: "#d8d8d8", borderRadius: 50,}}
+        style={{marginRight: 10, marginLeft: 30, paddingLeft: 15, paddingRight: 15, height: 40, justifyContent:'center', alignItems:'center', backgroundColor: "#d8d8d8", borderRadius: 50,}}
         onPress={()=> {
           Keyboard.dismiss();
           setModalOpen(false);
@@ -456,24 +485,11 @@ const CamScreenTwo = ({navigation, route}) => {
                   // }}
       />
               <TouchableOpacity 
-        style={{marginRight: 10, marginLeft: 10, paddingLeft: 15, paddingRight: 15, height: 40, justifyContent:'center', alignItems:'center', backgroundColor:constants.ORANGE, borderRadius: 50,}}
-        onPress={()=>{
-          const result = pinLocalFunc(htmlBody, urlState);
-          setImageState(result.image);
-          setImageSet(result.imageSet);
-          console.log(result.imageSet);
-          setTitleState(result.title);
-          setPriceState(result.price.replace(',','').replace('$','').replace(/[^0-9.]+/, '').split("$")[0]);
-          // console.log(result.price.replace(',','').replace('$','').replace(/[^0-9.]+/, ''), result.price);
-          setBrandState(result.brand.charAt(0).toUpperCase() + result.brand.slice(1));
-          setDataUrl(urlState);
-          setModalOpen(false);
-          setPinned(true);
-          setCanNext(true);
-          
-          setSearchResultPlaceholder(result.brand.charAt(0).toUpperCase() + result.brand.slice(1) + " | " + result.title);
-          }}>
-          <Text style={{color: 'white'}}>import</Text>
+        style={{marginRight: 30, marginLeft: 10, paddingLeft: 15, paddingRight: 15, height: 40, justifyContent:'center', alignItems:'center', backgroundColor:constants.ORANGE, borderRadius: 50,}}
+        onPress={
+          searchFunc
+          }>
+          <Text style={{color: 'white'}}>go</Text>
           </TouchableOpacity>
                 </View>
                 <LinearGradient style={{flex: 1, height: '100%', width: '100%'}} colors={[constants.PINK_BACKGROUND_OPAQUE, constants.TRANSLUCENT]}>
@@ -492,7 +508,7 @@ const CamScreenTwo = ({navigation, route}) => {
                 onNavigationStateChange={(webViewState) => {
                   setUrlState(webViewState.url);
                   setSearchUrl(webViewState.url);
-                  console.log(webViewState);
+                  console.log('WEBVIEWTATE', webViewState);
                   
                 }}
                 style={{
@@ -500,7 +516,7 @@ const CamScreenTwo = ({navigation, route}) => {
                 }}
                 source={{uri: urlState}}
               />
-              <View style={{width: '100%', backgroundColor: 'white', height: 80, justifyContent: 'space-between', flexDirection: 'row', padding: 15}}>
+              <View style={{width: '100%', backgroundColor: 'white', height: 80, justifyContent: 'space-around', flexDirection: 'row', padding: 15, alignItems: 'center'}}>
                 <TouchableOpacity onPress={()=>{
                   try {
                   if (webviewRef.current) webviewRef.current.goBack()
@@ -510,13 +526,34 @@ const CamScreenTwo = ({navigation, route}) => {
                 }}>
                 <Icon name="chevron-left" size={25} color={constants.LAVENDER} />
                 </TouchableOpacity>
-                <TouchableOpacity style={{backgroundColor: 'yello'}} onPress={()=>{
+                {urlState !== ""?<TouchableOpacity 
+        style={{paddingLeft: 15, paddingRight: 15, height: 40, justifyContent:'center', alignItems:'center', backgroundColor:constants.ORANGE, borderRadius: 50,}}
+        onPress={()=>{
+          const result = pinLocalFunc(htmlBody, urlState);
+          setImageState(result.image);
+          setImageSet(result.imageSet);
+          console.log(result.imageSet);
+          setTitleState(result.title);
+          setPriceState(result.price.replace(',','').replace('$','').replace(/[^0-9.]+/, '').split("$")[0]);
+          // console.log(result.price.replace(',','').replace('$','').replace(/[^0-9.]+/, ''), result.price);
+          setBrandState(result.brand.charAt(0).toUpperCase() + result.brand.slice(1));
+          setDataUrl(urlState);
+          setModalOpen(false);
+          setPinned(true);
+          setCanNext(true);
+          
+          setSearchResultPlaceholder(result.brand.charAt(0).toUpperCase() + result.brand.slice(1) + " | " + result.title);
+          }}>
+          <Text style={{color: 'white'}}>import</Text>
+          </TouchableOpacity>:<View style={{width: 120}} />}
+                <TouchableOpacity onPress={()=>{
                   try {
                   if (webviewRef.current) webviewRef.current.goForward()
                   } catch (err) {
                     console.log(err);
                   }
                 }}>
+
                 <Icon name="chevron-right" size={25} color={constants.LAVENDER}/>
                 </TouchableOpacity>
               </View>
@@ -545,7 +582,7 @@ const CamScreenTwo = ({navigation, route}) => {
       
       </View>
     </AnimatedModal>
-    </>
+    </SafeAreaView></Fragment>
   );
 };
 

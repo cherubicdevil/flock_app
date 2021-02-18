@@ -67,7 +67,7 @@ const ProgressHeader = ({
             flexDirection: 'row',
             position: 'absolute',
             left: 20,
-            bottom: 8,
+            bottom: 0,
           }}
           onPress={() => {
             if (index === 0) {
@@ -92,8 +92,8 @@ const ProgressHeader = ({
     <View
       style={{
         //marginBottom: 30,
-        height:120,
-        paddingTop: 30,
+        height:70,
+        paddingTop: 10,
         paddingBottom: 10,
         justifyContent: 'center',
         alignItems: 'center',
@@ -127,7 +127,7 @@ const ProgressHeader = ({
       <View style={{
           position: 'absolute',
           right: 20,
-          bottom: 25,
+          bottom: 15,
           justifyContent: 'center',
           alignItems: 'center',
           height: 40, backgroundColor: constants.ORANGE, width: 60, borderRadius: 30, opacity: canGoNext ? 1 : 0.2,

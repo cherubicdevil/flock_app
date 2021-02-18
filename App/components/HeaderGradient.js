@@ -32,7 +32,7 @@ const HeaderGradient = ({navigation, children, absolute=true, closeX = false, ti
           ],
         })
                   );
-      }}><Icon name="times" size={24} color={constants.LIGHTGREY} /></TouchableOpacity>:<TouchableOpacity style={{position: 'absolute', zIndex: 800, bottom: 25, left: 20}} onPress={()=>{
+      }}><Icon name="times" size={24} color={constants.LIGHTGREY} /></TouchableOpacity>:<TouchableOpacity style={{position: 'absolute', zIndex: 800, bottom: 21, left: 20}} onPress={()=>{
             navigation.goBack();
           }}>
         <Icon name="chevron-left" size={24} color="grey" />
