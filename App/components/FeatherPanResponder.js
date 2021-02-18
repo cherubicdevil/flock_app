@@ -280,7 +280,7 @@ const FeatherPanResponder = React.memo(({index, positions, currIndex, setCurrent
             isUp = false;
             isDown = false;
             if (Math.abs(gesture.dy) < 100 ) {
-                console.log('hello');
+                // console.log('hello');
                 Animated.timing(positions[index], {
                     useNativeDriver: false,
                     toValue: {y:0, x: 0},
@@ -334,7 +334,7 @@ const FeatherPanResponder = React.memo(({index, positions, currIndex, setCurrent
                             dispatch({type: 'sendCarouselIndex', payload: currentIndex + 1});
                         }
                     }, 700);
-                      console.log("changing carindex", currentIndex + 1);
+                    //   console.log("changing carindex", currentIndex + 1);
                 }
             }
         }

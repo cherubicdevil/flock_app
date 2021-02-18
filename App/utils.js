@@ -175,7 +175,6 @@ const pickVideo = (setPic) => {
   ImagePicker.launchImageLibrary(
     {maxWidth: 1024, maxHeight: 1024, mediaType: 'video'},
     (response) => {
-      console.log('setting', response.uri);
       setPic({uri: response.uri});
     },
   );
@@ -185,7 +184,6 @@ const pickImage = (setPic) => {
   ImagePicker.launchImageLibrary(
     {maxWidth: 1024, maxHeight: 1024, mediaType: 'photo'},
     (response) => {
-      console.log('setting', response.uri);
       setPic({uri: response.uri});
     },
   );
@@ -304,7 +302,6 @@ const fetchFlockablesFirst = async () => {
         var counter = 0;
         const n = querySnapshot.size;
         const ar = [];
-        console.log(n, "SIZEEEEEEEEE");
         querySnapshot.forEach((doc) => {
           
           const entity = doc.data();
@@ -338,7 +335,6 @@ const fetchFlockables = async () => {
           if (counter === n) {
             resolve(ar);
             lastVisibleFlock = doc;
-            console.log("last", lastVisibleFlock);
           }
         });
       });
@@ -480,7 +476,6 @@ const shareActions = {
     }).then((result)=> {
       if (result.action === Share.dismissedAction) {
         failure();
-        console.log('cancelled for real');
       } else if (result.action === Share.sharedAction) {
         if (availableTypes.includes(result.activityType)) {
           successCallBack();
@@ -488,7 +483,6 @@ const shareActions = {
           failure();
         }
       }
-      console.log('cancelled');
     })
   })
   ;
@@ -526,7 +520,6 @@ const shareActions = {
     }).then((result)=> {
       if (result.action === Share.dismissedAction) {
         failure();
-        console.log('cancelled for real');
       } else if (result.action === Share.sharedAction) {
         if (availableTypes.includes(result.activityType)) {
           successCallBack();
@@ -534,7 +527,6 @@ const shareActions = {
           failure();
         }
       }
-      console.log('cancelled');
     })
   })
   ;
@@ -551,7 +543,6 @@ const shareActions = {
     }).then((result)=> {
       if (result.action === Share.dismissedAction) {
         failure();
-        console.log('cancelled for real');
       } else if (result.action === Share.sharedAction) {
         if (availableTypes.includes(result.activityType)) {
           successCallBack();
@@ -559,7 +550,6 @@ const shareActions = {
           failure();
         }
       }
-      console.log('cancelled');
     })
   })
   ;
@@ -594,7 +584,6 @@ const shareActions = {
     }).then((result)=> {
       if (result.action === Share.dismissedAction) {
         failure();
-        console.log('cancelled for real');
       } else if (result.action === Share.sharedAction) {
         if (availableTypes.includes(result.activityType)) {
           successCallBack();
@@ -602,7 +591,6 @@ const shareActions = {
           failure();
         }
       }
-      console.log('cancelled');
     })
   })
   ;
@@ -620,7 +608,6 @@ const shareActions = {
     }).then((result)=> {
       if (result.action === Share.dismissedAction) {
         failure();
-        console.log('cancelled for real');
       } else if (result.action === Share.sharedAction) {
         if (availableTypes.includes(result.activityType)) {
           successCallBack();
@@ -628,7 +615,6 @@ const shareActions = {
           failure();
         }
       }
-      console.log('cancelled');
     })
   })
   ;
@@ -641,11 +627,9 @@ const shareActions = {
   }).then((result)=> {
     if (result.action === Share.dismissedAction) {
       failure();
-      console.log('cancelled for real');
     } else if (result.action === Share.sharedAction) {
 
     }
-    console.log('cancelled');
   });
 }
 };
@@ -739,10 +723,8 @@ const pinLocalFunc = (htmlBody, notBaseURL) => {
   };
   
   const getImageUrl = ($, title) => {
-    console.log('before get og image');
     var imageUrl = $('meta[property="og:image:secure_url"]').attr("content");
     var imageUrl = $('meta[property="og:image"]').attr("content");
-    console.log('after get og image', imageUrl);
     var images = imageDownloader.extractImagesFromTags($);
     images.push({img: imageUrl});
     // if (title) {
@@ -753,7 +735,6 @@ const pinLocalFunc = (htmlBody, notBaseURL) => {
     // console.log(images);
     if (!imageUrl && title) {
       
-      console.log('after downlado');
       // const newImages = [];
       // for (const i = 0; i < images.length; i++) {
       //   sizeOf(images[i].img, function (err, dimensions) {
@@ -771,20 +752,15 @@ const pinLocalFunc = (htmlBody, notBaseURL) => {
       );
 
 
-      console.log('after find best match', best[0]);
       // console.log(title, 'hello', best.bestMatch.rating, images[best.bestMatchIndex].desc, images.filter((item)=>{
       //   return stringSimilarity.compareTwoStrings(title, item.desc) > 0;
       // }));
-      console.log(images);
       if (best.bestMatch.rating == 0) {
-        console.log('something wrong?');
         imageUrl = images[0].img;
       } else {
-        console.log('what is wrong here');
         imageUrl = images[best.bestMatchIndex].img;
       }
     }
-    console.log('after if loop');
     images = images.filter((item)=>{
       return item.img !== undefined;
     })
@@ -915,7 +891,6 @@ const createOrUpdate = async (hasId, customerId, info) => {
   return new Promise(async (resolve) => {
     if (!hasId) {
       const token = await stripe.createTokenWithCard(info);
-      console.log("token", token);
       // const endpoint = constants.PAY_ENDPOINT + `?price=${100}&token=${token.tokenId}`;
       // fetch(endpoint);
     
@@ -923,7 +898,6 @@ const createOrUpdate = async (hasId, customerId, info) => {
       var createCustomerEndpoint = constants.CUSTOMER_ENDPOINT + "?token=" + token.tokenId;
     fetch(createCustomerEndpoint).then(resp=>{
       resp.json().then((cid)=>{
-          console.log("CUSTOMERID", cid.id);
           
           db.collection('users').doc(au.currentUser.uid).update({customerId: cid.id}).catch(err=>{
               console.log(err);
@@ -933,8 +907,6 @@ const createOrUpdate = async (hasId, customerId, info) => {
     });
     
     } else {
-      console.log('already had');
-      console.log(customerId);
       await fetch(constants.UPDATE_CUST, {
           method: 'POST',
           body: JSON.stringify({info: info, id: customerId}),

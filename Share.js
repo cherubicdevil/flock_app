@@ -24,7 +24,6 @@ async function loadGraphicCards(url, page = 1) {
 
     const htmlString = await response.text(); // get response text
     //const $ = cheerio.load(htmlString); // parse HTML string
-    console.log('testing');
     return 'HELLOWORLD';
     // return {
     //   // map to an list of objects
@@ -58,7 +57,6 @@ const Share = () => {
       .then((response) => response.json())
       .then((responseData) => {
         setMyData(responseData);
-        console.log(responseData);
         setSendable(true);
       });
   };
@@ -120,8 +118,8 @@ const Share = () => {
             };
             db.collection('products')
               .add(data)
-              .then(() => console.log('SUCCESSSSS'))
-              .catch((err) => console.log('SOMETHIGN DIDNT ADD TO DB'));
+              .then(() => {})
+              .catch((err) => {});
             setTimeout(() => {
               ShareMenuReactView.dismissExtension();
             }, 1000);

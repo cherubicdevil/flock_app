@@ -95,7 +95,7 @@ const AppNavigator5 = () => {
           component={Profile}
           initialParams={{vidVisible: false}}
           options={{
-            tabBarVisible: false,
+            tabBarVisible: true,
           }}
         />
           <Tab.Screen

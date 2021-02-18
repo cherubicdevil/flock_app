@@ -307,8 +307,8 @@ const ProfileMain = ({navigation}) => {
         <View
           style={{
             flex: 1,
-            justifyContent: 'flex-end',
-            paddingBottom: 20,
+            justifyContent: 'center',
+            paddingVertical: 10,
             paddingRight: 30,
             alignItems: 'flex-start',
             paddingLeft: 40,
@@ -361,7 +361,7 @@ const ProfileMain = ({navigation}) => {
                   marginLeft: 5,
                   marginTop: 10,
                   color: 'black',
-                  fontFamily: 'Nunito',
+                  fontFamily: constants.FONT,
                 }}>
                 {userInfo.bio}
               </Text>

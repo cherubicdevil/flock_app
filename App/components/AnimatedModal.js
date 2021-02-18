@@ -139,10 +139,8 @@ const AnimatedModal = ({
               }} style={{position: 'absolute', top:0, height: '100%', width: '100%', zIndex: 5}} /> */}
               <View style={{height: '100%', position: 'absolute', bottom: 0, zIndex: 200, backgroundColor: 'transparent', width: '100%', justifyContent: 'flex-end'}}>
               <TouchableOpacity onPress={()=>{
-                console.log('reset');
                 setTimeout(()=>{
                   close();
-                  console.log('close');
                 }, nested?300:0);
             resetAnimation();
               }} style={{position: 'absolute', top:0, height: '100%', width: '100%', zIndex: 5}} />

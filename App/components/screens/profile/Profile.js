@@ -224,7 +224,7 @@ const Profile = ({navigation}) => {
     },
 
     bio: {
-      placeholder: 'Bio',
+      placeholder: 'Say something about yourself',
       label: 'About me',
       ref: useRef(null),
       defaultValue: null,
