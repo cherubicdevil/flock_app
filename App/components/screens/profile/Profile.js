@@ -397,7 +397,7 @@ const Profile = ({navigation}) => {
           {/* {renderFormBoxes()} */}
           {renderFormBox(0.5, "Username", "username", "username", username, setUserName)}
           {/* {renderFormBox(0.5, "email", "test", "test", email, setEmail)} */}
-          {renderFormBox(0.5, "Bio", "bio", "Say something about yourself", bio, setBio, 2)}
+          {renderFormBox(0.5, "About me", "bio", "Say something about yourself", bio, setBio, 2)}
           {renderFormBox(0.5, "Email", "email", "email", email, setEmail, 1)}
         </View>
         </View>

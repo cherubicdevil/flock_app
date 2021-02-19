@@ -113,6 +113,7 @@ const MyFormPhone = ({registration, navigation}) => {
 console.log('test', confirm);
 if (code.length == 6) {
     confirmCode();
+    var decrease = false;
 }
     return (
       <View style={styles.container}>
@@ -123,11 +124,34 @@ if (code.length == 6) {
             {phone.length>0?<Text style={{fontSize: 16, marginRight: 5}}>+1</Text>:<></>}
         <TextInput
           label=""
-          maxLength={10}
+          maxLength={12}
           keyboardType="numeric"
           placeholder="Enter phone number"
+          onKeyPress={(event) => {
+            if (event.nativeEvent.key ==="Backspace") {
+              decrease = true;
+            } else {
+              decrease = false;
+            }
+          }}
           onChangeText={(text) => {
-            setPhone(text);
+            if (text.length == 3) {
+              console.log('decrease', decrease);
+              if (decrease) {
+                setPhone(text.substring(0,2));
+              } else {
+                setPhone(text+"-");
+              }
+            } else if (text.length == 7) {
+              console.log('decrease', decrease);
+              if (decrease) {
+                setPhone(text.substring(0,6));
+              } else {
+                setPhone(text+"-");
+              }
+            } else {
+              setPhone(text);
+            }
           }}
           value={phone}
           style={{flex:1}}
