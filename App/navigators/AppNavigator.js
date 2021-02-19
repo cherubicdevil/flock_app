@@ -40,9 +40,11 @@ const AppNavigator5 = () => {
       <Tab.Navigator
         tabBar={(props) => <CustomBar {...props} />}
         initialRouteName="Carousel"
+        swipeEnabled={true}
         //initialRouteName="ProfileMain"
         screenOptions={{
           headerShown: false,
+          // swipeEnabled:true
           // unmountOnBlur: true,
           //animationEnabled: false,
         }}>
