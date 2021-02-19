@@ -74,8 +74,8 @@ const MyFormPhone = ({registration, navigation}) => {
     }).catch(err=>{
       setErrorMessage('Invalid code.')
     });
-    // setLoadState(true);
-    console.log('confirmming');
+    setLoadState(true);
+    // console.log('confirmming');
   }
 
 //   const onButtonPress = () => {
@@ -142,7 +142,7 @@ const MyFormPhone = ({registration, navigation}) => {
 //     );
 //   }
 console.log('test', confirm);
-if (code.length == 6) {
+if (code.length == 6 && !loadState) {
     confirmCode();
     var decrease = false;
 }
@@ -302,6 +302,8 @@ const EnterCode = ({setCode}) =>{
             // box1.current.blur();
             box6.current.focus();
             setCode(text)
+          } else if (text.length == 2) {
+            setV1(text.charAt(0));
           } else {
             setV1(text);
             setCode(text+v2+v3+v4+v5+v6);
