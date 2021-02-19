@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   ImageBackground,
   Image,
+  Alert
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {constants} from 'App/constants';
@@ -153,6 +154,8 @@ const ProgressHeader = ({
             nextFunc();
             navigation.navigate(nextRoute, {index: index+1, data: data, flockId: idText.replace("%","")});
             }
+          } else {
+            Alert.alert('Please fill out the information. Type "NA" if not applicable.')
           }
         }}>
         {/* <ImageBackground
