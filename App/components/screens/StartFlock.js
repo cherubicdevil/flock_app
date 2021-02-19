@@ -1,5 +1,5 @@
 import React, {useState, useRef, useEffect} from 'react';
-import {View, ScrollView, Text, Switch, TextInput, Image, KeyboardAvoidingView,Dimensions, TouchableOpacity} from 'react-native';
+import {View, ScrollView, Text, Switch, TextInput, Image, KeyboardAvoidingView,Dimensions, TouchableOpacity, Alert} from 'react-native';
 import ProgressHeader from 'App/components/ProgressHeader';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import {constants} from 'App/constants';
@@ -16,6 +16,7 @@ import PriceSlider from 'App/components/PriceSlider';
 import AnimatedModal from 'App/components/AnimatedModal';
 import SmartCheckout from 'App/components/SmartCheckout';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import WebView from 'react-native-webview';
 
 
 const StartFlock = ({navigation, route}) => {
@@ -223,15 +224,46 @@ const StartFlock = ({navigation, route}) => {
 const PageOne = ({product, data, setCanNext}) => {
     const [can1, setCan1] = useState(data['specifications']!==undefined && data['specifications'].length > 0);
     const [can2, setCan2] = useState(data['description']!==undefined && data['description'].length > 0);
+
+    const [openWebView, setOpenWebView] = useState(false);
+    const webViewRef= useRef();
+    
     useEffect(()=>{
         setCanNext(can1 && can2);
     }, [can1, can2]);
 
     return <View style={{width:'100%', backgroundColor: 'white', marginTop: 5, padding: 20}}>
         <InputText data = {data} title = "specifications" numLines = {2} setCanNext={setCan1} placeholder = "Size 4? Size 10? Red? Green?" label="List specifications like size and color if applicable." />
+        <View style={{marginBottom: 20}}>
+            <TouchableOpacity onPress={()=>setOpenWebView(true)} >
+            <Text style={{color:constants.LIGHTGREY}}>Don't remember the sizes? Click me.</Text>
+            </TouchableOpacity>
+        </View>
         <InputText data = {data} title = "description" numLines = {4}  setCanNext={setCan2}  placeholder = "What do you want others to know about this product? Hype it up so they join your flock and lower your price!" label="Message"/>
+        <TouchableOpacity onPress={()=>{
+            setOpenWebView(true);
+        }}>
         <ProductPreview product = {product} toggle={true} egg={true} />
+        </TouchableOpacity>
 
+<AnimatedModal noPadding={true} nested={true} upPercent="80%" colored={true} colors={[constants.ORANGE, constants.PEACH]} visible={openWebView} close={()=>setOpenWebView(false)}>
+        <View style={{flex: 1}}>
+        <WebView source={{uri: product.url}} 
+        onShouldStartLoadWithRequest={(request)=>{
+            return request.url === product.url;
+        }}
+        ref={webViewRef}
+        startInLoadingState={true}
+        onNavigationStateChange={(event) => {
+            if (event.url !== product.url) {
+            //   webViewRef.current.stopLoading()
+              Alert.alert('Please finish creating your flock before shopping more.');
+              webViewRef.current.goBack();
+            }
+          }}
+        />
+        </View>
+</AnimatedModal>
     </View>;
 }
 

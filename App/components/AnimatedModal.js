@@ -49,6 +49,7 @@ const AnimatedModal = ({
   modalAnimationType="slide",
   nested=false,
   behavior="position",
+  noPadding=false,
   viewParams={bottom: 0, height: Dimensions.get('window').height, width:Dimensions.get('window').width, left: 0},
   contentTop=<></>
 }) => {
@@ -150,7 +151,7 @@ const AnimatedModal = ({
               {contentTop}
             </View>
             <KeyboardAvoidingView enabled={keyboard} behavior={behavior} style={{position: 'absolute', zIndex: 20, width: '100%', backgroundColor: 'transparent', height: upPercent, }}>
-            <View behavior="padding" style={{width: '100%', height: "100%", borderRadius: curve?100:0, borderBottomRightRadius: 0, borderBottomLeftRadius: 0, backgroundColor: bgcolor, paddingTop: 40, overflow: 'hidden'}}>
+            <View behavior="padding" style={{width: '100%', height: "100%", borderRadius: curve?100:0, borderBottomRightRadius: 0, borderBottomLeftRadius: 0, backgroundColor: bgcolor, paddingTop: noPadding?0:40, overflow: 'hidden'}}>
             
               {content}
               {children}
