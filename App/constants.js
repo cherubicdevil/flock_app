@@ -56,6 +56,7 @@ export const constants = {
   BERRY_RATE: 0.2,
   // PLACEHOLDER_IMAGE: require('App/Assets/Images/cute_duck.png'),
   PLACEHOLDER_IMAGE: require('App/Assets/Images/goose_headshot.png'),
+  PLACEHOLDER_IMAGE: require('App/Assets/Images/duck_placeholder.png'),
   EGG_GOLD: require('App/Assets/Images/goose_egg_rose_gold.png'),
   EGG_PROFILE: require('App/Assets/Images/Profile_Egg_Icon.png'),
   OFF_BLACK: 'rgba(50,30,30,1)',

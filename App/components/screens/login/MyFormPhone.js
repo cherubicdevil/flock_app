@@ -5,7 +5,8 @@ import {
   TextInput,
   TouchableOpacity,
   StyleSheet,
-  ActivityIndicator
+  ActivityIndicator,
+  Keyboard
 } from 'react-native';
 import {connect} from 'react-redux';
 import {constants} from 'App/constants';
@@ -51,17 +52,24 @@ const MyFormPhone = ({registration, navigation}) => {
   // }
   // Handle the button press
   async function signInWithPhoneNumber() {
-    try {
-    const confirmation = await auth().signInWithPhoneNumber("+1"+phone.replace("-",""));
-    setConfirm(confirmation);
-    } catch (err) {
+    auth().signInWithPhoneNumber("+1"+phone.replace("-","")).then((confirmation)=>{
+      setConfirm(confirmation);
+      setErrorMessage("");
+      setLoadState(false);
+      Keyboard.dismiss();
+    }).catch((err)=>{
       if (err.code === "auth/too-many-requests") {
         setErrorMessage("Unusual login activity. Try again in a few minutes.");
       } else {
+        console.log(err);
         setErrorMessage("Something went wrong.");
       }
-    }
+    });
+    setLoadState(true);
   }
+
+
+  var submitFunc;
 
   async function confirmCode() {
     // try {
@@ -141,8 +149,14 @@ const MyFormPhone = ({registration, navigation}) => {
 //       </TouchableOpacity>
 //     );
 //   }
-console.log('test', confirm);
-if (code.length == 6 && !loadState) {
+if (code.length == 6) {
+  submitFunc = confirmCode;
+} else {
+  submitFunc = signInWithPhoneNumber;
+}
+
+// console.log('test', confirm);
+if (code.length == 6 && !loadState && confirm) {
     confirmCode();
     var decrease = false;
 }
@@ -206,10 +220,7 @@ if (code.length == 6 && !loadState) {
 
         <TouchableOpacity
           style={styles.buttoncontainer}
-          onPress={()=>{
-            signInWithPhoneNumber();
-            setErrorMessage("");
-          }
+          onPress={submitFunc
           }>
             <LinearGradient
           colors={[registration?"#ff6009":"#728cb1", registration?constants.ORANGE:"#8a86aa"]}
@@ -225,7 +236,10 @@ if (code.length == 6 && !loadState) {
           </LinearGradient>
         </TouchableOpacity>
         <ActivityIndicator animating={loading} color="white" style={{marginTop: 10}} />
-        {confirm?<TouchableOpacity onPress={()=>{setConfirm(null)}}><View style={{flexDirection: 'row', alignItems: 'center'}}><Icon name="chevron-left" color="white" size={25} /><Text style={{color: 'white', marginLeft: 10}}>{phone}</Text></View></TouchableOpacity>:<></>}
+        {confirm?<TouchableOpacity onPress={()=>{
+          setConfirm(null);
+          setErrorMessage("");
+          }}><View style={{flexDirection: 'row', alignItems: 'center'}}><Icon name="chevron-left" color="white" size={25} /><Text style={{color: 'white', marginLeft: 10}}>{phone}</Text></View></TouchableOpacity>:<></>}
 
         {/* <Text style={{textAlign:'center', color: constants.RED}}>{errorMessage}</Text> */}
         {/* <TouchableOpacity

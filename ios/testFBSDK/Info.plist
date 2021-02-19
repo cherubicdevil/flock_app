@@ -77,12 +77,12 @@
 			</dict>
 		</dict>
 	</dict>
+	<key>NSCameraUsageDescription</key>
+	<string>Flock requires Camera to change your profile picture.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string></string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Share to social media apps, such as instagram</string>
-	<key>NSCameraUsageDescription</key>
-	<string>Flock requires Camera to change your profile picture.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>FontAwesome.ttf</string>
