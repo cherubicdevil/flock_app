@@ -89,6 +89,7 @@ const DataList = ({navigation, route}) => {
   const val = route.params?.value || null;
   const {key, setKey, key1, setKey1} = useContext(KeyContext);
   const {keyArrFlock, keyArrRent, keyVideoData} = useContext(KeyContext);
+  const [cover, setCover] = useState(true);
   //route.params.videoData = route.params[route.params.dataType];
   if (route.params.dataType === "flockData") {
     route.params.videoData = keyArrFlock;
@@ -105,12 +106,54 @@ const DataList = ({navigation, route}) => {
     }
     
   }, [route, setKey, key]);
+  const [coverfade, setCoverFade] = useState(new Animated.Value(1));
+  const [coverheight, setCoverHeight] = useState(new Animated.Value(Dimensions.get('window').height));
+  const {keyFinishedLoading} = useContext(KeyContext);
+  useEffect(()=>{
+    const fadeAnimation = Animated.timing(coverfade, // The animated value to drive
+      {
+        toValue: 0, // Animate to opacity: 1 (opaque)
+        delay: 4500, 
+        duration: 400, // 2000ms
+        useNativeDriver: false,
+      },
+    );
+    const sizeAnimation = Animated.timing(coverheight,
+      {
+        toValue: 0,
+        delay: 4500,
+        duration: 300,
+        useNativeDriver: false,
+      });
+      if (keyFinishedLoading) {
+        console.log('stuff')
+        Animated.sequence([fadeAnimation, sizeAnimation]).start();
+      }
+
+
+  }, [keyFinishedLoading]);
+
+  useEffect(()=>{
+    // setTimeout(()=>{
+    //   setCover(false);
+    // }, 2500);
+  },[])
   var data = route.params.videoData;
   // data.map(()=>{});
   // const boxes = <View style={{backgroundColor: 'white'}}>{data.map(()=>{
   //   <View style={{width: 30, height: 50, backgroundColor: 'red'}} />
   // })}</View>
-  return <View style={{height: '100%', backgroundColor: constants.PINK_BACKGROUND, width: '100%'}}><Text style={{color: 'white'}}>{val}</Text><FeedList route={route} videoData={route.params.videoData} flockOrNot={route.params.dataType} KeyContext={KeyContext} 
+  return <>
+      <Animated.View style={{backgroundColor: 'white', position: 'absolute', left: 0, bottom: 0, width:'100%', height: coverheight, opacity: coverfade, zIndex: 500}} >
+      <View style={{
+    backgroundColor: constants.PINK_BACKGROUND, height: '100%', width: '100%',
+    justifyContent: 'center', alignItems: 'center',
+    // resizeMode:'contain'
+    overflow:'visible'
+}}/>
+<Image source={require('App/Assets/Images/flock_gif.gif')} style={{width: 300, height: 300, resizeMode:'contain', alignSelf: 'center', position: 'absolute', top:'20%'}} />
+</Animated.View>
+<View style={{height: '100%', backgroundColor: constants.PINK_BACKGROUND_OPAQUE, width: '100%'}}><Text style={{color: 'white'}}>{val}</Text><FeedList route={route} videoData={route.params.videoData} flockOrNot={route.params.dataType} KeyContext={KeyContext} 
   feedItem={(al)=>{
   // console.log('al image', al.image, al.title, al.product.image);
     return <TouchableOpacity onPress={()=>{
@@ -130,7 +173,9 @@ const DataList = ({navigation, route}) => {
     {/* <Image defaultSource={require('App/Assets/Images/flock_logo_white.png')} style={{width: 50, height: 50,}} source = {{uri: al?.product?.image}} /> */}
     </View>
     </TouchableOpacity>}} 
-    /></View>;
+    /></View>
+
+    </>;
 }
 
 const HomeTabSwipe = ({videoData, navigation, route}) => {
@@ -275,29 +320,29 @@ const HomeTabSwipe = ({videoData, navigation, route}) => {
     });
   }, []);
 
-  const {keyFinishedLoading} = useContext(KeyContext);
-  useEffect(()=>{
-    const fadeAnimation = Animated.timing(coverfade, // The animated value to drive
-      {
-        toValue: 0, // Animate to opacity: 1 (opaque)
-        delay: 0, 
-        duration: 400, // 2000ms
-        useNativeDriver: false,
-      },
-    );
-    const sizeAnimation = Animated.timing(coverheight,
-      {
-        toValue: 0,
-        delay: 0,
-        duration: 300,
-        useNativeDriver: false,
-      });
-      if (keyFinishedLoading) {
-        Animated.sequence([fadeAnimation, sizeAnimation]).start();
-      }
+  // const {keyFinishedLoading} = useContext(KeyContext);
+  // useEffect(()=>{
+  //   const fadeAnimation = Animated.timing(coverfade, // The animated value to drive
+  //     {
+  //       toValue: 0, // Animate to opacity: 1 (opaque)
+  //       delay: 2500, 
+  //       duration: 400, // 2000ms
+  //       useNativeDriver: false,
+  //     },
+  //   );
+  //   const sizeAnimation = Animated.timing(coverheight,
+  //     {
+  //       toValue: 0,
+  //       delay: 2500,
+  //       duration: 300,
+  //       useNativeDriver: false,
+  //     });
+  //     if (keyFinishedLoading) {
+  //       Animated.sequence([fadeAnimation, sizeAnimation]).start();
+  //     }
 
 
-  }, [keyFinishedLoading]);
+  // }, [keyFinishedLoading]);
 
   // useEffect(()=>{
     // return () => {
@@ -339,7 +384,16 @@ return <>
 }}/>
 <Image source={require('App/Assets/Images/flock-anim.gif')} style={{width: 200, height: 200, position: 'absolute', top: '30%', left: '30%'}} />
 </Animated.View> */}
-{navigator}</>;
+{navigator}
+{/* <Animated.View style={{backgroundColor: 'white', position: 'absolute', left: 0, bottom: 0, width:'100%', height: coverheight,  opacity: coverfade, zIndex: 10000}} ><View style={{
+    backgroundColor: constants.PINK_BACKGROUND, height: '100%', width: '100%',
+    justifyContent: 'center', alignItems: 'center',
+    // resizeMode:'contain'
+    overflow:'visible'
+}}/>
+<Image source={require('App/Assets/Images/flock_gif.gif')} style={{width: 300, height: 300, resizeMode:'contain', alignSelf: 'center', position: 'absolute', top:'20%'}} />
+</Animated.View> */}
+</>;
 
 
 }
@@ -505,7 +559,7 @@ const MiniCarouselRenting = ({navigation, route}) => {
 const MiniCarouselFlocking = ({navigation, route}) => {
   const store = useStore();
   const select = useSelector(state => state.videopage);
-
+  const {keyFinishedLoading} = useContext(KeyContext);
   const dispatch = useDispatch();
   const [viewHeight, setViewHeight] = useState(600);
   const {key, key1, keyArrRent, setKeyArrRent, limitKey, keyArrFlock, setKeyArrFlock, keyVideoData, setKeyVideoData, setKeyFinishedLoading} = useContext(KeyContext);
@@ -527,6 +581,7 @@ const MiniCarouselFlocking = ({navigation, route}) => {
         delay: 2000,
         useNativeDriver: false,
       }).start();
+      setKeyFinishedLoading(true);
       setTimeout(()=>setCover(false), 2500);
     });
   },[]);
