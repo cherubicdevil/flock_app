@@ -65,6 +65,7 @@ const MyFormPhone = ({registration, navigation}) => {
       } else {
         console.log(err);
         setErrorMessage("Something went wrong.");
+        setLoadState(false);
       }
     });
     setLoadState(true);
