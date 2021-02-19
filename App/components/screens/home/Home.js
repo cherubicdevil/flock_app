@@ -146,12 +146,12 @@ const DataList = ({navigation, route}) => {
   return <>
       <Animated.View style={{backgroundColor: 'white', position: 'absolute', left: 0, bottom: 0, width:'100%', height: coverheight, opacity: coverfade, zIndex: 500}} >
       <View style={{
-    backgroundColor: constants.PINK_BACKGROUND, height: '100%', width: '100%',
+    backgroundColor: constants.PINK_BACKGROUND, height: '100%', width: '100%', paddingTop: 100, 
     justifyContent: 'center', alignItems: 'center',
     // resizeMode:'contain'
     overflow:'visible'
 }}/>
-<Image source={require('App/Assets/Images/flock_gif.gif')} style={{width: 300, height: 300, resizeMode:'contain', alignSelf: 'center', position: 'absolute', top:'20%'}} />
+<Image source={require('App/Assets/Images/flock_gif.gif')} style={{width: 300, marginTop: 50,height: 300, resizeMode:'contain', alignSelf: 'center', position: 'absolute', top:'20%'}} />
 </Animated.View>
 <View style={{height: '100%', backgroundColor: constants.PINK_BACKGROUND_OPAQUE, width: '100%'}}><Text style={{color: 'white'}}>{val}</Text><FeedList route={route} videoData={route.params.videoData} flockOrNot={route.params.dataType} KeyContext={KeyContext} 
   feedItem={(al)=>{
