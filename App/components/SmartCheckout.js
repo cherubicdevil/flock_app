@@ -327,8 +327,8 @@ return <><View style={{marginTop: 5,}} >
             <Text style={{fontWeight: 'bold', color: constants.LAVENDER}}>Updating</Text>
           </View>
         </View>
-        <AnimatedModal nested = {true} keyboard={true} upPercent="75%" colored={true} colors={[constants.ORANGE, constants.GREYORANGE]} visible={billModal} close={()=>setBillModal(false)} state={info} setState={setInfo} content={<BillingModal state={creditInfo} setState={setCreditInfo} setChanged={setCreditCardChanged} close={()=>setBillModal(false)}/>}/>
-<AnimatedModal upPercent="75%" nested = {true} keyboard={true} colored={true} colors={[constants.ORANGE, constants.GREYORANGE]} visible={shipModal} close={()=>setShipModal(false)} state={info} setState={setInfo} content={<ShippingModal state={info} setState={setInfo} setChanged={setChanged} close={()=>setShipModal(false)}/>}/>
+        <AnimatedModal nested = {true} keyboard={true} upPercent="60%" colored={true} colors={[constants.ORANGE, constants.GREYORANGE]} visible={billModal} close={()=>setBillModal(false)} state={info} setState={setInfo} content={<BillingModal state={creditInfo} setState={setCreditInfo} setChanged={setCreditCardChanged} close={()=>setBillModal(false)}/>}/>
+<AnimatedModal upPercent="55%"  nested = {true} keyboard={true} colored={true} colors={[constants.ORANGE, constants.GREYORANGE]} visible={shipModal} close={()=>setShipModal(false)} state={info} setState={setInfo} content={<ShippingModal state={info} setState={setInfo} setChanged={setChanged} close={()=>setShipModal(false)}/>}/>
 
 </>
 
@@ -491,14 +491,14 @@ const BillingModal = ({state, setState, close, setChanged}) => {
             }} style={styles.textbox} />
   
             <View style={{flexDirection: 'row', justifyContent:'space-between'}}>
-                <View style={{flex: 1, marginRight: 20}}>
+                <View style={{flex: 2, marginRight: 20}}>
             <Text style={{marginLeft: 10, marginTop: 15, marginBottom: 5}}>City</Text>
             <TextInput value={city}  onChangeText={(text)=> {
                 setCity(text);
             }} style={styles.textbox} />
                         </View>
-                        <View style={{width: 75}}>
-                        <Text style={{marginLeft: 10, marginTop: 15, marginBottom: 5}}>State</Text>
+                        <View style={{flex: 1, marginRight: 20}}>
+                        <Text style={{marginLeft: 10, marginTop: 15, marginBottom: 5,}}>State</Text>
             <TextInput keyboardType="default" maxLength={2} value={geostate}   onChangeText={(text)=> {
                 setGeostate(text);
             }} style={styles.textbox} />
@@ -509,11 +509,15 @@ const BillingModal = ({state, setState, close, setChanged}) => {
                 localState.addressCountry = text;
             }} style={styles.textbox} />
             </View> */}
-            </View>            
-            <Text style={{marginLeft: 10, marginTop: 15, marginBottom: 5}}>Zip Code</Text>
+                        
+                        <View styles={{flex: 1, marginLeft: 10,}}>
+                        <Text style={{marginLeft: 10, marginTop: 15, marginBottom: 5}}>Zip Code</Text>
             <TextInput value={zip} maximumLength={5} keyboardType="numeric" onChangeText={(text)=> {
                 setZip(text);
             }} style={styles.textbox} />
+            </View>
+            </View>            
+
   
             <TouchableOpacity style={{marginTop:30, borderRadius: 40, overflow: 'hidden',  height: 35, width: "100%", alignSelf:'center', backgroundColor:constants.ORANGE, justifyContent:'center', alignItems: 'center', borderRadius:30}} onPress={()=>{
                  // if (!(validateCard(cardNumber(cardNumber)) && validateExp(expMonth, expYear)))
