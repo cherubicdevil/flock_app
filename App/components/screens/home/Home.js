@@ -314,9 +314,10 @@ const HomeTabSwipe = ({videoData, navigation, route}) => {
        {/* <Tab.Screen name="for you" component = {MiniCarousel}/> */}
 
     {/* <Tab.Screen name="flocking" component={DataList} initialParams={{value: 'hello world', videoData:[], flockData: [], rentData: [], dataType: 'flockData'}} /> */}
+    <Tab.Screen name="for you" component={DataList} initialParams={{videoData: keyVideoData, dataType:'videoData'}} />
     <Tab.Screen name="flocking" component = {MiniCarouselFlocking}/>
     <Tab.Screen name="borrow" component = {MiniCarouselRenting}/>
-    <Tab.Screen name="for you" component={DataList} initialParams={{videoData: keyVideoData, dataType:'videoData'}} />
+
     {/* <Tab.Screen name="borrow" component={DataList} initialParams={{value: 'hello world', videoData:[], flockData: [], rentData: [], dataType: 'rentData'}} /> */}
   
 

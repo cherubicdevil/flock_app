@@ -1,13 +1,15 @@
-import React, {useState, useRef} from 'react';
+import React, {useState, useRef, useEffect} from 'react';
 import {
   View,
   Text,
   TextInput,
   TouchableOpacity,
   StyleSheet,
+  ActivityIndicator
 } from 'react-native';
 import {connect} from 'react-redux';
 import {constants} from 'App/constants';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 import {Input} from './Input';
 import {emailChanged, passwordChanged} from 'App/redux/actions';
@@ -24,7 +26,12 @@ const MyFormPhone = ({registration, navigation}) => {
   const [confirm, setConfirm] = useState(null);
 
   const [code, setCode] = useState('');
+  const [loadState, setLoadState] = useState(false);
+  // const [loading, setLoading] = useState(false);
 
+  // useEffect(()=>{
+  //   setLoading(false);
+  // }, []);
   var submitText;
   if (confirm) {
     submitText = "resend code";
@@ -34,6 +41,7 @@ const MyFormPhone = ({registration, navigation}) => {
   } else {
     submitText = "get entry code";
   }
+  var loading = loadState;
   var instructions;
   if (confirm) {
     instructions = "Enter the code you received via text";
@@ -56,11 +64,18 @@ const MyFormPhone = ({registration, navigation}) => {
   }
 
   async function confirmCode() {
-    try {
-      await confirm.confirm(code);
-    } catch (error) {
-      console.log('Invalid code.');
-    }
+    // try {
+    //   await confirm.confirm(code);
+    // } catch (error) {
+    //   console.log('Invalid code.');
+    // }
+    confirm.confirm(code).then(()=>{
+
+    }).catch(err=>{
+      setErrorMessage('Invalid code.')
+    });
+    // setLoadState(true);
+    console.log('confirmming');
   }
 
 //   const onButtonPress = () => {
@@ -133,6 +148,7 @@ if (code.length == 6) {
 }
     return (
       <View style={styles.container}>
+
         <Text style={{color: 'white', marginLeft: 10, fontFamily: constants.FONT}}>{instructions}</Text>
         {/* <Text style={{fontSize: 17, marginLeft: 10, color: 'white', fontFamily: constants.FONT}}>{registration?"Create an account.":"Have an account? Login."}</Text> */}
         <Text style={{color: 'red', marginLeft: 10, fontFamily: constants.FONT}}>{errorMessage}</Text>
@@ -208,6 +224,8 @@ if (code.length == 6) {
           <Text style={styles.submitButton}>{submitText}</Text>
           </LinearGradient>
         </TouchableOpacity>
+        <ActivityIndicator animating={loading} color="white" style={{marginTop: 10}} />
+        {confirm?<TouchableOpacity onPress={()=>{setConfirm(null)}}><View style={{flexDirection: 'row', alignItems: 'center'}}><Icon name="chevron-left" color="white" size={25} /><Text style={{color: 'white', marginLeft: 10}}>{phone}</Text></View></TouchableOpacity>:<></>}
 
         {/* <Text style={{textAlign:'center', color: constants.RED}}>{errorMessage}</Text> */}
         {/* <TouchableOpacity
