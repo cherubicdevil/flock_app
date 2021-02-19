@@ -428,7 +428,7 @@ setPartOf(true);
   );
 }
 
-const JoinDialog = ({navigation, data, setCreditModal, initialDialog, setInitialDialog, setPriceStartPercent, setPartOf, completeFunc, minPercent=8, maxPercent, productPrice}) =>{
+const JoinDialog = ({navigation, data, setCreditModal, initialDialog, setInitialDialog, setPriceStartPercent, setPartOf, completeFunc, minPercent=4, maxPercent, productPrice}) =>{
   const store = useStore();
   const dispatch = useDispatch();
 

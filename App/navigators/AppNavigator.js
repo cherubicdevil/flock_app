@@ -126,7 +126,9 @@ const AppNavigator5 = () => {
           name="Product"
           component={Product}
           initialParams={{vidVisible: false}}
-          options={{tabBarVisible: false}}
+          options={{tabBarVisible: false,
+            unmountOnBlur:true
+          }}
         />
         <Tab.Screen
           name="StartFlock"
