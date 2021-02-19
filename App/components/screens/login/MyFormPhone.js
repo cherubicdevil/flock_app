@@ -35,8 +35,10 @@ const MyFormPhone = ({registration, navigation}) => {
   // }, []);
   var submitText;
   if (confirm) {
+    console.log('confirm', code.length)
     submitText = "resend code";
     if (code.length == 6) {
+      console.log('six');
       submitText = "enter";
     }
   } else {
@@ -157,10 +159,10 @@ if (code.length == 6) {
 }
 
 // console.log('test', confirm);
-if (code.length == 6 && !loadState && confirm) {
-    confirmCode();
-    var decrease = false;
-}
+// if (code.length == 6 && !loadState && confirm && errorMessage !== "Invalid code.") {
+//     confirmCode();
+//     var decrease = false;
+// }
     return (
       <View style={styles.container}>
 
@@ -403,6 +405,7 @@ const EnterCode = ({setCode}) =>{
                         if (v5.length == 1) {
                             box6.current.focus();
                             setV6(event.nativeEvent.key);
+                            box6.current.blur();
                         }
                     }
                 }}
@@ -418,8 +421,10 @@ const EnterCode = ({setCode}) =>{
                 <TextInput keyboardType="numeric" style={styles.smsbox} ref={box6} value={v6} maxLength={1}
                 onKeyPress={(event) => {
                     if (event.nativeEvent.key === "Backspace") {
-                        setV6("");
+                        
                         box5.current.focus();
+                        setV6("");
+                        
                     }
                 }}
                 onBlur={()=>{
@@ -428,6 +433,7 @@ const EnterCode = ({setCode}) =>{
                 onChangeText={(text)=>{
             setV6(text);
             setCode(v1+v2+v3+v4+v5+text);
+            console.log('changing 6');
             if (text.length == 0) {
                 box5.current.focus();
             } else if (text.length == 1) {
