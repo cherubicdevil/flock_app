@@ -265,9 +265,9 @@ return <ScrollView  style={{marginLeft: 15, overflow: 'visible', backgroundColor
   <Fragment><SafeAreaView style={{ flex: 0, backgroundColor: constants.TRANSLUCENT }} />
     <SafeAreaView style={{flex: 1, backgroundColor: constants.PINK_BACKGROUND_OPAQUE}}>
 <HeaderGradient navigation={navigation} absolute={false} >
-  <View style={{marginBottom:-10}}>
+  <View style={{marginBottom:0}}>
 <Text style={{fontSize: 14, textAlign: 'center'}}>%{route.params.data.id}</Text>
-  <Countdown dateObj={route.params.data.time} />
+  <Countdown dateObj={route.params.data.time} fontSize = {10} />
   {/* <Text>{testMessages}</Text> */}
   </View>
 </HeaderGradient>
