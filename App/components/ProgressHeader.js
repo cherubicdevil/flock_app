@@ -93,7 +93,7 @@ const ProgressHeader = ({
     <View
       style={{
         //marginBottom: 30,
-        height:70,
+        height:90,
         paddingTop: 10,
         paddingBottom: 10,
         justifyContent: 'center',

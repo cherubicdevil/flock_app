@@ -267,7 +267,7 @@ return <ScrollView  style={{marginLeft: 15, overflow: 'visible', backgroundColor
 <HeaderGradient navigation={navigation} absolute={false} >
   <View style={{marginBottom:0}}>
 <Text style={{fontSize: 14, textAlign: 'center'}}>%{route.params.data.id}</Text>
-  <Countdown dateObj={route.params.data.time} fontSize = {10} />
+  <Countdown dateObj={route.params.data.time} fontSize = {12} />
   {/* <Text>{testMessages}</Text> */}
   </View>
 </HeaderGradient>
@@ -582,8 +582,9 @@ const HeaderView = ({navigation, route}) => {
           <TouchableOpacity onPress={()=>{ setCollapsed(!collapsed); }}>
   <View>
     
-  <Text style={{fontSize: 14, textAlign: 'center'}}>%{route.params.data.id}</Text>
-  <Countdown dateObj={route.params.data.time} />
+  
+  <Countdown dateObj={route.params.data.time} fontSize={18} />
+  {/* <Text style={{fontSize: 14, textAlign: 'center', position: 'absolute', bottom: 10, right: 10}}>%{route.params.data.id}</Text> */}
   {/* <Collapsible collapsed={collapsed}>
     <ScrollView horizontal >
   {route.params.data.members.map((item)=>{

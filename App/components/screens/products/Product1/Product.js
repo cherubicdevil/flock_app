@@ -247,7 +247,7 @@ const Product = ({route, navigation}) => {
   }
   console.log("URLSSSS:", route.params.album.url);
   const randomId = (Math.random()*10000).toFixed(0);
-  console.log(randomId);
+  const membersFlocking = flockAr.reduce((total, item)=>total + item.members.length, 0);
     return (
       <View style={{flex: 1, backgroundColor: constants.PINK_BACKGROUND}}>
                             {renderBackOrClose()}
@@ -289,9 +289,9 @@ const Product = ({route, navigation}) => {
               //backgroundColor: 'white',
             }}>
             
-            <View style={styles.productRow}><Description brand={route.params.album.brand} price={route.params.album.price} title={route.params.album.title} productId={route.params?.data?.id} /></View>
+            <View style={styles.productRow}><Description lowkey={true} brand={route.params.album.brand} price={route.params.album.price} title={route.params.album.title} productId={route.params?.data?.id} /></View>
             <View style={[styles.productRow, {backgroundColor: 'white'}]}>
-            <Text style={{fontWeight: 'bold'}}>{flockAr.reduce((total, item)=>total + item.members.length, 0)} people are currently flocking.</Text>
+            <Text style={{fontWeight: 'bold'}}>{membersFlocking} {membersFlocking == 1?"person is":"people are"} currently flocking.</Text>
             <TouchableOpacity onPress={()=>{
               setModalOpen(true);
             }}>
@@ -413,7 +413,7 @@ const Product = ({route, navigation}) => {
                 </LinearGradient>
                 </View>
                 </View>
-                <AnimatedModal visible={modalOpen} close={()=>{setModalOpen(false)}} content={<View style={{paddingLeft: 20, paddingRight: 20}}><FlockList close = {()=>{setModalOpen(false)}} limited = {false} navigation={navigation} product = {route.params.album} ar={flockAr} /></View>} />
+                <AnimatedModal visible={modalOpen} close={()=>{setModalOpen(false)}} content={<View style={{paddingLeft: 20, paddingRight: 20}}><Text style={{textAlign: 'center', fontSize: 15, fontWeight: 'bold'}}>Ongoing Flocks</Text><FlockList close = {()=>{setModalOpen(false)}} limited = {false} navigation={navigation} product = {route.params.album} ar={flockAr} /></View>} />
                 <CommentsModal data={route.params.data} toggleFunc={() => {
             setCommentsVisible(false);
           }}
@@ -558,14 +558,18 @@ const FlockList = ({product, navigation, ar, close, limited = true, randomId}) =
       </View>
       <View style={{borderRadius: 30, justifyContent:'center', overflow: 'hidden',  borderColor: constants.ORANGE, borderWidth: 2, marginTop: -2}}>
       <View style={{position: 'absolute', left: "-40%", width: paidForPercent+ 40 + "%", height: '100%', backgroundColor: constants.ORANGE, opacity: 0.8, borderRadius: 40, transform: [{ scaleX: 1 }, { scaleY: 1.3 }] }} />
-      <TouchableOpacity style={{paddingLeft: 10, paddingRight: 10, paddingVertical: 5}}
+
+        
+      <Text style={{color: 'black', fontFamily: constants.FONT, fontWeight: 'bold', fontSize: 13}}>{(paidFor / (1.4 * ar[i].product.price)* 100).toFixed(0)}% paid</Text>
+
+      </View>
+      <View style={{borderRadius: 30, justifyContent:'center', overflow: 'hidden',  borderColor: constants.ORANGE, width: 50, marginLeft: 10, backgroundColor: constants.ORANGE, marginTop: -2}}>
+      <TouchableOpacity style={{paddingLeft: 10, paddingRight: 10, paddingVertical: 5, justifyContent: 'center', alignItems: 'center'}}
       onPress={()=>{
         console.log('going')
         tempFunc();}}>
-        
-      <Text style={{color: 'black', fontFamily: constants.FONT, fontWeight: 'bold', fontSize: 13}}>${(1.4 * ar[i].product.price - paidFor).toFixed(2)} to go</Text>
-      </TouchableOpacity>
-      </View>
+          <Text style={{color: 'white', fontWeight: 'bold'}}>Go</Text>
+          </TouchableOpacity></View>
       </View>
       </View>
     );
