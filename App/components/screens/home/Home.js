@@ -121,13 +121,13 @@ const DataList = ({navigation, route}) => {
     const sizeAnimation = Animated.timing(coverheight,
       {
         toValue: 0,
-        delay: 4500,
+        delay: 4700,
         duration: 300,
         useNativeDriver: false,
       });
       if (keyFinishedLoading) {
         console.log('stuff')
-        Animated.sequence([fadeAnimation, sizeAnimation]).start();
+        Animated.parallel([fadeAnimation, sizeAnimation]).start();
       }
 
 
