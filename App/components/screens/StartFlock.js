@@ -307,7 +307,7 @@ const PageTwo = ({product, data, setCanNext}) => {
     </View></TouchableOpacity>
     </View>
     </View>
-    <PriceSlider showInfo={false} priceShareInitialPercent={maxPricePercentage} productPrice ={product.price} remainingPercent={100} maximums={{}} setOutsideState={setPriceValue} confirm = {false} />
+    <PriceSlider showInfo={false} priceShareInitialPercent={maxPricePercentage} productPrice ={product.price} remainingPercent={96} maximums={{}} setOutsideState={setPriceValue} confirm = {false} />
     
     
 
