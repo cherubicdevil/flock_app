@@ -97,16 +97,26 @@ function FlockChatComplete({route, navigation}) {
             </View>
             </View>
             </TouchableOpacity>
+            <View style={{marginTop: 0, flexDirection: 'row',
+      shadowColor: constants.GREYBLUE, shadowOffset: {height: 5, width: 0}, shadowOpacity: 0.42, elevation: 13, shadowRadius: 8.30,
+    }}>
+        <Image style = {{width: 40, height: 40, marginRight: 20, marginLeft: 10, borderRadius: 50}} source ={constants.PLACEHOLDER_IMAGE } />
+        <View style={{borderRadius: 30, flex: 1, backgroundColor:"#9eacc5", padding: 15, paddingVertical: 5, marginRight: 20, 
+          // shadowColor: constants.GREYBLUE, shadowOffset: {height: 10, width: 0}, shadowOpacity: 0.82, elevation: 13, shadowRadius: 18.30,
+          }}>
+          <View>
+            <Text>Description {"&"} Size/Variant Information
+            </Text>
+            <View style={{backgroundColor: 'rgba(255,255,255,0.2)', padding: 5, borderRadius: 15}}>
+              <Text>{route.params.data.specifications}; {route.params.data.description}</Text>
+            </View>
+
+          </View>
+          </View>
+      </View>
           </LinearGradient>
         </View>
-      <View style={{marginTop: 20, flexDirection: 'row'}}>
-        <Image style = {{marginLeft: 10, width: 40, height: 40, marginRight: 20, borderRadius: 40,
-        shadowColor: constants.GREYBLUE, shadowOffset: {height: 10, width: 0}, shadowOpacity: 0.82, elevation: 13, shadowRadius: 18.30,
-        }} defaultSource={constants.PLACEHOLDER_IMAGE} source ={{uri:au.currentUser.photoURL }} />
-        <View style={{borderRadius: 30, flex: 1, backgroundColor: constants.GREYBLUE, padding: 20, marginRight: 20, 
-          shadowColor: constants.GREYBLUE, shadowOffset: {height: 10, width: 0}, shadowOpacity: 0.82, elevation: 13, shadowRadius: 18.30,
-          }}><Text>{route.params.data.description}</Text></View>
-      </View>
+
       </View>
       
       <View style={{backgroundColor: constants.PINK_BACKGROUND, flex: 1}}>
