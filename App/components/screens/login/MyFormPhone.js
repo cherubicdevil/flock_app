@@ -78,9 +78,10 @@ const MyFormPhone = ({registration, navigation}) => {
     //   console.log('Invalid code.');
     // }
     confirm.confirm(code).then(()=>{
-
     }).catch(err=>{
-      setErrorMessage('Invalid code.')
+      console.log(err);
+      setErrorMessage('Invalid code.');
+      setLoadState(false);
     });
     setLoadState(true);
     // console.log('confirmming');
