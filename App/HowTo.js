@@ -12,7 +12,7 @@ import {firebase, db} from 'App/firebase/config';
 import ShareSocial from 'App/components/ShareSocial';
 import { set } from 'react-native-reanimated';
 import {CommonActions, useFocusEffect} from '@react-navigation/native';
-import PriceSlider from 'App/components/PriceSlider';
+
 
 const HowTo = () => {
 return <ScrollView style={{fontFamily: constants.FONT, paddingLeft: 10, paddingRight: 15}}>

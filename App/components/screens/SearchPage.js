@@ -10,6 +10,17 @@ import ResizeableImage from 'App/components/ResizeableImage';
 // import Icon from 'react-native-vector-icons/FontAwesome';
 const KeyContext = createContext();
 
+const InitialText = () => {
+    return <View style={{alignSelf: 'center', width: 200,marginTop: 30,}}>
+        <View style={{alignSelf: 'center', paddingBottom: 20}}>
+        <Icon name="arrow-circle-o-up" size={25} color={constants.LAVENDER} />
+        </View>
+        <Text style={{color: constants.LAVENDER, textAlign: 'center'}}>Search for products and flocks within our app.</Text>
+        <Text style={{color: constants.LAVENDER, textAlign: 'center', marginTop: 20}}>If you're looking for a specific flock, prepend "%" before the id.</Text>
+        
+    </View>
+}
+
 const NoResults = () => {
     return <View style={{alignSelf: 'center', width: 200,marginBottom: 100,}}>
         <Text style={{color: constants.LAVENDER, textAlign: 'center'}}>Can't find what you're looking for? Add it yourself!</Text>
@@ -90,6 +101,7 @@ const SearchPage = ({navigation, route}) => {
             </TouchableOpacity>
         </View>
     })} */}
+    {search === ""?<InitialText/>:<></> }
     <FeedList videoData={results} navigation={navigation} route={route} 
     feedItem={(item)=>{
         var dataType = item.type;
