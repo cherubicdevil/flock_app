@@ -25,10 +25,26 @@ const MyFormPhone = ({registration, navigation}) => {
 
   const [code, setCode] = useState('');
 
+  var submitText;
+  if (confirm) {
+    submitText = "resend code";
+    if (code.length == 6) {
+      submitText = "enter";
+    }
+  } else {
+    submitText = "get entry code";
+  }
+  var instructions;
+  if (confirm) {
+    instructions = "Enter the code you received via text";
+  }
+  //  else {
+  //   instructions = "Enter your phone number to receive a code to signin";
+  // }
   // Handle the button press
   async function signInWithPhoneNumber() {
     try {
-    const confirmation = await auth().signInWithPhoneNumber("+1"+phone);
+    const confirmation = await auth().signInWithPhoneNumber("+1"+phone.replace("-",""));
     setConfirm(confirmation);
     } catch (err) {
       if (err.code === "auth/too-many-requests") {
@@ -117,11 +133,12 @@ if (code.length == 6) {
 }
     return (
       <View style={styles.container}>
+        <Text style={{color: 'white', marginLeft: 10, fontFamily: constants.FONT}}>{instructions}</Text>
         {/* <Text style={{fontSize: 17, marginLeft: 10, color: 'white', fontFamily: constants.FONT}}>{registration?"Create an account.":"Have an account? Login."}</Text> */}
         <Text style={{color: 'red', marginLeft: 10, fontFamily: constants.FONT}}>{errorMessage}</Text>
         {!confirm?
-        <View style={[styles.input, {flexDirection: 'row', alignItems: 'center', paddingVertical:0}]}>
-            {phone.length>0?<Text style={{fontSize: 16, marginRight: 5}}>+1</Text>:<></>}
+        <View style={[styles.input, {flexDirection: 'row', alignItems: 'center', paddingVertical:0,}]}>
+            {phone.length>0?<Text style={{fontSize: 14, marginRight: 5, color: 'white'}}>+1</Text>:<></>}
         <TextInput
           label=""
           maxLength={12}
@@ -154,7 +171,7 @@ if (code.length == 6) {
             }
           }}
           value={phone}
-          style={{flex:1}}
+          style={{flex:1, color: 'white'}}
         />
         </View>:
         <EnterCode setCode={setCode} />
@@ -186,9 +203,9 @@ if (code.length == 6) {
             zIndex: 40,
             // height: '100%',
             width: '100%',
-            paddingVertical: 15,
+            paddingVertical: 10,
           }}>
-          <Text style={styles.submitButton}>{confirm?"resend code":"send code"}</Text>
+          <Text style={styles.submitButton}>{submitText}</Text>
           </LinearGradient>
         </TouchableOpacity>
 
