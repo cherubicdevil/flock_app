@@ -477,7 +477,10 @@ const MiniCarouselRenting = ({navigation, route}) => {
       // setFinalAr(ar);
       setKeyArrRent(ar);
       // setKeyFinishedLoading(false);
+      console.log(ar.length - 1);
+      console.log("HELLOOOOOOOOOOO");
       dispatch({type:'sendCarouselRentIndex', payload: ar.length - 1});
+      dispatch({type:'resetRent'});
       Animated.timing(coverFade, {
         toValue: 0,
         duration: 500,
