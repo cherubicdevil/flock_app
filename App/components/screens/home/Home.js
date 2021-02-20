@@ -474,6 +474,7 @@ const MiniCarouselRenting = ({navigation, route}) => {
   useEffect(()=>{
     fetchRentablesFirst().then((ar) => {
       console.log(ar.length, "RENTTTTTT");
+      console.log('my first finalAr', ar);
       // setFinalAr(ar);
       setKeyArrRent(ar);
       // setKeyFinishedLoading(false);
@@ -481,13 +482,13 @@ const MiniCarouselRenting = ({navigation, route}) => {
       console.log("HELLOOOOOOOOOOO");
       dispatch({type:'sendCarouselRentIndex', payload: ar.length - 1});
       dispatch({type:'resetRent'});
-      Animated.timing(coverFade, {
-        toValue: 0,
-        duration: 500,
-        delay: 2000,
-        useNativeDriver: false,
-      }).start();
-      setTimeout(()=>setCover(false), 2500);
+      // Animated.timing(coverFade, {
+      //   toValue: 0,
+      //   duration: 500,
+      //   delay: 2000,
+      //   useNativeDriver: false,
+      // }).start();
+      // setTimeout(()=>setCover(false), 2500);
     });
   },[]);
 
@@ -497,6 +498,8 @@ const MiniCarouselRenting = ({navigation, route}) => {
     dispatch({type:'sendCarouselRentIndex', payload: keyArrRent.length < 10?keyArrRent.length-1:9});
     dispatch({type:'resetRent'});
     fetchRentables().then((ar) => {
+      console.log("my final ar before", ar);
+      console.log('my final ar present', keyArrRent);
       setKeyArrRent([...ar,...keyArrRent]);
       // setFinalAr([...ar,...keyArrRent, ]);
       // dispatch({type:'sendCarouselRentIndex', payload: ar.length});
@@ -510,12 +513,16 @@ const MiniCarouselRenting = ({navigation, route}) => {
       // }).start();
       // setTimeout(()=>setCover(false), 2500);
 
+    }).catch(err=>{
+      console.log('something happened', err);
     })
   }
 
 
   // var finalAr = keyArrRent;
-  var finalAr = keyArrRent.slice(keyArrRent.length-10, keyArrRent.length);
+  var finalAr = keyArrRent.slice(Math.max(0,keyArrRent.length-10), keyArrRent.length);
+  // var finalAr = keyArrRent;
+  console.log('myFinalAr', finalAr);
   var res = [];
   for (const item of finalAr) {
     res.push(<View style={{height: '100%', width: '100%', borderWidth: 0, borderOpacity: 0.1,borderBottomWidth: 0,}}>
@@ -586,7 +593,7 @@ const MiniCarouselFlocking = ({navigation, route}) => {
         delay: 2000,
         useNativeDriver: false,
       }).start();
-      // setKeyFinishedLoading(true);
+      setKeyFinishedLoading(true);
       setTimeout(()=>setCover(false), 2500);
     });
   },[]);
@@ -599,12 +606,12 @@ const MiniCarouselFlocking = ({navigation, route}) => {
     fetchFlockables().then((ar) => {
       setKeyArrFlock([...keyArrFlock, ...ar]);
       // setFinalAr([...keyArrFlock, ]);
-      console.log('donneeeee');
+      // console.log('donneeeee');
       // setFinalAr([...ar,...k]);
       // dispatch({type:'sendCarouselFlockIndex', payload: ar.length-1});
-      console.log(ar.length);
-      console.log("finalAr", ar);
-      console.log('done');
+      // console.log(ar.length);
+      // console.log("finalAr", ar);
+      // console.log('done');
       // dispatch({type:'sendCarouselFlockIndex', payload: 9});
       // setCover(false);
       // setFinishedLoading(true);
@@ -623,8 +630,8 @@ const MiniCarouselFlocking = ({navigation, route}) => {
   // console.log(store.getState().videopage.carIndex);
   // if (store.getState().videopage.carIndex < 0) {
     // console.log(select.carIndexFlock, 'fasdfasdfasdfasfd', !cover);
-  if (select.carIndexFlock < 1) {
-    console.log('reached the end');
+  // if (select.carIndexFlock < 1) {
+    // console.log('reached the end');
     // dispatch({type:'sendCarouselFlockIndex', payload: 9});
     // fetchFlockables().then((ar) => {
     //   setKeyArrFlock([...keyArrFlock, ...ar]);
@@ -653,11 +660,11 @@ const MiniCarouselFlocking = ({navigation, route}) => {
     //   delay: 0,
     //   useNativeDriver: false,
     // }).start();
-  }
+  // }
 
   var res = [];
-  var finalAr = keyArrFlock.slice(keyArrFlock.length-10, keyArrFlock.length,);
-  console.log("finalAr", finalAr, keyArrFlock.length, select.carIndexFlock);
+  var finalAr = keyArrFlock.slice(Math.max(0,keyArrFlock.length-10), keyArrFlock.length,);
+  // console.log("finalAr", finalAr, keyArrFlock.length, select.carIndexFlock);
   for (const item of finalAr) {
     res.push(<View style={{height: '100%', width: '100%', borderWidth: 0, borderOpacity: 0.1,borderBottomWidth: 0,}}>
     {/* <Text>{item?.product?.title || item.flock}</Text> */}
