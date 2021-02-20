@@ -66,7 +66,7 @@ const FeatherList = ({navigation, route, data=data, viewHeight, type="flock"}) =
 
     return <View 
         style={{alignItems: 'center', height: '100%', width: '100%', backgroundColor: constants.PINK_BACKGROUND}}>
-            {data.map((item)=> <FeatherPanResponder type={type} viewHeight={viewHeight} index = {data.indexOf(item)} currIndex = {currentIndex} setCurrentIndex={setCurrentIndex} positions = {positions} content={item} />)}
+            {data.map((item)=> <FeatherPanResponder key= {item.id} type={type} viewHeight={viewHeight} index = {data.indexOf(item)} currIndex = {currentIndex} setCurrentIndex={setCurrentIndex} positions = {positions} content={item} />)}
     </View>
 
 }
@@ -144,7 +144,10 @@ const FeatherPanResponder = React.memo(({index, positions, currIndex, setCurrent
             //     delay: 0,
             //     duration: 200,
             //   }).start();
-            setCurrentIndex({curr:9, prev: 8});
+            console.log("FLOCK INDEX", resetSelector.carIndexFlock);
+            const globalIndex = resetSelector.carIndexFlock;
+            setCurrentIndex({curr: globalIndex, prev:globalIndex-1});
+            // setCurrentIndex({curr:9, prev: 8});
         }
     }, [resetSelector.resetFlock]);
 
@@ -156,7 +159,9 @@ const FeatherPanResponder = React.memo(({index, positions, currIndex, setCurrent
             //     delay: 0,
             //     duration: 200,
             //   }).start();
-            setCurrentIndex({curr:9, prev: 8});
+            // setCurrentIndex({curr:9, prev: 8});
+            const globalIndex = resetSelector.carIndexRent;
+            setCurrentIndex({curr: globalIndex, prev:globalIndex-1});
         }
     }, [resetSelector.resetRent]);
 

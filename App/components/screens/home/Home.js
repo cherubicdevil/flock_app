@@ -473,6 +473,7 @@ const MiniCarouselRenting = ({navigation, route}) => {
   var finalAr;
   useEffect(()=>{
     fetchRentablesFirst().then((ar) => {
+      console.log(ar.length, "RENTTTTTT");
       // setFinalAr(ar);
       setKeyArrRent(ar);
       // setKeyFinishedLoading(false);
@@ -489,7 +490,8 @@ const MiniCarouselRenting = ({navigation, route}) => {
 
   if (select.carIndexRent < 0) {
     console.log('reached the end');
-    dispatch({type:'sendCarouselRentIndex', payload: 9});
+    // dispatch({type:'sendCarouselRentIndex', payload: 9});
+    dispatch({type:'sendCarouselRentIndex', payload: keyArrRent.length < 10?keyArrRent.length-1:9});
     dispatch({type:'resetRent'});
     fetchRentables().then((ar) => {
       setKeyArrRent([...ar,...keyArrRent]);
@@ -589,7 +591,7 @@ const MiniCarouselFlocking = ({navigation, route}) => {
   useEffect(()=>{
     // console.log('changing sthit', select.carIndexFlock);
     if (select.carIndexFlock < 0) {
-    dispatch({type:'sendCarouselFlockIndex', payload: 9});
+    dispatch({type:'sendCarouselFlockIndex', payload: keyArrFlock.length < 10?keyArrFlock.length-1:9});
     dispatch({type:'resetFlock'});
     fetchFlockables().then((ar) => {
       setKeyArrFlock([...keyArrFlock, ...ar]);
