@@ -106,32 +106,32 @@ const DataList = ({navigation, route}) => {
     }
     
   }, [route, setKey, key]);
-  const [coverfade, setCoverFade] = useState(new Animated.Value(1));
-  const [coverheight, setCoverHeight] = useState(new Animated.Value(Dimensions.get('window').height));
-  const {keyFinishedLoading} = useContext(KeyContext);
-  useEffect(()=>{
-    const fadeAnimation = Animated.timing(coverfade, // The animated value to drive
-      {
-        toValue: 0, // Animate to opacity: 1 (opaque)
-        delay: 4500, 
-        duration: 400, // 2000ms
-        useNativeDriver: false,
-      },
-    );
-    const sizeAnimation = Animated.timing(coverheight,
-      {
-        toValue: 0,
-        delay: 4700,
-        duration: 300,
-        useNativeDriver: false,
-      });
-      if (keyFinishedLoading) {
-        console.log('stuff')
-        Animated.parallel([fadeAnimation, sizeAnimation]).start();
-      }
+  // const [coverfade, setCoverFade] = useState(new Animated.Value(1));
+  // const [coverheight, setCoverHeight] = useState(new Animated.Value(Dimensions.get('window').height));
+  // const {keyFinishedLoading} = useContext(KeyContext);
+  // useEffect(()=>{
+  //   const fadeAnimation = Animated.timing(coverfade, // The animated value to drive
+  //     {
+  //       toValue: 0, // Animate to opacity: 1 (opaque)
+  //       delay: 4500, 
+  //       duration: 400, // 2000ms
+  //       useNativeDriver: false,
+  //     },
+  //   );
+  //   const sizeAnimation = Animated.timing(coverheight,
+  //     {
+  //       toValue: 0,
+  //       delay: 4700,
+  //       duration: 300,
+  //       useNativeDriver: false,
+  //     });
+  //     if (keyFinishedLoading) {
+  //       console.log('stuff')
+  //       Animated.parallel([fadeAnimation, sizeAnimation]).start();
+  //     }
 
 
-  }, [keyFinishedLoading]);
+  // }, [keyFinishedLoading]);
 
   useEffect(()=>{
     // setTimeout(()=>{
@@ -144,7 +144,7 @@ const DataList = ({navigation, route}) => {
   //   <View style={{width: 30, height: 50, backgroundColor: 'red'}} />
   // })}</View>
   return <>
-      <Animated.View style={{backgroundColor: 'white', position: 'absolute', left: 0, bottom: 0, width:'100%', height: coverheight, opacity: coverfade, zIndex: 500}} >
+      {/* <Animated.View style={{backgroundColor: 'white', position: 'absolute', left: 0, bottom: 0, width:'100%', height: coverheight, opacity: coverfade, zIndex: 500}} >
       <View style={{
     backgroundColor: constants.PINK_BACKGROUND, height: '100%', width: '100%', paddingTop: 100, 
     justifyContent: 'center', alignItems: 'center',
@@ -152,7 +152,7 @@ const DataList = ({navigation, route}) => {
     overflow:'visible'
 }}/>
 <Image source={require('App/Assets/Images/flock_gif.gif')} style={{width: 300, marginTop: 50,height: 300, resizeMode:'contain', alignSelf: 'center', position: 'absolute', top:'20%'}} />
-</Animated.View>
+</Animated.View> */}
 <View style={{height: '100%', backgroundColor: constants.PINK_BACKGROUND_OPAQUE, width: '100%'}}><Text style={{color: 'white'}}>{val}</Text><FeedList route={route} videoData={route.params.videoData} flockOrNot={route.params.dataType} KeyContext={KeyContext} 
   feedItem={(al)=>{
   // console.log('al image', al.image, al.title, al.product.image);
@@ -586,7 +586,7 @@ const MiniCarouselFlocking = ({navigation, route}) => {
         delay: 2000,
         useNativeDriver: false,
       }).start();
-      setKeyFinishedLoading(true);
+      // setKeyFinishedLoading(true);
       setTimeout(()=>setCover(false), 2500);
     });
   },[]);
