@@ -266,7 +266,9 @@ const FeatherPanResponder = React.memo(({index, positions, currIndex, setCurrent
       const panResponder = PanResponder.create({
           onPanResponderTerminationRequest:(event, gesture) => true,
         // onMoveShouldSetPanResponderCapture:(event, gesture)=>Math.abs(gesture.dy)/Math.abs(gesture.dx)>2,
-        onMoveShouldSetPanResponder:(event, gesture)=> !select.commentsModal && Math.abs(gesture.dy)/Math.abs(gesture.dx)>2,
+        onMoveShouldSetPanResponder:(event, gesture)=> !select.commentsModal
+        //  && Math.abs(gesture.dy)/Math.abs(gesture.dx)>2
+         ,
         // onStartShouldSetPanResponder: (event, gesture) => true,
         onPanResponderMove: (event, gesture) => {
             if (gesture.dy > 0) {
@@ -284,7 +286,7 @@ const FeatherPanResponder = React.memo(({index, positions, currIndex, setCurrent
         onPanResponderRelease: (event, gesture) => {
             isUp = false;
             isDown = false;
-            if (Math.abs(gesture.dy) < 100 ) {
+            if (Math.abs(gesture.dy) < 50 ) {
                 // console.log('hello');
                 Animated.timing(positions[index], {
                     useNativeDriver: false,

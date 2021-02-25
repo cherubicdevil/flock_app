@@ -353,8 +353,9 @@ const HomeTabSwipe = ({videoData, navigation, route}) => {
   // },[key, key1]);
   var navigator = 
   <Tab.Navigator
-  
+  swipeEnabled={false}
   tabBar= {(props)=><TopBar {...props} />}
+
   >
        {/* <Tab.Screen name="for you" component = {MiniCarousel}/> */}
 
