@@ -22,7 +22,7 @@ const InitialText = () => {
 }
 
 const NoResults = () => {
-    return <View style={{alignSelf: 'center', width: 200,marginBottom: 100,}}>
+    return <View style={{alignSelf: 'center', width: 200,position: 'absolute', marginTop: 300,}}>
         <Text style={{color: constants.LAVENDER, textAlign: 'center'}}>Can't find what you're looking for? Add it yourself!</Text>
         <View style={{alignSelf: 'center', paddingTop: 20}}>
         <Icon name="arrow-circle-o-down" size={25} color={constants.LAVENDER} />
@@ -101,7 +101,7 @@ const SearchPage = ({navigation, route}) => {
             </TouchableOpacity>
         </View>
     })} */}
-    {search === ""?<InitialText/>:<></> }
+    {search === "" && results.length == 0?<InitialText/>:<></> }
     <FeedList videoData={results} navigation={navigation} route={route} 
     feedItem={(item)=>{
         var dataType = item.type;
