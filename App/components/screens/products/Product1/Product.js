@@ -250,6 +250,7 @@ const Product = ({route, navigation}) => {
   const randomId = (Math.random()*10000).toFixed(0);
   const membersFlocking = flockAr.reduce((total, item)=>total + item.members.length, 0);
     return (
+      <>
       <View style={{flex: 1, backgroundColor: constants.PINK_BACKGROUND}}>
                             {renderBackOrClose()}
       <ScrollView pagingEnabled={true} showsVerticalScrollIndicator={false} style={styles.mainViewStyle}>
@@ -332,15 +333,11 @@ const Product = ({route, navigation}) => {
       <TouchableOpacity style = {{position: 'absolute',bottom: 0,}} onPress={()=>{
         setTutorialScreen(false);
       }}>
-      <View style={{backgroundColor: "rgba(0,0,0,0.5)", height: tutorialScreen?Dimensions.get('window').height:0, width: tutorialScreen?Dimensions.get('window').width:0}} >
+      {/* <View style={{backgroundColor: "rgba(0,0,0,0.5)", height: tutorialScreen?Dimensions.get('window').height:0, width: tutorialScreen?Dimensions.get('window').width:0}} >
         <View style={{position: 'absolute', bottom: 100, right: 130,resizeMode: 'contain', }}>
-        {/* <Icon name="arrow-down" size={30} color={'white'}  /> */}
         <Image source = {require('App/Assets/Images/handarrow.png')}  style={{tintColor: 'white', width: 100, height: 105}} />
-        {/* <TouchableWithoutFeedback style={{width: '100%', height: '100%',}} onPress={()=> {
-          setTutorialScreen(false);
-        }} /> */}
         </View>
-      </View>
+      </View> */}
       </TouchableOpacity>
                 <View style={{flexDirection: 'row', marginBottom: 30, paddingTop: 10, marginRight: 10, marginLeft:20, justifyContent: 'space-between', alignItems: 'center', }}>
 
@@ -421,6 +418,13 @@ const Product = ({route, navigation}) => {
           modalVisible={commentsVisible}
           />
                 </View>
+          <NewTutorial screenId="productpage">
+            <Text style={{color: 'white', position: 'absolute', left: 10, top: '60%'}}>Look at the list of ongoing flocks.</Text>
+            <Text style={{color: 'white', position: 'absolute', right: 30, top: '70%', width: 100}}>Conditions for flock to succeed.</Text>
+            <Text style={{color: 'white', position: 'absolute', left: 20, top: '70%', width: 100}}>Size information</Text>
+            <Text style={{color: 'white', position: 'absolute', left: 10, top: '80%', width: 100}}>Check original retail website</Text>
+          </NewTutorial>
+                </>
     );
   }
 

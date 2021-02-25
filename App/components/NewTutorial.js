@@ -19,7 +19,7 @@ const NewTutorial = ({children, screenId}) => {
         }
     },[]);
 
-    return <View style={{position: 'absolute', zIndex: 300, top: 0, height: visible?'100%':0, width: visible?'100%':0, backgroundColor: 'rgba(0,0,0,0.8)'}}>
+    return <View style={{position: 'absolute', zIndex: 300, top: 0, height: visible?'100%':0, width: visible?'100%':0, backgroundColor: 'rgba(0,0,0,0.8)', overflow:'hidden'}}>
         <TouchableOpacity style={{height: '100%', width: '100%'}} onPress={()=>{
             setVisible(false);
         }}>
