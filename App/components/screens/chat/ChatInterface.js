@@ -265,7 +265,7 @@ return <ScrollView  style={{marginLeft: 15, overflow: 'visible', backgroundColor
   return (<>
         <NewTutorial screenId = "chatinterface">
         <Text style={{color: 'white', position: 'absolute', bottom: '50%'}}>Make sure the item fits you. Pay attention to any size specifications here.</Text>
-        <Text style={{color: 'white', position: 'absolute', top: 50, left: 20,width: 100}}>Reach 100% with your co-flockers before time runs out.</Text>
+        <Text style={{color: 'white', position: 'absolute', top: 50, left: 20,width: 100}}>Reach 100% before time runs out.</Text>
         <Text style={{color: 'white', position: 'absolute', top: '20%', right: 20,width: 100}}>Adjust your payment here.</Text>
         {/* <Text style={{color: 'white', position: 'absolute', top: 100, left: 20,width: 100}}>Light orange shows how much others are contributing.</Text> */}
         <Text style={{position: 'absolute', bottom: 100, color: 'white', width: '30%'}}>Once you join, you can chat with your fellow flockers.</Text>
