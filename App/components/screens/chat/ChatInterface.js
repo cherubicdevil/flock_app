@@ -321,6 +321,7 @@ return <ScrollView  style={{marginLeft: 15, overflow: 'visible', backgroundColor
             <Text numberOfLines={2}>{route.params.data.product.title}</Text>
             <Text>${route.params.data.product.price}</Text>
             </View>
+            <Icon name="chevron-right" style={{position:'absolute', right: 20, alignSelf: 'center'}} size={25} color={constants.ORANGE} />
             </View>
             
             </TouchableOpacity>
