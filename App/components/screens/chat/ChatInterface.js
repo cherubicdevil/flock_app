@@ -278,8 +278,10 @@ return <ScrollView  style={{marginLeft: 15, overflow: 'visible', backgroundColor
   <Countdown dateObj={route.params.data.time} fontSize = {12} />
   {/* <Text>{testMessages}</Text> */}
   </View>
-  <View style={{bottom: 20, right: 20, position: 'absolute', }}>
-    <TouchableOpacity onPress={()=>{
+  <View style={{bottom: 20, right: 20, position: 'absolute', zIndex: 400}}>
+    <TouchableOpacity 
+    hitSlop={{top: 30, bottom: 30, left: 30, right: 30}} 
+    onPress={()=>{
       navigation.navigate('ShareSocial', {id: route.params.data.id, flockId: route.params.data.id, product: route.params.data.product, data: {}})
     }}>
   <Image style={{height: 25, width: 25, tintColor: constants.ORANGE}} source={require('App/Assets/Images/Share_Icon_White.png')} />

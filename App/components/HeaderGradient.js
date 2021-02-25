@@ -23,7 +23,9 @@ const HeaderGradient = ({navigation, children, absolute=true, closeX = false, ti
       //shadowColor: "#ff7009", shadowOffset: {height: 10, width: 0}, shadowOpacity: 0.39, elevation: 13, shadowRadius: 28.30,
       //alignItems: 'center',
     }}>
-          {closeX?<TouchableOpacity style={{resizeMode: 'cover', zIndex: 50, height: 30, width: 50,position: 'absolute', bottom: 25, left: 20}} onPress={()=>{
+          {closeX?<TouchableOpacity 
+          hitSlop={{top: 30, bottom: 30, left: 30, right: 30}}
+          style={{resizeMode: 'cover', zIndex: 50, height: 300, width: 50,position: 'absolute', bottom: 25, left: 20}} onPress={()=>{
                   navigation.dispatch(
         CommonActions.reset({
           index: 0,
@@ -32,7 +34,10 @@ const HeaderGradient = ({navigation, children, absolute=true, closeX = false, ti
           ],
         })
                   );
-      }}><Icon name="times" size={24} color={constants.LIGHTGREY} /></TouchableOpacity>:<TouchableOpacity style={{position: 'absolute', zIndex: 800, bottom: 20, left: 30}} onPress={()=>{
+      }}><Icon name="times" size={24} color={constants.LIGHTGREY} /></TouchableOpacity>:
+      <TouchableOpacity 
+      hitSlop={{top: 30, bottom: 30, left: 30, right: 30}}
+      style={{position: 'absolute', zIndex: 800, bottom: 20, left: 30}} onPress={()=>{
             navigation.goBack();
           }}>
         <Icon name="chevron-left" size={24} color="grey" />

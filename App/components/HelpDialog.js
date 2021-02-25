@@ -15,7 +15,9 @@ const HelpDialog = ({context, text}) => {
 const [sendDialog, openSendDialog] = useState(false);
 const [message, setMessage] = useState("");
 
-    return <><TouchableOpacity onPress={()=>{
+    return <><TouchableOpacity
+    hitSlop={{top: 30, bottom: 30, left: 30, right: 30}}
+    onPress={()=>{
         openSendDialog(true);
       }}>
       <View style={{borderRadius:35, width: 20, height: 20, backgroundColor: 'white', borderWidth: 1, borderColor: constants.DARKGREY, alignItems:'center', justifyContent:'center'}}>

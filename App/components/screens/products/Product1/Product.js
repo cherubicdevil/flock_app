@@ -232,9 +232,13 @@ const Product = ({route, navigation}) => {
 
   const renderBackOrClose = () => {
     if (!route.params.tutorial) { //  means its from startflock
-      return <TouchableOpacity style={{resizeMode: 'cover', zIndex: 50, height: 30, width: 50,position: 'absolute', top: 40, left: 30}} onPress={navigation.goBack}><Icon color={constants.DARKGREY} name="chevron-left" size={25} /></TouchableOpacity>
+      return <TouchableOpacity 
+      hitSlop={{top: 30, bottom: 30, left: 30, right: 30}}
+      style={{resizeMode: 'cover', zIndex: 50, height: 30, width: 50,position: 'absolute', top: 40, left: 30}} onPress={navigation.goBack}><Icon color={constants.DARKGREY} name="chevron-left" size={25} /></TouchableOpacity>
     } else {
-      return <TouchableOpacity style={{resizeMode: 'cover', zIndex: 50, height: 30, width: 50,position: 'absolute', top: 40, left: 30}} onPress={()=>{
+      return <TouchableOpacity
+      hitSlop={{top: 30, bottom: 30, left: 30, right: 30}}
+      style={{resizeMode: 'cover', zIndex: 50, height: 30, width: 50,position: 'absolute', top: 40, left: 30}} onPress={()=>{
                   navigation.dispatch(
         CommonActions.reset({
           index: 0,
@@ -294,7 +298,9 @@ const Product = ({route, navigation}) => {
             <View style={styles.productRow}><Description lowkey={true} brand={route.params.album.brand} price={route.params.album.price} title={route.params.album.title} productId={route.params?.data?.id} /></View>
             <View style={[styles.productRow, {backgroundColor: 'white'}]}>
             <Text style={{fontWeight: 'bold'}}>{membersFlocking} {membersFlocking == 1?"person is":"people are"} currently flocking.</Text>
-            <TouchableOpacity onPress={()=>{
+            <TouchableOpacity 
+            hitSlop={{top: 30, bottom: 30, left: 30, right: 30}}
+            onPress={()=>{
               setModalOpen(true);
             }}>
             <FlockList close = {()=>{setModalOpen(false)}}navigation = {navigation} product = {route.params.album} ar = {flockAr} randomId={randomId} />
@@ -318,7 +324,7 @@ const Product = ({route, navigation}) => {
           </TouchableOpacity>
         </View> */}
       
-      <View style={{fontFamily: constants.FONT, paddingLeft: 10, paddingRight: 15}}>
+      <View style={{fontFamily: constants.FONT, paddingLeft: 20, paddingRight: 20}}>
 <Text style={{alignSelf: 'center', marginTop: 20, fontSize: 16}}>How Flock Works</Text>
 <Text style={{fontFamily: constants.FONT, marginTop: 10}}>Drooling over an item but sobbing at the price? Flock it on our app!</Text>
 <Text style={{fontFamily: constants.FONT, marginTop: 10}}>Decide how much you want to pay. That determines what percentage of the item you will own and how often you can use it.</Text>
@@ -347,7 +353,9 @@ const Product = ({route, navigation}) => {
                 <Text style={{position: 'absolute', top: 12,fontSize: 12, textAlign: 'center', color: constants.LAVENDER}}>{route.params.data.likes}</Text>
                 </View>
 
-                <TouchableOpacity style={{shadowOpacity: 0.3, shadowColor: '#555', shadowOffset: {height: 2, width: 0},}} onPress={()=>{
+                <TouchableOpacity
+                hitSlop={{top: 20, bottom: 20, left: 20, right: 20}}
+                style={{shadowOpacity: 0.3, shadowColor: '#555', shadowOffset: {height: 2, width: 0},}} onPress={()=>{
                   setCommentsVisible(true);
                 }}>
                 <Image
@@ -357,7 +365,9 @@ const Product = ({route, navigation}) => {
               </TouchableOpacity>
                 
                 
-                <TouchableOpacity  onPress={()=>{
+                <TouchableOpacity 
+                hitSlop={{top: 30, bottom: 30, left: 30, right: 30}}
+                onPress={()=>{
                   navigation.navigate('ShareSocial', {product:route.params.album, data:{}, flockId: route.params.id})
                 }}>
                 <Image 

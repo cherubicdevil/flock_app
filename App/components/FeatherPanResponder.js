@@ -286,7 +286,7 @@ const FeatherPanResponder = React.memo(({index, positions, currIndex, setCurrent
         onPanResponderRelease: (event, gesture) => {
             isUp = false;
             isDown = false;
-            if (Math.abs(gesture.dy) < 50 ) {
+            if (Math.abs(gesture.dy) < 20 ) {
                 // console.log('hello');
                 Animated.timing(positions[index], {
                     useNativeDriver: false,
