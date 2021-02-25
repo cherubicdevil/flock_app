@@ -239,11 +239,16 @@ const ProfileMain = ({navigation}) => {
       const flock = [];
       querySnapshot.forEach(function(doc) {
         console.log("FOUNDDDDDD");
+        
         if (doc.data().completed === false) {
+          console.log(doc.data().time + 7*24*3600, Date.now()/1000, doc.data().time + 7*24*3600 > Date.now()/1000);
+          if (doc.data().time + 7*24*3600 > Date.now()/1000) {
         flock.push({...doc.data(), id: doc.id});
+          }
         } else {
           rent.push({...doc.data(), id: doc.id});
         }
+      
       });
       setFlockData(flock);
       setRentData(rent);
