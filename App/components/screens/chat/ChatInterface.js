@@ -18,6 +18,7 @@ import {
   TextInput,
   KeyboardAvoidingView
 } from 'react-native';
+import NewTutorial from 'App/components/NewTutorial';
 import SmartCheckout from "App/components/SmartCheckout";
 import HeaderGradient from 'App/components/HeaderGradient';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -262,6 +263,13 @@ return <ScrollView  style={{marginLeft: 15, overflow: 'visible', backgroundColor
   //   giftedRef.current.scrollToBottom();
   // },[]);
   return (<>
+        <NewTutorial screenId = "chatinterface">
+        <Text style={{color: 'white', position: 'absolute', bottom: '50%'}}>Make sure the item fits you. Pay attention to any size specifications here.</Text>
+        <Text style={{color: 'white', position: 'absolute', top: 50, left: 20,width: 100}}>Reach 100% with your co-flockers before time runs out.</Text>
+        <Text style={{color: 'white', position: 'absolute', top: '20%', right: 20,width: 100}}>Adjust your payment here.</Text>
+        {/* <Text style={{color: 'white', position: 'absolute', top: 100, left: 20,width: 100}}>Light orange shows how much others are contributing.</Text> */}
+        <Text style={{position: 'absolute', bottom: 100, color: 'white', width: '30%'}}>Once you join, you can chat with your fellow flockers.</Text>
+      </NewTutorial>
   <Fragment><SafeAreaView style={{ flex: 0, backgroundColor: constants.TRANSLUCENT }} />
     <SafeAreaView style={{flex: 1, backgroundColor: constants.PINK_BACKGROUND_OPAQUE}}>
 <HeaderGradient navigation={navigation} absolute={false} >
@@ -431,6 +439,7 @@ setPartOf(true);
           <Text>touch me</Text>
         </TouchableOpacity>
       </Modal> */}
+<SafeAreaView style={{ flex: 0, backgroundColor: 'white' }} />
       </>
   );
 }

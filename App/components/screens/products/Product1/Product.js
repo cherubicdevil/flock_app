@@ -13,6 +13,7 @@ import {
   Dimensions,
   Animated
 } from 'react-native';
+import NewTutorial from 'App/components/NewTutorial';
 import Description from 'App/components/Description';
 import HowTo from 'App/HowTo';
 import CommentsModal from 'App/components/screens/videopage/CommentsModal';
