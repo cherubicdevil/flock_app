@@ -6,11 +6,33 @@ import { RGBADepthPacking } from 'three';
 const NewTutorial = ({children, screenId}) => {
     const [visible, setVisible] = useState(true);
 
+    const storeData = async () => {
+        console.log('storing');
+        try {
+          await AsyncStorage.setItem('@flock_screen_'+screenId, 'true')
+          console.log('done storing');
+        } catch (e) {
+          console.log('error', e)
+        }
+      }
+    
+    const getData = async () => {
+      try {
+        const value = await AsyncStorage.getItem('@flock_screen_'+screenId)
+        return value;
+      } catch(e) {
+        console.log('error',e);
+      }
+    }
+
     useEffect(()=>{
         let used = false;
         getData().then((data)=>{
+            console.log(data, "new player?");
             if (!used) {
-                setVisible(!data);
+                if (data !== null) {
+                setVisible(!data=='true');
+                }
             }
         })
 
@@ -21,7 +43,9 @@ const NewTutorial = ({children, screenId}) => {
 
     return <View style={{position: 'absolute', zIndex: 300, top: 0, height: visible?'100%':0, width: visible?'100%':0, backgroundColor: 'rgba(0,0,0,0.8)', overflow:'hidden'}}>
         <TouchableOpacity style={{height: '100%', width: '100%'}} onPress={()=>{
+            storeData();
             setVisible(false);
+
         }}>
             <View style={{height:'100%', width: '80%', marginHorizontal: 20, justifyContent: 'center', color: 'white'}}>
             {children}
@@ -31,21 +55,6 @@ const NewTutorial = ({children, screenId}) => {
     </View>
 }
 
-const storeData = async (value) => {
-    try {
-      await AsyncStorage.setItem('@flock_screen_'+screenId, value)
-    } catch (e) {
-      // saving error
-    }
-  }
 
-const getData = async () => {
-  try {
-    const value = await AsyncStorage.getItem('@flock_screen_'+screenId)
-    return value;
-  } catch(e) {
-    // error reading value
-  }
-}
 
 export default NewTutorial;
