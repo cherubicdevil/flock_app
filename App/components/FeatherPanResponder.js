@@ -346,7 +346,7 @@ const FeatherPanResponder = React.memo(({index, positions, currIndex, setCurrent
                       setTimeout(()=>{
                         setCurrentIndex({curr:currentIndex + 1, prev: currentIndex});
                         // dispatch({type: 'sendCarouselIndex', payload: currentIndex + 1});
-                    }, 200);
+                    }, 2000);
                     //   dispatch({type: 'sendCarouselIndex', payload: currentIndex + 1});
                     setTimeout(()=>{
                         if (type === "flock") {
