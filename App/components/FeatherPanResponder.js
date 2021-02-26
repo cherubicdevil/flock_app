@@ -252,8 +252,8 @@ const FeatherPanResponder = React.memo(({index, positions, currIndex, setCurrent
     //const [done, setDone] = useState(false);
     const position = positions[index];
     const isTop = index == positions.length - 1;
-    const outofwayAnimation = () => {
-        const newLeft = 1000; // ypos.getLayout().top , left
+    const outofwayAnimation = (right) => {
+        const newLeft = right?1000:-1000; // ypos.getLayout().top , left
         Animated.timing(position, {
           useNativeDriver: false,
           toValue: {y:500, x: newLeft},
@@ -313,7 +313,7 @@ const FeatherPanResponder = React.memo(({index, positions, currIndex, setCurrent
                   return;
             }
             if (gesture.dy > 0) {
-                outofwayAnimation();
+                outofwayAnimation(gesture.dx > 0);
                 setTimeout(()=>{
                     setCurrentIndex({curr:currentIndex - 1, prev: currentIndex});
 
@@ -374,7 +374,15 @@ const FeatherPanResponder = React.memo(({index, positions, currIndex, setCurrent
 
      
 
-    return <Animated.View style={{borderTopLeftRadius: 70, borderTopRightRadius: 70, overflow: 'hidden', alignSelf: 'center', opacity: fade, justifyContent: 'center', position: 'absolute', top: position.getLayout().top, marginTop: topAnim, marginLeft: leftAnim, left: position.getLayout().left, zIndex: index + 50, height: viewHeight - 35, width: widthAnim, borderWidth:0, backgroundColor: 'white'}} {...panResponder.panHandlers}>{content}</Animated.View>
+    //  console.log(position.x._value + 'hi', 'left');
+    return <Animated.View style={{
+        transform: [
+            // { rotateY: "45deg" },
+            { rotateZ: position.getLayout().left.interpolate({
+                inputRange: [0, Dimensions.get('window').width],
+                outputRange: ['0deg', '45deg'] })}
+          ],
+        borderTopLeftRadius: 70, borderTopRightRadius: 70, overflow: 'hidden', alignSelf: 'center', opacity: fade, justifyContent: 'center', position: 'absolute', top: position.getLayout().top, marginTop: topAnim, marginLeft: leftAnim, left: position.getLayout().left, zIndex: index + 50, height: viewHeight - 35, width: widthAnim, borderWidth:0, backgroundColor: 'white'}} {...panResponder.panHandlers}>{content}</Animated.View>
 
 });
 
