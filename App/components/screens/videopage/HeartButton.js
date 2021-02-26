@@ -45,16 +45,20 @@ const HeartIcon = ({data, ICON_SIZE=37}) => {
               // send doc id
               data,
           });
+          db.collection('chatGroups').doc(data.id).update({
+            likes: firebase.firestore.FieldValue.increment(1)
+        });
         } else {
           dispatch({
             type: 'DISLIKED_VIDEO',
             payload: data,
           });
+          db.collection('chatGroups').doc(data.id).update({
+            likes: firebase.firestore.FieldValue.increment(-1)
+        });
         }
 
-        db.collection('chatGroups').doc(data.id).update({
-          likes: firebase.firestore.FieldValue.increment(1)
-      });
+
 
       };
     }, [heartColor]);
