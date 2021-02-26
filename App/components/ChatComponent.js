@@ -1,6 +1,7 @@
 import React, {useEffect, useState, useRef} from 'react';
+import {View} from 'react-native';
 import {constants} from 'App/constants';
-import { Bubble } from 'react-native-gifted-chat'
+import { Bubble, InputToolbar} from 'react-native-gifted-chat';
 import {firebase, db, au} from 'App/firebase/config';
 import io from 'socket.io-client';
 import {GiftedChat} from 'react-native-gifted-chat';
@@ -154,6 +155,22 @@ renderBubble={(props)=>{
   //     </TouchableOpacity>
   //   );
   // }}
+  minInputToolbarHeight={70}
+  renderInputToolbar = {props => {
+    return (
+      <InputToolbar
+        {...props}
+        containerStyle={{
+          backgroundColor: "white",
+          borderTopColor: "#E8E8E8",
+          borderTopWidth: 1,
+          height: 50,
+          flex:1, 
+          padding: 8
+        }}
+      />
+    );
+  }}
   messages={recvMessages}
   renderUsernameOnMessage={true}
   onSend={onSend}

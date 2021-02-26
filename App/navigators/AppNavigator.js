@@ -168,7 +168,7 @@ const AppNavigator5 = () => {
           component={ChatInterface}
           options={{
             unmountOnBlur: true,
-            tabBarVisible: false,
+            tabBarVisible: true,
           }}
         />
         <Tab.Screen

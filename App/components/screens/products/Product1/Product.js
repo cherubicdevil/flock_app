@@ -611,7 +611,7 @@ const FlockList = ({product, navigation, ar, close, limited = true, randomId}) =
           }}>
   <TouchableOpacity onPress= {() => {
     setTutorialScreen(false);
-    navigation.navigate('StartFlock', {index: 0, product: product, flockId: randomId});
+    navigation.navigate('StartFlock', {index: 0, product: route.params.album, data:{}, flockId: randomId});
 
   }}><Text style={{textAlign: 'center', color: 'white', fontWeight: 'bold', fontSize: 14}}>Start Your Flock</Text>
   </TouchableOpacity></View></View></View>)}</ScrollView>;

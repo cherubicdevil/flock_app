@@ -3,6 +3,7 @@ import {constants} from 'App/constants';
 import Collapsible from 'react-native-collapsible';
 import {useStore} from 'react-redux';
 import { Bubble } from 'react-native-gifted-chat'
+import Wrapper from 'App/components/Wrapper';
 import {
   Button,
   Image,
@@ -270,8 +271,7 @@ return <ScrollView  style={{marginLeft: 15, overflow: 'visible', backgroundColor
         {/* <Text style={{color: 'white', position: 'absolute', top: 100, left: 20,width: 100}}>Light orange shows how much others are contributing.</Text> */}
         <Text style={{position: 'absolute', bottom: 100, textAlign: 'center',alignSelf:'center', color: 'white', width: 250,fontFamily: 'Noteworthy-Bold', fontSize: 18}}>Once you join, you can chat with your fellow flockers.</Text>
       </NewTutorial>
-  <Fragment><SafeAreaView style={{ flex: 0, backgroundColor: constants.TRANSLUCENT }} />
-    <SafeAreaView style={{flex: 1, backgroundColor: constants.PINK_BACKGROUND_OPAQUE}}>
+  <Wrapper>
 <HeaderGradient navigation={navigation} absolute={false} >
   <View style={{marginBottom:0, justifyContent: 'flex-end'}}>
 {/* <Text style={{fontSize: 14, textAlign: 'center'}}>%{route.params.data.id}</Text> */}
@@ -368,8 +368,7 @@ return <ScrollView  style={{marginLeft: 15, overflow: 'visible', backgroundColor
           // setCreditModal(true);
       }}><Text style={{color: 'white', alignSelf: 'center', fontWeight: 'bold'}}>JOIN</Text></TouchableOpacity></View></View>}
     
-    </SafeAreaView>
-    </Fragment>
+      </Wrapper>
     <AnimatedModal upPercent="70%" colored={true} colors={[constants.ORANGE, constants.GREYORANGE]} nested={false} visible={creditModal} close={()=>setCreditModal(false)} navigation={navigation} 
      >
        <KeyboardAvoidingView behavior="position" style={{flex: 1}} keyboardVerticalOffset={-200}>
@@ -442,7 +441,7 @@ setPartOf(true);
           <Text>touch me</Text>
         </TouchableOpacity>
       </Modal> */}
-<SafeAreaView style={{ flex: 0, backgroundColor: 'white' }} />
+
       </>
   );
 }
