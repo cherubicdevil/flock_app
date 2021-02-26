@@ -1,19 +1,20 @@
 import React, {useState, useEffect, } from 'react';
 import {View, Text, TouchableOpacity, Image} from 'react-native';
+import {firebase, db} from 'App/firebase/config';
 import {useSelector, useDispatch} from 'react-redux';
 import {constants} from 'App/constants';
 import { useFocusEffect } from '@react-navigation/native';
 
-const ICON_SIZE = 37;
-
-const HeartIcon = ({data}) => {
+const HeartIcon = ({data, ICON_SIZE=37}) => {
   const dispatch = useDispatch();
+  
   var likes = data.likes || 0;
     const selector = useSelector((state) => state);
     //var liked = selector.userInfo.likedVideos.includes(data);
     var liked = selector.userInfo.likedVideos.some(
       (item) => item.title === data.title,
     );
+    console.log(liked, 'isliked?', data.description);
     const [heartColor, setHeartColor] = useState(liked);
     useFocusEffect(() => {
       var original = liked;
@@ -30,10 +31,14 @@ const HeartIcon = ({data}) => {
       //       setHeartColor(true);
       //     }
       //   });
-
+      console.log('heart number of likes', data.likes, data.description);
       return () => {
+        console.log('heart colorfasd');
         if (original == heartColor) return;
+        console.log('eartfdas');
         if (heartColor) {
+          
+          console.log('test heartcolor');
           dispatch({
             type: 'LIKED_VIDEO',
             payload:
@@ -46,6 +51,11 @@ const HeartIcon = ({data}) => {
             payload: data,
           });
         }
+
+        db.collection('chatGroups').doc(data.id).update({
+          likes: firebase.firestore.FieldValue.increment(1)
+      });
+
       };
     }, [heartColor]);
 
