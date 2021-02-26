@@ -7,6 +7,7 @@ import io from 'socket.io-client';
 import {GiftedChat} from 'react-native-gifted-chat';
 
 
+
 const ChatComponent = ({route, socket}) =>{
 const [recvMessages, setRecvMessages] = useState([]);
 // useFocusEffect(()=>{
