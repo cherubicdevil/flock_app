@@ -5,6 +5,7 @@ import {constants} from 'App/constants';
 import AnimatedModal from 'App/components/AnimatedModal';
 import {useSelector, useDispatch} from 'react-redux';
 import ShareSocial from 'App/components/ShareSocial';
+import TooltipFirst from 'App/components/TooltipFirst';
 
 const CustomBar = ({descriptors, state, navigation}) => {
   const focusedOptions = descriptors[state.routes[state.index].key].options;
@@ -21,6 +22,7 @@ const CustomBar = ({descriptors, state, navigation}) => {
         }
         if (options.title === 'CamScreen') {
           return (
+
             <AddItem
               image={options.image}
               text={options.cap}
@@ -117,6 +119,7 @@ const AddItem = ({image, text, navigation, route}) => {
           //ImagePicker.showImagePicker(options, get)
         }}
       /> */}
+                  
       <AnimatedModal colored={true} colors={[constants.PEACH, constants.GREYORANGE]} curve={false} visible = {modalOpen} close = {()=> setModalOpen(false)} navigation={navigation} content={<View style={{flex:1}}>
 <View style={{flex: 1, justifyContent: 'center'}}><View style={{height: 70, borderRadius: 40, backgroundColor: 'white', marginLeft: 20, marginRight: 20}}><TouchableOpacity onPress={()=>{
   setModalOpen(false);
@@ -138,15 +141,43 @@ const AddItem = ({image, text, navigation, route}) => {
       viewParams={{width:1500, height: 1500, left: -300, bottom: -200}}
       modalAnimationType="fade"
        bgcolor="transparent" upPercent="25%"/>
-      <TouchableOpacity
-        style={{flex: 1}}
+
+<View style={{flex:1}}>
+            <TooltipFirst id="add" info="Start here! Add a product you like!">
+      
+
+            <Image
+        source={image}
+        style={{
+          alignSelf: 'center',
+          height: 35,
+          width: 35,
+          marginTop: -5,
+          resizeMode: 'contain',
+          tintColor: constants.ICONGREY,
+        }}
+      />
+      <Text
+        style={{
+          fontFamily: constants.FONT,
+          color: constants.ICONGREY,
+          textAlign: 'center',
+        }}>
+        {text}
+      </Text>
+
+      
+            </TooltipFirst>
+            <TouchableOpacity
+        style={{flex: 1, position: 'absolute', zIndex: 500, height:'100%', width: '100%'}}
         onPress={() => {
-          setModalOpen(true);
+          setModalOpen(true);;
           console.log('middle');
         }}>
-        <InItem image={image} text={text} />
+        
       </TouchableOpacity>
-      
+            </View>
+                  
     </>
   );
 };
