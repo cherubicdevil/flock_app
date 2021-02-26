@@ -264,11 +264,11 @@ return <ScrollView  style={{marginLeft: 15, overflow: 'visible', backgroundColor
   // },[]);
   return (<>
         <NewTutorial screenId = "chatinterface">
-        <Text style={{color: 'white', position: 'absolute', bottom: '50%'}}>Make sure the item fits you. Pay attention to any size specifications here.</Text>
-        <Text style={{color: 'white', position: 'absolute', top: 50, left: 20,width: 100}}>Reach 100% before time runs out.</Text>
-        <Text style={{color: 'white', position: 'absolute', top: '20%', right: 20,width: 100}}>Adjust your payment here.</Text>
+        <Text style={{color: 'white', position: 'absolute', bottom: '50%', left: 20, fontFamily: 'Noteworthy-Bold', fontSize: 18}}>Pay attention to the specifications here.</Text>
+        <Text style={{color: 'white', position: 'absolute', top: 70, right: 20,width: 170, fontFamily: 'Noteworthy-Bold', fontSize: 18}}>Reach 100% before time runs out. Share!</Text>
+        <Text style={{color: 'white', position: 'absolute',  top: '20%', right: '30%',width: 150,fontFamily: 'Noteworthy-Bold', fontSize: 18}}>Change how much you want to pay.</Text>
         {/* <Text style={{color: 'white', position: 'absolute', top: 100, left: 20,width: 100}}>Light orange shows how much others are contributing.</Text> */}
-        <Text style={{position: 'absolute', bottom: 100, color: 'white', width: '30%'}}>Once you join, you can chat with your fellow flockers.</Text>
+        <Text style={{position: 'absolute', bottom: 100, left: 20, color: 'white', width: 200,fontFamily: 'Noteworthy-Bold', fontSize: 18}}>Once you join, you can chat with your fellow flockers.</Text>
       </NewTutorial>
   <Fragment><SafeAreaView style={{ flex: 0, backgroundColor: constants.TRANSLUCENT }} />
     <SafeAreaView style={{flex: 1, backgroundColor: constants.PINK_BACKGROUND_OPAQUE}}>

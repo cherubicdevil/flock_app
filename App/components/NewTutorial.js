@@ -31,7 +31,7 @@ const NewTutorial = ({children, screenId}) => {
             console.log(data, "new player?");
             if (!used) {
                 if (data !== null) {
-                setVisible(!data=='true');
+                // setVisible(!data=='true');
                 }
             }
         })
@@ -47,7 +47,7 @@ const NewTutorial = ({children, screenId}) => {
             setVisible(false);
 
         }}>
-            <View style={{height:'100%', width: '80%', marginHorizontal: 20, justifyContent: 'center', color: 'white'}}>
+            <View style={{height:'100%', width: '100%',paddingHorizontal: 20, justifyContent: 'center', color: 'white'}}>
             {children}
             </View>
 

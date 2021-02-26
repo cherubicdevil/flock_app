@@ -429,10 +429,11 @@ const Product = ({route, navigation}) => {
           />
                 </View>
           <NewTutorial screenId="productpage">
-            <Text style={{color: 'white', position: 'absolute', left: 10, top: '60%'}}>Look at the list of ongoing flocks.</Text>
-            <Text style={{color: 'white', position: 'absolute', right: 30, top: '70%', width: 100}}>Conditions for flock to succeed.</Text>
-            <Text style={{color: 'white', position: 'absolute', left: 20, top: '70%', width: 100}}>Size information</Text>
-            <Text style={{color: 'white', position: 'absolute', left: 10, top: '80%', width: 100}}>Check original retail website</Text>
+            <Text style={{color: 'white', position: 'absolute', right: 10, top: '60%', fontFamily: 'Noteworthy-Bold', fontSize: 18, }}>See who is trying to buy. <Image source = {require('App/Assets/Images/arrow_hand_rightdown.png')}  style={{tintColor: 'white', width: 35, height: 35, display:'flex', position: 'absolute', left: 20, paddingBottom: 20, overflow: 'visible'}} /></Text>
+            {/* <Text style={{color: 'white', position: 'absolute', right: 30, top: '70%', width: 100,fontFamily: 'Noteworthy-Bold', fontSize: 18}}>Conditions for flock to succeed.</Text> */}
+            {/* <Text style={{color: 'white', position: 'absolute', left: 20, top: '70%', width: 100,fontFamily: 'Noteworthy-Bold', fontSize: 18}}>Size information</Text> */}
+            <Text style={{color: 'white', position: 'absolute', left: 10, top: '72%', width: 280, fontFamily: 'Noteworthy-Bold', fontSize: 18}}>Click for source of item. <Image source = {require('App/Assets/Images/arrow_hand_L.png')}  style={{tintColor: 'white', width: 35, height: 35, display:'flex', position: 'absolute', left: 20, paddingBottom: 20, overflow: 'visible'}} /></Text>
+            <Text style={{color: 'white', position: 'absolute', right: 10, bottom: 100, width: 250, fontFamily: 'Noteworthy-Bold', fontSize: 18}}>Don't see your size, color, etc? Start your own flock <Image source = {require('App/Assets/Images/arrow_hand_rightspiral.png')}  style={{tintColor: 'white', width: 35, height: 35, display:'flex', position: 'absolute', left: 20, paddingBottom: 20, overflow: 'visible'}} /></Text>
           </NewTutorial>
                 </>
     );
