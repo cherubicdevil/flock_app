@@ -207,7 +207,7 @@ const FeatherPanResponder = React.memo(({index, positions, currIndex, setCurrent
         //     duration: 2000,
         //   }));
 
-        if (index <= currentIndex) {
+        if (index < currentIndex) {
         pararr.push(Animated.timing(widthAnim, {
             useNativeDriver: false,
             toValue: newwidth,
@@ -228,6 +228,29 @@ const FeatherPanResponder = React.memo(({index, positions, currIndex, setCurrent
             delay: animdelay,
             duration: animtime,
           }));
+        }
+
+          if (index == currentIndex ) {
+            pararr.push(Animated.timing(widthAnim, {
+                useNativeDriver: false,
+                toValue: newwidth,
+                delay: animdelay,
+                duration: animtime,
+              }));
+    
+              pararr.push(Animated.timing(leftAnim, {
+                useNativeDriver: false,
+                toValue: nextleft,
+                delay: animdelay,
+                duration: animtime,
+              }));
+    
+              pararr.push(Animated.timing(topAnim, {
+                useNativeDriver: false,
+                toValue: nexttop,
+                delay: animdelay,
+                duration: animtime,
+              }));
 
         //   pararr.push(Animated.timing(topAnim, {
         //     useNativeDriver: false,
@@ -236,6 +259,36 @@ const FeatherPanResponder = React.memo(({index, positions, currIndex, setCurrent
         //     duration: animtime,
         //   }));
         }
+
+        // if (index == currentIndex && currentIndex<previousIndex) {
+        //     pararr.push(Animated.timing(widthAnim, {
+        //         useNativeDriver: false,
+        //         toValue: newwidth,
+        //         delay: animdelay,
+        //         duration: animtime,
+        //       }));
+    
+        //       pararr.push(Animated.timing(leftAnim, {
+        //         useNativeDriver: false,
+        //         toValue: nextleft,
+        //         delay: animdelay,
+        //         duration: animtime,
+        //       }));
+    
+        //       pararr.push(Animated.timing(positions[index].getLayout().top, {
+        //         useNativeDriver: false,
+        //         toValue: 0,
+        //         delay: animdelay,
+        //         duration: animtime,
+        //       }));
+
+        // //   pararr.push(Animated.timing(topAnim, {
+        // //     useNativeDriver: false,
+        // //     toValue: nexttop,
+        // //     delay: 0,
+        // //     duration: animtime,
+        // //   }));
+        // }
 
         if (index > currentIndex) {
             pararr.push(Animated.timing(topAnim, {
@@ -247,6 +300,7 @@ const FeatherPanResponder = React.memo(({index, positions, currIndex, setCurrent
         }
 
           Animated.sequence([Animated.parallel([...animations, ...pararr]), ]).start();
+
     }, [currentIndex]);
 
     //const [done, setDone] = useState(false);
@@ -336,17 +390,17 @@ const FeatherPanResponder = React.memo(({index, positions, currIndex, setCurrent
                 // console.log("changing flock carindex", currentIndex - 1);
             } else if (gesture.dy < 0) {
                 if (!isTop) {
-                    Animated.timing(positions[index+1], {
-                        useNativeDriver: false,
-                        toValue: {y:0, x: 0},
-                        delay: 0,
-                        duration: 1000,
-                      }).start();
+                    // Animated.timing(positions[index+1], {
+                    //     useNativeDriver: false,
+                    //     toValue: {y:-1000, x: 0},
+                    //     delay: 0,
+                    //     duration: 500,
+                    //   }).start();
                       //setCurrentIndex(current+1);
                       setTimeout(()=>{
                         setCurrentIndex({curr:currentIndex + 1, prev: currentIndex});
                         // dispatch({type: 'sendCarouselIndex', payload: currentIndex + 1});
-                    }, 2000);
+                    }, 0);
                     //   dispatch({type: 'sendCarouselIndex', payload: currentIndex + 1});
                     setTimeout(()=>{
                         if (type === "flock") {
