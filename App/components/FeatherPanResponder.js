@@ -132,7 +132,16 @@ const FeatherPanResponder = React.memo(({index, positions, currIndex, setCurrent
 
     const [widthAnim, setWidthAnim] = useState(new Animated.Value(previouswidth));
     const [leftAnim, setLeftAnim] = useState(new Animated.Value(previousleft));
-    const [topAnim, setTopAnim] = useState(new Animated.Value(previoustop));
+
+    var topAnim;
+
+    // if (index == currentIndex && currentIndex < previousIndex) {
+    //     var [topAnim, setTopAnim] = useState(new Animated.Value(50));
+    // } else {
+    // var [topAnim, setTopAnim] = useState(new Animated.Value(previoustop));
+    // }
+
+    var [topAnim, setTopAnim] = useState(new Animated.Value(previoustop));
     // const widthAnim = new Animated.Value(top);
 
     useEffect(()=>{
@@ -229,8 +238,11 @@ const FeatherPanResponder = React.memo(({index, positions, currIndex, setCurrent
             duration: animtime,
           }));
         }
-
+        
           if (index == currentIndex ) {
+            //   if (previousIndex>currentIndex) {
+            // console.log('minus one and plus one', positions[index], topAnim);
+            //   }
             pararr.push(Animated.timing(widthAnim, {
                 useNativeDriver: false,
                 toValue: newwidth,
