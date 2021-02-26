@@ -261,8 +261,8 @@ const FeatherPanResponder = React.memo(({index, positions, currIndex, setCurrent
           duration: 300,
         }).start();
       };
-      var isUp = false;
       var isDown = false;
+      var isUp = false;
       const panResponder = PanResponder.create({
           onPanResponderTerminationRequest:(event, gesture) => true,
         // onMoveShouldSetPanResponderCapture:(event, gesture)=>Math.abs(gesture.dy)/Math.abs(gesture.dx)>2,
@@ -273,12 +273,28 @@ const FeatherPanResponder = React.memo(({index, positions, currIndex, setCurrent
         onPanResponderMove: (event, gesture) => {
             if (gesture.dy > 0) {
                 if (isUp) return;
-                isDown = true;
+                if (!isDown && !isUp) {
+                    isDown = true;
+                    isUp = false;
+                }
+                if (isDown) {
             position.setValue({ x: gesture.dx, y: gesture.dy });
+                }
             } else if (gesture.dy < 0) {
-                if (isDown) return;
-                if (!isTop) {
-                    positions[index+1].setValue({y: gesture.dy-100, x: 0+ gesture.dx});
+                if (isDown) {
+                    position.setValue({ x: gesture.dx, y: gesture.dy });
+                    return;
+                }
+                if (!isDown && !isUp) {
+                    isUp = true;
+                    isDown = false;
+                }
+                if (isUp) {
+                    if (positions[index+1] !== undefined) {
+                    positions[index+1].setValue({y: gesture.dy-500, x: 0+ gesture.dx});
+                    } else {
+                        position.setValue({ x: gesture.dx, y: gesture.dy });
+                    }
                 }
             }
         
@@ -342,6 +358,13 @@ const FeatherPanResponder = React.memo(({index, positions, currIndex, setCurrent
                         }
                     }, 700);
                     //   console.log("changing carindex", currentIndex + 1);
+                } else {
+                    Animated.timing(positions[index], {
+                        useNativeDriver: false,
+                        toValue: {y:0, x: 0},
+                        delay: 0,
+                        duration: 200,
+                      }).start();
                 }
             }
         }

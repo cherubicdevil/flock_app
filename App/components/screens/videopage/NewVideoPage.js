@@ -214,6 +214,20 @@ useEffect(()=>{
   const renderVid = () => {
     return (
       <View
+      onStartShouldSetResponder={()=>true}
+      onResponderTerminationRequest={()=>true}
+      onMoveShouldSetResponder={()=>false}
+      onResponderRelease={()=>{
+        const video = data.video;
+        console.log(dataType);
+        if (dataType==="flock" || dataType==="video") {
+            console.log('pressing')
+        navigation.navigate("Product", {album: data.product, video: {video}, data: data, id: data.id})
+        } else if (dataType==="rent") {
+            
+            navigation.navigate("FlockReserve", {data: data});
+        }
+    }}
         style={{
           height: '100%',
           backgroundColor: constants.PINK_BACKGROUND_OPAQUE,
