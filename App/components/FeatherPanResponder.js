@@ -339,7 +339,10 @@ const FeatherPanResponder = React.memo(({index, positions, currIndex, setCurrent
         // onStartShouldSetPanResponder: (event, gesture) => true,
         onPanResponderMove: (event, gesture) => {
             if (gesture.dy > 0) {
-                if (isUp) return;
+                if (isUp) {
+                    if (isTop) position.setValue({ x: gesture.dx, y: gesture.dy });
+                    return;
+                }
                 if (!isDown && !isUp) {
                     isDown = true;
                     isUp = false;
@@ -450,9 +453,12 @@ const FeatherPanResponder = React.memo(({index, positions, currIndex, setCurrent
                 outputRange: ['0deg', '45deg'] })}
           ],
         borderTopLeftRadius: 70, borderTopRightRadius: 70, overflow: 'hidden', alignSelf: 'center', opacity: fade, justifyContent: 'center', position: 'absolute', top: position.getLayout().top, marginTop: topAnim, marginLeft: leftAnim, left: position.getLayout().left, zIndex: index + 50, height: viewHeight - 35, width: widthAnim, borderWidth:0, backgroundColor: 'white'}} {...panResponder.panHandlers}>
-            <Animated.View style={{position: 'absolute', zIndex: 400, top: 30, right: 30, opacity: position.getLayout().top.interpolate({
-                inputRange: [-100, 0, Dimensions.get('window').height],
-                outputRange: [10,0,10] })}}>
+            <Animated.View style={{position: 'absolute', zIndex: 400, top: 30, right: 30, opacity: position.getLayout().top
+            .interpolate({
+                inputRange: [-200,-10,0, 10],
+                outputRange: [0,100,0,1000] })
+            }}
+                >
                 <Text style={{color:'black'}}>Swipe</Text>
                 <Icon name="arrow-down" color={constants.LAVENDER} size={35} />
             </Animated.View>
