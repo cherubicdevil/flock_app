@@ -275,10 +275,11 @@ return <ScrollView  style={{marginLeft: 15, overflow: 'visible', backgroundColor
 <HeaderGradient navigation={navigation} absolute={false} >
   <View style={{marginBottom:0, justifyContent: 'flex-end'}}>
 {/* <Text style={{fontSize: 14, textAlign: 'center'}}>%{route.params.data.id}</Text> */}
-  <Countdown dateObj={route.params.data.time} fontSize = {12} />
+  <Countdown dateObj={route.params.data.time} fontSize = {14} />
   {/* <Text>{testMessages}</Text> */}
   </View>
-  <View style={{bottom: 20, right: 20, position: 'absolute', zIndex: 400}}>
+  <View style={{bottom: 20, right: 20, position: 'absolute', zIndex: 400, flexDirection:'row', alignItems:'center'}}>
+    <Text style={{fontFamily: constants.FONT, marginRight: 2}}>id: %{route.params.data.id}</Text>
     <TouchableOpacity 
     hitSlop={{top: 30, bottom: 30, left: 30, right: 30}} 
     onPress={()=>{

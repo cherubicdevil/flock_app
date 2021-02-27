@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {View, Text, } from 'react-native';
+import {constants} from 'App/constants';
 
 
 const Countdown = ({dateObj, fontSize = 12, showLabels = true}) => {
@@ -20,8 +21,8 @@ const Countdown = ({dateObj, fontSize = 12, showLabels = true}) => {
     remainder %= 60;
     const seconds = Math.floor(remainder);
   
-    return <View style={{width: 90, height: 30, justifyContent: 'center'}}><View style={{flexDirection: 'row', justifyContent:'space-between',paddingBottom: -5, alignItems: 'center'}}><View style={{ flex: 1, alignSelf: 'stretch', justifyContent: 'center'}}><Text style={{textAlign:'center', fontSize: fontSize}}>{days<10?0:''}{days}</Text></View><Text style={{fontSize: fontSize}}>:</Text><View style={{ flex: 1, alignSelf: 'stretch',justifyContent: 'center' }}><Text style={{textAlign: 'center',fontSize: fontSize}}>{hours<10?0:''}{hours}</Text></View><Text style={{fontSize: fontSize}}>:</Text><View style={{flex: 1, alignSelf: 'stretch', justifyContent: 'center'}}><Text style={{ flex: 1, alignSelf: 'stretch', textAlign: 'center',fontSize: fontSize}}>{minutes<10?0:''}{minutes}</Text></View><Text style={{fontSize: fontSize}}>:</Text><Text style={{ flex: 1, alignSelf: 'stretch', textAlign: 'center',fontSize: fontSize}}>{seconds<10?0:''}{seconds}</Text></View>
-    <View style={{paddingTop: -20,flexDirection: 'row', justifyContent:'space-evenly', fontSize: fontSize-3}}><Text style={{fontSize:fontSize-3, alignSelf: 'stretch'}}>days</Text><Text style={{fontSize:fontSize-3, alignSelf: 'stretch'}}>hrs</Text><Text style={{fontSize:fontSize-3, alignSelf: 'stretch'}}>min</Text><Text style={{fontSize:fontSize-3, alignSelf: 'stretch'}}>secs</Text></View>
+    return <View style={{width: 90, height: 30, justifyContent: 'center'}}><View style={{flexDirection: 'row', justifyContent:'space-between',paddingBottom: -5, alignItems: 'center'}}><View style={{ flex: 1, alignSelf: 'stretch', justifyContent: 'center'}}><Text style={{textAlign:'center', fontSize: fontSize, fontFamily:constants.FONT}}>{days<10?0:''}{days}</Text></View><Text style={{fontSize: fontSize,fontFamily:constants.FONT}}>:</Text><View style={{ flex: 1, alignSelf: 'stretch',justifyContent: 'center' }}><Text style={{textAlign: 'center',fontSize: fontSize,fontFamily:constants.FONT}}>{hours<10?0:''}{hours}</Text></View><Text style={{fontSize: fontSize,fontFamily:constants.FONT}}>:</Text><View style={{flex: 1, alignSelf: 'stretch', justifyContent: 'center'}}><Text style={{ flex: 1, alignSelf: 'stretch', textAlign: 'center',fontSize: fontSize,fontFamily:constants.FONT}}>{minutes<10?0:''}{minutes}</Text></View><Text style={{fontSize: fontSize,fontFamily:constants.FONT}}>:</Text><Text style={{ flex: 1, alignSelf: 'stretch', textAlign: 'center',fontSize: fontSize,fontFamily:constants.FONT}}>{seconds<10?0:''}{seconds}</Text></View>
+    <View style={{paddingTop: -20,flexDirection: 'row', justifyContent:'space-evenly', fontSize: fontSize-3}}><Text style={{fontSize:fontSize-3, alignSelf: 'stretch',fontFamily:constants.FONT}}>days</Text><Text style={{fontSize:fontSize-3, alignSelf: 'stretch',fontFamily:constants.FONT}}>hrs</Text><Text style={{fontSize:fontSize-3, alignSelf: 'stretch',fontFamily:constants.FONT}}>min</Text><Text style={{fontSize:fontSize-3, alignSelf: 'stretch',fontFamily:constants.FONT}}>secs</Text></View>
     </View>
   }
 

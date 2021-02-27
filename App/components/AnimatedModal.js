@@ -30,6 +30,7 @@ import React, {useRef, useState, useEffect} from 'react';
 import MaskedViewIOS from '@react-native-community/masked-view';
 import LinearGradient from 'react-native-linear-gradient';
 import { AnimationObjectGroup } from 'three';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 const AnimatedModal = ({
   children,
@@ -50,6 +51,7 @@ const AnimatedModal = ({
   nested=false,
   behavior="position",
   noPadding=false,
+  showClose=true,
   viewParams={bottom: 0, height: Dimensions.get('window').height, width:Dimensions.get('window').width, left: 0},
   contentTop=<></>
 }) => {
@@ -152,6 +154,15 @@ const AnimatedModal = ({
             </View>
             <KeyboardAvoidingView enabled={keyboard} behavior={behavior} style={{position: 'absolute', zIndex: 20, width: '100%', backgroundColor: 'transparent', height: upPercent, }}>
             <View behavior="padding" style={{width: '100%', height: "100%", borderRadius: curve?100:0, borderBottomRightRadius: 0, borderBottomLeftRadius: 0, backgroundColor: bgcolor, paddingTop: noPadding?0:40, overflow: 'hidden'}}>
+              <TouchableOpacity hitSlop={{left:20, right:20, top:20, bottom:20}} style={{position: 'absolute', top: 10, right: 80}} onPress={()=>{
+                setTimeout(()=>{
+                  close();
+                }, nested?300:0);
+            resetAnimation();
+              }}
+               >
+                {showClose?<Icon name="times" color={constants.LIGHTGREY} size={15}/>:<></>}
+              </TouchableOpacity>
             
               {content}
               {children}

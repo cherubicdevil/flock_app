@@ -54,7 +54,7 @@ lowkey=false
         marginLeft: 10, 
         borderRadius: 30,
         zIndex: 40,
-      }}><View style={{borderRadius: 30, borderWidth: 1, borderColor: colors[0], color: 'black', justifyContent: 'center', alignItems:'center',paddingVertical: 5, paddingLeft: 10, paddingRight: 10}}>
+      }}><View style={{borderRadius: 30, borderWidth: 0, borderColor: colors[0], color: 'black', justifyContent: 'center', alignItems:'center',paddingVertical: 5, paddingLeft: 10, paddingRight: 10}}>
         <Text style={{color: colors[0], fontSize: 14, fontFamily: constants.FONTBOLD}}>{bannerText(price)}</Text></View>
 </View>
   <View style={{position: 'absolute', right: 0}}>

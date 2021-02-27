@@ -48,7 +48,7 @@ const StartFlock = ({navigation, route}) => {
     var ar = [<PageOne product = {route.params.product} data = {route.params.data} setCanNext={setCanNext} />, <PageTwo product = {route.params.product} data = {route.params.data} setCanNext={setCanNext} />, <ShareSocial product = {route.params.product} data = {route.params.data} flockId={flockId} />, <PageFour product = {route.params.product} data = {route.params.data} />];
     return <Wrapper><ScrollView scrollEnabled={false} keyboardShouldPersistTaps="never" style={{backgroundColor: constants.PINK_BACKGROUND}}>
     <ProgressHeader
-    idText={"%"+flockId}
+    idText={"id: %"+flockId}
     nextRoute="StartFlock"
     backRoute="StartFlock"
     headerText="Start a Flock"

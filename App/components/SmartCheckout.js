@@ -491,17 +491,23 @@ const BillingModal = ({state, setState, close, setChanged}) => {
             }} style={styles.textbox} />
   
             <View style={{flexDirection: 'row', justifyContent:'space-between'}}>
-                <View style={{flex: 2, marginRight: 20}}>
+                <View style={{flex: 1.4, marginRight: 20}}>
             <Text style={{marginLeft: 10, marginTop: 15, marginBottom: 5}}>City</Text>
             <TextInput value={city}  onChangeText={(text)=> {
                 setCity(text);
             }} style={styles.textbox} />
                         </View>
-                        <View style={{flex: 1, marginRight: 20}}>
+                        <View style={{flex: .8, marginRight: 20}}>
                         <Text style={{marginLeft: 10, marginTop: 15, marginBottom: 5,}}>State</Text>
             <TextInput keyboardType="default" maxLength={2} value={geostate}   onChangeText={(text)=> {
                 setGeostate(text);
             }} style={styles.textbox} />
+                        </View>
+                        <View style={{flex: 1, marginRight: 20}}>
+                        <Text style={{marginLeft: 10, marginTop: 15, marginBottom: 5,}}>Country</Text>
+            <TextInput editable={false} keyboardType="default" maxLength={2} value="USA"   onChangeText={(text)=> {
+                setGeostate(text);
+            }} style={[styles.textbox, {color: constants.DARKGREY}]} />
                         </View>
                         {/* <View>
                         <Text style={{marginLeft: 10, marginTop: 15, marginBottom: 5}}>Country</Text>
