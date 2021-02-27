@@ -191,7 +191,7 @@ const AppNavigator5 = () => {
           name="Checkout"
           component={Checkout}
           options={{
-            tabBarVisible: false,
+            tabBarVisible: true,
             unmountOnBlur: true,
           }}
         />

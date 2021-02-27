@@ -5,6 +5,7 @@ import {useDispatch, useSelector, useStore} from 'react-redux';
 import {fetchAlbums} from 'App/utils';
 import NewVideoPage from 'App/components/screens/videopage/NewVideoPage';
 import { useFocusEffect } from '@react-navigation/native';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 const data = ["hello",'world', 'data', 'i', 'am', 'so', 'sad'];
 
@@ -448,7 +449,15 @@ const FeatherPanResponder = React.memo(({index, positions, currIndex, setCurrent
                 inputRange: [0, Dimensions.get('window').width],
                 outputRange: ['0deg', '45deg'] })}
           ],
-        borderTopLeftRadius: 70, borderTopRightRadius: 70, overflow: 'hidden', alignSelf: 'center', opacity: fade, justifyContent: 'center', position: 'absolute', top: position.getLayout().top, marginTop: topAnim, marginLeft: leftAnim, left: position.getLayout().left, zIndex: index + 50, height: viewHeight - 35, width: widthAnim, borderWidth:0, backgroundColor: 'white'}} {...panResponder.panHandlers}>{content}</Animated.View>
+        borderTopLeftRadius: 70, borderTopRightRadius: 70, overflow: 'hidden', alignSelf: 'center', opacity: fade, justifyContent: 'center', position: 'absolute', top: position.getLayout().top, marginTop: topAnim, marginLeft: leftAnim, left: position.getLayout().left, zIndex: index + 50, height: viewHeight - 35, width: widthAnim, borderWidth:0, backgroundColor: 'white'}} {...panResponder.panHandlers}>
+            <Animated.View style={{position: 'absolute', zIndex: 400, top: 30, right: 30, opacity: position.getLayout().top.interpolate({
+                inputRange: [-100, 0, Dimensions.get('window').height],
+                outputRange: [10,0,10] })}}>
+                <Text style={{color:'black'}}>Swipe</Text>
+                <Icon name="arrow-down" color={constants.LAVENDER} size={35} />
+            </Animated.View>
+            {content}
+            </Animated.View>
 
 });
 
