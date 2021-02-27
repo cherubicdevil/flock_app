@@ -42,13 +42,12 @@ const SmartCheckout = ({confirmFunc, cancelFunc, children, billingOnly=false, sh
   }
   
   if (billingOnly) {
-    return creditCardChanged || hasId;
+    return {allowed:creditCardChanged || hasId, errorMessage:"Please fill out billing."};
   } else if (shippingOnly) {
-    return shippingChanged || hasShipping;
+    return {allowed:shippingChanged || hasShipping, errorMessage: "Please fill out shipping."};
   } else { // default. neither needed. in profile perhaps false && false
-    return true;
+    return {allowed:true, errorMessage:null};
   }
-  return true;
 }}) => {
 console.log("HAS ID", hasId)
 const dispatch = useDispatch();
@@ -82,20 +81,21 @@ useEffect(()=>{
       // console.log(data.card,"MY CARD");
       });
       console.log('hello');
-    // fetchShipping(au.currentUser.uid).then((data)=>{
-    //   console.log('shipping non?', data);
-    //   if (data !== "none") {
-    //     setInfo(data);
-    //     console.log('shipping', data);
-    //   }
-      
-    // })
+
     const shipping = select.shipping;
     if (shipping !== undefined && shipping !== "none") {
       setInfo(shipping);
       console.log('shipping', shipping);
     }
   }
+  fetchShipping(au.currentUser.uid).then((data)=>{
+    console.log('shipping non?', data);
+    if (data !== "none") {
+      setInfo(data);
+      console.log('shipping', data);
+    }
+    
+  })
 }, [select.customerId]);
 
 const defaultInfo = {
@@ -136,7 +136,7 @@ const [creditInfo, setCreditInfo] = useState({
 });
 
 const hasShipping = select.shipping !== undefined && select.shipping !== "none";
-const allowed = allowConfirm(creditCardChanged, changed, hasId, hasShipping);
+const {allowed:allowed, errorMessage: notAllowedMessage} = allowConfirm(creditCardChanged, changed, hasId, hasShipping);
 console.log("??????????", allowed, creditCardChanged, changed, hasId, hasShipping, 'stuff');
 return <><View style={{marginTop: 5,}} >
         <View style={[styles.row, {justifyContent: 'space-between'}]}>

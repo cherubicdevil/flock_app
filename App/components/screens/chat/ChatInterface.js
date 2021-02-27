@@ -379,9 +379,15 @@ return <ScrollView  style={{marginLeft: 15, overflow: 'visible', backgroundColor
          const validEmail = (em)=>{
           return em !== "" && em.indexOf("@") != -1;
          }
-         console.log("valid email????", validEmail(creditEmail));
-         return creditChanged && validEmail(creditEmail);
-       }} confirmFunc={(customerId)=>{
+         if (!(creditChanged)) {
+          return {allowed: false, errorMessage: "Please fill out billing info."}
+      }
+      if (!validEmail) {
+          return {allowed: false, errorMessage: "Please input a valid email."};
+      }
+      return {allowed: true, errorMessage: null};
+       }}
+       confirmFunc={(customerId)=>{
         //  au.currentUser.updateEmail(creditEmail);
         console.log("YYYYYYYYYYYYYYYYY");
         dispatch({type:'UPDATE_DATA', payload: ["email", null, null, creditEmail]});

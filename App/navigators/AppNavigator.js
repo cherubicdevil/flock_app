@@ -99,6 +99,7 @@ const AppNavigator5 = () => {
           initialParams={{vidVisible: false}}
           options={{
             tabBarVisible: true,
+            unmountOnBlur:true,
           }}
         />
           <Tab.Screen

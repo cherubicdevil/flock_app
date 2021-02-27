@@ -163,7 +163,13 @@ const StartFlock = ({navigation, route}) => {
          }
          console.log("valid email????", validEmail(localEmail));
          console.log((creditChanged || hasId) && validEmail(localEmail))
-         return (creditChanged || hasId) && validEmail(localEmail);
+         if (!(creditChanged || hasId)) {
+             return {allowed: false, errorMessage: "Please fill out billing info."}
+         }
+         if (!validEmail) {
+             return {allowed: false, errorMessage: "Please input a valid email."};
+         }
+         return {allowed: true, errorMessage: null};
        }} 
        
        confirmFunc={(customerId)=>{
