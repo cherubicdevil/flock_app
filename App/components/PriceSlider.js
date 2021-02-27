@@ -148,7 +148,7 @@ const PriceSlider = ({priceShareInitialPercent, completeFunc=()=>{}, productPric
     // snapped={true}
     markerStyle={{width: 40, height: 40, shadowOpacity:0}}
     selectedStyle={{backgroundColor: constants.BLUERGREY}}
-    trackStyle={{height: 15, borderRadius: 20, borderTopLeftRadius: remainingPercent<100?0:20, borderBottomLeftRadius: remainingPercent<100?0:20}}
+    trackStyle={{height: 15, borderRadius: 0, borderTopLeftRadius: remainingPercent<100?0:20, borderBottomLeftRadius: remainingPercent<100?0:20, backgroundColor:constants.BLUERGREY}}
     // containerStyle={{height: 20}}
     selectedStyle={{backgroundColor:constants.ORANGE}}
     markerContainerStyle={{alignSelf: 'center', marginTop: 7.5}}
@@ -166,7 +166,7 @@ const PriceSlider = ({priceShareInitialPercent, completeFunc=()=>{}, productPric
   />
   
   </View>
-  <View style={{flex: 100-othersPercent-remainingPercent,  height: 15, backgroundColor: othersPercent+remainingPercent>=100?constants.ORANGE:constants.LIGHTGREY, borderBottomRightRadius: 40, borderTopRightRadius: 40}}/>
+  <View style={{flex: 100-othersPercent-remainingPercent+ 5,  height: 15, backgroundColor: othersPercent+remainingPercent>=100?constants.ORANGE:constants.BLUERGREY, borderBottomRightRadius: 40, borderTopRightRadius: 40, zIndex: -40}}/>
   <View style={{borderRadius: 40, backgroundColor: constants.ORANGE, width: 30, height: 30, marginLeft: 10, justifyContent: 'center', alignItems: 'center', zIndex: -40}}>
           <TouchableOpacity onPress={()=>{
             if (pricePercent < remainingPercent && pricePercent < 100) {
