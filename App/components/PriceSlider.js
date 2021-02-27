@@ -54,6 +54,14 @@ const PriceSlider = ({priceShareInitialPercent, completeFunc=()=>{}, productPric
     const [infoModal, setInfoModal] = useState(false);
     const select = useSelector(state=>state.userInfo);
 
+
+    var maxError;
+    if (100-remainingPercent-othersPercent >0){
+      maxError = "This is the maximum a single person can flock."
+    } else {
+      maxError = "Press confirm now to buy your item immediately.";
+    }
+
     
   
     var changeable = false;
@@ -65,7 +73,7 @@ const PriceSlider = ({priceShareInitialPercent, completeFunc=()=>{}, productPric
     if (pricePercent == 0) {
       zeroWarning = "If you pay $0.00, you will be unable to use this item.";
     } else if (pricePercent == remainingPercent) {
-      zeroWarning = "Press confirm now to buy your item immediately.";
+      zeroWarning = maxError;
     }
   
     if (true) {
@@ -115,7 +123,7 @@ const PriceSlider = ({priceShareInitialPercent, completeFunc=()=>{}, productPric
 
       <View style={{flex: 1, marginLeft: 5, flexDirection: 'row', paddingLeft: 10, alignItems: 'center', justifyContent: 'center', alignSelf: 'center', alignSelf: 'center'}}>
               
-              <View style={{flex: othersPercent+5,  height: 15, backgroundColor: initialSlider?constants.ORANGE:constants.GREYORANGE, borderBottomLeftRadius: 40, borderTopLeftRadius: 40}}/>
+              <View style={{flex: othersPercent+5,  height: 15, backgroundColor: initialSlider || othersPercent==0?constants.ORANGE:constants.GREYORANGE, borderBottomLeftRadius: 40, borderTopLeftRadius: 40}}/>
             <View style={{flex:remainingPercent, marginRight: 0, paddingRight: 0}}>
             
             
@@ -133,8 +141,7 @@ const PriceSlider = ({priceShareInitialPercent, completeFunc=()=>{}, productPric
               // if (!changeable) return;
               if (
                 // stuff[0] >= 4 && 
-                stuff[0] <= 100
-                && pricePercent <= 68
+                stuff[0] <= remainingPercent
                 ) {
               setPricePercent(stuff[0]);
               }

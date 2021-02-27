@@ -388,9 +388,10 @@ const ProfileMain = ({navigation}) => {
                  paddingBottom: 3
            }
     }} >
+                <Tab.Screen name="pinned" component={Products} />
           <Tab.Screen name="flocking" component={Test1} />
           <Tab.Screen name="flocked" component={Test3} />
-          <Tab.Screen name="pinned" component={Products} />
+
         </Tab.Navigator>
       </View>
     </SafeAreaView>

@@ -299,16 +299,18 @@ const PageTwo = ({product, data, setCanNext}) => {
     return <View style={styles.container}>
         <Text style={{color: 'red'}}>{errorMessage}</Text>
         <View style={{marginBottom: 20}}>
-    <Text style={{fontWeight: 'bold'}}>Enter your price. Minimum: ${(product.price/25 * 1.4).toFixed(2)}.</Text>
+    <Text style={{fontWeight: 'bold'}}>Choose how much you want to own. 
+    {/* Minimum: ${(product.price/25 * 1.4).toFixed(2)}. */}
+    </Text>
     <View style={{flexDirection: 'row', alignItems: 'center'}}>
-    <Text style={{color: constants.DARKGREY, fontSize: 14}}>Why is the maximum higher?</Text>
+    {/* <Text style={{color: constants.DARKGREY, fontSize: 14}}>Why is the maximum higher?</Text>
     <TouchableOpacity onPress={()=>{
         setOpenInfo(true);
     }}>
     <View style={{justifyContent: 'center', alignItems: 'center', borderRadius: 20, width: 15, height: 15, marginLeft: 5, borderWidth: 1, borderColor: constants.DARKGREY}}>
     <Icon name="question" size={12} color={constants.DARKGREY} />
 
-    </View></TouchableOpacity>
+    </View></TouchableOpacity> */}
     </View>
     </View>
     <PriceSlider showInfo={false} priceShareInitialPercent={maxPricePercentage} productPrice ={product.price} othersPercent={0} remainingPercent={68} maximums={{}} setOutsideState={setPriceValue} confirm = {false} initialSlider={true} />
