@@ -57,17 +57,17 @@ const TooltipFirst = ({children, tooltipId, info, style, component, width=150}) 
     width={width}
     toggleOnPress={false}
     backgroundColor="transparent"
-    overlayColor='rgba(0, 0, 0, 0.9)'
+    overlayColor='rgba(0, 0, 0, 0.7)'
     style={{flex:1}}
     toggleAction="onLongPress"
-    // highlightColor="white"
+    highlightColor="white"
     // containerStyle={{borderColor: 'white', borderWidth:1, overflow: 'visible'}}
     pointerStyle={{borderColor:'white', borderWidth:1}}
     onClose={()=>{
         storeData(tooltipId);
     }}
     ref = {toolRef} popover={renderText()}>
-      <View style={[{shadowColor:'white', shadowOpacity:0.5, shadowOffset:{height:0, width:0}, shadowRadius: 10},
+      <View style={[{shadowColor:'transparent', shadowOpacity:1, shadowOffset:{height:0, width:0}, shadowRadius: 10, borderRadius: 40},
       style]
       }>
     {children}

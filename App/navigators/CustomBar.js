@@ -145,7 +145,7 @@ const AddItem = ({image, text, navigation, route}) => {
 <View style={{flex:1}}>
             <TooltipFirst id="add" info="Add a product!">
       
-
+            <View style={{borderRadius: 100, overflow:'hidden', }}>
             <Image
         source={image}
         style={{
@@ -165,6 +165,7 @@ const AddItem = ({image, text, navigation, route}) => {
         }}>
         {text}
       </Text>
+      </View>
 
       
             </TooltipFirst>
