@@ -535,7 +535,10 @@ const CamScreenTwo = ({navigation, route}) => {
                 <Icon name="chevron-left" size={25} color={canGoBack?constants.LAVENDER:constants.PINK_BACKGROUND} />
                 </TouchableOpacity>
                 {urlState !== ""?
-                <TooltipFirst id="import" info="Press to grab to flock">
+                <TooltipFirst id="import" width={280} component={<>
+                <Text style={{color:'white', fontFamily: 'Noteworthy-Bold'}}>When you find a product you like</Text>
+                <Text style={{color:'white', fontFamily: 'Noteworthy-Bold',}}>Press to grab it.</Text>
+                </>}>
                 <TouchableOpacity 
         style={{paddingLeft: 15, paddingRight: 15, height: 40, justifyContent:'center', alignItems:'center', backgroundColor:constants.ORANGE, borderRadius: 50,}}
         onPress={()=>{

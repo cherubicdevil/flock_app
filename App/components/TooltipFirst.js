@@ -23,8 +23,15 @@ const getData = async (screenId) => {
   }
 }
 
-const TooltipFirst = ({children, tooltipId, info, style}) => {
+const TooltipFirst = ({children, tooltipId, info, style, component, width=150}) => {
     const toolRef= useRef();
+
+    const renderText = ()=>{
+      if (component) {
+        return component;
+      }
+      return <Text style={{color: 'white', fontFamily:'Noteworthy-Bold'}}>{info}</Text>;
+    };
 
     useEffect(()=>{
         let used = false;
@@ -47,6 +54,7 @@ const TooltipFirst = ({children, tooltipId, info, style}) => {
 
     return <Tooltip 
     // pointerColor="transparent"
+    width={width}
     toggleOnPress={false}
     backgroundColor="transparent"
     overlayColor='rgba(0, 0, 0, 0.9)'
@@ -58,7 +66,7 @@ const TooltipFirst = ({children, tooltipId, info, style}) => {
     onClose={()=>{
         storeData(tooltipId);
     }}
-    ref = {toolRef} popover={<Text style={{color: 'white', fontFamily:'Noteworthy-Bold'}}>{info}</Text>}>
+    ref = {toolRef} popover={renderText()}>
       <View style={[{shadowColor:'white', shadowOpacity:0.5, shadowOffset:{height:0, width:0}, shadowRadius: 10},
       style]
       }>
