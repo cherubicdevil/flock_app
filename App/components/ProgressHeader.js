@@ -99,7 +99,7 @@ const ProgressHeader = ({
         justifyContent: 'center',
         alignItems: 'center',
         width: '100%',
-        backgroundColor: 'white',
+        backgroundColor: constants.TRANSLUCENT,
       }}>
       <Text style={{fontFamily: 'Nunito-Bold', fontSize: 14, marginTop: 17}}>
         {headerText}

@@ -86,6 +86,7 @@ const AppNavigator5 = () => {
           initialParams={{vidVisible: false}}
           
           options={{
+            unmountOnBlur:true,
             tabBarVisible: false,
             title: 'CamScreen',
             cap: 'add',
@@ -136,7 +137,7 @@ const AppNavigator5 = () => {
           name="StartFlock"
           component={StartFlock}
           initialParams={{data: {}}}
-          options={{tabBarVisible: false}}
+          options={{tabBarVisible: true}}
         />
         <Tab.Screen
           name="PayTest"

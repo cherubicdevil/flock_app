@@ -17,6 +17,7 @@ import AnimatedModal from 'App/components/AnimatedModal';
 import SmartCheckout from 'App/components/SmartCheckout';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import WebView from 'react-native-webview';
+import Wrapper from 'App/components/Wrapper';
 
 
 const StartFlock = ({navigation, route}) => {
@@ -45,7 +46,7 @@ const StartFlock = ({navigation, route}) => {
         setCreditEmail(select.email);
     }, [select]);
     var ar = [<PageOne product = {route.params.product} data = {route.params.data} setCanNext={setCanNext} />, <PageTwo product = {route.params.product} data = {route.params.data} setCanNext={setCanNext} />, <ShareSocial product = {route.params.product} data = {route.params.data} flockId={flockId} />, <PageFour product = {route.params.product} data = {route.params.data} />];
-    return <ScrollView scrollEnabled={false} keyboardShouldPersistTaps="never" style={{backgroundColor: constants.PINK_BACKGROUND}}>
+    return <Wrapper><ScrollView scrollEnabled={false} keyboardShouldPersistTaps="never" style={{backgroundColor: constants.PINK_BACKGROUND}}>
     <ProgressHeader
     idText={"%"+flockId}
     nextRoute="StartFlock"
@@ -218,7 +219,7 @@ const StartFlock = ({navigation, route}) => {
        </ScrollView>
        </KeyboardAvoidingView>
        </AnimatedModal>
-  </ScrollView>
+  </ScrollView></Wrapper>
 }
 
 const PageOne = ({product, data, setCanNext}) => {
@@ -229,17 +230,20 @@ const PageOne = ({product, data, setCanNext}) => {
     const webViewRef= useRef();
     
     useEffect(()=>{
-        setCanNext(can1 && can2);
-    }, [can1, can2]);
+        // setCanNext(can1 && can2);
+        setCanNext(can1);
+    }, [can1,
+        //  can2
+        ]);
 
     return <View style={{width:'100%', backgroundColor: 'white', marginTop: 5, padding: 20}}>
-        <InputText data = {data} title = "specifications" numLines = {2} setCanNext={setCan1} placeholder = "Size 4? Size 10? Red? Green?" label="List specifications like size and color if applicable." />
+        <InputText data = {data} title = "specifications" numLines = {2} setCanNext={setCan1} placeholder = "If not applicable, type N/A" label="List specifications like size and color if applicable." />
         <View style={{marginBottom: 20}}>
             <TouchableOpacity onPress={()=>setOpenWebView(true)} >
             <Text style={{color:constants.LIGHTGREY}}>Don't remember the sizes? Click me.</Text>
             </TouchableOpacity>
         </View>
-        <InputText data = {data} title = "description" numLines = {4}  setCanNext={setCan2}  placeholder = "What do you want others to know about this product? Hype it up so they join your flock and lower your price!" label="Message"/>
+        <InputText data = {data} title = "description" numLines = {4}  setCanNext={setCan2}  placeholder = "What do you want others to know? Hype it up so they complete your flock!" label="Message"/>
         <TouchableOpacity onPress={()=>{
             setOpenWebView(true);
         }}>
@@ -307,7 +311,7 @@ const PageTwo = ({product, data, setCanNext}) => {
     </View></TouchableOpacity>
     </View>
     </View>
-    <PriceSlider showInfo={false} priceShareInitialPercent={maxPricePercentage} productPrice ={product.price} remainingPercent={96} maximums={{}} setOutsideState={setPriceValue} confirm = {false} />
+    <PriceSlider showInfo={false} priceShareInitialPercent={maxPricePercentage} productPrice ={product.price} othersPercent={0} remainingPercent={68} maximums={{}} setOutsideState={setPriceValue} confirm = {false} initialSlider={true} />
     
     
 
@@ -406,7 +410,7 @@ const ProductPreview = ({product}) => {
             <Text style={{fontWeight: 'bold'}}>{product.title}</Text>
             <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 15}}>
             <Text style = {{textDecorationLine: 'line-through', color: constants.ORANGE, marginRight: 10,}}>${product.price}</Text>
-            <LinearGradient
+            {/* <LinearGradient
           colors={[constants.YELLOW, constants.ORANGE]}
           start={{ x: 0, y: 1 }} end={{ x: 1, y: 1 }}
           style={{
@@ -415,8 +419,9 @@ const ProductPreview = ({product}) => {
             paddingVertical: 5,
             width: 130,
             alignItems: 'center'
-          }}><Text style={{color: 'white', fontSize: 14, fontFamily: constants.FONTBOLD}}>{"$" + (product.price / 25 * 1.4).toFixed(2) + " to flock"}</Text>
-</LinearGradient>
+          }}> */}
+              <Text style={{color: constants.ORANGE, fontSize: 14, fontFamily: constants.FONT}}>{"$" + (product.price / 25 * 1.4).toFixed(2) + " to flock"}</Text>
+{/* </LinearGradient> */}
 </View>
         </View>
         

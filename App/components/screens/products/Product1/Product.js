@@ -566,7 +566,7 @@ const FlockList = ({product, navigation, ar, close, limited = true, randomId}) =
       <View style={{flexDirection: 'row', height: 50, justifyContent: 'space-between', paddingTop: 10, borderTopWidth:i==0?0:2, borderColor: constants.GREY, paddingBottom:3, alignItems: 'center'}}>
       <View style={{flex: 1}}>
     <Text numberOfLines = {1} style={{fontWeight: 'bold', fontSize:15,width: 80, height: 20, }}>@{ar[i].members[0].name}</Text>
-      {ar[i].specifications?<Text style={{fontSize: 12, marginLeft:2}}>{ar[i].specifications}</Text>:<Text></Text>}
+      {ar[i].specifications && ar[i].specifications.trim().toLowerCase() !== "n/a" && ar[i].specifications.trim().toLowerCase() !== "na"?<Text style={{fontSize: 12, marginLeft:2}}>{ar[i].specifications}</Text>:<Text></Text>}
       </View>
       <View style={{flex: 1.75, flexDirection:'row', justifyContent: 'space-between'}}>
       <View style={{flex:1, marginRight: 15}}>

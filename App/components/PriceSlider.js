@@ -46,7 +46,7 @@ import Countdown from 'App/components/Countdown';
 
 
 
-const PriceSlider = ({priceShareInitialPercent, completeFunc=()=>{}, productPrice, remainingPercent, maximums, setOutsideState=()=>{}, confirm=true, showInfo = true}) => {
+const PriceSlider = ({priceShareInitialPercent, completeFunc=()=>{}, productPrice, othersPercent, remainingPercent, maximums, setOutsideState=()=>{}, confirm=true, showInfo = true, initialSlider = false}) => {
     console.log(priceShareInitialPercent+"%");
     const [initialPercent, setInitialPercent] = useState(priceShareInitialPercent);
     const [pricePercent, setPricePercent] = useState(initialPercent);
@@ -115,7 +115,7 @@ const PriceSlider = ({priceShareInitialPercent, completeFunc=()=>{}, productPric
 
       <View style={{flex: 1, marginLeft: 5, flexDirection: 'row', paddingLeft: 10, alignItems: 'center', justifyContent: 'center', alignSelf: 'center', alignSelf: 'center'}}>
               
-              <View style={{flex: 100-remainingPercent,  height: 15, backgroundColor: constants.GREYORANGE, borderBottomLeftRadius: 40, borderTopLeftRadius: 40}}/>
+              <View style={{flex: othersPercent,  height: 15, backgroundColor: initialSlider?constants.ORANGE:constants.GREYORANGE, borderBottomLeftRadius: 40, borderTopLeftRadius: 40, paddingHorizontal: 15}}/>
             <View style={{flex:remainingPercent, marginRight: 0, paddingRight: 0}}>
             
             
@@ -133,7 +133,9 @@ const PriceSlider = ({priceShareInitialPercent, completeFunc=()=>{}, productPric
               // if (!changeable) return;
               if (
                 // stuff[0] >= 4 && 
-                stuff[0] <= 100) {
+                stuff[0] <= 100
+                && pricePercent <= 68
+                ) {
               setPricePercent(stuff[0]);
               }
               if (confirm == false) {
@@ -164,6 +166,7 @@ const PriceSlider = ({priceShareInitialPercent, completeFunc=()=>{}, productPric
   />
   
   </View>
+  <View style={{flex: 100-othersPercent-remainingPercent,  height: 15, backgroundColor: othersPercent+remainingPercent>=100?constants.ORANGE:constants.LIGHTGREY, borderBottomRightRadius: 40, borderTopRightRadius: 40}}/>
   <View style={{borderRadius: 40, backgroundColor: constants.ORANGE, width: 30, height: 30, marginLeft: 10, justifyContent: 'center', alignItems: 'center', zIndex: -40}}>
           <TouchableOpacity onPress={()=>{
             if (pricePercent < remainingPercent && pricePercent < 100) {
@@ -179,7 +182,7 @@ const PriceSlider = ({priceShareInitialPercent, completeFunc=()=>{}, productPric
   </View>
   </View>
   
-  <View style={{alignItems: 'center',marginTop: -10, paddingTop: 10, justifyContent: 'center'}}>
+  {!initialSlider?<View style={{alignItems: 'center',marginTop: -10, paddingTop: 10, justifyContent: 'center'}}>
     <View style={{marginLeft: 10, alignSelf:'flex-start'}}>
       <View style={{flexDirection:'row', alignItems: 'center'}}>
           <View style={{height: 15, aspectRatio:1, borderRadius: 20, backgroundColor: constants.PEACH, marginRight: 10}} />
@@ -199,7 +202,7 @@ const PriceSlider = ({priceShareInitialPercent, completeFunc=()=>{}, productPric
   <Icon name="info" size={10} color={constants.LAVENDER} />
   </TouchableOpacity>
   </View>:<></>}
-  </View>
+  </View>:<></>}
       <View style={{flexDirection: 'row'}}>
         
       {/* <Text style={{color:'white', marginBottom: 10}}>Change your payment:</Text> */}

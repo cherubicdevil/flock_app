@@ -310,7 +310,7 @@ return <ScrollView  style={{marginLeft: 15, overflow: 'visible', backgroundColor
             {/* <Text style={{color:'white', marginBottom: 10, fontWeight: 'bold'}}>Current flock price: ${route.params.data?.product?.price || ""}</Text> */}
             {/* <Text style={{color:'white', marginBottom: 10, fontWeight: 'bold'}}>Total price: ${route.params.data?.product?.price || ""}</Text> */}
             
-            {part?<PriceSlider key={Math.random()} remainingPercent={remainingPercent} priceShare = {priceShare} priceShareInitialPercent={parseFloat(priceShare) / parseFloat(route.params.data.product.price) * 100} completeFunc={completeFunc} productPrice={route.params.data.product.price} maximums={route.params.data.maximums} />:
+            {part?<PriceSlider key={Math.random()} othersPercent={100-remainingPercent} remainingPercent={Math.min(68,remainingPercent)} priceShare = {priceShare} priceShareInitialPercent={parseFloat(priceShare) / parseFloat(route.params.data.product.price) * 100} completeFunc={completeFunc} productPrice={route.params.data.product.price} maximums={route.params.data.maximums} />:
             <PriceTextPreview remainingPercent={remainingPercent} productPrice={route.params.data.product.price} />
             }
             </View>

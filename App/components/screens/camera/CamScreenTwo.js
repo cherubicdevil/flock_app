@@ -22,7 +22,8 @@ import {
 import TooltipFirst from 'App/components/TooltipFirst';
 import HeaderGradient from 'App/components/HeaderGradient';
 import Icon from "react-native-vector-icons/FontAwesome";
-const cheerio = require('react-native-cheerio')
+const cheerio = require('react-native-cheerio');
+import Dialog from 'react-native-dialog';
 import ResizeableImage from 'App/components/ResizeableImage';
 import {constants} from 'App/constants';
 import ProgressHeader from 'App/components/ProgressHeader';
@@ -34,7 +35,12 @@ import {pinLocalFunc} from 'App/utils';
 import { set } from 'react-native-reanimated';
 
 
-const jsCode = 'window.ReactNativeWebView.postMessage(document.documentElement.innerHTML)'
+// const jsCode = 'window.ReactNativeWebView.postMessage(document.documentElement.innerHTML)'
+const jsCode = 'setTimeout(()=>window.ReactNativeWebView.postMessage(document.documentElement.innerHTML),500)';
+
+const cleanPrice = (price) => {
+  return price.replace(',','').replace('$','').replace(/[^0-9.]+/, '').split("$")[0]
+}
 
 const CamScreenTwo = ({navigation, route}) => {
   const [modalOpen, setModalOpen] = useState(false);
@@ -148,6 +154,9 @@ const CamScreenTwo = ({navigation, route}) => {
   const [searchUrl, setSearchUrl] = useState('');
   const [urlState, setUrlState] = useState('');
 
+  const [confirmedDialog, setConfirmedDialog] = useState(false);
+  const [dialog, openDialog] = useState(false);
+
   const webviewRef = useRef();
 
   const renderForm = () => {
@@ -216,19 +225,9 @@ const CamScreenTwo = ({navigation, route}) => {
             </TouchableOpacity>:<></>
     }
             </View>
+
+            
             <View style={{justifyContent: 'flex-start', flex: 1, marginTop: 5,}}>
-            <View style={{marginBottom: 10}}>
-              <Text style={{marginLeft: 15, color: constants.DARKGREY}}>Title</Text>
-              <TextInput
-                placeholder="Describe the product"
-                style={styles.descriptionStyle}
-                placeholderTextColor={constants.DARKGREY}
-                onChangeText={(text) => {
-                  setTitleState(text);
-                }}
-                value={titleState}
-              />
-            </View>
 
             <View style={{marginBottom: 5}}>
               <Text style={{marginLeft: 15, color: constants.DARKGREY}}>Brand</Text>
@@ -242,6 +241,20 @@ const CamScreenTwo = ({navigation, route}) => {
                 value={brandState}
               />
             </View>
+            <View style={{marginBottom: 10}}>
+              <Text style={{marginLeft: 15, color: constants.DARKGREY}}>Title</Text>
+              <TextInput
+                placeholder="Describe the product"
+                style={styles.descriptionStyle}
+                placeholderTextColor={constants.DARKGREY}
+                onChangeText={(text) => {
+                  setTitleState(text);
+                }}
+                value={titleState}
+              />
+            </View>
+
+
             {/* <View style={{marginTop: 5, marginBottom: 10}}>
               <Text>Description</Text>
               <TextInput
@@ -425,7 +438,13 @@ const CamScreenTwo = ({navigation, route}) => {
           width: '100%',
           height: '100%',
         }}
-        onPress={headerCloseFunc}>
+        onPress={()=>{
+          if (!confirmedDialog) {
+          openDialog(true);
+          } else {
+            headerCloseFunc();
+          }
+        }}>
           <View>
           <Text
             style={{
@@ -510,6 +529,7 @@ const CamScreenTwo = ({navigation, route}) => {
                   // const result = $("title").text();
                   // console.log(result);
                   // pinLocalFunc(event.nativeEvent.data);
+                  console.log('got the html finally');
               }}
                 onNavigationStateChange={(webViewState) => {
                   setUrlState(webViewState.url);
@@ -525,7 +545,7 @@ const CamScreenTwo = ({navigation, route}) => {
                 source={{uri: urlState}}
               />
               <View style={{width: '100%', backgroundColor: 'white', height: 80, justifyContent: 'space-around', flexDirection: 'row', padding: 15, alignItems: 'center'}}>
-                <TouchableOpacity onPress={()=>{
+                <TouchableOpacity hitSlop={{left:30, top: 30, bottom: 30, right: 30}} onPress={()=>{
                   try {
                   if (webviewRef.current) webviewRef.current.goBack()
                   } catch (err) {
@@ -542,12 +562,13 @@ const CamScreenTwo = ({navigation, route}) => {
                 <TouchableOpacity 
         style={{paddingLeft: 15, paddingRight: 15, height: 40, justifyContent:'center', alignItems:'center', backgroundColor:constants.ORANGE, borderRadius: 50,}}
         onPress={()=>{
+          setTimeout(()=>{
           const result = pinLocalFunc(htmlBody, urlState);
           setImageState(result.image);
           setImageSet(result.imageSet);
           console.log(result.imageSet);
           setTitleState(result.title);
-          setPriceState(result.price.replace(',','').replace('$','').replace(/[^0-9.]+/, '').split("$")[0]);
+          setPriceState(cleanPrice(result.price));
           // console.log(result.price.replace(',','').replace('$','').replace(/[^0-9.]+/, ''), result.price);
           setBrandState(result.brand.charAt(0).toUpperCase() + result.brand.slice(1));
           setDataUrl(urlState);
@@ -556,13 +577,14 @@ const CamScreenTwo = ({navigation, route}) => {
           setCanNext(true);
           
           setSearchResultPlaceholder(result.brand.charAt(0).toUpperCase() + result.brand.slice(1) + " | " + result.title);
+        }, 500);
           }}>
             
           <Text style={{color: 'white'}}>import</Text>
           </TouchableOpacity>
           </TooltipFirst>
           :<View style={{width: 120}} />}
-                <TouchableOpacity onPress={()=>{
+                <TouchableOpacity hitSlop={{left:30, top: 30, bottom: 30, right: 30}} onPress={()=>{
                   try {
                   if (webviewRef.current) webviewRef.current.goForward()
                   } catch (err) {
@@ -598,6 +620,23 @@ const CamScreenTwo = ({navigation, route}) => {
       
       </View>
     </AnimatedModal>
+    <Dialog.Container visible={dialog}>
+    <Dialog.Title>Confirm Details</Dialog.Title>
+    <Dialog.Description>
+      Please make sure the details are correct. This is how others will find your flock.
+    </Dialog.Description>
+{/* 
+    <Dialog.Description>
+      Press "Done" again to continue to finish.
+    </Dialog.Description> */}
+    
+    <Dialog.Button label="Done" onPress={()=>{
+        // send the email
+      openDialog(false);
+      setConfirmedDialog(true);
+      
+    }}/>
+  </Dialog.Container>
     </SafeAreaView></Fragment>
   );
 };
