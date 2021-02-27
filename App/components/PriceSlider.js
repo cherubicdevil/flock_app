@@ -115,7 +115,7 @@ const PriceSlider = ({priceShareInitialPercent, completeFunc=()=>{}, productPric
 
       <View style={{flex: 1, marginLeft: 5, flexDirection: 'row', paddingLeft: 10, alignItems: 'center', justifyContent: 'center', alignSelf: 'center', alignSelf: 'center'}}>
               
-              <View style={{flex: othersPercent,  height: 15, backgroundColor: initialSlider?constants.ORANGE:constants.GREYORANGE, borderBottomLeftRadius: 40, borderTopLeftRadius: 40, paddingHorizontal: 15}}/>
+              <View style={{flex: othersPercent+5,  height: 15, backgroundColor: initialSlider?constants.ORANGE:constants.GREYORANGE, borderBottomLeftRadius: 40, borderTopLeftRadius: 40}}/>
             <View style={{flex:remainingPercent, marginRight: 0, paddingRight: 0}}>
             
             
