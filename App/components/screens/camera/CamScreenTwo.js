@@ -19,6 +19,7 @@ import {
 
   SafeAreaView
 } from 'react-native';
+import TooltipFirst from 'App/components/TooltipFirst';
 import HeaderGradient from 'App/components/HeaderGradient';
 import Icon from "react-native-vector-icons/FontAwesome";
 const cheerio = require('react-native-cheerio')
@@ -533,7 +534,9 @@ const CamScreenTwo = ({navigation, route}) => {
                 }}>
                 <Icon name="chevron-left" size={25} color={canGoBack?constants.LAVENDER:constants.PINK_BACKGROUND} />
                 </TouchableOpacity>
-                {urlState !== ""?<TouchableOpacity 
+                {urlState !== ""?
+                <TooltipFirst id="import" info="Press to grab to flock">
+                <TouchableOpacity 
         style={{paddingLeft: 15, paddingRight: 15, height: 40, justifyContent:'center', alignItems:'center', backgroundColor:constants.ORANGE, borderRadius: 50,}}
         onPress={()=>{
           const result = pinLocalFunc(htmlBody, urlState);
@@ -551,8 +554,11 @@ const CamScreenTwo = ({navigation, route}) => {
           
           setSearchResultPlaceholder(result.brand.charAt(0).toUpperCase() + result.brand.slice(1) + " | " + result.title);
           }}>
+            
           <Text style={{color: 'white'}}>import</Text>
-          </TouchableOpacity>:<View style={{width: 120}} />}
+          </TouchableOpacity>
+          </TooltipFirst>
+          :<View style={{width: 120}} />}
                 <TouchableOpacity onPress={()=>{
                   try {
                   if (webviewRef.current) webviewRef.current.goForward()

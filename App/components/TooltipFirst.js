@@ -23,7 +23,7 @@ const getData = async (screenId) => {
   }
 }
 
-const TooltipFirst = ({children, tooltipId, info}) => {
+const TooltipFirst = ({children, tooltipId, info, style}) => {
     const toolRef= useRef();
 
     useEffect(()=>{
@@ -46,13 +46,24 @@ const TooltipFirst = ({children, tooltipId, info}) => {
     },[]);
 
     return <Tooltip 
+    // pointerColor="transparent"
+    toggleOnPress={false}
+    backgroundColor="transparent"
+    overlayColor='rgba(0, 0, 0, 0.9)'
     style={{flex:1}}
     toggleAction="onLongPress"
+    // highlightColor="white"
+    // containerStyle={{borderColor: 'white', borderWidth:1, overflow: 'visible'}}
+    pointerStyle={{borderColor:'white', borderWidth:1}}
     onClose={()=>{
         storeData(tooltipId);
     }}
-    ref = {toolRef} popover={<Text>{info}</Text>}>
+    ref = {toolRef} popover={<Text style={{color: 'white', fontFamily:'Noteworthy-Bold'}}>{info}</Text>}>
+      <View style={[{shadowColor:'white', shadowOpacity:0.5, shadowOffset:{height:0, width:0}, shadowRadius: 10},
+      style]
+      }>
     {children}
+    </View>
   </Tooltip>
 
 

@@ -143,7 +143,7 @@ const AddItem = ({image, text, navigation, route}) => {
        bgcolor="transparent" upPercent="25%"/>
 
 <View style={{flex:1}}>
-            <TooltipFirst id="add" info="Start here! Add a product you like!">
+            <TooltipFirst id="add" info="Add a product!">
       
 
             <Image
