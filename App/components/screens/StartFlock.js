@@ -169,7 +169,7 @@ const StartFlock = ({navigation, route}) => {
          if (!validEmail) {
              return {allowed: false, errorMessage: "Please input a valid email."};
          }
-         return {allowed: true, errorMessage: null};
+         return {allowed: true, errorMessage: 'shoulndt happen here'};
        }} 
        
        confirmFunc={(customerId)=>{

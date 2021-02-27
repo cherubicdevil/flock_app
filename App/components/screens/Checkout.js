@@ -14,6 +14,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import {createOrUpdate, fetchCustomerInfo} from 'App/utils';
 import SmartCheckout from 'App/components/SmartCheckout';
 import {throttle} from 'lodash';
+import {Tooltip} from 'react-native-elements';
 
 
 
@@ -24,8 +25,12 @@ const Checkout = ({navigation, route}) => {
     const [billModal, setBillModal] = useState(false);
     const [changed, setChanged] = useState(false);
     const [tog, setToggle] = useState(false);
+    const [tog2, setToggle2] = useState(false);
     const toggleFunc = () => {
         setToggle(!tog);
+    }
+    const toggleFunc2 = () => {
+        setToggle2(!tog2);
     }
 
     // const store = useStore();
@@ -65,7 +70,7 @@ const Checkout = ({navigation, route}) => {
       });
     
       
-      const shipConst = 8.99;
+      const shipConst = tog2?24.99:8.99;
       const dollars = parseFloat((select.eggCoins / constants.EGG_RATIO).toFixed(2));
       const reductionDollars = Math.min(dollars, shipConst);
       const reductionEggs = Math.round(reductionDollars * constants.EGG_RATIO);
@@ -176,6 +181,15 @@ const Checkout = ({navigation, route}) => {
     trackColor={{ false: constants.DARKGREY, true: constants.ORANGE }}
     style={{ transform: [{ scaleX: .8 }, { scaleY: .8 }] }} />
     </View>
+            </View>
+            <View style={{alignSelf:'flex-end', flexDirection:'row', alignItems:'center', marginTop: 10, marginHorizontal:15, justifyContent: 'space-between'}}>
+                <Tooltip width={300} height={75} popover={<View><Text>Keep your shipping a secret from your fellow flockers.</Text><Text>Instead, we will ship items to you directly.</Text></View>}>
+                <Text>Hide shipping information. <Icon name="question" size={15} color={constants.DARKGREY} /></Text>
+                </Tooltip>
+                <Switch value={tog2}
+    onValueChange={toggleFunc2}
+    trackColor={{ false: constants.DARKGREY, true: constants.ORANGE }}
+    style={{ transform: [{ scaleX: .8 }, { scaleY: .8 }] }} />
             </View>
             <View style={{marginHorizontal:20, marginTop: 10,
             flexDirection:'row',

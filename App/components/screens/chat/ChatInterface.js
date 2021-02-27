@@ -385,7 +385,7 @@ return <ScrollView  style={{marginLeft: 15, overflow: 'visible', backgroundColor
       if (!validEmail) {
           return {allowed: false, errorMessage: "Please input a valid email."};
       }
-      return {allowed: true, errorMessage: null};
+      return {allowed: true, errorMessage: 'nooo'};
        }}
        confirmFunc={(customerId)=>{
         //  au.currentUser.updateEmail(creditEmail);

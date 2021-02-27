@@ -38,7 +38,7 @@ const SmartCheckout = ({confirmFunc, cancelFunc, children, billingOnly=false, sh
 
 
   if (billingOnly && shippingOnly) { //  both needed
-    return (shippingChanged || hasShipping)  && (creditCardChanged || hasId);
+    return {allowed:(shippingChanged || hasShipping)  && (creditCardChanged || hasId), errorMessage:"Please fill out billing and shipping."};
   }
   
   if (billingOnly) {
@@ -46,7 +46,7 @@ const SmartCheckout = ({confirmFunc, cancelFunc, children, billingOnly=false, sh
   } else if (shippingOnly) {
     return {allowed:shippingChanged || hasShipping, errorMessage: "Please fill out shipping."};
   } else { // default. neither needed. in profile perhaps false && false
-    return {allowed:true, errorMessage:null};
+    return {allowed:true, errorMessage:"shouldn't happen"};
   }
 }}) => {
 console.log("HAS ID", hasId)
@@ -136,7 +136,8 @@ const [creditInfo, setCreditInfo] = useState({
 });
 
 const hasShipping = select.shipping !== undefined && select.shipping !== "none";
-const {allowed:allowed, errorMessage: notAllowedMessage} = allowConfirm(creditCardChanged, changed, hasId, hasShipping);
+var notAllowedMessage="hello initial";
+var {allowed:allowed, errorMessage: notAllowedMessage} = allowConfirm(creditCardChanged, changed, hasId, hasShipping);
 console.log("??????????", allowed, creditCardChanged, changed, hasId, hasShipping, 'stuff');
 return <><View style={{marginTop: 5,}} >
         <View style={[styles.row, {justifyContent: 'space-between'}]}>
@@ -229,7 +230,7 @@ return <><View style={{marginTop: 5,}} >
                 console.log("creditInfo", creditInfo);
                 // setErrorMessage("");
                 if (!allowed) {
-                  setErrorMessage("Please fill out all required fields.");
+                  setErrorMessage(notAllowedMessage || "ugh null?");
                   return;
                 } else {
                   // setErrorMessage("");
