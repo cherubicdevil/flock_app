@@ -3,8 +3,10 @@ import {View, TouchableOpacity, Image} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { RGBADepthPacking } from 'three';
 import {Portal} from 'react-native-paper';
+import {useDispatch} from 'react-redux';
 
 const NewTutorial = ({children, screenId, absolutePosition={left: 0, top: 0, right: 0, bottom: 0}}) => {
+  const dispatch = useDispatch();
     const [visible, setVisible] = useState(true);
     const [showGif, setShowGif] = useState(false);
 
@@ -50,6 +52,7 @@ const NewTutorial = ({children, screenId, absolutePosition={left: 0, top: 0, rig
             setTimeout(()=>{
               setVisible(false);
             },1200);
+            dispatch({type:'getEggs', payload: 10});
 
 
         }}>

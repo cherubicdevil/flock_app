@@ -1,8 +1,10 @@
 import React, {useState, useRef, useEffect} from 'react';
-// import {Text} from 'react-native';
+import {Image} from 'react-native';
 import { Tooltip, Text} from 'react-native-elements';
 import {View} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {Portal} from 'react-native-paper';
+import {useDispatch} from 'react-redux';
 
 const storeData = async (screenId) => {
     console.log('storing');
@@ -25,6 +27,7 @@ const getData = async (screenId) => {
 
 const TooltipFirst = ({children, tooltipId, info, style, component, width=150, height=50}) => {
     const toolRef= useRef();
+    const [showGif, setShowGif] = useState(false);
 
     const renderText = ()=>{
       if (component) {
@@ -52,7 +55,9 @@ const TooltipFirst = ({children, tooltipId, info, style, component, width=150, h
         }
     },[]);
 
-    return <Tooltip 
+    const dispatch = useDispatch();
+    return <>
+    <Tooltip 
     // pointerColor="transparent"
     width={width}
     height={height}
@@ -66,6 +71,11 @@ const TooltipFirst = ({children, tooltipId, info, style, component, width=150, h
     pointerStyle={{borderColor:'white', borderWidth:1}}
     onClose={()=>{
         storeData(tooltipId);
+        setShowGif(true);
+        setTimeout(()=>{
+          setShowGif(false);
+        }, 1200);
+        dispatch({type:'getEggs', payload: 10});
     }}
     ref = {toolRef} popover={renderText()}>
       <View style={[{shadowColor:'transparent', shadowOpacity:1, shadowOffset:{height:0, width:0}, shadowRadius: 10, borderRadius: 40},
@@ -74,7 +84,10 @@ const TooltipFirst = ({children, tooltipId, info, style, component, width=150, h
     {children}
     </View>
   </Tooltip>
-
+        <Portal>
+        <Image source={require('App/Assets/Images/egg-anim-proto.gif')} style={{width:showGif?'120%':0, position: 'absolute', zIndex: 400, bottom: 30, right: "-32%"}} />
+      </Portal>
+      </>
 
 
 }
