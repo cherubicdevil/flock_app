@@ -273,7 +273,9 @@ return <ScrollView  style={{marginLeft: 15, overflow: 'visible', backgroundColor
         <Text style={{position: 'absolute', bottom: 130, textAlign: 'center',alignSelf:'center', color: 'white', width: 250,fontFamily: 'Noteworthy-Bold', fontSize: 18}}>Once you join, you can chat with your fellow flockers.</Text>
       </NewTutorial>
   <Wrapper>
+  
 <HeaderGradient navigation={navigation} absolute={false} >
+  
   <View style={{marginBottom:0, justifyContent: 'flex-end'}}>
 {/* <Text style={{fontSize: 14, textAlign: 'center'}}>%{route.params.data.id}</Text> */}
   <Countdown dateObj={route.params.data.time} fontSize = {14} />
@@ -290,11 +292,13 @@ return <ScrollView  style={{marginLeft: 15, overflow: 'visible', backgroundColor
   </TouchableOpacity>
   </View>
 </HeaderGradient>
+
       <View style={{zIndex: 200,width: '100%', borderRadius: 0, borderBottomRightRadius: 70, borderBottomLeftRadius: 70}}>
       <View style={{
         // shadowColor: "#ff7009", shadowOffset: {height: 0, width: 0}, shadowOpacity: 0.42, elevation: 13, shadowRadius: 28.30,
        borderBottomLeftRadius: 70, borderBottomRightRadius: 70}}>
       <ScrollView scrollEnabled={false} keyboardShouldPersistTaps="never" >
+      
       <LinearGradient
           colors={[constants.PEACHBG, constants.PEACHBG]}
           start={{ x: 0, y: 0 }} end={{ x: 0, y: 1 }}
@@ -333,6 +337,7 @@ return <ScrollView  style={{marginLeft: 15, overflow: 'visible', backgroundColor
             </View>
             
             </TouchableOpacity>
+
             {/* <View style={{marginLeft: 40}}>
             <Text>Description and Size/Variant Information:</Text>
             <Text style={{marginTop: 5}}>{route.params.data.description}</Text>
@@ -363,7 +368,7 @@ return <ScrollView  style={{marginLeft: 15, overflow: 'visible', backgroundColor
         </View>
 
       </View>
-      
+      <MemberPics memberIds={route.params.data.memberIds} />
       <View style={{backgroundColor: constants.PINK_BACKGROUND_OPAQUE, flex: 1, justifyContent: 'flex-end'}}>
         <ChatComponent route={route} socket={socket} />
  </View>
@@ -573,13 +578,27 @@ const [infoModal, setInfoModal] = useState(false);
 }
 
 
-const HeaderView = ({navigation, route}) => {
-  const [collapsed, setCollapsed] = useState(true);
+const MemberPics = ({memberIds}) => {
+  const [collapsed, setCollapsed] = useState(false);
+  const [membersData, setMembersData] = useState([]);
+
+  console.log(membersData, memberIds);
+  useEffect(()=>{
+    console.log(memberIds, 'undefined?');
+    fetch('https://us-central1-flock-46ffc.cloudfunctions.net/getUsers', {
+      method: 'POST',
+      body: {"membersIds": memberIds || []},
+      headers: { 'Content-Type': 'application/json' }
+  }).then(res => res.json()
+  .then((json)=>{
+    console.log(json);
+  }).catch((err)=>console.log('error one',err))
+  ).catch(err=>console.log('errrorrr',err))
+    
+  },[]);
+  // return <Text>hi</Text>
   return <View
   style={{
-    position: 'absolute',
-    zIndex: 90,
-
     borderBottomColor: '#efefef',
     borderBottomWidth: 1,
     height: 100,
@@ -590,81 +609,54 @@ const HeaderView = ({navigation, route}) => {
     // borderBottomLeftRadius: 15,
     // borderBottomRightRadius: 15,
   }}>
-    <LinearGradient
-    colors={[constants.TRANSLUCENT, 'white']}
-    start={{ x: 0, y: 0 }} end={{ x: 0, y: 1 }}
-    style={{
-      flex: 1,
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems: 'flex-end',
-      paddingLeft: 20,
-      paddingBottom: 20,
-      // borderBottomRightRadius:20,
-      // borderBottomLeftRadius: 20,
-      //shadowColor: "#ff7009", shadowOffset: {height: 10, width: 0}, shadowOpacity: 0.39, elevation: 13, shadowRadius: 28.30,
-      //alignItems: 'center',
-    }}>
     
-          <TouchableOpacity onPress={()=>{ navigation.goBack()}}><Image style={{width: 35, height: 35}} source = {require('App/Assets/Images/Back_Icon.png')} />
-          </TouchableOpacity>
+
           
           <TouchableOpacity onPress={()=>{ setCollapsed(!collapsed); }}>
-  <View>
-    
-  <Text style={{fontSize: 14, textAlign: 'center',}}>%{route.params.data.id}</Text>
+            <Text>Touchme</Text>
+          </TouchableOpacity>
+  <View style={{backgroundColor: 'yellow'}}>
   {/* <Countdown dateObj={route.params.data.time} fontSize={18} /> */}
   
-  {/* <Collapsible collapsed={collapsed}>
+  <Collapsible collapsed={collapsed}>
+    <Text>Shown text</Text>
     <ScrollView horizontal >
-  {route.params.data.members.map((item)=>{
-    const buyer = item.name;
-    const user = firebase.auth().currentUser;
+  {membersData.map((item)=>{
+    const name = item.displayName;
+    const picture = item.photoURL;
   return <View>
   <Image
+  defaultSource={constants.PLACEHOLDER_IMAGE}
     key={Math.random()}
     style={{
-      height: buyer === user.displayName ? 50 : 46,
+      height: 46,
       marginRight: 10,
       marginTop: 10,
-      width: buyer === user.displayName ? 50 : 46,
+      width: 46,
       borderWidth: 3,
       borderColor:
-        buyer === user.displayName ? '#3cf' : 'transparent',
+        'transparent',
       borderRadius: 50,
     }}
-    source={{uri: 'https://placeimg.com/140/140/any'}}
+    source={{uri: picture}}
   />
   <Text
     numberOfLines={1}
     style={{
-      fontWeight:
-        buyer === user.displayName ? 'bold' : 'normal',
-      color: buyer === user.displayName ? '#3cf' : 'black',
+      color: 'black',
       fontSize: 10,
       width: 48,
       textAlign: 'center',
       overflow: 'hidden',
     }}>
-    {buyer === user.displayName ? 'You' : buyer}
+    {name}
   </Text>
 </View>;
   })}
       </ScrollView>
-      </Collapsible> */}
+      </Collapsible>
   </View>
-  </TouchableOpacity>
-  {/* <Button
-    title="
-      ⓘ"
-    onPress={() => {
-      navigation.navigate('Info', {
-        friends: [],
-        data: route.params.data,
-      });
-    }}
-  /> */}
-  </LinearGradient>
+
 </View>
 };
 
