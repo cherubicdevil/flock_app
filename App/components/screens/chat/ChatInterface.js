@@ -587,11 +587,11 @@ const MemberPics = ({memberIds}) => {
     console.log(memberIds, 'undefined?');
     fetch('https://us-central1-flock-46ffc.cloudfunctions.net/getUsers', {
       method: 'POST',
-      body: {"membersIds": memberIds || []},
+      body: JSON.stringify({"membersIds": memberIds || []}),
       headers: { 'Content-Type': 'application/json' }
   }).then(res => res.json()
   .then((json)=>{
-    console.log(json);
+    setMembersData(json.result);
   }).catch((err)=>console.log('error one',err))
   ).catch(err=>console.log('errrorrr',err))
     
@@ -599,9 +599,6 @@ const MemberPics = ({memberIds}) => {
   // return <Text>hi</Text>
   return <View
   style={{
-    borderBottomColor: '#efefef',
-    borderBottomWidth: 1,
-    height: 100,
     width: '100%',
     top: 0,
 
@@ -611,15 +608,14 @@ const MemberPics = ({memberIds}) => {
   }}>
     
 
-          
+  
           <TouchableOpacity onPress={()=>{ setCollapsed(!collapsed); }}>
-            <Text>Touchme</Text>
+            <Text style={{marginLeft: 20, marginTop: 10}}>Your co-flockers <Icon name="chevron-down" /></Text>
           </TouchableOpacity>
-  <View style={{backgroundColor: 'yellow'}}>
+  <View style={{marginHorizontal: 20}}>
   {/* <Countdown dateObj={route.params.data.time} fontSize={18} /> */}
   
   <Collapsible collapsed={collapsed}>
-    <Text>Shown text</Text>
     <ScrollView horizontal >
   {membersData.map((item)=>{
     const name = item.displayName;
