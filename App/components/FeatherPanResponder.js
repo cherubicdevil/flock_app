@@ -340,7 +340,11 @@ const FeatherPanResponder = React.memo(({index, positions, currIndex, setCurrent
         onPanResponderMove: (event, gesture) => {
             if (gesture.dy > 0) {
                 if (isUp) {
-                    if (isTop) position.setValue({ x: gesture.dx, y: gesture.dy });
+                    if (isTop) {
+                        position.setValue({ x: gesture.dx, y: gesture.dy });
+                    } else {
+                        positions[index+1].setValue({y: gesture.dy-500, x: 0+ gesture.dx});
+                    }
                     return;
                 }
                 if (!isDown && !isUp) {
@@ -383,6 +387,15 @@ const FeatherPanResponder = React.memo(({index, positions, currIndex, setCurrent
                   return;
             }
             if (gesture.dy > 0) {
+                if (isUp && !isTop) {
+                    Animated.timing(positions[index], {
+                        useNativeDriver: false,
+                        toValue: {y:0, x: 0},
+                        delay: 0,
+                        duration: 200,
+                      }).start();
+                    return;
+                }
                 outofwayAnimation(gesture.dx > 0);
                 setTimeout(()=>{
                     setCurrentIndex({curr:currentIndex - 1, prev: currentIndex});
@@ -455,8 +468,8 @@ const FeatherPanResponder = React.memo(({index, positions, currIndex, setCurrent
         borderTopLeftRadius: 70, borderTopRightRadius: 70, overflow: 'hidden', alignSelf: 'center', opacity: fade, justifyContent: 'center', position: 'absolute', top: position.getLayout().top, marginTop: topAnim, marginLeft: leftAnim, left: position.getLayout().left, zIndex: index + 50, height: viewHeight - 35, width: widthAnim, borderWidth:0, backgroundColor: 'white'}} {...panResponder.panHandlers}>
             <Animated.View style={{position: 'absolute', zIndex: 400, top: 30, right: 30, opacity: position.getLayout().top
             .interpolate({
-                inputRange: [-200,-10,0, 10],
-                outputRange: [0,100,0,1000] })
+                inputRange: [-500,-100,0, 100],
+                outputRange: [0,1,0,1] })
             }}
                 >
                 <Text style={{color:'black'}}>Swipe</Text>
