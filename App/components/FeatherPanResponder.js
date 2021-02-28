@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useContext} from 'react';
-import {View, Text, PanResponder, Animated, Dimensions} from 'react-native';
+import {View, Text, PanResponder, Animated, Dimensions,Image} from 'react-native';
 import {constants } from 'App/constants';
 import {useDispatch, useSelector, useStore} from 'react-redux';
 import {fetchAlbums} from 'App/utils';
@@ -466,15 +466,14 @@ const FeatherPanResponder = React.memo(({index, positions, currIndex, setCurrent
                 outputRange: ['0deg', '45deg'] })}
           ],
         borderTopLeftRadius: 70, borderTopRightRadius: 70, overflow: 'hidden', alignSelf: 'center', opacity: fade, justifyContent: 'center', position: 'absolute', top: position.getLayout().top, marginTop: topAnim, marginLeft: leftAnim, left: position.getLayout().left, zIndex: index + 50, height: viewHeight - 35, width: widthAnim, borderWidth:0, backgroundColor: 'white'}} {...panResponder.panHandlers}>
-            <Animated.View style={{position: 'absolute', zIndex: 400, top: 30, right: 30, opacity: position.getLayout().top
+            {/* <Animated.View style={{position: 'absolute', zIndex: 400, top: 30, right:30, opacity: position.getLayout().top
             .interpolate({
                 inputRange: [-500,-100,0, 100],
                 outputRange: [0,1,0,1] })
             }}
                 >
-                <Text style={{color:'black'}}>Swipe</Text>
-                <Icon name="arrow-down" color={constants.LAVENDER} size={35} />
-            </Animated.View>
+                <Image source={require('App/Assets/Images/updown_swipe.png')} style={{height: 70, width: 70, shadowOpacity:0.2, shadowOffset:{height:5, width:0}, shadowRadius:5,}} />
+            </Animated.View> */}
             {content}
             </Animated.View>
 
