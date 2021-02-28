@@ -32,6 +32,8 @@ import NavBar from 'App/components/common/NavBar';
 import {GiftedChat} from 'react-native-gifted-chat';
 import AnimatedModal from 'App/components/AnimatedModal';
 
+import TooltipFirst from 'App/components/TooltipFirst';
+
 import Checkout from 'App/components/Checkout';
 import {useFocusEffect} from '@react-navigation/native';
 import PriceSlider from 'App/components/PriceSlider';
@@ -267,9 +269,8 @@ return <ScrollView  style={{marginLeft: 15, overflow: 'visible', backgroundColor
         <NewTutorial screenId = "chatinterface">
         <Text style={{color: 'white', position: 'absolute', bottom: '50%', left: 20, fontFamily: 'Noteworthy-Bold', fontSize: 18}}>Pay attention to the specifications here.</Text>
         <Text style={{color: 'white', position: 'absolute', top: 70, right: 20,width: 170, fontFamily: 'Noteworthy-Bold', fontSize: 18}}>Reach 100% before time runs out. Share!</Text>
-        <Text style={{color: 'white', position: 'absolute',  top: '20%', right: '30%',width: 150,fontFamily: 'Noteworthy-Bold', fontSize: 18}}>Change how much you want to pay.</Text>
-        {/* <Text style={{color: 'white', position: 'absolute', top: 100, left: 20,width: 100}}>Light orange shows how much others are contributing.</Text> */}
-        <Text style={{position: 'absolute', bottom: 100, textAlign: 'center',alignSelf:'center', color: 'white', width: 250,fontFamily: 'Noteworthy-Bold', fontSize: 18}}>Once you join, you can chat with your fellow flockers.</Text>
+        <Text style={{color: 'white', position: 'absolute',  top: '20%', right: '30%',width: 150,fontFamily: 'Noteworthy-Bold', fontSize: 18}}>Change your ownership percentage.</Text>
+        <Text style={{position: 'absolute', bottom: 130, textAlign: 'center',alignSelf:'center', color: 'white', width: 250,fontFamily: 'Noteworthy-Bold', fontSize: 18}}>Once you join, you can chat with your fellow flockers.</Text>
       </NewTutorial>
   <Wrapper>
 <HeaderGradient navigation={navigation} absolute={false} >
@@ -311,10 +312,14 @@ return <ScrollView  style={{marginLeft: 15, overflow: 'visible', backgroundColor
             {/* <Text style={{color:'white', marginBottom: 10, fontWeight: 'bold'}}>Current flock price: ${route.params.data?.product?.price || ""}</Text> */}
             {/* <Text style={{color:'white', marginBottom: 10, fontWeight: 'bold'}}>Total price: ${route.params.data?.product?.price || ""}</Text> */}
             
-            {part?<PriceSlider key={Math.random()} othersPercent={100-remainingPercent} remainingPercent={Math.min(68,remainingPercent)} priceShare = {priceShare} priceShareInitialPercent={parseFloat(priceShare) / parseFloat(route.params.data.product.price) * 100} completeFunc={completeFunc} productPrice={route.params.data.product.price} maximums={route.params.data.maximums} />:
+            {part?
+            
+            <PriceSlider key={Math.random()} othersPercent={100-remainingPercent} remainingPercent={Math.min(68,remainingPercent)} priceShare = {priceShare} priceShareInitialPercent={parseFloat(priceShare) / parseFloat(route.params.data.product.price) * 100} completeFunc={completeFunc} productPrice={route.params.data.product.price} maximums={route.params.data.maximums} />
+            :
             <PriceTextPreview remainingPercent={remainingPercent} productPrice={route.params.data.product.price} />
             }
             </View>
+            {/* <TooltipFirst tooltipId="slider" width={100} height={100} info="Slide to adjust your ownership."><Text>Hi</Text></TooltipFirst> */}
             <TouchableOpacity onPress={()=>{
               navigation.navigate("Product", {album: route?.params?.data?.product, data: route.params.data, id: route?.params?.data?.id});
             }}>

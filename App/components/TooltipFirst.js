@@ -23,7 +23,7 @@ const getData = async (screenId) => {
   }
 }
 
-const TooltipFirst = ({children, tooltipId, info, style, component, width=150}) => {
+const TooltipFirst = ({children, tooltipId, info, style, component, width=150, height=50}) => {
     const toolRef= useRef();
 
     const renderText = ()=>{
@@ -55,6 +55,7 @@ const TooltipFirst = ({children, tooltipId, info, style, component, width=150}) 
     return <Tooltip 
     // pointerColor="transparent"
     width={width}
+    height={height}
     toggleOnPress={false}
     backgroundColor="transparent"
     overlayColor='rgba(0, 0, 0, 0.7)'
