@@ -49,7 +49,9 @@ const TooltipFirst = ({children, tooltipId, info, style, component, width=150, h
                 }
             }
         })
-        toolRef.current.toggleTooltip();
+
+        
+        // toolRef.current.toggleTooltip();
         return ()=>{
             used=true;
         }
@@ -70,8 +72,9 @@ const TooltipFirst = ({children, tooltipId, info, style, component, width=150, h
     // containerStyle={{borderColor: 'white', borderWidth:1, overflow: 'visible'}}
     pointerStyle={{borderColor:'white', borderWidth:1}}
     onClose={()=>{
+      setShowGif(true);
         storeData(tooltipId);
-        setShowGif(true);
+
         setTimeout(()=>{
           setShowGif(false);
         }, 1200);

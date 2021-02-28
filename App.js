@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Alert} from 'react-native';
+import {View, Alert, Text} from 'react-native';
 import AnimatedSplash from 'react-native-animated-splash-screen';
 import {firebase, au} from 'App/firebase/config';
 import {Provider} from 'react-redux';
@@ -43,6 +43,7 @@ class App extends React.Component {
             store={createStore(reducers, {userInfo: this.state.userData})}>
               <PortalProvider>
               <Portal.Host>
+                {/* <Text style={{position: 'absolute', zIndex: 500, top: 200,}}>Hello word</Text> */}
             <AppNavigator />
             </Portal.Host>
             </PortalProvider>
