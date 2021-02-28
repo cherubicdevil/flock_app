@@ -31,7 +31,7 @@ const NewTutorial = ({children, screenId, absolutePosition={left: 0, top: 0, rig
             console.log(data, "new player?");
             if (!used) {
                 if (data !== null) {
-                // setVisible(!data=='true');
+                setVisible(!data==='true');
                 }
             }
         })

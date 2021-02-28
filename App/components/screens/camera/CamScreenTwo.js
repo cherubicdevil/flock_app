@@ -94,7 +94,7 @@ const CamScreenTwo = ({navigation, route}) => {
     getStorage().then((data)=>{
       if (!used) {
           if (data !== null) {
-          // setNewImport(data==='true');
+          setNewImport(data==='true');
           }
       }
   });
@@ -513,6 +513,7 @@ const CamScreenTwo = ({navigation, route}) => {
   <Text style={{color: 'white', textAlign: 'center'}}>Got it</Text>
 </View> */}
 <Dialog.Button label="Got it" onPress={()=>{
+  setStorage();
   headerCloseFunc();
 }} style={{ width: '100%', resizeMode: 'contain'}} />
 </Dialog.Container>

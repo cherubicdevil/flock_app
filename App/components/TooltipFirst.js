@@ -40,9 +40,9 @@ const TooltipFirst = ({children, tooltipId, info, style, component, width=150, h
             if (!used) {
                 if (data !== null) {
                 // setVisible(!data=='true');
-                // if (!data === 'true') {
-                //     toolRef.current.toggleTooltip();
-                // }
+                if (!data === 'true') {
+                    toolRef.current.toggleTooltip();
+                }
                 }
             }
         })
