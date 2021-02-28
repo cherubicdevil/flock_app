@@ -1,4 +1,4 @@
-import React, {useRef, useState,Fragment} from 'react';
+import React, {useRef, useState,Fragment, useEffect} from 'react';
 import {WebView} from 'react-native-webview';
 
 import {
@@ -32,10 +32,38 @@ import { CommonActions } from '@react-navigation/native';
 import AnimatedModal from 'App/components/AnimatedModal';
 import LinearGradient from 'react-native-linear-gradient';
 import {pinLocalFunc} from 'App/utils';
-import { set } from 'react-native-reanimated';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
+const setStorage = async () => {
+  console.log('storing');
+  try {
+    await AsyncStorage.setItem('@flock_new_import', 'true')
+    console.log('done storing');
+  } catch (e) {
+    console.log('error', e)
+  }
+}
+
+const getStorage = async () => {
+  try {
+    const value = await AsyncStorage.getItem('@flock_new_import')
+    return value;
+  } catch(e) {
+    console.log('error',e);
+  }
+}
 
 // const jsCode = 'window.ReactNativeWebView.postMessage(document.documentElement.innerHTML)'
+// const jsCode = `function waitForBridge() {
+// if (window.ReactNativeWebView.postMessage.length !== 1){
+//     setTimeout(waitForBridge, 200);
+//   }
+//   else {
+//     window.ReactNativeWebView.postMessage(document.documentElement.innerHTML)
+//   }
+// }
+
+// window.onload = waitForBridge;`;
 const jsCode = 'setTimeout(()=>window.ReactNativeWebView.postMessage(document.documentElement.innerHTML),500)';
 
 const cleanPrice = (price) => {
@@ -50,6 +78,8 @@ const CamScreenTwo = ({navigation, route}) => {
   var urlResult = "";
   const [htmlBody, setHtml] = useState("");
 
+  const [newImport, setNewImport] = useState(true);
+  const [newImportVisible, setNewImportVisible] = useState(false);
 
   const [pinned, setPinned] = useState(false);
 
@@ -59,7 +89,19 @@ const CamScreenTwo = ({navigation, route}) => {
   const [canGoForward, setCanGoForward] = useState(false);
 
   
-
+  useEffect(()=>{
+    var used = false;
+    getStorage().then((data)=>{
+      if (!used) {
+          if (data !== null) {
+          // setNewImport(data==='true');
+          }
+      }
+  });
+  return ()=>{
+    used = true;
+  }
+  },[]);
   
 
  const pinFunc=() => {
@@ -387,13 +429,15 @@ const CamScreenTwo = ({navigation, route}) => {
 
   return (
     <Fragment><SafeAreaView style={{ flex: 0, backgroundColor: constants.TRANSLUCENT }} />
-    <SafeAreaView style={{flex: 1}}>
+    <SafeAreaView style={{flex: 1, backgroundColor: constants.PINK_BACKGROUND_OPAQUE}}>
+      
     <KeyboardAvoidingView
       style={{flex: 1, backgroundColor: constants.PINK_BACKGROUND_OPAQUE}}
       behavior="padding"
       keyboardVerticalOffset={0}>
         
       <View behavior="height" keyboardVerticalOffset={0} style={{flex: 1}}>
+
         <View
           style={{
             height: enlarge ? 1000 : 0,
@@ -441,6 +485,8 @@ const CamScreenTwo = ({navigation, route}) => {
         onPress={()=>{
           if (!confirmedDialog) {
           openDialog(true);
+          } else if (newImport) {
+            setNewImportVisible(true);
           } else {
             headerCloseFunc();
           }
@@ -459,8 +505,20 @@ const CamScreenTwo = ({navigation, route}) => {
       </TouchableOpacity>
       </View>
 </HeaderGradient>
-        
+<Dialog.Container visible={newImportVisible}>
+
+            <Dialog.Title>Saved</Dialog.Title>
+<Image source={require('App/Assets/Images/pinExample.png')} style={{width:'100%',height: 500,resizeMode: 'contain',}} />
+{/* <View style={{height: newImportVisible?50:0, width: 100, position: 'absolute', bottom: 30, backgroundColor: constants.ORANGE, alignSelf: 'center',justifyContent: 'center', borderRadius: 40}}>
+  <Text style={{color: 'white', textAlign: 'center'}}>Got it</Text>
+</View> */}
+<Dialog.Button label="Got it" onPress={()=>{
+  headerCloseFunc();
+}} style={{ width: '100%', resizeMode: 'contain'}} />
+</Dialog.Container>
         <ScrollView scrollEnabled={false} style={{flex: 1, zIndex: -100, backgroundColor: constants.PINK_BACKGROUND_OPAQUE, marginTop: 10}}>
+
+          
           <View style={{paddingLeft: 20, paddingTop: 10, paddingRight: 20, backgroundColor: 'white', paddingBottom: 10, }}>
             
             <TouchableOpacity style={[{padding: 10, backgroundColor: 'white', borderRadius: 50, borderWidth: 1, borderColor: constants.DARKGREY}]} value={""} onPress={()=>{
@@ -532,6 +590,7 @@ const CamScreenTwo = ({navigation, route}) => {
                   console.log('got the html finally');
               }}
                 onNavigationStateChange={(webViewState) => {
+                  webviewRef.current.postMessage();
                   setUrlState(webViewState.url);
                   setSearchUrl(webViewState.url);
                   console.log('WEBVIEWTATE', webViewState);
@@ -629,13 +688,25 @@ const CamScreenTwo = ({navigation, route}) => {
     <Dialog.Description>
       Press "Done" again to continue to finish.
     </Dialog.Description> */}
-    
-    <Dialog.Button label="Done" onPress={()=>{
+    <View style={{flexDirection: 'row', marginBottom: 10}}>
+        <Dialog.Button label="Edit More" onPress={()=>{
         // send the email
       openDialog(false);
       setConfirmedDialog(true);
       
     }}/>
+    <Dialog.Button label="I'm Done" onPress={()=>{
+        // send the email
+      if (newImport) {
+        openDialog(false);
+        setNewImportVisible(true);
+      } else {
+        
+        headerCloseFunc();
+      }
+      
+    }}/>
+    </View>
   </Dialog.Container>
     </SafeAreaView></Fragment>
   );

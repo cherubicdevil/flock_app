@@ -818,6 +818,7 @@ const pinLocalFunc = (htmlBody, notBaseURL) => {
   }
 
   title =
+  $("meta[property='og:title']").attr("content") ||
     $("meta")
       .filter(function () {
         return (
@@ -828,7 +829,7 @@ const pinLocalFunc = (htmlBody, notBaseURL) => {
         );
       })
       .attr("content") ||
-    $("meta[property='og:title']").attr("content") ||
+
     $("title").text() ||
     $('meta[name="keywords"]').attr("content");
 
