@@ -1,4 +1,5 @@
 import {uploadUserInfo, getIndexOfData} from '../../utils';
+import {firebase, au, db} from 'App/firebase/config';
 
 export default function (state = {likedVideos: [], eggCoins: 0}, action) {
   switch (action.type) {
@@ -55,11 +56,18 @@ export default function (state = {likedVideos: [], eggCoins: 0}, action) {
     case 'spendEggs':
       const num = action.payload;
       if (num <= state.eggCoins ) {
+        db.collection('users').doc(au.currentUser.uid).update({
+          eggCoins: firebase.firestore.FieldValue.increment(-num)
+      });
         return { ...state, eggCoins: state.eggCoins - num};
       }
       
       return state;
     case 'getEggs':
+      db.collection('users').doc(au.currentUser.uid).update({
+        eggCoins: firebase.firestore.FieldValue.increment(action.payload)
+    });
+
       return { ...state, eggCoins: state.eggCoins + action.payload};
     default:
       return state;
