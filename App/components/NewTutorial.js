@@ -1,10 +1,12 @@
 import React, {useEffect, useState} from 'react';
-import {View, TouchableOpacity} from 'react-native';
+import {View, TouchableOpacity, Image} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { RGBADepthPacking } from 'three';
+import {Portal} from 'react-native-paper';
 
 const NewTutorial = ({children, screenId, absolutePosition={left: 0, top: 0, right: 0, bottom: 0}}) => {
     const [visible, setVisible] = useState(true);
+    const [showGif, setShowGif] = useState(false);
 
     const storeData = async () => {
         console.log('storing');
@@ -31,7 +33,7 @@ const NewTutorial = ({children, screenId, absolutePosition={left: 0, top: 0, rig
             console.log(data, "new player?");
             if (!used) {
                 if (data !== null) {
-                setVisible(!data==='true');
+                // setVisible(!data==='true');
                 }
             }
         })
@@ -44,7 +46,11 @@ const NewTutorial = ({children, screenId, absolutePosition={left: 0, top: 0, rig
     return <View style={{position: 'absolute', zIndex: 3000, top: 0, height: visible?'100%':0, width: visible?'100%':0, backgroundColor: 'rgba(0,0,0,0.8)', overflow:'hidden'}}>
         <TouchableOpacity style={{height: '100%', width: '100%'}} onPress={()=>{
             storeData();
-            setVisible(false);
+            setShowGif(true);
+            setTimeout(()=>{
+              setVisible(false);
+            },1200);
+
 
         }}>
             <View style={{height:'100%', width: '100%',paddingHorizontal: 20, justifyContent: 'center', color: 'white'}}>
@@ -52,6 +58,9 @@ const NewTutorial = ({children, screenId, absolutePosition={left: 0, top: 0, rig
             </View>
 
         </TouchableOpacity>
+        <Portal>
+          <Image source={require('App/Assets/Images/egg-anim-proto.gif')} style={{width:visible && showGif?'120%':0, position: 'absolute', bottom: 30, right: "-32%"}} />
+        </Portal>
     </View>
 }
 

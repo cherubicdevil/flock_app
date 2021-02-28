@@ -10,6 +10,9 @@ import AuthNavigator from 'App/navigators/AuthNavigator';
 import reducers from 'App/redux/reducers';
 import {fetchUserData} from './App/utils';
 
+import {Portal} from 'react-native-paper';
+import {Provider as PortalProvider} from "react-native-paper";
+
 class App extends React.Component {
   state = {
     isLoaded: false,
@@ -38,7 +41,11 @@ class App extends React.Component {
         return (
           <Provider
             store={createStore(reducers, {userInfo: this.state.userData})}>
+              <PortalProvider>
+              <Portal.Host>
             <AppNavigator />
+            </Portal.Host>
+            </PortalProvider>
           </Provider>
         );
       case false:
