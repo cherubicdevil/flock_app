@@ -88,6 +88,8 @@ const CamScreenTwo = ({navigation, route}) => {
   const [canGoBack, setCanGoBack] = useState(false);
   const [canGoForward, setCanGoForward] = useState(false);
 
+  const [errorMessage, setErrorMessage] = useState("");
+
   
   useEffect(()=>{
     var used = false;
@@ -332,6 +334,7 @@ const CamScreenTwo = ({navigation, route}) => {
               </View>
             </View>
           </View>
+          <Text style={{color:'red'}}>{errorMessage}</Text>
             </View>
             {/* <View style={{flex: 2}}>
               <View
@@ -483,6 +486,9 @@ const CamScreenTwo = ({navigation, route}) => {
           height: '100%',
         }}
         onPress={()=>{
+          if (priceState === "") {
+            setErrorMessage("Looks like you forgot something.")
+          } else
           if (!confirmedDialog) {
           openDialog(true);
           } else if (newImport) {

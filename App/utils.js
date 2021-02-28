@@ -852,7 +852,7 @@ const {price: price, image: imageUrl, title: title, imageSet: imageSet} = getPri
 console.log('url', notBaseURL);
 const data = {
   url: notBaseURL,
-  brand: notBaseURL.split('.')[1],
+  brand: notBaseURL.split('.com')[0].split(".")[1],
   title: title.trim().split(/[^/\S ]/)[0],
   image: imageUrl.indexOf("?")>-1?imageUrl.split("?")[0]:imageUrl,
   price: price.split("\n")[0],
