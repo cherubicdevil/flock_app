@@ -470,7 +470,7 @@ const JoinDialog = ({navigation, route, data, setCreditModal, initialDialog, set
   const [initialPercent, setInitialPercent] = useState(8);
 
   return <Dialog.Container visible={initialDialog}>
-  <Dialog.Title>Set Your Price</Dialog.Title>
+  <Dialog.Title>Choose Your Share</Dialog.Title>
   <Dialog.Description>
     The more you pay, the more you own. The more you can use.
   </Dialog.Description>
