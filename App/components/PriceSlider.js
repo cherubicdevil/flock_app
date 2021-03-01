@@ -46,7 +46,7 @@ import Countdown from 'App/components/Countdown';
 
 
 
-const PriceSlider = ({priceShareInitialPercent, completeFunc=()=>{}, productPrice, othersPercent, remainingPercent, maximums, setOutsideState=()=>{}, confirm=true, showInfo = true, initialSlider = false, maximumWidth=Dimensions.get('window').width *.65}) => {
+const PriceSlider = ({priceShareInitialPercent, completeFunc=()=>{}, productPrice, othersPercent, remainingPercent, maximums, setOutsideState=()=>{}, confirm=true, showInfo = true, initialSlider = false, maximumWidth=Dimensions.get('window').width *.55}) => {
     console.log(priceShareInitialPercent+"%");
     const [initialPercent, setInitialPercent] = useState(priceShareInitialPercent);
     const [pricePercent, setPricePercent] = useState(initialPercent);
@@ -107,6 +107,9 @@ const PriceSlider = ({priceShareInitialPercent, completeFunc=()=>{}, productPric
       </Text></View>
       <View style={{flexDirection: 'row', alignItems: 'center'}}>
 
+
+
+      <View style={{flex: 1, flexDirection: 'row', paddingLeft: 10, alignItems: 'center',justifyContent: 'space-between', alignSelf: 'center', alignSelf: 'center'}}>
       <View style={{borderRadius: 40, backgroundColor: constants.ORANGE, width: 30, height: 30, justifyContent: 'center', alignItems: 'center'}}>
           <TouchableOpacity onPress={()=>{
             if (pricePercent>=0) {
@@ -120,9 +123,8 @@ const PriceSlider = ({priceShareInitialPercent, completeFunc=()=>{}, productPric
             <Icon name="minus" color="white" size={27} />
           </TouchableOpacity>
         </View>
-
-      <View style={{flex: 1, flexDirection: 'row', paddingLeft: 10, alignItems: 'center', justifyContent: 'space-between', alignSelf: 'center', alignSelf: 'center'}}>
-              <View style={{flexDirection:'row', width: maximumWidth+ 30,alignItems: 'center'}}>
+              
+              <View style={{flexDirection:'row', width: maximumWidth+ 30,alignItems: 'center', alignSelf: 'center',}}>
               <View style={{width: othersPercent*maximumWidth/100 + 15,  height: 15, backgroundColor: initialSlider || othersPercent==0?constants.ORANGE:constants.GREYORANGE, borderBottomLeftRadius: 40, borderTopLeftRadius: 40}}/>
             <View style={{flex:remainingPercent, marginRight: 0, paddingRight: 0}}>
             
@@ -175,7 +177,7 @@ const PriceSlider = ({priceShareInitialPercent, completeFunc=()=>{}, productPric
   </View>
   <View style={{width: (100-othersPercent-remainingPercent)*maximumWidth/100+ 15,  height: 15, backgroundColor: othersPercent+pricePercent>=100?constants.ORANGE:constants.BLUERGREY, borderBottomRightRadius: 40, borderTopRightRadius: 40, zIndex: -40}}/>
   </View>
-  <View style={{borderRadius: 40, backgroundColor: constants.ORANGE, width: 30, height: 30, marginLeft: 10, justifyContent: 'center', alignItems: 'center', zIndex: -40}}>
+  <View style={{borderRadius: 40, backgroundColor: constants.ORANGE, width: 30, height: 30, marginLeft: 0, justifyContent: 'center', alignItems: 'center', zIndex: -40}}>
           <TouchableOpacity onPress={()=>{
             if (pricePercent < remainingPercent && pricePercent < 100) {
               setPricePercent(pricePercent+4);
