@@ -301,7 +301,7 @@ const ProfileMain = ({navigation}) => {
           <Text style={{color: constants.LIGHTGREY, fontSize: 17}}>Logout</Text>
           </TouchableOpacity>
 
-          <Button title="clear storage" onPress={async() => {
+          <Button title="Reset Tutorials" onPress={async() => {
     // AsyncStorage.clear();
     AsyncStorage.getAllKeys().then(AsyncStorage.multiRemove)
 }}>

@@ -152,7 +152,7 @@ const ProgressHeader = ({
               checkOpen();
             } else {
             nextFunc();
-            navigation.navigate(nextRoute, {index: index+1, data: data, flockId: idText.replace("%","")});
+            navigation.navigate(nextRoute, {index: index+1, data: data, flockId: idText.replace("id: %","")});
             }
           } else {
             Alert.alert('Please fill out the information. Type "NA" if not applicable.')

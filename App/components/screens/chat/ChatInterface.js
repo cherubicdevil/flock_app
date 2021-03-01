@@ -265,6 +265,8 @@ return <ScrollView  style={{marginLeft: 15, overflow: 'visible', backgroundColor
   // useEffect(()=>{
   //   giftedRef.current.scrollToBottom();
   // },[]);
+
+  console.log("id? is a numbeer",route.params.data.id);
   return (<>
         <NewTutorial screenId = "chatinterface">
         <Text style={{color: 'white', position: 'absolute', bottom: '55%', left: 20, fontFamily: 'Noteworthy-Bold', fontSize: 18}}>Pay attention to the specifications here.</Text>
@@ -318,7 +320,7 @@ return <ScrollView  style={{marginLeft: 15, overflow: 'visible', backgroundColor
             
             {part?
             
-            <PriceSlider key={Math.random()} othersPercent={100-remainingPercent} remainingPercent={Math.min(68,remainingPercent)} priceShare = {priceShare} priceShareInitialPercent={parseFloat(priceShare) / parseFloat(route.params.data.product.price) * 100} completeFunc={completeFunc} productPrice={route.params.data.product.price} maximums={route.params.data.maximums} />
+            <PriceSlider key={Math.random()} othersPercent={100-remainingPercent} remainingPercent={Math.min(68,remainingPercent)} priceShare = {priceShare} priceShareInitialPercent={parseFloat(priceShare)/ parseFloat(route.params.data.product.price*1.4) * 100} completeFunc={completeFunc} productPrice={route.params.data.product.price} maximums={route.params.data.maximums} />
             :
             <PriceTextPreview remainingPercent={remainingPercent} productPrice={route.params.data.product.price} />
             }
@@ -486,7 +488,7 @@ const JoinDialog = ({navigation, route, data, setCreditModal, initialDialog, set
         </TouchableOpacity>
       </View> */}
 <View style={{flexDirection:'column',}}>
-      <PriceSlider confirm={false} showInfo={true} maximumWidth={100} othersPercent={100-remainingPercent} remainingPercent={Math.min(68,remainingPercent)} priceShare = {0} priceShareInitialPercent={0} productPrice={route.params.data.product.price} maximums={route.params.data.maximums} />
+      <PriceSlider confirm={false} showPlusMinus={false}  showInfo={true} maximumWidth={150} othersPercent={100-remainingPercent} remainingPercent={Math.min(68,remainingPercent)} priceShare = {0} priceShareInitialPercent={0} productPrice={route.params.data.product.price} maximums={route.params.data.maximums} />
       </View>
       {/* <View style={{width: 100, alignSelf: 'center'}}>
       <Text style={{width: 100, textAlign: 'center',fontSize:14, fontWeight: 'bold'}}>${(parseFloat(productPrice) * initialPercent/100).toFixed(2)}</Text>
@@ -556,7 +558,7 @@ const [infoModal, setInfoModal] = useState(false);
   </View>
   </View>
   <View style={{flexDirection: 'row', alignItems: 'center'}}>
-  <View style={{flex: 1, marginTop: 10, flexDirection: 'row', paddingLeft: 10, alignItems: 'center', justifyContent: 'center', alignSelf: 'center'}}>
+  <View style={{flex: 1, marginTop: 10, flexDirection: 'row', paddingLeft: 0, alignItems: 'center', justifyContent: 'center', alignSelf: 'center'}}>
   <View style={{width: barHeight,  height: barHeight, backgroundColor: constants.GREYORANGE, borderBottomLeftRadius: 40, borderTopLeftRadius: 40}}/>
           <View style={{flex: 100-remainingPercent,  height: barHeight, backgroundColor: constants.GREYORANGE, borderBottomLeftRadius: 0, borderTopLeftRadius: 0}}/>
         <View style={{flex:remainingPercent, marginRight: 0, paddingRight: 0, borderTopRightRadius: 40, borderBottomRightRadius: 40,backgroundColor: constants.PINK_BACKGROUND_OPAQUE, borderColor: constants.GREYORANGE, borderWidth: 1,height: barHeight,}}>
