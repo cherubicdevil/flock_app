@@ -486,7 +486,7 @@ const JoinDialog = ({navigation, route, data, setCreditModal, initialDialog, set
         </TouchableOpacity>
       </View> */}
 <View style={{flexDirection:'column',}}>
-      <PriceSlider confirm={false} showInfo={true} maximumWidth={70} othersPercent={100-remainingPercent} remainingPercent={Math.min(68,remainingPercent)} priceShare = {0} priceShareInitialPercent={0} productPrice={route.params.data.product.price} maximums={route.params.data.maximums} />
+      <PriceSlider confirm={false} showInfo={true} maximumWidth={100} othersPercent={100-remainingPercent} remainingPercent={Math.min(68,remainingPercent)} priceShare = {0} priceShareInitialPercent={0} productPrice={route.params.data.product.price} maximums={route.params.data.maximums} />
       </View>
       {/* <View style={{width: 100, alignSelf: 'center'}}>
       <Text style={{width: 100, textAlign: 'center',fontSize:14, fontWeight: 'bold'}}>${(parseFloat(productPrice) * initialPercent/100).toFixed(2)}</Text>
