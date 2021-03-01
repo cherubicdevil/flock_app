@@ -13,7 +13,7 @@ const KeyContext = createContext();
 const InitialText = () => {
     return <View style={{alignSelf: 'center', width: 200,marginTop: 30,}}>
         <View style={{alignSelf: 'center', paddingBottom: 20}}>
-        <Icon name="arrow-circle-o-up" size={25} color={constants.LAVENDER} />
+        <Icon name="long-arrow-up" size={35} color={constants.LAVENDER} />
         </View>
         <Text style={{color: constants.LAVENDER, textAlign: 'center'}}>Search for products and flocks within our app.</Text>
         <Text style={{color: constants.LAVENDER, textAlign: 'center', marginTop: 20}}>If you're looking for a specific flock, prepend "%" before the id.</Text>
@@ -22,10 +22,10 @@ const InitialText = () => {
 }
 
 const NoResults = () => {
-    return <View style={{alignSelf: 'center', width: 200,position: 'absolute', marginTop: 300,}}>
+    return <View style={{alignSelf: 'center', width: 200,position: 'absolute',position: 'absolute', bottom: 100}}>
         <Text style={{color: constants.LAVENDER, textAlign: 'center'}}>Can't find what you're looking for? Add it yourself!</Text>
         <View style={{alignSelf: 'center', paddingTop: 20}}>
-        <Icon name="arrow-circle-o-down" size={25} color={constants.LAVENDER} />
+        <Icon name="long-arrow-down" size={35} color={constants.LAVENDER} />
         </View>
     </View>
 }
@@ -110,7 +110,7 @@ const SearchPage = ({navigation, route}) => {
     }}
     />
     </ScrollView>
-    {search !== "" && results.length == 0?<NoResults />:<></>}
+    {results.length == 0?<NoResults />:<></>}
     </SafeAreaView></Fragment>
 };
 

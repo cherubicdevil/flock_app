@@ -45,7 +45,7 @@ import {constants} from 'App/constants';
 import CommentsModal from './CommentsModal';
 import Video from 'App/components/Video';
 import VideoDescription from './VideoDescription';
-import {firebase, db} from 'App/firebase/config';
+import {firebase, db, au} from 'App/firebase/config';
 import {useDispatch, useSelector} from 'react-redux';
 
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
@@ -291,7 +291,7 @@ useEffect(()=>{
               <View style={{flex: 1}}>
               <Text numberOfLines={2}><Text style={{fontWeight: 'bold'}}>{data?.product?.brand?data?.product?.brand+" ":""}</Text>{data?.product?.title}</Text>
               <Text></Text>
-              <Text style={{color: dataType==="rent"?constants.LAVENDER:constants.GREYORANGE}}>{dataType==="rent"?"$"+(data?.product?.price / 25).toFixed(2)+" to borrow ($0.00 for flocker)":"$"+(1.4 * data?.product?.price / 25).toFixed(2) + " to flock"}</Text>
+              <Text style={{color: dataType==="rent"?constants.LAVENDER:constants.GREYORANGE}}>{dataType==="rent"?("$"+data.memberIds.includes(au.currentUser.uid)?"$0.00 to use (You are in this flock)":(data?.product?.price / 25).toFixed(2)+" to borrow"):"$"+(1.4 * data?.product?.price / 25).toFixed(2) + " to flock"}</Text>
               <Text style={{color: "grey"}}>${data?.product?.price} original</Text>
               </View>
               <Icon color={dataType==="rent"?constants.LAVENDER:constants.GREYORANGE} name="chevron-right" size={30} />

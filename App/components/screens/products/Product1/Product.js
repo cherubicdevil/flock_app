@@ -256,7 +256,7 @@ const Product = ({route, navigation}) => {
   const membersFlocking = flockAr.reduce((total, item)=>total + item.members.length, 0);
     return (
       <>
-      <Wrapper>
+      {/* <Wrapper> */}
       <View style={{flex: 1, backgroundColor: constants.PINK_BACKGROUND}}>
                             {renderBackOrClose()}
       <ScrollView pagingEnabled={true} showsVerticalScrollIndicator={false} style={styles.mainViewStyle}>
@@ -435,7 +435,7 @@ const Product = ({route, navigation}) => {
             <Text style={{color: 'white', position: 'absolute', left: 10, top: '72%', width: 280, fontFamily: 'Noteworthy-Bold', fontSize: 18}}>Click for source of item. <Image source = {require('App/Assets/Images/arrow_hand_L.png')}  style={{tintColor: 'white', width: 35, height: 35, display:'flex', position: 'absolute', left: 20, paddingBottom: 20, overflow: 'visible'}} /></Text>
             <Text style={{color: 'white', position: 'absolute', right: 10, bottom: 100, width: 250, fontFamily: 'Noteworthy-Bold', fontSize: 18}}>Don't see your size, color, etc? Start your own flock <Image source = {require('App/Assets/Images/arrow_hand_rightspiral.png')}  style={{tintColor: 'white', width: 35, height: 35, display:'flex', position: 'absolute', left: 20, paddingBottom: 20, overflow: 'visible'}} /></Text>
           </NewTutorial> */}
-                </Wrapper>
+                {/* </Wrapper> */}
                 </>
     );
   }

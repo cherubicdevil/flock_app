@@ -50,14 +50,17 @@ const FlockReserve = ({navigation, route}) => {
 
     console.log(requestTypeIsRent,'rent?', route.params.data.memberIds, au.currentUser.uid);;
     const colors = (requestTypeIsRent)?[constants.LAVENDER, constants.PURPINK]:['#ff4d00', constants.PEACH];
-    return <Wrapper>
+    return <>
+    {/* <Wrapper> */}
       
       {/* <Text>{requestTypeIsRent?"Borrow":"Flock"}</Text> */}
         {/* <Button title="back" onPress={()=>navigation.goBack()} style={{position: 'absolute', top: '10'}}/> */}
         {/* <View style={{height: 100, width: '100%', position: 'absolute', top: 0, zIndex: 400, backgroundColor: constants.TRANSLUCENT, borderBottomRightRadius: 30, borderBottomLeftRadius: 30}}> */}
         {/* <HeaderGradient navigation={navigation} absolute={true} /> */}
         {/* </View> */}
-        
+        <TouchableOpacity 
+      hitSlop={{top: 30, bottom: 30, left: 30, right: 30}}
+      style={{resizeMode: 'cover', zIndex: 50, height: 30, width: 50,position: 'absolute', top: 40, left: 30}} onPress={navigation.goBack}><Icon color={constants.DARKGREY} name="chevron-left" size={25} /></TouchableOpacity>
         <ScrollView 
         showsVerticalScrollIndicator={false}
         style={{height:500, width: '100%', flex:1, backgroundColor: constants.PINK_BACKGROUND}}>
@@ -151,7 +154,9 @@ source={require('App/Assets/Images/Share_Icon_White_Earn.png') } />
           If you are in this flock, you don't have to pay.
          </Text>
          </NewTutorial> 
-       </Wrapper>;
+         </>
+       {/* </Wrapper> */}
+       ;
 }
 
 const ReserveCalendar = ({navigation, route, close, myMarkedDates, othersMarkedDates, setMyMarkedDates, subtotal}) => {

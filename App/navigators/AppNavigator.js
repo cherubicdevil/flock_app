@@ -130,7 +130,7 @@ const AppNavigator5 = () => {
           name="Product"
           component={Product}
           initialParams={{vidVisible: false}}
-          options={{tabBarVisible: true,
+          options={{tabBarVisible: false,
             unmountOnBlur:true
           }}
         />
@@ -184,7 +184,7 @@ const AppNavigator5 = () => {
           name="FlockReserve"
           component={FlockReserve}
           options={{
-            tabBarVisible: true,
+            tabBarVisible: false,
           }}
         />
           <Tab.Screen
