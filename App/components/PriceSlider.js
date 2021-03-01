@@ -46,7 +46,7 @@ import Countdown from 'App/components/Countdown';
 
 
 
-const PriceSlider = ({priceShareInitialPercent, completeFunc=()=>{}, productPrice, othersPercent, remainingPercent, maximums, setOutsideState=()=>{}, confirm=true, showInfo = true, initialSlider = false}) => {
+const PriceSlider = ({priceShareInitialPercent, completeFunc=()=>{}, productPrice, othersPercent, remainingPercent, maximums, setOutsideState=()=>{}, confirm=true, showInfo = true, initialSlider = false, maximumWidth=Dimensions.get('window').width *.65}) => {
     console.log(priceShareInitialPercent+"%");
     const [initialPercent, setInitialPercent] = useState(priceShareInitialPercent);
     const [pricePercent, setPricePercent] = useState(initialPercent);
@@ -80,7 +80,7 @@ const PriceSlider = ({priceShareInitialPercent, completeFunc=()=>{}, productPric
       // console.log(priceShare, "priceShare");
       console.log(productPrice * pricePercent);
       return <>
-      <View style={{flexDirection: 'row', justifyContent: 'center', }}>
+      <View style={{flexDirection: 'row', justifyContent: 'center'}}>
         {changed && confirm?<View style={{backgroundColor: constants.DONE, marginRight: 30, justifyContent: 'center', borderRadius: 40, padding: 10}}>
           <TouchableOpacity onPress={()=>{
             setPricePercent(initialPercent);
@@ -134,7 +134,7 @@ const PriceSlider = ({priceShareInitialPercent, completeFunc=()=>{}, productPric
               changeable = true;
             }}
             onValuesChangeFinish={()=>{
-              changable  = false;
+              changeable  = false;
             }}
             onValuesChange={(stuff)=>{
               // setPriceShare((parseInt(stuff[0])/100 * productPrice).toFixed(2));
@@ -161,7 +161,7 @@ const PriceSlider = ({priceShareInitialPercent, completeFunc=()=>{}, productPric
     markerContainerStyle={{alignSelf: 'center', marginTop: 7.5}}
     // markerStyle={{marginTop: 15,justifyContent: 'center', alignItems: 'center'}}
     smoothSnapped={true}
-    sliderLength={Dimensions.get('window').width *.65 * remainingPercent/100}
+    sliderLength={maximumWidth * remainingPercent/100}
     step = {4}
     min={0}
     max={remainingPercent+4}

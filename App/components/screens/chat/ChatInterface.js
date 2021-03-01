@@ -372,7 +372,7 @@ return <ScrollView  style={{marginLeft: 15, overflow: 'visible', backgroundColor
       <View style={{backgroundColor: constants.PINK_BACKGROUND_OPAQUE, flex: 1, justifyContent: 'flex-end'}}>
         <ChatComponent route={route} socket={socket} />
  </View>
-      <JoinDialog navigation={navigation} data={route.params.data} setCreditModal={setCreditModal} initialDialog={initialDialog} setInitialDialog={setInitialDialog} setPriceStartPercent={setPriceStartPercent} setPartOf = {setPartOf} completeFunc = {completeFunc} maxPercent = {remainingPercent} productPrice={route.params.data.product.price} />
+      <JoinDialog navigation={navigation} route={route} data={route.params.data} setCreditModal={setCreditModal} initialDialog={initialDialog} setInitialDialog={setInitialDialog} setPriceStartPercent={setPriceStartPercent} setPartOf = {setPartOf} completeFunc = {completeFunc} maxPercent = {remainingPercent} productPrice={route.params.data.product.price} remainingPercent={remainingPercent} />
       {partOf?<></>:<View style={{position: 'absolute', bottom: 0, width: '100%', height: 100, backgroundColor: 'white'}}><View style={{height: '100%', backgroundColor: constants.PINK_BACKGROUND }}>
         <TouchableOpacity style={{width: '90%', height: 50, backgroundColor: constants.ORANGE, alignSelf: 'center', borderRadius: 30, justifyContent: 'center'}} onPress={()=>{
           setInitialDialog(true);
@@ -463,7 +463,7 @@ setPartOf(true);
   );
 }
 
-const JoinDialog = ({navigation, data, setCreditModal, initialDialog, setInitialDialog, setPriceStartPercent, setPartOf, completeFunc, minPercent=4, maxPercent, productPrice}) =>{
+const JoinDialog = ({navigation, route, data, setCreditModal, initialDialog, setInitialDialog, setPriceStartPercent, setPartOf, completeFunc, minPercent=4, maxPercent, productPrice, remainingPercent}) =>{
   const store = useStore();
   const dispatch = useDispatch();
 
@@ -473,7 +473,8 @@ const JoinDialog = ({navigation, data, setCreditModal, initialDialog, setInitial
   <Dialog.Title>Set Your Price</Dialog.Title>
   <Dialog.Description>
     The more you pay, the more you own. The more you can use.
-    <View style={{alignItems: 'center', flexDirection: 'row', height: 45,paddingTop: 10, justifyContent: 'center'}}>
+  </Dialog.Description>
+    {/* <View style={{alignItems: 'center', flexDirection: 'row', height: 45,paddingTop: 10, justifyContent: 'center'}}>
     <View style={{borderRadius: 40, backgroundColor: constants.ORANGE, width: 25, height: 25, justifyContent: 'center', alignItems: 'center'}}>
         <TouchableOpacity onPress={()=>{
           if (initialPercent > minPercent) {
@@ -483,8 +484,11 @@ const JoinDialog = ({navigation, data, setCreditModal, initialDialog, setInitial
         }}>
           <Icon name="minus" color="white" size={20} />
         </TouchableOpacity>
+      </View> */}
+<View style={{flexDirection:'column',}}>
+      <PriceSlider confirm={false} showInfo={true} maximumWidth={70} othersPercent={100-remainingPercent} remainingPercent={Math.min(68,remainingPercent)} priceShare = {0} priceShareInitialPercent={0} productPrice={route.params.data.product.price} maximums={route.params.data.maximums} />
       </View>
-      <View style={{width: 100, alignSelf: 'center'}}>
+      {/* <View style={{width: 100, alignSelf: 'center'}}>
       <Text style={{width: 100, textAlign: 'center',fontSize:14, fontWeight: 'bold'}}>${(parseFloat(productPrice) * initialPercent/100).toFixed(2)}</Text>
       <Text style={{width: 120,textAlign: 'center',fontSize:14, fontWeight: 'bold', alignSelf: 'center'}}>({initialPercent}% yours)</Text>
       </View>
@@ -497,10 +501,9 @@ const JoinDialog = ({navigation, data, setCreditModal, initialDialog, setInitial
         }}>
           <Icon name="plus" color="white" size={20} />
         </TouchableOpacity>
-      </View>
+      </View> */}
 
-    </View>
-  </Dialog.Description>
+    {/* </View> */}
   <Dialog.Button label="Cancel" onPress={()=>{
     // console.log(route.params.data.id,"ID");
     setInitialDialog(false);
