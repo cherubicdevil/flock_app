@@ -12,6 +12,8 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import HeaderGradient from '../HeaderGradient';
 import CommentsModal from 'App/components/screens/videopage/CommentsModal';
 import Description from 'App/components/Description';
+import Wrapper from 'App/components/Wrapper';
+import NewTutorial from 'App/components/NewTutorial';
 
 
 const FlockReserve = ({navigation, route}) => {
@@ -48,17 +50,17 @@ const FlockReserve = ({navigation, route}) => {
 
     console.log(requestTypeIsRent,'rent?', route.params.data.memberIds, au.currentUser.uid);;
     const colors = (requestTypeIsRent)?[constants.LAVENDER, constants.PURPINK]:['#ff4d00', constants.PEACH];
-    return <SafeAreaView style={{flex: 1, backgroundColor: constants.PINK_BACKGROUND}}>
+    return <Wrapper>
       
       {/* <Text>{requestTypeIsRent?"Borrow":"Flock"}</Text> */}
         {/* <Button title="back" onPress={()=>navigation.goBack()} style={{position: 'absolute', top: '10'}}/> */}
         {/* <View style={{height: 100, width: '100%', position: 'absolute', top: 0, zIndex: 400, backgroundColor: constants.TRANSLUCENT, borderBottomRightRadius: 30, borderBottomLeftRadius: 30}}> */}
-        <HeaderGradient navigation={navigation} absolute={true} />
+        {/* <HeaderGradient navigation={navigation} absolute={true} /> */}
         {/* </View> */}
         
         <ScrollView 
         showsVerticalScrollIndicator={false}
-        style={{height:500, width: '100%', flex:1}}>
+        style={{height:500, width: '100%', flex:1, backgroundColor: constants.PINK_BACKGROUND}}>
         <View style={{width: '100%', height: 0.6 * Dimensions.get('window').height, borderBottomRightRadius: 0, borderBottomLeftRadius: 0, overflow: 'hidden'}}>
         <Image blurRadius={5} style = {{position: 'absolute', width: '100%', height: '100%', zIndex: -20}} source = {{uri: route.params.data.product.image}} />
         <Image style = {{width: '100%', height: '100%', resizeMode: 'contain'}} source = {{uri: route.params.data.product.image}} />
@@ -73,7 +75,7 @@ const FlockReserve = ({navigation, route}) => {
         {/* <Text style={{fontFamily: constants.FONT, fontWeight: 'bold'}}>{route.params.data.product.title}</Text>
         <Text>Original Retail: <Text style={{textDecorationLine:'line-through'}}>${route.params.data.product.price}</Text></Text>
     {bannerText(subtotal)} */}
-    {requestTypeIsRent?<></>:<View style={{flexDirection: 'row', alignItems: 'center', marginTop: 20,}}><Text>You are in this flock.</Text><TouchableOpacity style={{padding: 10, backgroundColor: constants.ORANGE, borderRadius: 30, marginLeft:10}} onPress={()=>{
+    {requestTypeIsRent?<></>:<View style={{flexDirection: 'row', alignItems: 'center', marginTop: 20,}}><Text>You are in this flock.</Text><TouchableOpacity style={{padding: 10, backgroundColor: constants.LAVENDER, borderRadius: 30, marginLeft:10}} onPress={()=>{
       navigation.navigate("FlockChatComplete",{data:route.params.data})
     }} >
       <Text style={{color: 'white'}}>Go to chat</Text>
@@ -94,7 +96,7 @@ const FlockReserve = ({navigation, route}) => {
         </ScrollView>
         
         
-        <View style={{position: 'absolute', bottom: 30,width: '100%', flexDirection: 'row', marginBottom: 0, justifyContent: 'space-between', paddingLeft: 20, paddingRight: 20, alignItems: 'center', }}>
+        <View style={{bottom: 0,width: '100%', flexDirection: 'row', marginBottom: 0, justifyContent: 'space-between', paddingLeft: 20, paddingRight: 20, alignItems: 'center', paddingBottom: 30, backgroundColor: constants.PINK_BACKGROUND}}>
 
         <View style={{flexDirection: 'row',height: '100%', flex: 1,marginRight: 10, marginLeft:20, justifyContent: 'space-between', alignItems: 'center', }}>
 
@@ -130,7 +132,7 @@ source={require('App/Assets/Images/Share_Icon_White_Earn.png') } />
         <TouchableOpacity style={{justifyContent: 'center', alignItems: 'center', width: 150, height: 50, backgroundColor: constants.ORANGE, borderRadius: 40, overflow: 'hidden'}} onPress={()=>{
           setModalOpen(true);
         }}>
-          <LinearGradient style={{width: '100%', padding: 15, height: '100%', justifyContent: 'center'}} colors={[constants.ORANGE, constants.YELLOW]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} >
+          <LinearGradient style={{width: '100%', padding: 15, height: '100%', justifyContent: 'center'}} colors={[constants.LAVENDER, constants.GREYBLUE]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} >
           <Text style={{fontWeight: 'bold', color: 'white', fontSize: 14, fontFamily: constants.FONT}}>Check Availability</Text>
         </LinearGradient>
         </TouchableOpacity>
@@ -141,7 +143,15 @@ source={require('App/Assets/Images/Share_Icon_White_Earn.png') } />
 
         <AnimatedModal colored={true} colors={colors} visible={modalOpen} behind={true} close={()=>setModalOpen(false)} content={<ReserveCalendar navigation = {navigation} close={()=>{setModalOpen(false)}} route={route} myMarkedDates={myMarkedDates} setMyMarkedDates={setMyMarkedDates} othersMarkedDates={othersMarkedDates} subtotal={subtotal} />} />
         <CommentsModal data={route.params.data} modalVisible={commentsModalVisible} toggleFunc={()=>setCommentsModalVisible(false)} />
-        </SafeAreaView>;
+       <NewTutorial screenId="flockreserve" >
+         <Text style={{color: 'white', fontFamily: 'Noteworthy-Bold', position: 'absolute', bottom: 60, right: 40, width: 100}}>
+          Schedule when you want to use this item.
+         </Text>
+         <Text style={{color: 'white', fontFamily: 'Noteworthy-Bold', position: 'absolute', bottom: 200, left: 40, width: 100}}>
+          If you are in this flock, you don't have to pay.
+         </Text>
+         </NewTutorial> 
+       </Wrapper>;
 }
 
 const ReserveCalendar = ({navigation, route, close, myMarkedDates, othersMarkedDates, setMyMarkedDates, subtotal}) => {

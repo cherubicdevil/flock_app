@@ -69,12 +69,12 @@ lowkey=false
         <Text style={{fontWeight: 'bold'}}>{brand?brand+" ":""}</Text>{title}
         </Text>
         <View style={{flexDirection:'row', alignItems: 'center'}}>
-        <Text style={{textDecorationLine: 'line-through', fontFamily: constants.FONTBOLD, color: colors[0], fontSize: 15}}>
+        <Text style={{textDecorationLine: 'line-through', fontFamily: constants.FONT, color: 'black', fontSize: 15}}>
         ${price} <Text>original</Text>
         </Text>
         {/*<Text style={styles.descriptionText}>50 flockers have bought</Text>*/}
         {/*<Text style={styles.descriptionText}>Recommended by username</Text>*/}
-        <LinearGradient
+        {/* <LinearGradient
           colors={colors}
           start={{ x: 0, y: 1 }} end={{ x: 1, y: 1 }}
           style={{
@@ -82,8 +82,9 @@ lowkey=false
             marginLeft: 10, 
             borderRadius: 30,
             zIndex: 40,
-          }}><View style={{borderRadius: 30, color: 'white', justifyContent: 'center', alignItems:'center',paddingVertical: 5, paddingLeft: 10, paddingRight: 10}}><Text style={{color: 'white', fontSize: 14, fontFamily: constants.FONTBOLD}}>{bannerText(price)}</Text></View>
-</LinearGradient>
+          }}> */}
+            <View style={{borderRadius: 30, color: 'white', justifyContent: 'center', alignItems:'center',paddingVertical: 5, paddingLeft: 10, paddingRight: 10}}><Text style={{fontSize: 14, fontFamily: constants.FONTBOLD, color: colors[0]}}>{bannerText(price)}</Text></View>
+{/* </LinearGradient> */}
       <View style={{position: 'absolute', right: 0}}>
         <HelpDialog text="Incorrect or missing title, description, or product picture? Notify us below." context={{uid: au.currentUser.uid, name: au.currentUser.displayName, productName: title, productId: productId}} />
           </View>

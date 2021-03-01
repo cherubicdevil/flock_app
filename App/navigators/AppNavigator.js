@@ -184,7 +184,7 @@ const AppNavigator5 = () => {
           name="FlockReserve"
           component={FlockReserve}
           options={{
-            tabBarVisible: false,
+            tabBarVisible: true,
           }}
         />
           <Tab.Screen
