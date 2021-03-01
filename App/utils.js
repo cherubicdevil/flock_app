@@ -907,6 +907,8 @@ function validateCard (value) {
 const createOrUpdate = async (hasId, customerId, info) => {
   return new Promise(async (resolve) => {
     if (!hasId) {
+      
+      try {
       const token = await stripe.createTokenWithCard(info);
       // const endpoint = constants.PAY_ENDPOINT + `?price=${100}&token=${token.tokenId}`;
       // fetch(endpoint);
@@ -917,11 +919,15 @@ const createOrUpdate = async (hasId, customerId, info) => {
       resp.json().then((cid)=>{
           
           db.collection('users').doc(au.currentUser.uid).update({customerId: cid.id}).catch(err=>{
-              console.log(err);
+              resolve(err);
           });
           resolve(cid.id);
       })
     });
+
+  } catch (err) {
+    resolve(err);
+  }
     
     } else {
       await fetch(constants.UPDATE_CUST, {

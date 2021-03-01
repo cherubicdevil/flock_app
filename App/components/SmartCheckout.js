@@ -79,7 +79,7 @@ useEffect(()=>{
         console.log("CREDIT CARD INFO", data.card);
         setCreditInfo(data.card);
       // console.log(data.card,"MY CARD");
-      });
+      }).catch(err=>console.log(err));
       console.log('hello');
 
     const shipping = select.shipping;
@@ -297,6 +297,11 @@ return <><View style={{marginTop: 5,}} >
                       setUpdating(true);
                       // createOrUpdate(hasId, select.customerId, info).then((id)=>{
                       createOrUpdate(hasId, select.customerId, tempCredit).then((id)=>{
+                        if (typeof id === "object") {
+                          setUpdating(false);
+                          setErrorMessage(id.message);
+                          return;
+                        }
                         setUpdating(false);
                         dispatch({type:'UPDATE_DATA', payload: ["customerId", null, null, id]});
                         // console.log('done in profile change');
