@@ -109,7 +109,7 @@ const PriceSlider = ({priceShareInitialPercent, completeFunc=()=>{}, productPric
 
       <View style={{borderRadius: 40, backgroundColor: constants.ORANGE, width: 30, height: 30, justifyContent: 'center', alignItems: 'center'}}>
           <TouchableOpacity onPress={()=>{
-            if (pricePercent>0) {
+            if (pricePercent>=0) {
               setPricePercent(pricePercent-4);
               setOutsideState(((pricePercent-4)*productPrice).toFixed(2));
               setChanged(true);
@@ -164,7 +164,7 @@ const PriceSlider = ({priceShareInitialPercent, completeFunc=()=>{}, productPric
     sliderLength={maximumWidth * remainingPercent/100}
     step = {4}
     min={0}
-    max={remainingPercent+4}
+    max={remainingPercent+2}
     markerSize={100}
     showSteps={true}
     containerStyle={{width: 30}}
@@ -173,7 +173,7 @@ const PriceSlider = ({priceShareInitialPercent, completeFunc=()=>{}, productPric
   />
   
   </View>
-  <View style={{width: (100-othersPercent-pricePercent)*maximumWidth/100+ 15,  height: 15, backgroundColor: othersPercent+pricePercent>=100?constants.ORANGE:constants.BLUERGREY, borderBottomRightRadius: 40, borderTopRightRadius: 40, zIndex: -40}}/>
+  <View style={{width: (100-othersPercent-remainingPercent)*maximumWidth/100+ 15,  height: 15, backgroundColor: othersPercent+pricePercent>=100?constants.ORANGE:constants.BLUERGREY, borderBottomRightRadius: 40, borderTopRightRadius: 40, zIndex: -40}}/>
   </View>
   <View style={{borderRadius: 40, backgroundColor: constants.ORANGE, width: 30, height: 30, marginLeft: 10, justifyContent: 'center', alignItems: 'center', zIndex: -40}}>
           <TouchableOpacity onPress={()=>{
