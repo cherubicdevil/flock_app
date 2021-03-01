@@ -554,6 +554,13 @@ const MiniCarouselRenting = ({navigation, route}) => {
     </View>
   }
   return <>
+    <NewTutorial screenId="flocking" >
+  <View style={{position: 'absolute', zIndex: 400, top: '40%', alignSelf: 'center',}}
+                >
+                {/* <Text style={{color:'black'}}>Swipe</Text> */}
+                <Image source={require('App/Assets/Images/updown_swipe.png')} style={{height: 150, width: 150, shadowOpacity:0.2, tintColor: 'white', shadowOffset:{height:5, width:0}, shadowRadius:5,}} />
+            </View>
+  </NewTutorial>
   <Animated.View style={{backgroundColor: 'white', position: 'absolute', left: 0, bottom: 0, width:'100%', height: cover?"100%":0, opacity: coverFade, zIndex: 10000}} ><View style={{
     backgroundColor: constants.PINK_BACKGROUND, height: '100%', width: '100%',
     justifyContent: 'center', alignItems: 'center',

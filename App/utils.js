@@ -771,7 +771,14 @@ const pinLocalFunc = (htmlBody, notBaseURL) => {
       } else {
         return url;
       }
+    }).map((url)=> {
+      if (url.startsWith("/")) {
+        return imageDownloader.relativeUrlToAbsolute(url);
+      } else {
+        return url;
+      }
     });
+    console.log("imageSet", images,)
     return {image: imageUrl, imageSet: images};
   };
   const getPriceTitleImage = ($) => {
@@ -849,10 +856,19 @@ const pinLocalFunc = (htmlBody, notBaseURL) => {
   
   // console.log("STUFFFFFFF", $("title").text())
 const {price: price, image: imageUrl, title: title, imageSet: imageSet} = getPriceTitleImage($);
-console.log('url', notBaseURL);
+// console.log('url', notBaseURL);
+var tempBrand = notBaseURL.split('.com')[0].split(".");
+if (tempBrand[1] === undefined) {
+  const http = tempBrand[0].split("//")[1];
+  if (http !== undefined) {
+    tempBrand=http;
+  }
+} else {
+  tempBrand = tempBrand[1];
+}
 const data = {
   url: notBaseURL,
-  brand: notBaseURL.split('.com')[0].split(".")[1],
+  brand: tempBrand,
   title: title.trim().split(/[^/\S ]/)[0],
   image: imageUrl.indexOf("?")>-1?imageUrl.split("?")[0]:imageUrl,
   price: price.split("\n")[0],

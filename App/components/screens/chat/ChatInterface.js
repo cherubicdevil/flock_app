@@ -267,7 +267,7 @@ return <ScrollView  style={{marginLeft: 15, overflow: 'visible', backgroundColor
   // },[]);
   return (<>
         <NewTutorial screenId = "chatinterface">
-        <Text style={{color: 'white', position: 'absolute', bottom: '50%', left: 20, fontFamily: 'Noteworthy-Bold', fontSize: 18}}>Pay attention to the specifications here.</Text>
+        <Text style={{color: 'white', position: 'absolute', bottom: '55%', left: 20, fontFamily: 'Noteworthy-Bold', fontSize: 18}}>Pay attention to the specifications here.</Text>
         <Text style={{color: 'white', position: 'absolute', top: 70, right: 20,width: 170, fontFamily: 'Noteworthy-Bold', fontSize: 18}}>Reach 100% before time runs out. Share!</Text>
         <Text style={{color: 'white', position: 'absolute',  top: '20%', right: '30%',width: 150,fontFamily: 'Noteworthy-Bold', fontSize: 18}}>Change your ownership percentage.</Text>
         <Text style={{position: 'absolute', bottom: 130, textAlign: 'center',alignSelf:'center', color: 'white', width: 250,fontFamily: 'Noteworthy-Bold', fontSize: 18}}>Once you join, you can chat with your fellow flockers.</Text>

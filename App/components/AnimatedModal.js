@@ -31,6 +31,7 @@ import MaskedViewIOS from '@react-native-community/masked-view';
 import LinearGradient from 'react-native-linear-gradient';
 import { AnimationObjectGroup } from 'three';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import {Portal} from 'react-native-paper';
 
 const AnimatedModal = ({
   children,
@@ -82,7 +83,7 @@ const AnimatedModal = ({
 
   return (
     <View style={{zIndex: 800}}>
-{!nested?<Animated.View
+<Portal><Animated.View
         style={{
           height: visible?viewParams.height:0,
           width: visible?viewParams.width:0,
@@ -100,7 +101,7 @@ const AnimatedModal = ({
       >
     {colored?<LinearGradient style={{height: '100%'}} colors={colors} />:<></>}
 
-      </Animated.View>:<></>}
+      </Animated.View></Portal>
       <Modal
         animationType={modalAnimationType}
         transparent={true}
@@ -112,25 +113,9 @@ const AnimatedModal = ({
           justifyContent: 'flex-end',
           //backgroundColor: '#aea',
         }}>
-                {nested?<Animated.View
-        style={{
-          height: visible?"100%":0,
-          width: visible?"100%":0,
-          position: 'absolute',
-          zIndex: 200,
-          bottom: 0,
-          left: 0,
-        //   bottom: -1000,
-        alignSelf: 'center', 
-          //right: Dimensions.get('window').width/2,
-          backgroundColor: (colored || !fade)?'transparent':'rgb(0,0,0)',
-          opacity: animation.current,
-          //backgroundColor: modalVisible ? 'rgba(0,0,0,0.7)' : 'transparent',
-        }}
-      >
-    {colored?<LinearGradient style={{height: '100%'}} colors={colors} />:<></>}
+                
 
-      </Animated.View>:<></>}
+
           {/* <TouchableOpacity onPress={()=>{
             resetAnimation();
             setTimeout(()=>{

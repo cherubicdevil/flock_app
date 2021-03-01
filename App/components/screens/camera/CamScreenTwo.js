@@ -89,6 +89,9 @@ const CamScreenTwo = ({navigation, route}) => {
   const [canGoForward, setCanGoForward] = useState(false);
 
   const [errorMessage, setErrorMessage] = useState("");
+  const [priceWrong, setPriceWrong] = useState(false);
+  const [titleWrong, setTitleWrong] = useState(false);
+  const [brandWrong, setBrandWrong] = useState(false);
 
   
   useEffect(()=>{
@@ -99,6 +102,7 @@ const CamScreenTwo = ({navigation, route}) => {
           setNewImport(data==='true');
           }
       }
+    setModalOpen(true);
   });
   return ()=>{
     used = true;
@@ -274,10 +278,10 @@ const CamScreenTwo = ({navigation, route}) => {
             <View style={{justifyContent: 'flex-start', flex: 1, marginTop: 5,}}>
 
             <View style={{marginBottom: 5}}>
-              <Text style={{marginLeft: 15, color: constants.DARKGREY}}>Brand</Text>
+              <Text style={{marginLeft: 15, color: brandWrong?constants.RED:constants.DARKGREY}}>Brand</Text>
               <TextInput
                 // placeholder="Describe the product"
-                style={styles.descriptionStyle}
+                style={[styles.descriptionStyle,{borderColor: brandWrong?constants.RED:constants.DARKGREY}]}
                 placeholderTextColor={constants.DARKGREY}
                 onChangeText={(text) => {
                   setBrandState(text);
@@ -286,10 +290,10 @@ const CamScreenTwo = ({navigation, route}) => {
               />
             </View>
             <View style={{marginBottom: 10}}>
-              <Text style={{marginLeft: 15, color: constants.DARKGREY}}>Title</Text>
+              <Text style={{marginLeft: 15, color: titleWrong?constants.RED:constants.DARKGREY}}>Item Name</Text>
               <TextInput
                 placeholder="Describe the product"
-                style={styles.descriptionStyle}
+                style={[styles.descriptionStyle,{borderColor: priceWrong?constants.RED:constants.DARKGREY}]}
                 placeholderTextColor={constants.DARKGREY}
                 onChangeText={(text) => {
                   setTitleState(text);
@@ -314,8 +318,8 @@ const CamScreenTwo = ({navigation, route}) => {
               />
             </View> */}
             <View style={{marginTop: 5, paddingRight: 10}}>
-              <Text style={{marginLeft: 15, color:constants.DARKGREY}}>Price</Text>
-              <View style={[styles.descriptionStyle, {flexDirection: 'row', width: 100, alignItems: 'center'}]}>
+              <Text style={{marginLeft: 15, color: priceWrong?constants.RED:constants.DARKGREY}}>Price</Text>
+              <View style={[styles.descriptionStyle, {flexDirection: 'row', width: 100, alignItems: 'center', borderColor: priceWrong?constants.RED:constants.DARKGREY}]}>
                 <Text>$</Text>
               <TextInput
               keyboardType="numeric"
@@ -333,9 +337,10 @@ const CamScreenTwo = ({navigation, route}) => {
               />
               </View>
             </View>
+            <Text style={{color:constants.RED, marginTop:5}}>{errorMessage}</Text>
           </View>
-          <Text style={{color:'red'}}>{errorMessage}</Text>
             </View>
+
             {/* <View style={{flex: 2}}>
               <View
                 style={{
@@ -486,10 +491,19 @@ const CamScreenTwo = ({navigation, route}) => {
           height: '100%',
         }}
         onPress={()=>{
-          if (priceState === "") {
-            setErrorMessage("Looks like you forgot something.")
-          } else
-          if (!confirmedDialog) {
+          if (priceState === "" || priceState===undefined || brandState==="" || brandState===undefined || titleState==="" || titleState===undefined || titleState.split(" ").length < 4) {
+            setPriceWrong(priceState === "" || priceState===undefined);
+            setBrandWrong(brandState==="" || brandState===undefined);
+            setTitleWrong(titleState==="" || titleState===undefined || titleState.length < 4);
+            if (titleState.split(" ").length < 4) {
+              setErrorMessage("Add more detail to the item name.")
+            } else {
+              setErrorMessage("Looks like you missed something.")
+            }
+        
+            return;
+          }
+          if (false) {
           openDialog(true);
           } else if (newImport) {
             setNewImportVisible(true);
@@ -514,6 +528,7 @@ const CamScreenTwo = ({navigation, route}) => {
 <Dialog.Container visible={newImportVisible}>
 
             <Dialog.Title>Saved</Dialog.Title>
+            <Text style={{width: '80%', alignText: 'center',  alignSelf: 'center',fontFamily: constants.FONT, marginBottom: 15, marginTop: -10,}}>Find your pinned product in Profile.</Text>
 <Image source={require('App/Assets/Images/pinExample.png')} style={{width:'100%',height: 500,resizeMode: 'contain',}} />
 {/* <View style={{height: newImportVisible?50:0, width: 100, position: 'absolute', bottom: 30, backgroundColor: constants.ORANGE, alignSelf: 'center',justifyContent: 'center', borderRadius: 40}}>
   <Text style={{color: 'white', textAlign: 'center'}}>Got it</Text>
@@ -521,7 +536,7 @@ const CamScreenTwo = ({navigation, route}) => {
 <Dialog.Button label="Got it" onPress={()=>{
   setStorage();
   headerCloseFunc();
-}} style={{ width: '100%', resizeMode: 'contain'}} />
+}} style={{ width: '100%'}} />
 </Dialog.Container>
         <ScrollView scrollEnabled={false} style={{flex: 1, zIndex: -100, backgroundColor: constants.PINK_BACKGROUND_OPAQUE, marginTop: 10}}>
 
@@ -641,6 +656,11 @@ const CamScreenTwo = ({navigation, route}) => {
           setModalOpen(false);
           setPinned(true);
           setCanNext(true);
+
+          setPriceWrong(false);
+          setBrandWrong(false);
+          setTitleWrong(false);
+          setErrorMessage("");
           
           setSearchResultPlaceholder(result.brand.charAt(0).toUpperCase() + result.brand.slice(1) + " | " + result.title);
         }, 500);
@@ -704,9 +724,14 @@ const CamScreenTwo = ({navigation, route}) => {
     }}/>
     <Dialog.Button label="I'm Done" onPress={()=>{
         // send the email
+        console.log(newImport,'import')
       if (newImport) {
-        openDialog(false);
-        setNewImportVisible(true);
+        console.log('openning new import visbe')
+        // openDialog(false);
+        setTimeout(()=>{
+          setNewImportVisible(true);
+        }, 500);
+
       } else {
         
         headerCloseFunc();

@@ -30,6 +30,7 @@ import AnimatedModal from 'App/components/AnimatedModal';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import HeaderGradient from 'App/components/HeaderGradient';
 import {CommonActions, useFocusEffect} from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 //import Base64 from 'base-64';
 
 // global.atob = Base64.encode;
@@ -292,13 +293,20 @@ const ProfileMain = ({navigation}) => {
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => {
-            firebase.auth().signOut();
+            au.signOut();
             console.log('logout');
           }}
           style={{padding: 20, alignItems: 'center', justifyContent: 'center', borderBottomWidth: 1, borderColor: constants.GREY, borderTopWidth:0}}
         >
           <Text style={{color: constants.LIGHTGREY, fontSize: 17}}>Logout</Text>
           </TouchableOpacity>
+
+          <Button title="clear storage" onPress={async() => {
+    // AsyncStorage.clear();
+    AsyncStorage.getAllKeys().then(AsyncStorage.multiRemove)
+}}>
+  <Text>Clear Async Storage</Text>
+</Button>
       </View>}/>
 
       <View style={{height: 50, backgroundColor: constants.TRANSLUCENT, borderBottomLeftRadius: 30, borderBottomRightRadius: 30}}>

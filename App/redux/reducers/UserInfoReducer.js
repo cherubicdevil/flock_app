@@ -56,19 +56,25 @@ export default function (state = {likedVideos: [], eggCoins: 0}, action) {
     case 'spendEggs':
       const num = action.payload;
       if (num <= state.eggCoins ) {
+        if (au.currentUser) {
         db.collection('users').doc(au.currentUser.uid).update({
           eggCoins: firebase.firestore.FieldValue.increment(-num)
       });
         return { ...state, eggCoins: state.eggCoins - num};
+    }
       }
       
       return state;
     case 'getEggs':
+      if (au.currentUser) {
       db.collection('users').doc(au.currentUser.uid).update({
         eggCoins: firebase.firestore.FieldValue.increment(action.payload)
     });
+    return { ...state, eggCoins: state.eggCoins + action.payload};
+  }
+  return state;
 
-      return { ...state, eggCoins: state.eggCoins + action.payload};
+
     default:
       return state;
   }

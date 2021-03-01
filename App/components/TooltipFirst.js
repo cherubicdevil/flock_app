@@ -41,6 +41,9 @@ const TooltipFirst = ({children, tooltipId, info, style, component, width=150, h
         getData(tooltipId).then((data)=>{
             console.log(data, "new player?");
             if (!used) {
+              if (data === null) {
+                toolRef.current.toggleTooltip();
+              }
                 if (data !== null) {
                 // setVisible(!data=='true');
                 if (!data === 'true') {

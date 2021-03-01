@@ -13,6 +13,7 @@ import {
   Dimensions,
   Animated
 } from 'react-native';
+import Wrapper from 'App/components/Wrapper';
 import NewTutorial from 'App/components/NewTutorial';
 import Description from 'App/components/Description';
 import HowTo from 'App/HowTo';
@@ -255,6 +256,7 @@ const Product = ({route, navigation}) => {
   const membersFlocking = flockAr.reduce((total, item)=>total + item.members.length, 0);
     return (
       <>
+      <Wrapper>
       <View style={{flex: 1, backgroundColor: constants.PINK_BACKGROUND}}>
                             {renderBackOrClose()}
       <ScrollView pagingEnabled={true} showsVerticalScrollIndicator={false} style={styles.mainViewStyle}>
@@ -303,7 +305,7 @@ const Product = ({route, navigation}) => {
             onPress={()=>{
               setModalOpen(true);
             }}>
-            <FlockList close = {()=>{setModalOpen(false)}}navigation = {navigation} product = {route.params.album} ar = {flockAr} randomId={randomId} />
+            <FlockList close = {()=>{setModalOpen(false)}}navigation = {navigation} route={route} product = {route.params.album} ar = {flockAr} randomId={randomId} />
             </TouchableOpacity>
             </View>
             <View style={styles.productRow}>{renderDetail()}</View>
@@ -421,7 +423,7 @@ const Product = ({route, navigation}) => {
                 </LinearGradient>
                 </View>
                 </View>
-                <AnimatedModal visible={modalOpen} close={()=>{setModalOpen(false)}} content={<View style={{paddingLeft: 20, paddingRight: 20}}><Text style={{textAlign: 'center', fontSize: 15, fontWeight: 'bold'}}>Ongoing Flocks</Text><FlockList close = {()=>{setModalOpen(false)}} limited = {false} navigation={navigation} product = {route.params.album} ar={flockAr} /></View>} />
+                <AnimatedModal visible={modalOpen} close={()=>{setModalOpen(false)}} content={<View style={{paddingLeft: 20, paddingRight: 20}}><Text style={{textAlign: 'center', fontSize: 15, fontWeight: 'bold'}}>Ongoing Flocks</Text><FlockList close = {()=>{setModalOpen(false)}} limited = {false} navigation={navigation} route={route} product = {route.params.album} ar={flockAr} /></View>} />
                 <CommentsModal data={route.params.data} toggleFunc={() => {
             setCommentsVisible(false);
           }}
@@ -433,6 +435,7 @@ const Product = ({route, navigation}) => {
             <Text style={{color: 'white', position: 'absolute', left: 10, top: '72%', width: 280, fontFamily: 'Noteworthy-Bold', fontSize: 18}}>Click for source of item. <Image source = {require('App/Assets/Images/arrow_hand_L.png')}  style={{tintColor: 'white', width: 35, height: 35, display:'flex', position: 'absolute', left: 20, paddingBottom: 20, overflow: 'visible'}} /></Text>
             <Text style={{color: 'white', position: 'absolute', right: 10, bottom: 100, width: 250, fontFamily: 'Noteworthy-Bold', fontSize: 18}}>Don't see your size, color, etc? Start your own flock <Image source = {require('App/Assets/Images/arrow_hand_rightspiral.png')}  style={{tintColor: 'white', width: 35, height: 35, display:'flex', position: 'absolute', left: 20, paddingBottom: 20, overflow: 'visible'}} /></Text>
           </NewTutorial> */}
+                </Wrapper>
                 </>
     );
   }
@@ -463,7 +466,7 @@ const Countdown = ({dateObj}) => {
   <View style={{flexDirection: 'row', justifyContent:'space-between', fontSize: 10}}><Text style={{fontSize:10, alignSelf: 'stretch'}}>days</Text><Text style={{fontSize:10, alignSelf: 'stretch'}}>hrs</Text><Text style={{fontSize:10, alignSelf: 'stretch'}}>min</Text><Text style={{fontSize:10, alignSelf: 'stretch'}}>left</Text></View></>
 }
 
-const FlockList = ({product, navigation, ar, close, limited = true, randomId}) => {
+const FlockList = ({product, navigation, route, ar, close, limited = true, randomId}) => {
   const scrollRef = useRef();
   var offset = 0;
 
@@ -608,7 +611,7 @@ const FlockList = ({product, navigation, ar, close, limited = true, randomId}) =
             flex: 1,
           }}>
   <TouchableOpacity onPress= {() => {
-    setTutorialScreen(false);
+    // setTutorialScreen(false);
     navigation.navigate('StartFlock', {index: 0, product: route.params.album, data:{}, flockId: randomId});
 
   }}><Text style={{textAlign: 'center', color: 'white', fontWeight: 'bold', fontSize: 14}}>Start Your Flock</Text>
