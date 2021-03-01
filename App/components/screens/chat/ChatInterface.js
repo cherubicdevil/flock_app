@@ -96,15 +96,15 @@ function ChatInterface({route, navigation}) {
       const data = docSnapshot.data();
       const members = data.memberIds;
       const maximums = data.maximums;
-      var remaining = route.params.data.product.price;
+      var remaining = route.params.data.product.price * 1.4;
       for (const m of members) {
         if (m != au.currentUser.uid) {
         remaining -= maximums[m];
         }
       }
       // console.log(remaining/route.params.data.product.price);
-      console.log('first set', Math.round(100 * remaining/route.params.data.product.price));
-      setRemainingPercent(Math.round(100 * remaining/route.params.data.product.price));
+      // console.log('first set', Math.round(100 * remaining/route.params.data.product.price));
+      setRemainingPercent(Math.round(100 * remaining/(route.params.data.product.price * 1.4)));
     }, err => {
       console.log(`Encountered error: ${err}`);
     });

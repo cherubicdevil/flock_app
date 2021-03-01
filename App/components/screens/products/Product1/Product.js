@@ -352,7 +352,7 @@ const Product = ({route, navigation}) => {
                 <View style={{flexDirection: 'row', flex: 1, justifyContent: 'space-between', marginRight: 20,}}>
                 <View style={{justifyContent: 'center', alignItems: 'center', shadowOpacity: 0.3, shadowColor: '#555', shadowOffset: {height: 2, width: 0},}}>
                   <Image source = {require('App/Assets/Images/heart.png')} style={{width: 30, height: 30,  shadowOpacity: 0.2, shadowOffset: {height:1 , width: 0}}} />
-                <Text style={{position: 'absolute', top: 12,fontSize: 12, textAlign: 'center', color: constants.LAVENDER}}>{route.params.data.likes}</Text>
+                <Text style={{position: 'absolute', top: 12,fontSize: 12, textAlign: 'center', color: constants.LAVENDER}}>{route.params.data.likes>0?route.params.data.likes:""}</Text>
                 </View>
 
                 <TouchableOpacity
