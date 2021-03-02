@@ -76,6 +76,7 @@ const HeartIcon = ({data, ICON_SIZE=37}) => {
 
             data.likes += change;
             setHeartColor(!heartColor);
+            
           }}>
           <Image
             style={{
@@ -85,7 +86,7 @@ const HeartIcon = ({data, ICON_SIZE=37}) => {
             }}
             source={require('App/Assets/Images/Heart_Icon_White.png')}
           />
-          <Text style={[styles.buttonText,{position: 'absolute',bottom: 10, color: heartColor?'white':'black', zIndex: 200, alignSelf: 'center'}]}>{data.likes>0?data.likes:""}</Text>
+          <Text style={[styles.buttonText,{position: 'absolute',bottom: ICON_SIZE/2-10, color: heartColor?'white':'black', zIndex: 200, alignSelf: 'center'}]}>{data.likes>0?data.likes:""}</Text>
         </TouchableOpacity>
         
       </View>

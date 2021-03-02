@@ -14,6 +14,7 @@ import CommentsModal from 'App/components/screens/videopage/CommentsModal';
 import Description from 'App/components/Description';
 import Wrapper from 'App/components/Wrapper';
 import NewTutorial from 'App/components/NewTutorial';
+import HeartButton from 'App/components/screens/videopage/HeartButton';
 
 
 const FlockReserve = ({navigation, route}) => {
@@ -104,10 +105,9 @@ const FlockReserve = ({navigation, route}) => {
         <View style={{flexDirection: 'row',height: '100%', flex: 1,marginRight: 10, marginLeft:20, justifyContent: 'space-between', alignItems: 'center', }}>
 
 <View style={{flexDirection: 'row', flex: 1, justifyContent: 'space-between', marginRight: 20}}>
-<View style={{justifyContent: 'center', alignItems: 'center', shadowOpacity: 0.3, shadowColor: '#555', shadowOffset: {height: 2, width: 0},}}>
-  <Image source = {require('App/Assets/Images/heart.png')} style={{width: 30, height: 30,  shadowOpacity: 0.2, shadowOffset: {height:1 , width: 0}}} />
-<Text style={{position: 'absolute', top: 12,fontSize: 12, textAlign: 'center', color: constants.LAVENDER}}>{route.params.data.likes>0?route.params.data.likes:""}</Text>
-</View>
+<View style={{alignSelf: 'center'}}>
+                <HeartButton data={route.params.data} ICON_SIZE={32} />
+                </View>
 
 <TouchableOpacity style={{shadowOpacity: 0.3, shadowColor: '#555', shadowOffset: {height: 2, width: 0},}} onPress={()=>{
   setCommentsModalVisible(true);
