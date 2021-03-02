@@ -87,15 +87,15 @@ function FlockChatComplete({route, navigation}) {
             <TouchableOpacity onPress={()=>{
               navigation.navigate("FlockReserve", {data: route.params.data});
             }}>
-            <View style={{padding: 20, marginBottom: 15, paddingLeft: 30, borderRadius: 50, shadowRadius: 2.62, backgroundColor: 'white', shadowOpacity: 0.23, shadowOffset:{height: 2,width:0}, elevation: 1}}>
+            <View style={{padding: 20, marginBottom: 15, paddingLeft: 30, borderRadius: 50, shadowRadius: 2.62, backgroundColor: 'white', shadowOpacity: 0.23, shadowOffset:{height: 2,width:0}, elevation: 1,}}>
             <View style={{flexDirection: 'row',alignItems:'center'}}>
             <Image style={{width: 50, height: 50}} source={{uri: route.params.data.product.image}} />
-            <View style={{paddingRight: 30, marginLeft: 5}}>
+            <View style={{paddingRight: 30, marginLeft: 5, flex: 1}}>
               <Text numberOfLines={2} style={{flex: 1}}>
                 {route.params.data.product.title}
               </Text>
             </View>
-            <Icon style={{position: 'absolute', right: 0}} name="chevron-right" color={constants.LAVENDER} size={25} />
+            <Icon style={{right: 0}} name="chevron-right" color={constants.LAVENDER} size={25} />
             </View>
             </View>
             </TouchableOpacity>

@@ -125,7 +125,7 @@ function ChatInterface({route, navigation}) {
       console.log(route.params.data.product.price);
       console.log(route.params.data.maximums);
     // const res = splitAlgorithm(route.params.data.members, route.params.data.maximums, route.params.data.product.price)
-    const flockTookOff = didFlockTakeOff(route.params.data.members, route.params.data.maximums, route.params.data.product.price);
+    const flockTookOff = didFlockTakeOff(route.params.data.members, route.params.data.maximums, route.params.data.product.price* 1.4);
     if (flockTookOff) {
     socket.current.emit('complete', route.params.data.id);
     db.collection('chatGroups').doc(route.params.data.id).update({
@@ -407,14 +407,14 @@ return <ScrollView  style={{marginLeft: 15, overflow: 'visible', backgroundColor
           email: creditEmail,
         });
          console.log('conffirrrrrm');
-         route.params.data.maximums[au.currentUser.uid] = (initialPercentTemp/100 * parseFloat(route.params.data.product.price)).toFixed(2);
+        //  route.params.data.maximums[au.currentUser.uid] = (initialPercentTemp/100 * parseFloat(route.params.data.product.price * 1.4)).toFixed(2);
          // console.log('route  id', route.params.data.id);
-         console.log(initialPercentTemp)
-         route.params.data.maximums[au.currentUser.uid] = (priceStartPercent/100 * parseFloat(route.params.data.product.price)).toFixed(2);
+        //  console.log(initialPercentTemp)
+         route.params.data.maximums[au.currentUser.uid] = (priceStartPercent/100 * parseFloat(route.params.data.product.price * 1.4)).toFixed(2);
          db.collection('chatGroups').doc(route.params.data.id).update({
           //  members: firebase.firestore.FieldValue.arrayUnion(memberInfo),
            memberIds: firebase.firestore.FieldValue.arrayUnion(au.currentUser.uid),
-           maximums: route.params.data.maximums,
+           maximums: {...route.params.data.maximums},
          });
 setPartOf(true);
   route.params.data.memberIds.push(au.currentUser.uid);
@@ -488,7 +488,7 @@ const JoinDialog = ({navigation, route, data, setCreditModal, initialDialog, set
         </TouchableOpacity>
       </View> */}
 <View style={{flexDirection:'column',}}>
-      <PriceSlider id={route.params.data.id} confirm={false} showPlusMinus={false}  showInfo={true} maximumWidth={150} othersPercent={100-remainingPercent} remainingPercent={Math.min(68,remainingPercent)} priceShare = {0} priceShareInitialPercent={0} productPrice={route.params.data.product.price} maximums={route.params.data.maximums} />
+      <PriceSlider setOutsideState={setInitialPercent} id={route.params.data.id} confirm={false} showPlusMinus={false}  showInfo={true} maximumWidth={150} othersPercent={100-remainingPercent} remainingPercent={Math.min(68,remainingPercent)} priceShare = {0} priceShareInitialPercent={0} productPrice={route.params.data.product.price} maximums={route.params.data.maximums} />
       </View>
       {/* <View style={{width: 100, alignSelf: 'center'}}>
       <Text style={{width: 100, textAlign: 'center',fontSize:14, fontWeight: 'bold'}}>${(parseFloat(productPrice) * initialPercent/100).toFixed(2)}</Text>
@@ -517,12 +517,12 @@ const JoinDialog = ({navigation, route, data, setCreditModal, initialDialog, set
       db.collection('users').doc(au.currentUser.uid).update({
         chatIds: firebase.firestore.FieldValue.arrayUnion(data.id)
       });
-      data.maximums[au.currentUser.uid] = (initialPercent/100 * parseFloat(data.product.price)).toFixed(2);
+      data.maximums[au.currentUser.uid] = (initialPercent/100 * parseFloat(data.product.price * 1.4)).toFixed(2);
       // console.log('route  id', route.params.data.id);
       db.collection('chatGroups').doc(data.id).update({
         members: firebase.firestore.FieldValue.arrayUnion(memberInfo),
         memberIds: firebase.firestore.FieldValue.arrayUnion(memberInfo.uid),
-        maximums: data.maximums,
+        maximums: {...data.maximums},
       });
       setPartOf(true);
     // dispatch({type: "UPDATE_DATA", payload: ["chatIds", "add", "array", data.id]});
