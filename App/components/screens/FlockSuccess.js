@@ -33,6 +33,7 @@ import Countdown from 'App/components/Countdown';
 import HeaderGradient from 'App/components/HeaderGradient';
 
 const FlockSuccess = ({navigation, route}) => {
+  console.log(route.params.data.memberIds);
     return <SafeAreaView>
             <HeaderGradient navigation={navigation} closeX={true} absolute={false}>
         {/* <Text style={{fontSize: 18, fontFamily: constants.FONT, marginTop: -10}}>Success</Text> */}

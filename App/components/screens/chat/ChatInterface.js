@@ -212,6 +212,7 @@ break;
     }}/>
     <Dialog.Button label="Confirm" onPress={()=>{
       route.params.data.maximums[au.currentUser.uid] = dataValue;
+      route.params.data.memberIds.push(au.currentUser.uid);
       setState(dataValue);
       completeFunc(select.userInfo.customerId);
       // setDataValue()
