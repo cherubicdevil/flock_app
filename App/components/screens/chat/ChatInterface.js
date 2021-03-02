@@ -320,7 +320,7 @@ return <ScrollView  style={{marginLeft: 15, overflow: 'visible', backgroundColor
             
             {part?
             
-            <PriceSlider key={Math.random()} othersPercent={100-remainingPercent} remainingPercent={Math.min(68,remainingPercent)} priceShare = {priceShare} priceShareInitialPercent={parseFloat(priceShare)/ parseFloat(route.params.data.product.price*1.4) * 100} completeFunc={completeFunc} productPrice={route.params.data.product.price} maximums={route.params.data.maximums} />
+            <PriceSlider id={route.params.data.id} key={Math.random()} othersPercent={100-remainingPercent} remainingPercent={Math.min(68,remainingPercent)} priceShare = {priceShare} priceShareInitialPercent={parseFloat(priceShare)/ parseFloat(route.params.data.product.price*1.4) * 100} completeFunc={completeFunc} productPrice={route.params.data.product.price} maximums={route.params.data.maximums} />
             :
             <PriceTextPreview remainingPercent={remainingPercent} productPrice={route.params.data.product.price} />
             }
@@ -488,7 +488,7 @@ const JoinDialog = ({navigation, route, data, setCreditModal, initialDialog, set
         </TouchableOpacity>
       </View> */}
 <View style={{flexDirection:'column',}}>
-      <PriceSlider confirm={false} showPlusMinus={false}  showInfo={true} maximumWidth={150} othersPercent={100-remainingPercent} remainingPercent={Math.min(68,remainingPercent)} priceShare = {0} priceShareInitialPercent={0} productPrice={route.params.data.product.price} maximums={route.params.data.maximums} />
+      <PriceSlider id={route.params.data.id} confirm={false} showPlusMinus={false}  showInfo={true} maximumWidth={150} othersPercent={100-remainingPercent} remainingPercent={Math.min(68,remainingPercent)} priceShare = {0} priceShareInitialPercent={0} productPrice={route.params.data.product.price} maximums={route.params.data.maximums} />
       </View>
       {/* <View style={{width: 100, alignSelf: 'center'}}>
       <Text style={{width: 100, textAlign: 'center',fontSize:14, fontWeight: 'bold'}}>${(parseFloat(productPrice) * initialPercent/100).toFixed(2)}</Text>

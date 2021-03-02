@@ -46,7 +46,7 @@ import Countdown from 'App/components/Countdown';
 
 
 
-const PriceSlider = ({priceShareInitialPercent, completeFunc=()=>{}, productPrice, othersPercent, remainingPercent, maximums, setOutsideState=()=>{}, confirm=true, showInfo = true, initialSlider = false, maximumWidth=Dimensions.get('window').width *.55, showPlusMinus=true}) => {
+const PriceSlider = ({id, priceShareInitialPercent, completeFunc=()=>{}, productPrice, othersPercent, remainingPercent, maximums, setOutsideState=()=>{}, confirm=true, showInfo = true, initialSlider = false, maximumWidth=Dimensions.get('window').width *.55, showPlusMinus=true}) => {
     console.log(priceShareInitialPercent+"%");
     const [initialPercent, setInitialPercent] = useState(priceShareInitialPercent);
     const [pricePercent, setPricePercent] = useState(initialPercent);
@@ -97,6 +97,7 @@ const PriceSlider = ({priceShareInitialPercent, completeFunc=()=>{}, productPric
             console.log(select.customerId);
             maximums[au.currentUser.uid] = (pricePercent/100 * productPrice * 1.4).toFixed(2);
             completeFunc(select.customerId);
+            db.collection('chatGroups').doc(id).update({maximums: {...maximums}});
             setChanged(false);
             
           }}><Text>Confirm</Text></TouchableOpacity>
