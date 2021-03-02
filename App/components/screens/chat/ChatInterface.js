@@ -625,10 +625,9 @@ const MemberPics = ({memberIds}) => {
   {membersData.map((item)=>{
     const name = item.displayName;
     const picture = item.photoURL;
-  return <View>
+  return <View key={item.displayName}>
   <Image
   defaultSource={constants.PLACEHOLDER_IMAGE}
-    key={Math.random()}
     style={{
       height: 46,
       marginRight: 10,

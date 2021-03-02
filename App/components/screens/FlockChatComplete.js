@@ -14,6 +14,7 @@ import {
   Modal,
   TouchableWithoutFeedback,
 } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import {firebase, db, au} from 'App/firebase/config';
 import io from 'socket.io-client';
 import NavBar from 'App/components/common/NavBar';
@@ -87,13 +88,14 @@ function FlockChatComplete({route, navigation}) {
               navigation.navigate("FlockReserve", {data: route.params.data});
             }}>
             <View style={{padding: 20, marginBottom: 15, paddingLeft: 30, borderRadius: 50, shadowRadius: 2.62, backgroundColor: 'white', shadowOpacity: 0.23, shadowOffset:{height: 2,width:0}, elevation: 1}}>
-            <View style={{flexDirection: 'row',}}>
+            <View style={{flexDirection: 'row',alignItems:'center'}}>
             <Image style={{width: 50, height: 50}} source={{uri: route.params.data.product.image}} />
             <View style={{paddingRight: 30, marginLeft: 5}}>
               <Text numberOfLines={2} style={{flex: 1}}>
                 {route.params.data.product.title}
               </Text>
             </View>
+            <Icon style={{position: 'absolute', right: 0}} name="chevron-right" color={constants.LAVENDER} size={25} />
             </View>
             </View>
             </TouchableOpacity>

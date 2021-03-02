@@ -126,7 +126,7 @@ const PriceSlider = ({id, priceShareInitialPercent, completeFunc=()=>{}, product
         </View>
               
               <View style={{flexDirection:'row', width: maximumWidth+ 30,alignItems: 'center', alignSelf: 'center',}}>
-              <View style={{width: othersPercent*maximumWidth/100 + 15,  height: 15, backgroundColor: initialSlider || othersPercent==0?constants.ORANGE:constants.GREYORANGE, borderBottomLeftRadius: 40, borderTopLeftRadius: 40}}/>
+              <View style={{width: othersPercent*maximumWidth/100 + 16,  height: 15, backgroundColor: initialSlider || othersPercent==0?constants.ORANGE:constants.GREYORANGE, borderBottomLeftRadius: 40, borderTopLeftRadius: 40}}/>
             <View style={{flex:remainingPercent, marginRight: 0, paddingRight: 0}}>
             
             
@@ -176,7 +176,7 @@ const PriceSlider = ({id, priceShareInitialPercent, completeFunc=()=>{}, product
   />
   
   </View>
-  <View style={{width: (100-othersPercent-remainingPercent)*maximumWidth/100+ 15,  height: 15, backgroundColor: othersPercent+pricePercent>=100?constants.ORANGE:constants.BLUERGREY, borderBottomRightRadius: 40, borderTopRightRadius: 40, zIndex: -40}}/>
+  <View style={{width: (100-othersPercent-remainingPercent)*maximumWidth/100+ 16,  height: 15, backgroundColor: othersPercent+pricePercent>=100?constants.ORANGE:constants.BLUERGREY, borderBottomRightRadius: 40, borderTopRightRadius: 40, zIndex: -40}}/>
   </View>
   <View style={{borderRadius: 40, backgroundColor: constants.ORANGE, width: showPlusMinus?30:0, height: 30, marginLeft: 0, justifyContent: 'center', alignItems: 'center', zIndex: -40}}>
           <TouchableOpacity onPress={()=>{

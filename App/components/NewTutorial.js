@@ -8,7 +8,7 @@ import {useFocusEffect} from '@react-navigation/native';
 
 const NewTutorial = ({children, screenId, absolutePosition={left: 0, top: 0, right: 0, bottom: 0}}) => {
   const dispatch = useDispatch();
-    const [visible, setVisible] = useState(true);
+    const [visible, setVisible] = useState(false);
     const [showGif, setShowGif] = useState(false);
 
     const storeData = async () => {
@@ -33,10 +33,16 @@ const NewTutorial = ({children, screenId, absolutePosition={left: 0, top: 0, rig
     useFocusEffect(()=>{
         let used = false;
         getData().then((data)=>{
-            console.log(data, "new player?");
+            // console.log(data, "new player?");
             if (!used) {
-                if (data !== null) {
-                setVisible(!data==='true');
+                if (data === null) {
+                  setVisible(true);
+                  setShowGif(true);
+                  setTimeout(()=>{
+                    setShowGif(false);
+                  }, 1200);
+                } else {
+                  setVisible(false);
                 }
             }
         })
@@ -48,12 +54,16 @@ const NewTutorial = ({children, screenId, absolutePosition={left: 0, top: 0, rig
 
     return <View style={{position: 'absolute', zIndex: 3000, top: 0, height: visible?'100%':0, width: visible?'100%':0, backgroundColor: 'rgba(0,0,0,0.8)', overflow:'hidden'}}>
         <TouchableOpacity style={{height: '100%', width: '100%'}} onPress={()=>{
-            storeData();
-            setShowGif(true);
+
+
+            // setShowGif(true);
             setTimeout(()=>{
               setVisible(false);
-              console.log('showGif', showGif);
-            },3000);
+              // setShowGif(false);
+              // console.log('showGif', showGif);
+              storeData();
+            },1200);
+
             dispatch({type:'getEggs', payload: 10});
 
 
@@ -64,7 +74,12 @@ const NewTutorial = ({children, screenId, absolutePosition={left: 0, top: 0, rig
 
         </TouchableOpacity>
         <Portal>
+          <TouchableOpacity onPress={()=>{
+            setVisible(false);
+            storeData();
+          }}>
           <Image source={require('App/Assets/Images/egg-anim-proto.gif')} style={{width:visible && showGif?'120%':0, position: 'absolute', bottom: 30, right: "-32%"}} />
+          </TouchableOpacity>
         </Portal>
     </View>
 }
