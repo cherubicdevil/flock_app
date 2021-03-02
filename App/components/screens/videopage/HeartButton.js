@@ -85,8 +85,9 @@ const HeartIcon = ({data, ICON_SIZE=37}) => {
             }}
             source={require('App/Assets/Images/Heart_Icon_White.png')}
           />
+          <Text style={[styles.buttonText,{position: 'absolute',bottom: 10, color: heartColor?'white':'black', zIndex: 200, alignSelf: 'center'}]}>{data.likes>0?data.likes:""}</Text>
         </TouchableOpacity>
-        <Text style={styles.buttonText}>{data.likes>0?data.likes:""}</Text>
+        
       </View>
     );
   };

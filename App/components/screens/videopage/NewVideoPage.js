@@ -169,7 +169,7 @@ useEffect(()=>{
           shadowOffset: {height: 2, width: 0}
         }}>
           <View style={{alignItems: 'center'}}>
-        <View style={{marginTop: 10}}>
+        <View style={{marginTop: 10, marginBottom: 20,}}>
           <HeartButton  data={data} />
         </View>
         <View style={{marginTop: 5}}>

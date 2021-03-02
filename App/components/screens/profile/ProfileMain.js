@@ -301,12 +301,12 @@ const ProfileMain = ({navigation}) => {
           <Text style={{color: constants.LIGHTGREY, fontSize: 17}}>Logout</Text>
           </TouchableOpacity>
 
-          {/* <Button title="Reset Tutorials" onPress={async() => {
+          <Button title="Reset Tutorials" onPress={async() => {
     // AsyncStorage.clear();
     AsyncStorage.getAllKeys().then(AsyncStorage.multiRemove)
 }}>
   <Text>Clear Async Storage</Text>
-</Button> */}
+</Button>
       </View>}/>
 
       <View style={{height: 50, backgroundColor: constants.TRANSLUCENT, borderBottomLeftRadius: 30, borderBottomRightRadius: 30}}>

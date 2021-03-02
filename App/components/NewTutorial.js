@@ -4,6 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { RGBADepthPacking } from 'three';
 import {Portal} from 'react-native-paper';
 import {useDispatch} from 'react-redux';
+import {useFocusEffect} from '@react-navigation/native';
 
 const NewTutorial = ({children, screenId, absolutePosition={left: 0, top: 0, right: 0, bottom: 0}}) => {
   const dispatch = useDispatch();
@@ -29,7 +30,7 @@ const NewTutorial = ({children, screenId, absolutePosition={left: 0, top: 0, rig
       }
     }
 
-    useEffect(()=>{
+    useFocusEffect(()=>{
         let used = false;
         getData().then((data)=>{
             console.log(data, "new player?");
@@ -51,7 +52,8 @@ const NewTutorial = ({children, screenId, absolutePosition={left: 0, top: 0, rig
             setShowGif(true);
             setTimeout(()=>{
               setVisible(false);
-            },1200);
+              console.log('showGif', showGif);
+            },3000);
             dispatch({type:'getEggs', payload: 10});
 
 
