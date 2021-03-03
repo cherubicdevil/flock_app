@@ -493,10 +493,10 @@ const CamScreenTwo = ({navigation, route}) => {
           height: '100%',
         }}
         onPress={()=>{
-          if (priceState === "" || priceState===undefined || brandState==="" || brandState===undefined || titleState==="" || titleState===undefined || titleState.split(" ").length < 4) {
+          if (priceState === "" || priceState===undefined || brandState==="" || brandState===undefined || titleState==="" || titleState===undefined || titleState.split(" ").length < 2) {
             setPriceWrong(priceState === "" || priceState===undefined);
             setBrandWrong(brandState==="" || brandState===undefined);
-            setTitleWrong(titleState==="" || titleState===undefined || titleState.length < 4);
+            setTitleWrong(titleState==="" || titleState===undefined || titleState.length < 2);
             if (titleState.split(" ").length < 4) {
               setErrorMessage("Add more detail to the item name.")
             } else {

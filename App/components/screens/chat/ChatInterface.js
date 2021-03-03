@@ -73,8 +73,11 @@ const systemMessages = [];
 function ChatInterface({route, navigation}) {
 
   const [creditModal, setCreditModal] = useState(false);
+  // determines if asking for credit modal is open or not.
 
   const [priceStartPercent, setPriceStartPercent] = useState(0);
+  // the priceStartPercent is what?
+
   const [priceShare, setPriceShare] = useState(route.params.data.maximums[au.currentUser.uid] || 0);
   const [initialDialog, setInitialDialog] = useState(false);
   const [remainingPercent, setRemainingPercent] = useState(0);
@@ -93,18 +96,28 @@ function ChatInterface({route, navigation}) {
   console.log("PRICE SHAre", priceShare);
   useFocusEffect(()=>{
     const unsub = db.collection('chatGroups').doc(route.params.data.id).onSnapshot(docSnapshot => {
-      const data = docSnapshot.data();
-      const members = data.memberIds;
-      const maximums = data.maximums;
+      const datums = docSnapshot.data();
+      const members = datums.memberIds;
+      const maximums = datums.maximums;
+      console.log('initial maximums!!!!', maximums);
+      route.params.data.maximums = maximums;
       var remaining = route.params.data.product.price * 1.4;
+
+      var theirPer = 0;
       for (const m of members) {
-        if (m != au.currentUser.uid) {
+        if (m !== au.currentUser.uid) {
         remaining -= maximums[m];
+
+        theirPer += 100* maximums[m]/(route.params.data.product.price * 1.4)
         }
       }
       // console.log(remaining/route.params.data.product.price);
       // console.log('first set', Math.round(100 * remaining/route.params.data.product.price));
-      setRemainingPercent(Math.round(100 * remaining/(route.params.data.product.price * 1.4)));
+      const remPer = Math.round(100 * remaining/(route.params.data.product.price * 1.4));
+      // setRemainingPercent(Math.round(100 * remaining/(route.params.data.product.price * 1.4)));
+      setRemainingPercent(remPer);
+      const youPer = 100* maximums[au.currentUser.uid]/(route.params.data.product.price * 1.4);
+      console.log(theirPer, youPer, maximums);
     }, err => {
       console.log(`Encountered error: ${err}`);
     });
@@ -536,12 +549,13 @@ const JoinDialog = ({navigation, route, data, setCreditModal, initialDialog, set
     // dispatch({type: "UPDATE_DATA", payload: ["chatIds", "add", "array", data.id]});
     // dispatch({type: "UPDATE_DATA", payload: ["chatGroups", "add", "array", data]});
       // data.members.push(memberInfo);
+      // setPriceStartPercent(initialPercent);
       data.memberIds.push(au.currentUser.uid);
       completeFunc(store.getState().userInfo.customerId);
       setInitialDialog(false);
       // navigation.navigate("ChatInterface", {data: {...data}, refreshKey: Math.random()});
     } else {
-      initialPercentTemp = initialPercent;
+      // initialPercentTemp = initialPercent;
       setPriceStartPercent(initialPercent);
       setInitialDialog(false);
       setTimeout(()=>{
