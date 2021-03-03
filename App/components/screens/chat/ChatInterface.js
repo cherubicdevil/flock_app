@@ -147,10 +147,12 @@ function ChatInterface({route, navigation}) {
     //   transaction: "price here",
     // });
     let postData = {
-      ...route.params.data,
-      customerId: customerId,
+      // ...route.params.data,
+      memberIds: route.params.data.memberIds,
+      // customerId: customerId,
       chatId: route.params.data.id,
-      userId: au.currentUser.uid,
+      maximums: route.params.data.maximums,
+      // userId: au.currentUser.uid,
     }
     fetch(constants.CHARGE_FLOCK_COMPLETE_ENDPOINT, {
     method: 'POST',
@@ -332,7 +334,7 @@ return <ScrollView  style={{marginLeft: 15, overflow: 'visible', backgroundColor
             }}>
             <View style={{flexDirection: 'row', padding: 20, paddingLeft: 30, paddingRight: 30,borderRadius: 50, shadowRadius: 2.62, backgroundColor: 'white', shadowOpacity: 0.23, shadowOffset:{height: 2,width:0}, elevation: 1}}>
             <Image style={{width: 50, height: 50}} source={{uri: route.params.data.product.image}} />
-            <View style={{flex:1, marginLeft: 5}}>
+            <View style={{flex:1, marginLeft: 5, marginRight: 5,}}>
             <Text numberOfLines={2}>{route.params.data.product.title}</Text>
             <Text>${route.params.data.product.price}</Text>
             </View>
@@ -489,7 +491,10 @@ const JoinDialog = ({navigation, route, data, setCreditModal, initialDialog, set
         </TouchableOpacity>
       </View> */}
 <View style={{flexDirection:'column',}}>
-      <PriceSlider setOutsideState={setInitialPercent} id={route.params.data.id} confirm={false} showPlusMinus={false}  showInfo={true} maximumWidth={150} othersPercent={100-remainingPercent} remainingPercent={Math.min(68,remainingPercent)} priceShare = {0} priceShareInitialPercent={0} productPrice={route.params.data.product.price} maximums={route.params.data.maximums} />
+      <PriceSlider setOutsideState={(number)=>{
+        const perc = parseFloat(number)/(1.4 * productPrice) * 100;
+        setInitialPercent(perc);
+      }} id={route.params.data.id} confirm={false} showPlusMinus={false}  showInfo={true} maximumWidth={150} othersPercent={100-remainingPercent} remainingPercent={Math.min(68,remainingPercent)} priceShare = {0} priceShareInitialPercent={0} productPrice={route.params.data.product.price} maximums={route.params.data.maximums} />
       </View>
       {/* <View style={{width: 100, alignSelf: 'center'}}>
       <Text style={{width: 100, textAlign: 'center',fontSize:14, fontWeight: 'bold'}}>${(parseFloat(productPrice) * initialPercent/100).toFixed(2)}</Text>
@@ -514,6 +519,8 @@ const JoinDialog = ({navigation, route, data, setCreditModal, initialDialog, set
   <Dialog.Button label="Confirm" onPress={()=>{
     
     if (store.getState().userInfo.customerId !== "none") {
+      console.log('asdfasdfasdfasdfafdsaf');
+
       const memberInfo = {name: au.currentUser.displayName, uid: au.currentUser.uid};
       db.collection('users').doc(au.currentUser.uid).update({
         chatIds: firebase.firestore.FieldValue.arrayUnion(data.id)
@@ -521,17 +528,18 @@ const JoinDialog = ({navigation, route, data, setCreditModal, initialDialog, set
       data.maximums[au.currentUser.uid] = (initialPercent/100 * parseFloat(data.product.price * 1.4)).toFixed(2);
       // console.log('route  id', route.params.data.id);
       db.collection('chatGroups').doc(data.id).update({
-        members: firebase.firestore.FieldValue.arrayUnion(memberInfo),
+        // members: firebase.firestore.FieldValue.arrayUnion(memberInfo),
         memberIds: firebase.firestore.FieldValue.arrayUnion(memberInfo.uid),
         maximums: {...data.maximums},
       });
       setPartOf(true);
     // dispatch({type: "UPDATE_DATA", payload: ["chatIds", "add", "array", data.id]});
     // dispatch({type: "UPDATE_DATA", payload: ["chatGroups", "add", "array", data]});
-      data.members.push(memberInfo);
+      // data.members.push(memberInfo);
+      data.memberIds.push(au.currentUser.uid);
       completeFunc(store.getState().userInfo.customerId);
       setInitialDialog(false);
-      navigation.navigate("ChatInterface", {data: {...data}, refreshKey: Math.random()});
+      // navigation.navigate("ChatInterface", {data: {...data}, refreshKey: Math.random()});
     } else {
       initialPercentTemp = initialPercent;
       setPriceStartPercent(initialPercent);

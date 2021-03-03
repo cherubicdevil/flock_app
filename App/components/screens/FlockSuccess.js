@@ -1,6 +1,7 @@
 import React, {useEffect, useState, useRef} from 'react';
 import {constants} from 'App/constants';
 import Collapsible from 'react-native-collapsible';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import {
   Button,
   Image,
@@ -54,12 +55,13 @@ const FlockSuccess = ({navigation, route}) => {
     <TouchableOpacity style={{marginTop: 20, }} onPress={()=>{
         navigation.navigate("FlockReserve", {data: route.params.data});
       }}>
-      <View style={{padding: 20, marginBottom: 15, paddingLeft: 30, borderRadius: 50, shadowRadius: 2.62, backgroundColor: 'white', borderWidth: 2, borderColor: constants.ORANGE, shadowOpacity: 0.23, shadowOffset:{height: 2,width:0}, elevation: 1}}>
-      <View style={{flexDirection:'row', paddingRight: 30}}>
+      <View style={{padding: 20, marginBottom: 15, paddingLeft: 10, borderRadius: 50, backgroundColor: 'white', borderWidth: 2, borderColor: constants.LAVENDER,  elevation: 1}}>
+      <View style={{flexDirection:'row', alignItems: 'center'}}>
       <Image style={{width: 50, height: 50}} source={{uri: route.params.data.product.image}} />
-      <View style={{marginLeft: 5}}>
-        <Text numberOfLines={2} style={{flex:1}}>{route.params.data.product.title}</Text>
+      <View style={{marginLeft: 5, flex: 1}}>
+        <Text numberOfLines={2}>{route.params.data.product.title}</Text>
       </View>
+      <Icon name="chevron-right" size={25} color={constants.LAVENDER} />
       </View>
       </View>
       </TouchableOpacity>

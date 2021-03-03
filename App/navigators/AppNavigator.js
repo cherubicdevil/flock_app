@@ -107,7 +107,8 @@ const AppNavigator5 = () => {
           component={FlockSuccess}
           initialParams={{vidVisible: false}}
           options={{
-            tabBarVisible: false,
+            tabBarVisible: true,
+
           }}
         />
         <Tab.Screen
