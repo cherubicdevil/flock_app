@@ -375,7 +375,7 @@ return <ScrollView  style={{marginLeft: 15, overflow: 'visible', backgroundColor
       </View>
       <MemberPics memberIds={route.params.data.memberIds} />
       <View style={{backgroundColor: constants.PINK_BACKGROUND_OPAQUE, flex: 1, justifyContent: 'flex-end'}}>
-        <ChatComponent route={route} socket={socket} />
+        <ChatComponent navigation={navigation} route={route} socket={socket} />
  </View>
       <JoinDialog navigation={navigation} route={route} data={route.params.data} setCreditModal={setCreditModal} initialDialog={initialDialog} setInitialDialog={setInitialDialog} setPriceStartPercent={setPriceStartPercent} setPartOf = {setPartOf} completeFunc = {completeFunc} maxPercent = {remainingPercent} productPrice={route.params.data.product.price} remainingPercent={remainingPercent} />
       {partOf?<></>:<View style={{position: 'absolute', bottom: 0, width: '100%', height: 100, backgroundColor: 'white'}}><View style={{height: '100%', backgroundColor: constants.PINK_BACKGROUND }}>

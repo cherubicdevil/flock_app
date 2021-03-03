@@ -95,11 +95,13 @@ const CamScreenTwo = ({navigation, route}) => {
 
   
   useEffect(()=>{
+
     var used = false;
     getStorage().then((data)=>{
+      console.log('newImport?', data);
       if (!used) {
           if (data !== null) {
-          setNewImport(data==='true');
+          setNewImport(data!=='true');
           }
       }
     setModalOpen(true);

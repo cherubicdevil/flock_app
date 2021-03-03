@@ -8,7 +8,7 @@ import {GiftedChat} from 'react-native-gifted-chat';
 
 
 
-const ChatComponent = ({route, socket}) =>{
+const ChatComponent = ({navigation, route, socket}) =>{
 const [recvMessages, setRecvMessages] = useState([]);
 // useFocusEffect(()=>{
 //   setRecvMessages(route.params.data.messages);
@@ -27,18 +27,19 @@ useEffect(function () {
   setRecvMessages(route.params.data.messages.reverse());
   socket.current = io('https://enigmatic-bastion-86695.herokuapp.com/');
   // socket.current = io('http://10.0.0.228:5000');
-  console.log('WHY IS THIS RUNNING AGAIN');
+  // console.log('WHY IS THIS RUNNING AGAIN');
   socket.current.emit('join', route.params.data.id);
   socket.current.on('message', (message) => {
-    console.log(message);
-    setRecvMessages((prevState) => GiftedChat.append(prevState, message.text));
+    // console.log(message);
+    // setRecvMessages((prevState) => GiftedChat.append(prevState, [{text: message.text, user: message.user, _id: message._id}]));
+    setRecvMessages((prevState) => GiftedChat.append(prevState, message));
     // setRecvMessages([...recvMessages, message.text]);
   });
   socket.current.on('complete', () => {
     console.log('completingggg');
     navigation.navigate('FlockSuccess', {data: route.params.data});
   });
-  console.log("MESSAGES");
+  // console.log("MESSAGES");
   setRecvMessages(route.params.data.messages);
 //   dispatch({type: 'emptySystemMessages'});
 }, []);
@@ -54,25 +55,22 @@ useEffect(function () {
 //   setDummyState(!dummyState);
 // };
 const onSend = (messages) => {
-  if (route.params.data.id === 'self') {
-    setRecvMessages((prevState) => GiftedChat.append(prevState, messages));
-    return;
-  }
   socket.current.emit('message', {
-    text: messages[0].text,
+    ...messages[0],
     id: route.params.data.id,
   });
-  console.log(route.params.data);
-  console.log(messages[0].text);
+  // console.log(route.params.data);
+  // console.log(messages[0].text);
     //data["id"] = docRef.id;
-    console.log("DAT", route.params.data);
+    // console.log("DAT", route.params.data);
     db.collection('chatGroups').doc(route.params.data.id).update({
         messages: firebase.firestore.FieldValue.arrayUnion({sender: {name: firebase.auth().currentUser.displayName, uid: firebase.auth().currentUser.uid}, ...messages[0], createdAt: Date.parse(messages[0].createdAt)}),
       });
       //console.log("messages format",recvMessages);
     //   setTestMessages(messages[0].text);
     //   console.log('whwyywywwyywy', recvMessages);
-  setRecvMessages((prevState) => GiftedChat.append(prevState, messages));
+    // console.log('messsage', messages[0]);
+  setRecvMessages((prevState) => GiftedChat.append(prevState, messages[0]));
 };
 
 return <GiftedChat

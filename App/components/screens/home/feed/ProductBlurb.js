@@ -26,7 +26,7 @@ const ProductBlurb = ({data}) => {
       padding: 15,
       width: '100%'
     }}>
-      <Text numberOfLines={1} style={{flex: 1, color: 'black', fontWeight:'bold'}}>{data?.product?.title}</Text>
+      <Text numberOfLines={1} style={{flex: 1, color: 'black'}}><Text style={{fontWeight: 'bold'}}>{data?.product?.brand} </Text>{data?.product?.title}</Text>
       <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
       <Text style={{color: constants.ORANGE, fontWeight: 'bold'}}>${(data?.product?.price / 25 * 1.4).toFixed(2)}</Text>
       <Text>{data?.members?.length} flocking</Text>
@@ -37,7 +37,7 @@ const ProductBlurb = ({data}) => {
         padding: 15,
         width: '100%'
       }}>
-        <Text numberOfLines={1} style={{flex: 1, color: 'black', fontWeight:'bold'}}>{data?.product?.title}</Text>
+        <Text numberOfLines={1} style={{flex: 1, color: 'black', }}><Text style={{fontWeight: 'bold'}}>{data?.product?.brand} </Text>{data?.product?.title}</Text>
         <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
         <Text style={{color: "#8484a8", fontWeight: 'bold'}}>${rentPrice(data?.product?.price)}</Text>
         <Text>borrowable</Text>
