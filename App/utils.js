@@ -771,9 +771,14 @@ const pinLocalFunc = (htmlBody, notBaseURL) => {
       } else {
         return url;
       }
-    }).map((url)=> {
+    })
+    .map((url)=> {
       if (url.startsWith("/")) {
-        return imageDownloader.relativeUrlToAbsolute(url);
+        const clean = url.replace(/^\/+|\/$/g, '');
+        if (clean.includes(".com")) return clean;
+        const index = notBaseURL.indexOf(".com") + 4;
+        // return global.notBaseURL.substring(0, index).concat(url);
+        return notBaseURL.substring(0, index).concat(url);
       } else {
         return url;
       }
