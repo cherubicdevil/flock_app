@@ -684,7 +684,8 @@ const pinLocalFunc = (htmlBody, notBaseURL) => {
   
     isImageURL(url) {
       return (
-        url.indexOf("data:image") === 0 || imageDownloader.imageRegex.test(url)
+        // url.indexOf("data:image") === 0 || 
+        imageDownloader.imageRegex.test(url)
       );
     },
   
@@ -773,16 +774,23 @@ const pinLocalFunc = (htmlBody, notBaseURL) => {
       }
     })
     .map((url)=> {
-      if (url.startsWith("/")) {
-        const clean = url.replace(/^\/+|\/$/g, '');
-        if (clean.includes(".com")) return clean;
+      const clean = url.replace(/^\/+|\/$/g, '');
+      if (clean.includes(".com")) { // absolute url
+        if (!clean.startsWith("http")) {
+
+          return "https://" + clean;
+        } else {
+          return clean;
+        }
+      } else {  // relative url
+        if (clean.startsWith("data")) {
+          return clean;
+        }
         const index = notBaseURL.indexOf(".com") + 4;
         // return global.notBaseURL.substring(0, index).concat(url);
-        return notBaseURL.substring(0, index).concat(url);
-      } else {
-        return url;
+        return notBaseURL.substring(0, index).concat("/" +clean);
       }
-    });
+    }).filter((url)=>!url.startsWith("data:"));
     console.log("imageSet", images,)
     return {image: imageUrl, imageSet: images};
   };

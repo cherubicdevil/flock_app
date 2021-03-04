@@ -89,6 +89,7 @@ const CamScreenTwo = ({navigation, route}) => {
   const [canGoForward, setCanGoForward] = useState(false);
 
   const [errorMessage, setErrorMessage] = useState("");
+  const [imageError, setImageError] = useState(false);
   const [priceWrong, setPriceWrong] = useState(false);
   const [titleWrong, setTitleWrong] = useState(false);
   const [brandWrong, setBrandWrong] = useState(false);
@@ -246,14 +247,15 @@ const CamScreenTwo = ({navigation, route}) => {
                   
               <View style={{width: 150, height: 150, alignItems: 'center', resizeMode: 'contain'}}>
                 <View style={{borderWidth:0, borderColor: constants.DARKGREY,borderRadius:30,overflow: 'hidden', }}>
-            <ResizeableImage
+            <Image
               defaultSource={require('App/Assets/Images/Blank_Photo_Icon.png')}
+              onError={()=>{
+                setImageError(true);
+              }}
               source={
                 {uri: imageState}
               }
-              horizontalLimit={false}
-              limitHorizontal={false}
-              hLimit={150}
+              style={{height: '100%', width: 150, resizeMode: 'contain'}}
               // wLimit={150}
             />
             {/* <Text>Click to change product picture</Text> */}
@@ -493,11 +495,13 @@ const CamScreenTwo = ({navigation, route}) => {
           height: '100%',
         }}
         onPress={()=>{
-          if (priceState === "" || priceState===undefined || brandState==="" || brandState===undefined || titleState==="" || titleState===undefined || titleState.split(" ").length < 2) {
+          if (priceState === "" || priceState===undefined || brandState==="" || brandState===undefined || titleState==="" || titleState===undefined || titleState.split(" ").length < 2 || imageError) {
             setPriceWrong(priceState === "" || priceState===undefined);
             setBrandWrong(brandState==="" || brandState===undefined);
             setTitleWrong(titleState==="" || titleState===undefined || titleState.length < 2);
-            if (titleState.split(" ").length < 4) {
+            if (imageError) {
+              setErrorMessage("Choose a different image.");
+            } else if (titleState.split(" ").length < 4) {
               setErrorMessage("Add more detail to the item name.")
             } else {
               setErrorMessage("Looks like you missed something.")
@@ -663,6 +667,8 @@ const CamScreenTwo = ({navigation, route}) => {
           setBrandWrong(false);
           setTitleWrong(false);
           setErrorMessage("");
+
+          openChangePicture(true);
           
           setSearchResultPlaceholder(result.brand.charAt(0).toUpperCase() + result.brand.slice(1) + " | " + result.title);
         }, 500);
@@ -691,19 +697,14 @@ const CamScreenTwo = ({navigation, route}) => {
 
     <AnimatedModal visible={changePicture} close={()=>{openChangePicture(false)}}>
       <View style={{flex:1,}}>
-      <FlatList key={12334} style={{alignSelf: 'center'}} data = {imageSet} numColumns={4} renderItem={(item)=>{
+        <Text style={{textAlign:'center', marginBottom: 15, fontFamily: constants.FONT}}>Choose an image</Text>
+      <FlatList style={{alignSelf: 'center'}} data = {imageSet} numColumns={4} renderItem={(item)=>{
         if (item.item.startsWith("//")) {
           item.item = "https:" +item.item;
         }
         // return <Image source={{uri: item}} style={{height:200, aspectRatio:1, borderRadius: 40}} />
-        return <TouchableOpacity onPress={()=>{
-          setImageState(item.item);
-          openChangePicture(false);
-        }}><View style={{flex:1, height: 100,alignItems: 'center', resizeMode:'cover'}}>
-          <Image source={{uri: item.item}} style={{flex: 1, aspectRatio:1, borderRadius: 40}} />
-          {/* <Text>{item.item}</Text> */}
-        </View>
-        </TouchableOpacity>
+        return <ImageListing key={item.item} image={item.item} setState={setImageState} setOpenFalse={openChangePicture} />
+
       }} />
       
       </View>
@@ -766,5 +767,25 @@ const styles = StyleSheet.create({
   },
   descriptionStyle: {padding: 5, paddingLeft: 15, borderRadius: 30, borderWidth: 1, borderColor: constants.DARKGREY,},
 });
+
+const ImageListing = ({image, setState, setOpenFalse})=>{
+  const [show, setShow] = useState(true);
+  if (!show) {
+    return <></>;
+  }
+  return <TouchableOpacity onPress={()=>{
+
+    setState(image);
+    setOpenFalse(false);
+    console.log(image);
+  }}><View style={{flex:1, height: 100,alignItems: 'center', resizeMode:'cover'}}>
+  <Image source={{uri: image}} 
+  onError={()=>{
+    console.log('errrorrrrororo', image);
+    setShow(false);
+  }}
+  defaultSource={require('App/Assets/Images/Blank_Photo_Icon.png')} style={{flex: 1, aspectRatio:1, borderRadius: 40}} /></View>
+  </TouchableOpacity>
+}
 
 export default CamScreenTwo;
