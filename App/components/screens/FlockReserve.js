@@ -198,7 +198,9 @@ const handleDayPress = (day) => {
 }
 
   return <View style={{paddingBottom: 20, backgroundColor: 'white'}}>
-            <Text style={{alignSelf: 'center'}}>You can {requestTypeIsRent?"borrow":"flock"} the item for {numDays} days</Text>
+            {requestTypeIsRent?
+            <Text style={{alignSelf:'center'}}>Select {numDays} to borrow this item.</Text>:
+            <Text style={{alignSelf: 'center'}}>Select {numDays} days to use your item. When your {numDays} day period is up, you ship it to the next user who requested it. If there are no requests, you keep it until the next user requests it.</Text>}
             <Text style={{alignSelf: 'center'}}>Choose a start date 2 days before you intend to use it.</Text>
             <Calendar
             minDate={moment(new Date()).format("YYYY-MM-DD")}
