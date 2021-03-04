@@ -71,6 +71,8 @@ const updateCache = (id, messages) => {
 const systemMessages = [];
 
 function ChatInterface({route, navigation}) {
+  const chatColor = route.params.data.completed?constants.LAVENDER:constants.ORANGE;
+  const chatColors = route.params.data.completed?[constants.LAVENDER, constants.PURPINK]:[constants.PEACHBG, constants.PEACHBG];
 
   const [creditModal, setCreditModal] = useState(false);
   // determines if asking for credit modal is open or not.
@@ -130,7 +132,10 @@ function ChatInterface({route, navigation}) {
   useFocusEffect(()=>{
     setPartOf(part);
   }, []);
-  const completeFunc = (customerId) => {
+  const completeFunc = (customerId, maximums) => {
+    if (maximums === undefined) {
+      maximums = route.params.data.maximums;
+    }
     // send to socket, which pushes a broadcast
     // test signal, send test, on receive, console log "RECEIVED"
     // condition
@@ -138,7 +143,8 @@ function ChatInterface({route, navigation}) {
       console.log(route.params.data.product.price);
       console.log(route.params.data.maximums);
     // const res = splitAlgorithm(route.params.data.members, route.params.data.maximums, route.params.data.product.price)
-    const flockTookOff = didFlockTakeOff(route.params.data.members, route.params.data.maximums, route.params.data.product.price* 1.4);
+    console.log('coplete maximums', route.params.data.maximums);
+    const flockTookOff = didFlockTakeOff(route.params.data.members, maximums, route.params.data.product.price* 1.4);
     if (flockTookOff) {
     socket.current.emit('complete', route.params.data.id);
     db.collection('chatGroups').doc(route.params.data.id).update({
@@ -296,7 +302,7 @@ return <ScrollView  style={{marginLeft: 15, overflow: 'visible', backgroundColor
   
   <View style={{marginBottom:0, justifyContent: 'flex-end'}}>
 {/* <Text style={{fontSize: 14, textAlign: 'center'}}>%{route.params.data.id}</Text> */}
-  <Countdown dateObj={route.params.data.time} fontSize = {14} />
+  {route.params.data.completed?<></>:<Countdown dateObj={route.params.data.time} fontSize = {14} />}
   {/* <Text>{testMessages}</Text> */}
   </View>
   <View style={{bottom: 20, right: 20, position: 'absolute', zIndex: 400, flexDirection:'row', alignItems:'center'}}>
@@ -306,7 +312,7 @@ return <ScrollView  style={{marginLeft: 15, overflow: 'visible', backgroundColor
     onPress={()=>{
       navigation.navigate('ShareSocial', {id: route.params.data.id, flockId: route.params.data.id, product: route.params.data.product, data: {}})
     }}>
-  <Image style={{height: 25, width: 25, tintColor: constants.ORANGE}} source={require('App/Assets/Images/Share_Icon_White.png')} />
+  <Image style={{height: 25, width: 25, tintColor: chatColor}} source={require('App/Assets/Images/Share_Icon_White.png')} />
   </TouchableOpacity>
   </View>
 </HeaderGradient>
@@ -318,7 +324,7 @@ return <ScrollView  style={{marginLeft: 15, overflow: 'visible', backgroundColor
       <ScrollView scrollEnabled={false} keyboardShouldPersistTaps="never" >
       
       <LinearGradient
-          colors={[constants.PEACHBG, constants.PEACHBG]}
+          colors={chatColors}
           start={{ x: 0, y: 0 }} end={{ x: 0, y: 1 }}
           style={{
             borderRadius: 20,
@@ -336,14 +342,18 @@ return <ScrollView  style={{marginLeft: 15, overflow: 'visible', backgroundColor
             
             {part?
             
-            <PriceSlider id={route.params.data.id} key={Math.random()} othersPercent={100-remainingPercent} remainingPercent={Math.min(68,remainingPercent)} priceShare = {priceShare} priceShareInitialPercent={parseFloat(priceShare)/ parseFloat(route.params.data.product.price*1.4) * 100} completeFunc={completeFunc} productPrice={route.params.data.product.price} maximums={route.params.data.maximums} />
+            route.params.data.completed?<></>:<PriceSlider id={route.params.data.id} key={Math.random()} othersPercent={100-remainingPercent} remainingPercent={Math.min(68,remainingPercent)} priceShare = {priceShare} priceShareInitialPercent={parseFloat(priceShare)/ parseFloat(route.params.data.product.price*1.4) * 100} completeFunc={completeFunc} productPrice={route.params.data.product.price} maximums={route.params.data.maximums} />
             :
             <PriceTextPreview remainingPercent={remainingPercent} productPrice={route.params.data.product.price} />
             }
             </View>
             {/* <TooltipFirst tooltipId="slider" width={100} height={100} info="Slide to adjust your ownership."><Text>Hi</Text></TooltipFirst> */}
             <TouchableOpacity onPress={()=>{
+              if (!route.params.data.completed) {
               navigation.navigate("Product", {album: route?.params?.data?.product, data: route.params.data, id: route?.params?.data?.id});
+              } else {
+                navigation.navigate("FlockReserve", {data: route.params.data});
+              }
             }}>
             <View style={{flexDirection: 'row', padding: 20, paddingLeft: 30, paddingRight: 30,borderRadius: 50, shadowRadius: 2.62, backgroundColor: 'white', shadowOpacity: 0.23, shadowOffset:{height: 2,width:0}, elevation: 1}}>
             <Image style={{width: 50, height: 50}} source={{uri: route.params.data.product.image}} />
@@ -351,7 +361,7 @@ return <ScrollView  style={{marginLeft: 15, overflow: 'visible', backgroundColor
             <Text numberOfLines={2}>{route.params.data.product.title}</Text>
             <Text>${route.params.data.product.price}</Text>
             </View>
-            <Icon name="chevron-right" style={{position:'absolute', right: 20, alignSelf: 'center'}} size={25} color={constants.ORANGE} />
+            <Icon name="chevron-right" style={{position:'absolute', right: 20, alignSelf: 'center'}} size={25} color={chatColor} />
             </View>
             
             </TouchableOpacity>

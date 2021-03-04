@@ -1,7 +1,7 @@
 import React, {useEffect, useState, useRef} from 'react';
-import {View} from 'react-native';
+import {View, Dimensions, TouchableOpacity, Image} from 'react-native';
 import {constants} from 'App/constants';
-import { Bubble, InputToolbar} from 'react-native-gifted-chat';
+import { Bubble, InputToolbar, Send} from 'react-native-gifted-chat';
 import {firebase, db, au} from 'App/firebase/config';
 import io from 'socket.io-client';
 import {GiftedChat} from 'react-native-gifted-chat';
@@ -37,6 +37,7 @@ useEffect(function () {
   });
   socket.current.on('complete', () => {
     console.log('completingggg');
+    route.params.data.completed = true;
     navigation.navigate('FlockSuccess', {data: route.params.data});
   });
   // console.log("MESSAGES");
@@ -83,10 +84,10 @@ renderBubble={(props)=>{
   {...props}
   wrapperStyle={{
     left: {
-      backgroundColor: constants.PEACH,
+      backgroundColor: route.params.data.completed?constants.PURPINK:constants.PEACH,
     },
     right: {
-      backgroundColor: constants.PEACH
+      backgroundColor: route.params.data.completed?constants.PURPINK:constants.PEACH
     }
   }}
   textStyle={{
@@ -154,22 +155,38 @@ renderBubble={(props)=>{
   //     </TouchableOpacity>
   //   );
   // }}
-  minInputToolbarHeight={70}
+  maxInputToolbarHeight={70}
+//   renderSend = {(sendProps) => {
+//     return <TouchableOpacity>
+//       <Image source={constants.PLACEHOLDER_IMAGE} />
+//     </TouchableOpacity>
+
+// }}
   renderInputToolbar = {props => {
-    return (
+    return (<>
       <InputToolbar
         {...props}
         containerStyle={{
-          backgroundColor: "white",
-          borderTopColor: "#E8E8E8",
-          borderTopWidth: 1,
-          height: 50,
-          flex:1, 
-          padding: 8
+          padding:8,
         }}
+        
       />
+      <View style={{width:'100%',backgroundColor:'white', zIndex:-10,flex:1,height:300}} />
+      </>
     );
   }}
+  maxComposerHeight={100}
+  // renderChatFooter={()=>{
+  //   return <View style={{
+  //     backgroundColor:'white',
+  //     height:90,
+  //     alignSelf:'flex-end'
+  //   }}>
+
+  //   </View>
+  // }
+
+  // }
   messages={recvMessages}
   renderUsernameOnMessage={true}
   onSend={onSend}

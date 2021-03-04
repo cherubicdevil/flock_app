@@ -176,9 +176,9 @@ const AppNavigator5 = () => {
         />
         <Tab.Screen
           name="FlockChatComplete"
-          component={FlockChatComplete}
+          component={ChatInterface}
           options={{
-            tabBarVisible: false,
+            tabBarVisible: true,
           }}
         />
         <Tab.Screen

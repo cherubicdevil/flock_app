@@ -97,7 +97,7 @@ const PriceSlider = ({id, priceShareInitialPercent, completeFunc=()=>{}, product
             console.log(select.customerId);
             maximums[au.currentUser.uid] = (pricePercent/100 * productPrice * 1.4).toFixed(2);
             console.log('maximums', maximums);
-            completeFunc(select.customerId);
+            completeFunc(select.customerId, maximums);
             db.collection('chatGroups').doc(id).update({maximums: {...maximums}});
             setChanged(false);
             
