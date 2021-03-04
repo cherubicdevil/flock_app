@@ -167,15 +167,15 @@ renderBubble={(props)=>{
       <InputToolbar
         {...props}
         containerStyle={{
-          padding:8,
+          paddingHorizontal:8,
         }}
         
       />
-      <View style={{width:'100%',backgroundColor:'white', zIndex:-10,flex:1,height:300}} />
+      <View style={{width:'100%',backgroundColor:'white', zIndex:-10,flex:1,height:100}} />
       </>
     );
   }}
-  maxComposerHeight={100}
+  maxComposerHeight={80}
   // renderChatFooter={()=>{
   //   return <View style={{
   //     backgroundColor:'white',
