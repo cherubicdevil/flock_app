@@ -39,7 +39,6 @@ const TooltipFirst = ({children, tooltipId, info, style, component, width=150, h
     useEffect(()=>{
         let used = false;
         getData(tooltipId).then((data)=>{
-            console.log(data, "new player?");
             if (!used) {
               if (data === null) {
                 toolRef.current.toggleTooltip();

@@ -200,7 +200,7 @@ const handleDayPress = (day) => {
   return <View style={{paddingBottom: 20, backgroundColor: 'white'}}>
             {requestTypeIsRent?
             <Text style={{alignSelf:'center'}}>Select {numDays} to borrow this item.</Text>:
-            <Text style={{alignSelf: 'center'}}>Select {numDays} days to use your item. When your {numDays} day period is up, you ship it to the next user who requested it. If there are no requests, you keep it until the next user requests it.</Text>}
+            <Text style={{alignSelf: 'center'}}>Select {numDays} days to use your item. If there are no users who want the item by the end of the {numDays} days, you can keep it until the next user requests it.</Text>}
             <Text style={{alignSelf: 'center'}}>Choose a start date 2 days before you intend to use it.</Text>
             <Calendar
             minDate={moment(new Date()).format("YYYY-MM-DD")}
@@ -326,7 +326,6 @@ const handleDayPress = (day) => {
       
     <TouchableOpacity style={{backgroundColor: picked?(requestTypeIsRent?constants.PURPLE:constants.ORANGE):constants.GREY,height: 40, justifyContent: 'center', alignItems: 'center', borderRadius: 40, paddingHorizontal: 15}} title="rent" onPress={()=>{
       // db.collection("chatGroups").doc(route.params.data.id).update({[`markedDates.${auth.currentUser.uid}`]: markedDates});
-      console.log('HELLOOOOOO');
       const dates = Object.keys(myMarkedDates);
       const start = dates[0];
       const end = dates[1];

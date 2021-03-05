@@ -91,8 +91,9 @@ return feedItem(al);
         return <HalfProduct navigation={navigation} album={al} />;
       } else {
         return (
-          <>
+          <View key={al.id}>
                     <View
+                    key={al.id}
         style={{
           borderTopWidth: 3,
           borderColor: color,
@@ -109,7 +110,7 @@ return feedItem(al);
           </View>
           </View>
           {renderProductBlurb(al)}
-          </>
+          </View>
         );
       }
     });

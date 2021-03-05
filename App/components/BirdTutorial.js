@@ -29,7 +29,6 @@ const BirdTutorial = ({children, screenId, position}) => {
     useEffect(()=>{
         let used = false;
         getData().then((data)=>{
-            console.log(data, "new player?");
             if (!used) {
                 if (data !== null) {
                 // setVisible(!data=='true');

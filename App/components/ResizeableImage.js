@@ -1,37 +1,56 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {Image, Dimensions} from 'react-native';
 
 const ResizeableImage = ({source, limitHorizontal=true, hLimit, wLimit, aspectRatio=1, optimize=false}) => {
   const [width, setWidth] = useState(100);
   const [height, setHeight] = useState(100);
-  const [aspect, setAspect] = useState(aspect);
   const maxWidth = wLimit || Dimensions.get('window').width;
   const maxHeight = hLimit || Dimensions.get('window').height;
-  if (source?.uri !== undefined && source?.uri !== null ) {
-  Image.getSize(source.uri, (w, h) => {
+
+  useEffect(()=>{
+    let isMounted = true;
+    // console.log('iSMOUNTED', isMounted, );
+
+  if (source?.uri !== undefined && source.uri !== null ) {
+
+  Image.getSize(source?.uri, (w, h) => {
     if (limitHorizontal) {
     const ratio = maxWidth / w;
     if (optimize && w/h > aspectRatio) {
+      if (isMounted) {
       setWidth(w * ratio);
       setHeight(maxHeight);
+      }
     } else {
+      if (isMounted) {
     setHeight(h * ratio);
     setWidth(maxWidth);
+      }
     }
     } else {
       const ratio = maxHeight / h;
       if (optimize && w/h <= aspectRatio) {
+        if (isMounted) {
         setHeight(h * ratio);
-        setWidth(maxWidth);
+        setWidth(maxWidth);}
       } else {
+        if (isMounted) {
       setWidth(w * ratio);
       setHeight(maxHeight);
+        }
+
       }
     }
+  }, (err)=>{
+    console.log('image failure', err)
   });
 
 }
 
+  return ()=>{
+    isMounted = false;
+  }
+},[]);
   return (
     <Image
     defaultSource={require('App/Assets/Images/flock_logo_white.png')}

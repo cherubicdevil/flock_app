@@ -38,9 +38,6 @@ const StartFlock = ({navigation, route}) => {
 
 
     const Tab = createMaterialTopTabNavigator();
-    console.log('start flock index is', route.params);
-    console.log('customer email', select.email);
-    console.log('data', route.params.data);
 
     useEffect(()=>{
         setCreditEmail(select.email);

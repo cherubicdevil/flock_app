@@ -64,14 +64,21 @@ const FeatherList = ({navigation, route, data=data, viewHeight, type="flock"}) =
         // positions.push(positionInstance);
         positions.push(new Animated.ValueXY());
     }
-
+// console.log('wtf',data);
     return <View 
         style={{alignItems: 'center', height: '100%', width: '100%', backgroundColor: constants.PINK_BACKGROUND}}>
-            {data.map((item)=> <FeatherPanResponder key= {item.id} type={type} viewHeight={viewHeight} index = {data.indexOf(item)} currIndex = {currentIndex} setCurrentIndex={setCurrentIndex} positions = {positions} content={item} />)}
+            {data.map((item)=> {
+                return <FeatherPanResponder 
+            navigation={navigation}
+            route={route}
+            key= {
+                item.id
+            }
+        type={type} viewHeight={viewHeight} index = {data.indexOf(item)} currIndex = {currentIndex} setCurrentIndex={setCurrentIndex} positions = {positions} content={item} />})}
     </View>
 
 }
-const FeatherPanResponder = React.memo(({index, positions, currIndex, setCurrentIndex, content, viewHeight, type}) => {
+const FeatherPanResponder = React.memo(({navigation, route, index, positions, currIndex, setCurrentIndex, content, viewHeight, type}) => {
     const select = useSelector(state=>state.miscel);
     const resetSelector = useSelector(state=>state.videopage);
     const dispatch = useDispatch();
@@ -154,7 +161,6 @@ const FeatherPanResponder = React.memo(({index, positions, currIndex, setCurrent
             //     delay: 0,
             //     duration: 200,
             //   }).start();
-            console.log("FLOCK INDEX", resetSelector.carIndexFlock);
             const globalIndex = resetSelector.carIndexFlock;
             setCurrentIndex({curr: globalIndex, prev:globalIndex-1});
             // setCurrentIndex({curr:9, prev: 8});
@@ -474,7 +480,8 @@ const FeatherPanResponder = React.memo(({index, positions, currIndex, setCurrent
                 >
                 <Image source={require('App/Assets/Images/updown_swipe.png')} style={{height: 70, width: 70, shadowOpacity:0.2, shadowOffset:{height:5, width:0}, shadowRadius:5,}} />
             </Animated.View> */}
-            {content}
+            <NewVideoPage key={content.id} route={route} navigation={navigation} data={content} index={index} currIndex={index} viewHeight={viewHeight} />
+            {/* {content} */}
             </Animated.View>
 
 });

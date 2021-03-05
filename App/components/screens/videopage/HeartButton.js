@@ -14,7 +14,6 @@ const HeartIcon = ({data, ICON_SIZE=37}) => {
     var liked = selector.userInfo.likedVideos.some(
       (item) => item.title === data.title,
     );
-    console.log(liked, 'isliked?', data.description);
     const [heartColor, setHeartColor] = useState(liked);
     useFocusEffect(() => {
       var original = liked;
@@ -31,14 +30,10 @@ const HeartIcon = ({data, ICON_SIZE=37}) => {
       //       setHeartColor(true);
       //     }
       //   });
-      console.log('heart number of likes', data.likes, data.description);
+
       return () => {
-        console.log('heart colorfasd');
         if (original == heartColor) return;
-        console.log('eartfdas');
         if (heartColor) {
-          
-          console.log('test heartcolor');
           dispatch({
             type: 'LIKED_VIDEO',
             payload:

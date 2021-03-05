@@ -935,7 +935,7 @@ const createOrUpdate = async (hasId, customerId, info) => {
               resolve(err);
           });
           resolve(cid.id);
-      })
+      }).catch(err=>console.log(err))
     });
 
   } catch (err) {
@@ -977,7 +977,7 @@ const fetchCustomerInfo = (customerId) =>{
                   })
               })
 
-      })
+      }).catch(err=>console.log(err))
   })
 });
 };

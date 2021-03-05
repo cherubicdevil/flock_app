@@ -356,6 +356,9 @@ const ResizeableImage = ({source, limitHorizontal=true, hLimit, wLimit, optimize
 
   const maxWidth = wLimit || Dimensions.get('window').width;
   const maxHeight = hLimit || Dimensions.get('window').height;
+  useEffect(()=>{
+    let isMounted = false;
+if (isMounted) {
   if (source?.uri) {
   Image.getSize(source.uri, (w, h) => {
     if (limitHorizontal) {
@@ -375,6 +378,12 @@ const ResizeableImage = ({source, limitHorizontal=true, hLimit, wLimit, optimize
     }
   });
 }
+}
+
+return ()=>{
+  isMounted=true;
+}
+},[])
   if (source == null) {
     source = {uri:''};
   }
@@ -421,8 +430,8 @@ const ScrollCount = ({data}) => {
     },[])
     return <ScrollView ref = {scrollRef} pagingEnabled={true} horizontal={false} style={{left: 10, position: 'absolute', bottom: 0, zIndex: 300, height: 100,width: 250}}>
     {data.map((item)=> {
-        return <View style={{flexDirection: 'row', height: 40, borderRadius: 40, backgroundColor: 'rgba(255,220,200,0.7)',alignItems:'center',justifyContent:'space-around', margin:5}}>
-            <Text>{item.members.length} flocking</Text>
+        return <View key={item.id} style={{flexDirection: 'row', height: 40, borderRadius: 40, backgroundColor: 'rgba(255,220,200,0.7)',alignItems:'center',justifyContent:'space-around', margin:5}}>
+            <Text>{item.memberIds?.length} flocking</Text>
             <Countdown dateObj={item.time} />
             
             </View>

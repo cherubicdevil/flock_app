@@ -27,7 +27,7 @@ class App extends React.Component {
       if (user) {
         fetchUserData(user).then((user) => {
           this.setState({loggedIn: true, userData: user || {eggCoins: 300, likedVideos: [], customerId: 'none'}});
-        });
+        }).catch();
         
       } else {
         this.setState({loggedIn: false});

@@ -24,6 +24,7 @@ const CustomBar = ({descriptors, state, navigation}) => {
           return (
 
             <AddItem
+            key={route.key}
               image={options.image}
               text={options.cap}
               navigation={navigation}
@@ -32,11 +33,12 @@ const CustomBar = ({descriptors, state, navigation}) => {
           );
         }
         else if (options.title === 'Chat') {
-          return <EggItem image={options.image} text={options.cap} />
+          return <EggItem key={route.key} image={options.image} text={options.cap} />
         }
         const isFocused = state.index === index;
         return (
           <NavItem
+          key={route.key}
             image={options.image}
             text={options.cap}
             focused={isFocused}

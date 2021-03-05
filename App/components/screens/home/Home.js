@@ -126,7 +126,6 @@ const DataList = ({navigation, route}) => {
         useNativeDriver: false,
       });
       if (keyFinishedLoading) {
-        console.log('stuff')
         Animated.parallel([fadeAnimation, sizeAnimation]).start();
       }
 
@@ -157,7 +156,6 @@ const DataList = ({navigation, route}) => {
   feedItem={(al)=>{
   // console.log('al image', al.image, al.title, al.product.image);
     return <TouchableOpacity onPress={()=>{
-      console.log('helo pressing');
     if (al.completed === false) { // flock
       navigation.navigate("Product", {album: al.product, data: al, id: al.id});
     } else if (al.completed === true) {
@@ -314,11 +312,11 @@ const HomeTabSwipe = ({videoData, navigation, route}) => {
   //   };
   // }, [key1, limitKeyRent]);
 
-  useEffect(()=>{
-    fetchAlbums().then((ar) => {
-      setKeyVideoData(ar.ar);
-    });
-  }, []);
+  // useEffect(()=>{
+  //   fetchAlbums().then((ar) => {
+  //     setKeyVideoData(ar.ar);
+  //   });
+  // }, []);
 
   // const {keyFinishedLoading} = useContext(KeyContext);
   // useEffect(()=>{
@@ -474,13 +472,9 @@ const MiniCarouselRenting = ({navigation, route}) => {
   var finalAr;
   useEffect(()=>{
     fetchRentablesFirst().then((ar) => {
-      console.log(ar.length, "RENTTTTTT");
-      console.log('my first finalAr', ar);
       // setFinalAr(ar);
       setKeyArrRent(ar);
       // setKeyFinishedLoading(false);
-      console.log(ar.length - 1);
-      console.log("HELLOOOOOOOOOOO");
       dispatch({type:'sendCarouselRentIndex', payload: ar.length - 1});
       dispatch({type:'resetRent'});
       // Animated.timing(coverFade, {
@@ -494,13 +488,10 @@ const MiniCarouselRenting = ({navigation, route}) => {
   },[]);
 
   if (select.carIndexRent < 0) {
-    console.log('reached the end');
     // dispatch({type:'sendCarouselRentIndex', payload: 9});
     dispatch({type:'sendCarouselRentIndex', payload: keyArrRent.length < 10?keyArrRent.length-1:9});
     dispatch({type:'resetRent'});
     fetchRentables().then((ar) => {
-      console.log("my final ar before", ar);
-      console.log('my final ar present', keyArrRent);
       setKeyArrRent([...ar,...keyArrRent]);
       // setFinalAr([...ar,...keyArrRent, ]);
       // dispatch({type:'sendCarouselRentIndex', payload: ar.length});
@@ -523,7 +514,6 @@ const MiniCarouselRenting = ({navigation, route}) => {
   // var finalAr = keyArrRent;
   var finalAr = keyArrRent.slice(Math.max(0,keyArrRent.length-10), keyArrRent.length);
   // var finalAr = keyArrRent;
-  console.log('myFinalAr', finalAr);
   var res = [];
   for (const item of finalAr) {
     res.push(<View style={{height: '100%', width: '100%', borderWidth: 0, borderOpacity: 0.1,borderBottomWidth: 0,}}>
@@ -571,7 +561,7 @@ const MiniCarouselRenting = ({navigation, route}) => {
 
   onLayout = {(event) => {
     // setViewHeight(event.nativeEvent.layout.height);
-  }}><FeatherPanResponder navigation={navigation} route={route} data={res} viewHeight={Dimensions.get('window').height - 80 - 50 - constants.NAVBARHEIGHT} type="rent" /></View>
+  }}><FeatherPanResponder navigation={navigation} route={route} data={finalAr} viewHeight={Dimensions.get('window').height - 80 - 50 - constants.NAVBARHEIGHT} type="rent" /></View>
   </>;
 
 };
@@ -713,7 +703,7 @@ const MiniCarouselFlocking = ({navigation, route}) => {
 style={{flex: 1}}
 onLayout = {(event) => {
     // setViewHeight(event.nativeEvent.layout.height);
-  }}><FeatherPanResponder navigation={navigation} route={route} data={res} viewHeight={Dimensions.get('window').height - 50- constants.NAVBARHEIGHT-80} type="flock" /></View>
+  }}><FeatherPanResponder navigation={navigation} route={route} data={finalAr} viewHeight={Dimensions.get('window').height - 50- constants.NAVBARHEIGHT-80} type="flock" /></View>
 </>
 };
 
@@ -732,14 +722,14 @@ const MiniCarousel = ({navigation, route}) => {
 
   useEffect(()=>{
     
-    fetchAlbums().then((ar) => {
-      setKeyVideoData(ar.ar);
-      dispatch({type:'sendCarouselIndex', payload: ar.length - 1});
-      setTimeout(()=>{
-        setKeyFinishedLoading(true);
-      }, 2000);
+    // fetchAlbums().then((ar) => {
+    //   setKeyVideoData(ar.ar);
+    //   dispatch({type:'sendCarouselIndex', payload: ar.length - 1});
+    //   setTimeout(()=>{
+    //     setKeyFinishedLoading(true);
+    //   }, 2000);
 
-    })
+    // })
   }, []);
 
 
@@ -768,7 +758,7 @@ const MiniCarousel = ({navigation, route}) => {
   // </View>
   return <View onLayout = {(event) => {
     setViewHeight(event.nativeEvent.layout.height);
-  }}><FeatherPanResponder navigation={navigation} route={route} data={res} viewHeight={viewHeight} /></View>;
+  }}><FeatherPanResponder navigation={navigation} route={route} data={finalAr} viewHeight={viewHeight} /></View>;
 
 }
 
@@ -841,7 +831,7 @@ const TopBar = ({descriptors, state, navigation}) => {
           navigation.navigate(route.name);
         }
 
-          return <TouchableOpacity activeOpacity={1} style={{flex: 1,marginLeft: 10, marginRight: 10,
+          return <TouchableOpacity key={route.key} activeOpacity={1} style={{flex: 1,marginLeft: 10, marginRight: 10,
             
           }} onPress={onPress}>
           {/* <LinearGradient 
