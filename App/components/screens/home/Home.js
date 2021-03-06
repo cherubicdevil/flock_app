@@ -113,7 +113,7 @@ const DataList = ({navigation, route}) => {
     const fadeAnimation = Animated.timing(coverfade, // The animated value to drive
       {
         toValue: 0, // Animate to opacity: 1 (opaque)
-        delay: 4500, 
+        delay: 200, 
         duration: 400, // 2000ms
         useNativeDriver: false,
       },
