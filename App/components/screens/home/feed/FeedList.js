@@ -212,13 +212,13 @@ var testing = testArray.map((id)=>{
 
             <View style={styles.columnStyle}>
               {/* {testing} */}
-              {renderClucks(ar)}
+              {renderClucks(album1)}
             </View>
             <View key="1" style={styles.columnStyle}>
-            <Button title="click me to add tests" onPress={()=>{
+            {/* <Button title="click me to add tests" onPress={()=>{
                 setTestArray([...testArray, Math.round(Math.random()*100)].reverse());
-              }} />
-              {/* {renderClucks(album2)} */}
+              }} /> */}
+              {renderClucks(album2)}
             </View>
           </View>
           
