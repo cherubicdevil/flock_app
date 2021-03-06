@@ -85,7 +85,7 @@ const Flockit = () => {
           } else {
             flockPrice = option.label.substring(1, 3);
           }
-          console.log('FLOCCKCKKC', flockPrice);
+ 
         }}
       />
     </View>
@@ -109,12 +109,12 @@ const Product = ({route, navigation}) => {
     .onSnapshot(function(querySnapshot) {
       const arr = [];
       querySnapshot.forEach(function(doc) {
-        console.log("FOUNDDDDDD");
+
         if (doc.data().completed === false  && doc.data().time >= Date.now()/1000 - 60*60*24*7) {
         arr.push({...doc.data(), id:doc.id});
 
           // doc.data() is never undefined for query doc snapshots
-          console.log(doc.id, " => ", doc.data());
+
         }
       });
       setFlockAr(arr);
@@ -212,7 +212,7 @@ const Product = ({route, navigation}) => {
               source={{uri: route.params.album.image}}
             />
             </View>
-            <Video
+            {/* <Video
           repeat={true}
           muted={true}
           source={{
@@ -225,7 +225,7 @@ const Product = ({route, navigation}) => {
             bottom: -33,
             right: -15,
           }}
-        />
+        /> */}
           </View>
         </View>
       </View>
@@ -252,7 +252,6 @@ const Product = ({route, navigation}) => {
       }}><Icon name="times" size={35} color={constants.LIGHTGREY} /></TouchableOpacity>
     }
   }
-  console.log("URLSSSS:", route.params.album.url);
   const randomId = (Math.random()*10000).toFixed(0);
   const membersFlocking = flockAr.reduce((total, item)=>total + item.members.length, 0);
     return (
@@ -476,7 +475,7 @@ const FlockList = ({product, navigation, route, ar, close, limited = true, rando
   const callback = ()=>{
       offset+=50;
       if (offset/50 + 1> ar.length) {
-        console.log(offset/50, ar.length);
+
           scrollRef.current.scrollTo({y:0});
           offset = 0;
       } else {
@@ -533,7 +532,6 @@ const FlockList = ({product, navigation, route, ar, close, limited = true, rando
   // }, [product]);
   const result = [];
   for (i = 0; i < Math.min(ar.length); i++) {
-    console.log("index", i);
     const dat = ar[i];
     const tempFunc = ()=>{
       console.log("check array", ar);
@@ -568,7 +566,7 @@ const FlockList = ({product, navigation, route, ar, close, limited = true, rando
     var paidForPercent = Math.round(100 * paidFor/(1.4*ar[i].product.price));
     paidFor = paidFor.toFixed(2);
     result.push(  
-      <View style={{flexDirection: 'row', height: 50, justifyContent: 'space-between', paddingTop: 10, borderTopWidth:i==0?0:2, borderColor: constants.GREY, paddingBottom:3, alignItems: 'center'}}>
+      <View key={ar[i].id} style={{flexDirection: 'row', height: 50, justifyContent: 'space-between', paddingTop: 10, borderTopWidth:i==0?0:2, borderColor: constants.GREY, paddingBottom:3, alignItems: 'center'}}>
       <View style={{flex: 1}}>
     <Text numberOfLines = {1} style={{fontWeight: 'bold', fontSize:15,width: 80, height: 20, }}>@{ar[i].members[0].name}</Text>
       {ar[i].specifications && ar[i].specifications.trim().toLowerCase() !== "n/a" && ar[i].specifications.trim().toLowerCase() !== "na"?<Text style={{fontSize: 12, marginLeft:2}}>{ar[i].specifications}</Text>:<Text></Text>}
@@ -587,7 +585,7 @@ const FlockList = ({product, navigation, route, ar, close, limited = true, rando
       <View style={{borderRadius: 30, justifyContent:'center', overflow: 'hidden',  borderColor: constants.ORANGE, width: 50, marginLeft: 10, backgroundColor: constants.ORANGE, marginTop: -2}}>
       <TouchableOpacity style={{paddingLeft: 10, paddingRight: 10, paddingVertical: 5, justifyContent: 'center', alignItems: 'center'}}
       onPress={()=>{
-        console.log('going')
+
         tempFunc();}}>
           <Text style={{color: 'white', fontWeight: 'bold'}}>Go</Text>
           </TouchableOpacity></View>

@@ -77,7 +77,6 @@ const ProfilePicture = () => {
   );
 };
 const ProfileMain = ({navigation}) => {
-  console.log('imageEEEEE', au.currentUser.photoURL);
   const select = useSelector(state=>state);
   // au.currentUser.reload();
 
@@ -94,7 +93,6 @@ const ProfileMain = ({navigation}) => {
   const selector = useSelector((state) => state);
   //const user = firebase.auth().currentUser;
   const Test1 = () => {
-    console.log("flockData length", flockData.length);
     const defaultView = <View
         style={{marginTop: 30, alignSelf: 'center', justifyContent: 'center',}}>
         <Image source={constants.PLACEHOLDER_IMAGE} />
@@ -185,7 +183,6 @@ const ProfileMain = ({navigation}) => {
           numColumns={3}
           data={data}
           keyExtractor={(el) => {
-            console.log(el.title);
             return el.title;
           }}
           renderItem={(el) => {
@@ -196,11 +193,9 @@ const ProfileMain = ({navigation}) => {
             //   console.log(resp);
             // });
 
-            console.log('POSTER', el.item.poster);
             return (
               <TouchableOpacity
                 onPress={() => {
-                  console.log(data);
                   navigation.navigate('Carousel', {
                     scrollIndex: getIndexOfData(data, el.item),
                     array: data,
@@ -239,10 +234,8 @@ const ProfileMain = ({navigation}) => {
       const rent = [];
       const flock = [];
       querySnapshot.forEach(function(doc) {
-        console.log("FOUNDDDDDD");
         
         if (doc.data().completed === false) {
-          console.log(doc.data().time + 7*24*3600, Date.now()/1000, doc.data().time + 7*24*3600 > Date.now()/1000);
           if (doc.data().time + 7*24*3600 > Date.now()/1000) {
         flock.push({...doc.data(), id: doc.id});
           }
@@ -260,7 +253,6 @@ const ProfileMain = ({navigation}) => {
     .limit(20)
     .get()
     .then((snapshot)=>{
-      console.log(snapshot.length);
       const ar = [];
       snapshot.forEach((doc)=>{
         ar.push({...doc.data(), id: doc.id});

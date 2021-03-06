@@ -7,10 +7,9 @@ import {Portal} from 'react-native-paper';
 import {useDispatch} from 'react-redux';
 
 const storeData = async (screenId) => {
-    console.log('storing');
+    // console.log('storing');
     try {
       await AsyncStorage.setItem('@flock_tooltip_'+screenId, 'true')
-      console.log('done storing');
     } catch (e) {
       console.log('error', e)
     }
@@ -29,6 +28,8 @@ const TooltipFirst = ({children, tooltipId, info, style, component, width=150, h
     const toolRef= useRef();
     const [showGif, setShowGif] = useState(false);
 
+    const [isMounted, setIsMounted] = useState({isMounted: false});
+
     const renderText = ()=>{
       if (component) {
         return component;
@@ -37,9 +38,8 @@ const TooltipFirst = ({children, tooltipId, info, style, component, width=150, h
     };
 
     useEffect(()=>{
-        let used = false;
+        isMounted.isMounted=true;
         getData(tooltipId).then((data)=>{
-            if (!used) {
               if (data === null) {
                 toolRef.current.toggleTooltip();
               }
@@ -49,13 +49,12 @@ const TooltipFirst = ({children, tooltipId, info, style, component, width=150, h
                     toolRef.current.toggleTooltip();
                 }
                 }
-            }
         })
 
         
         // toolRef.current.toggleTooltip();
         return ()=>{
-            used=true;
+            isMounted.isMounted=false;
         }
     },[]);
 
@@ -76,9 +75,10 @@ const TooltipFirst = ({children, tooltipId, info, style, component, width=150, h
     onClose={()=>{
       setShowGif(true);
         storeData(tooltipId);
-
         setTimeout(()=>{
+          if (isMounted.isMounted) {
           setShowGif(false);
+          }
         }, 1200);
         dispatch({type:'getEggs', payload: 10});
     }}

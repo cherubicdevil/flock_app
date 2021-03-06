@@ -47,7 +47,7 @@ import Video from 'App/components/Video';
 import VideoDescription from './VideoDescription';
 import {firebase, db, au} from 'App/firebase/config';
 import {useDispatch, useSelector} from 'react-redux';
-
+import ResizeableImage from 'App/components/ResizeableImage';
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 //import {useFocusEffect} from 'react-navigation-hooks';
 import {useFocusEffect} from '@react-navigation/native';
@@ -221,7 +221,6 @@ useEffect(()=>{
         const video = data.video;
         console.log(dataType);
         if (dataType==="flock" || dataType==="video") {
-            console.log('pressing')
         navigation.navigate("Product", {album: data.product, video: {video}, data: data, id: data.id})
         } else if (dataType==="rent") {
             
@@ -277,9 +276,7 @@ useEffect(()=>{
           onMoveShouldSetResponder={()=>false}
           onResponderRelease={()=>{
             const video = data.video;
-            console.log(dataType);
             if (dataType==="flock" || dataType==="video") {
-                console.log('pressing')
             navigation.navigate("Product", {album: data.product, video: {video}, data: data, id: data.id})
             } else if (dataType==="rent") {
                 
@@ -350,57 +347,57 @@ const ConditionalVideo = ({index, data, viewHeight, route}) => {
     }
 }
 
-const ResizeableImage = ({source, limitHorizontal=true, hLimit, wLimit, optimize=false, blurred=false}) => {
-  const [width, setWidth] = useState(0);
-  const [height, setHeight] = useState(0);
+// const ResizeableImage = ({source, limitHorizontal=true, hLimit, wLimit, optimize=false, blurred=false}) => {
+//   const [width, setWidth] = useState(0);
+//   const [height, setHeight] = useState(0);
 
-  const maxWidth = wLimit || Dimensions.get('window').width;
-  const maxHeight = hLimit || Dimensions.get('window').height;
-  useEffect(()=>{
-    let isMounted = false;
-if (isMounted) {
-  if (source?.uri) {
-  Image.getSize(source.uri, (w, h) => {
-    if (limitHorizontal) {
-    const ratio = maxWidth / w;
-    setHeight(h * ratio);
-    setWidth(maxWidth);
-    } else {
-      var ratio = maxHeight / h;
-      if (optimize && w/h > .75) {
-          var ratio = maxWidth / w;
-          setHeight(h * ratio);
-          setWidth(maxWidth);
-      } else {
-      setWidth(w * ratio);
-      setHeight(maxHeight);
-      }
-    }
-  });
-}
-}
+//   const maxWidth = wLimit || Dimensions.get('window').width;
+//   const maxHeight = hLimit || Dimensions.get('window').height;
+//   useEffect(()=>{
+//     let isMounted = true;
+// if (isMounted) {
+//   if (source?.uri) {
+//   Image.getSize(source.uri, (w, h) => {
+//     if (limitHorizontal) {
+//     const ratio = maxWidth / w;
+//     setHeight(h * ratio);
+//     setWidth(maxWidth);
+//     } else {
+//       var ratio = maxHeight / h;
+//       if (optimize && w/h > .75) {
+//           var ratio = maxWidth / w;
+//           setHeight(h * ratio);
+//           setWidth(maxWidth);
+//       } else {
+//       setWidth(w * ratio);
+//       setHeight(maxHeight);
+//       }
+//     }
+//   });
+// }
+// }
 
-return ()=>{
-  isMounted=true;
-}
-},[])
-  if (source == null) {
-    source = {uri:''};
-  }
-  return (
-    <Image
-    blurRadius={blurred?50: 0}
-      source={source?.uri === ''?require('App/Assets/Images/flock_logo_white.png'):source}
-      style={{
-        //position: 'absolute',
-        zIndex: -10,
-        opacity: 0.935,
-        width: width,
-        height: height,
-      }}
-    />
-  );
-};
+// return ()=>{
+//   isMounted=true;
+// }
+// },[])
+//   if (source == null) {
+//     source = {uri:''};
+//   }
+//   return (
+//     <Image
+//     blurRadius={blurred?50: 0}
+//       source={source?.uri === ''?require('App/Assets/Images/flock_logo_white.png'):source}
+//       style={{
+//         //position: 'absolute',
+//         zIndex: -10,
+//         opacity: 0.935,
+//         width: width,
+//         height: height,
+//       }}
+//     />
+//   );
+// };
 
 const ScrollCount = ({data}) => {
     const scrollRef = useRef();
