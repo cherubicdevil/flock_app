@@ -25,15 +25,30 @@
 
 
 import React, {useState, useContext} from 'react';
-import {Dimensions, ScrollView, View, Button, TouchableOpacity} from 'react-native';
+import {Dimensions, ScrollView, View, Button, TouchableOpacity, Text} from 'react-native';
 import FeedItem from './FeedItem';
 import HalfProduct from './HalfProduct';
 import {constants} from 'App/constants';
 import {fetchAlbums, fetchProducts, mergeArrays, fetchFlockables, fetchRentables} from 'App/utils';
 import LinearGradient from 'react-native-linear-gradient';
 import ProductBlurb from 'App/components/screens/home/feed/ProductBlurb';
+
+import ResizeableImage from 'App/components/ResizeableImage'
 const width = Dimensions.get('window').width / 2 - 30;
-const FeedList= ({navigation, route, videoData, feedItem=null, productBlurb=null, KeyContext= null, flockOrNot}) => {
+
+const ConsoleTest = React.memo(({id}) => {
+  console.log(id, "test")
+  return <>
+  <ResizeableImage source = {{uri: "https://picsum.photos/200/300"}} wLimit = {Dimensions.get('window').width/2 - 30} />
+  <Text>{id}</Text>
+  </>;
+},(prev, next)=>prev.id == next.id);
+
+
+const FeedList= ({navigation, route, videoData, FeedItemLocal=null, productBlurb=null, KeyContext= null, flockOrNot}) => {
+  const [testArray, setTestArray] = useState([]);
+
+
   const [myAr, setMyAr] = useState([]);
   // const [localAr, setLocalAr] = useState(videoData);
 
@@ -44,7 +59,7 @@ const FeedList= ({navigation, route, videoData, feedItem=null, productBlurb=null
     return <ProductBlurb data={product} />
   }
   const renderFeedItem = (al) => {
-    if (feedItem) {
+    if (FeedItemLocal) {
       var type = al.type;
 
 //       return <TouchableOpacity onPress={()=>{
@@ -56,7 +71,7 @@ const FeedList= ({navigation, route, videoData, feedItem=null, productBlurb=null
 //       }}>
 // {feedItem(al)}
 //       </TouchableOpacity>;
-return feedItem(al);
+return <FeedItemLocal al={al} key={al.id} />;
     }
     return <FeedItem
     mute={true}
@@ -68,7 +83,7 @@ return feedItem(al);
     data={al}
     source={{uri: al.image || al.video}}
     title={al.title}
-    type={al.type}
+    type={"photo"}
     key={al.title}
   />
   }
@@ -118,7 +133,9 @@ return feedItem(al);
 
     // console.log('flock data length', this.props.route.params.videoData.length);
     // console.log("FL DATA", this.props.route.params);
-
+var testing = testArray.map((id)=>{
+  return <ConsoleTest id={id} key={id}/>
+})
 
     const ar = mergeArrays(videoData, []);
     const album1 = ar.slice(0, ar.length / 2);
@@ -192,12 +209,19 @@ return feedItem(al);
               flexDirection: 'row',
               flex: 1,
             }}>
-              
-            <View style={styles.columnStyle}>{renderClucks(album1)}</View>
+
+            <View style={styles.columnStyle}>
+              {/* {testing} */}
+              {renderClucks(ar)}
+            </View>
             <View key="1" style={styles.columnStyle}>
-              {renderClucks(album2)}
+            <Button title="click me to add tests" onPress={()=>{
+                setTestArray([...testArray, Math.round(Math.random()*100)].reverse());
+              }} />
+              {/* {renderClucks(album2)} */}
             </View>
           </View>
+          
         </ScrollView>
 
       </View></>

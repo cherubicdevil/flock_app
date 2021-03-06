@@ -153,9 +153,10 @@ const DataList = ({navigation, route}) => {
 <Image source={require('App/Assets/Images/flock_gif.gif')} style={{width: 300, marginTop: 50,height: 300, resizeMode:'contain', alignSelf: 'center', position: 'absolute', top:'20%'}} />
 </Animated.View>
 <View style={{height: '100%', backgroundColor: constants.PINK_BACKGROUND_OPAQUE, width: '100%'}}><Text style={{color: 'white'}}>{val}</Text><FeedList route={route} videoData={route.params.videoData} flockOrNot={route.params.dataType} KeyContext={KeyContext} 
-  feedItem={(al)=>{
+  FeedItemLocal={React.memo(({al})=>{
+    console.log('feeditem id:',al.id);
   // console.log('al image', al.image, al.title, al.product.image);
-    return <TouchableOpacity onPress={()=>{
+    return <TouchableOpacity key={al.id} onPress={()=>{
     if (al.completed === false) { // flock
       navigation.navigate("Product", {album: al.product, data: al, id: al.id});
     } else if (al.completed === true) {
@@ -170,7 +171,7 @@ const DataList = ({navigation, route}) => {
       <ResizeableImage source = {{uri: al?.product?.image}} wLimit = {Dimensions.get('window').width/2 - 30} />
     {/* <Image defaultSource={require('App/Assets/Images/flock_logo_white.png')} style={{width: 50, height: 50,}} source = {{uri: al?.product?.image}} /> */}
     </View>
-    </TouchableOpacity>}} 
+    </TouchableOpacity>}, (prev, next)=>prev.al.id==next.al.id)} 
     /></View>
 
     </>;
