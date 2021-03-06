@@ -103,10 +103,10 @@ const SearchPage = ({navigation, route}) => {
     })} */}
     {search === "" && results.length == 0?<InitialText/>:<></> }
     <FeedList videoData={results} navigation={navigation} route={route} 
-    feedItem={(item)=>{
-        var dataType = item.type;
+    FeedItemLocal={({al})=>{
+        var dataType = al.type;
         
-        return <FeedItemTemp item={item} navigation = {navigation} dataType={item.type} image={item.product.image} />;
+        return <FeedItemTemp item={al} navigation = {navigation} dataType={al.type} image={al.product.image} />;
     }}
     />
     </ScrollView>
@@ -129,7 +129,7 @@ const FeedItemTemp = ({navigation, image, item, type}) => {
             }
             
         }}>
-    <ResizeableImage source={{uri: image}} wLimit = {width} />
+    <ResizeableImage source={{uri: image}} wLimit = {Dimensions.get('window').width/2 - 30} />
     </TouchableOpacity>
     </View>
 }
