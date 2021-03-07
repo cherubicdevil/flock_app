@@ -86,6 +86,8 @@ const KeyContextProvider = (props) => {
 };
 
 const DataList = ({navigation, route}) => {
+  const [testArray, setTestArray] = useState([]);
+
   const val = route.params?.value || null;
   const {key, setKey, key1, setKey1} = useContext(KeyContext);
   const {keyArrFlock, keyArrRent, keyVideoData} = useContext(KeyContext);
@@ -152,7 +154,7 @@ const DataList = ({navigation, route}) => {
 }}/>
 <Image source={require('App/Assets/Images/flock_gif.gif')} style={{width: 300, marginTop: 50,height: 300, resizeMode:'contain', alignSelf: 'center', position: 'absolute', top:'20%'}} />
 </Animated.View>
-<View style={{height: '100%', backgroundColor: constants.PINK_BACKGROUND_OPAQUE, width: '100%'}}><Text style={{color: 'white'}}>{val}</Text><FeedList route={route} videoData={route.params.videoData} flockOrNot={route.params.dataType} KeyContext={KeyContext} 
+<View style={{height: '100%', backgroundColor: constants.PINK_BACKGROUND_OPAQUE, width: '100%'}}><Text style={{color: 'white'}}>{val}</Text><FeedList testArray={testArray} setTestArray={setTestArray} route={route} videoData={route.params.videoData} flockOrNot={route.params.dataType} KeyContext={KeyContext} 
   FeedItemLocal={React.memo(({al})=>{
     console.log('feeditem id:',al.id);
   // console.log('al image', al.image, al.title, al.product.image);
@@ -717,7 +719,8 @@ const MiniCarousel = ({navigation, route}) => {
   const [finalAr, setFinalAr] = useState([]);
   var testAr = [];
   useEffect(()=> {
-    setFinalAr(shuffle([...keyArrRent, ...keyArrFlock,...keyVideoData]));
+    // setFinalAr(shuffle([...keyArrRent, ...keyArrFlock,...keyVideoData]));
+    setFinalAr([...keyArrRent, ...keyArrFlock])
     
   }, [keyArrRent, keyArrFlock, keyVideoData]);
 

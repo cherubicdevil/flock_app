@@ -36,17 +36,17 @@ import ProductBlurb from 'App/components/screens/home/feed/ProductBlurb';
 import ResizeableImage from 'App/components/ResizeableImage'
 const width = Dimensions.get('window').width / 2 - 30;
 
-const ConsoleTest = React.memo(({id}) => {
+const ConsoleTest = React.memo(({id, item}) => {
   console.log(id, "test")
   return <>
-  <ResizeableImage source = {{uri: "https://picsum.photos/200/300"}} wLimit = {Dimensions.get('window').width/2 - 30} />
+  <ResizeableImage source = {{uri: item.product.image}} wLimit = {Dimensions.get('window').width/2 - 30} />
   <Text>{id}</Text>
   </>;
 },(prev, next)=>prev.id == next.id);
 
 
-const FeedList= ({navigation, route, videoData, FeedItemLocal=null, productBlurb=null, KeyContext= null, flockOrNot}) => {
-  const [testArray, setTestArray] = useState([]);
+const FeedList= ({testArray, setTestArray, navigation, route, videoData, FeedItemLocal=null, productBlurb=null, KeyContext= null, flockOrNot}) => {
+  
 
 
   const [myAr, setMyAr] = useState([]);
@@ -133,13 +133,16 @@ return <FeedItemLocal al={al} key={al.id} />;
 
     // console.log('flock data length', this.props.route.params.videoData.length);
     // console.log("FL DATA", this.props.route.params);
-var testing = testArray.map((id)=>{
-  return <ConsoleTest id={id} key={id}/>
+var testing = videoData.map((item)=>{
+  return <ConsoleTest id={item.id} item={item} key={item.id}/>
 })
 
+var testing2 = [...testing].reverse();
+
     const ar = mergeArrays(videoData, []);
-    const album1 = ar.slice(0, ar.length / 2);
-    const album2 = ar.slice(ar.length / 2, ar.length);
+    const album1 = videoData;
+    // const album1 = ar.slice(0, ar.length / 2);
+    // const album2 = ar.slice(ar.length / 2, ar.length);
 
     var limit = 0;
     var setLimit = ()=>{};
@@ -211,14 +214,14 @@ var testing = testArray.map((id)=>{
             }}>
 
             <View style={styles.columnStyle}>
-              {/* {testing} */}
-              {renderClucks(album1)}
+              {testing2}
+              {/* {renderClucks(album1)} */}
             </View>
             <View key="1" style={styles.columnStyle}>
-            {/* <Button title="click me to add tests" onPress={()=>{
+            <Button title="click me to add tests" onPress={()=>{
                 setTestArray([...testArray, Math.round(Math.random()*100)].reverse());
-              }} /> */}
-              {renderClucks(album2)}
+              }} />
+              {/* {renderClucks(album2)} */}
             </View>
           </View>
           
