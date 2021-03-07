@@ -548,11 +548,12 @@ const CamScreenTwo = ({navigation, route}) => {
         <ScrollView scrollEnabled={false} style={{flex: 1, zIndex: -100, backgroundColor: constants.PINK_BACKGROUND_OPAQUE, marginTop: 10}}>
 
           
-          <View style={{paddingLeft: 20, paddingTop: 10, paddingRight: 20, backgroundColor: 'white', paddingBottom: 10, }}>
-            
+          <View style={{paddingLeft: 20, paddingTop: 10, paddingRight: 20, backgroundColor: 'white', paddingBottom: 20, }}>
+          <Text style={{color: constants.DARKGREY, marginLeft: 10}}>{searchResultPlaceholder!=="Search for a product on the internet."?"Link":""}</Text>
             <TouchableOpacity style={[{padding: 10, backgroundColor: 'white', borderRadius: 50, borderWidth: 1, borderColor: constants.DARKGREY}]} value={""} onPress={()=>{
               setModalOpen(true);
             }}>
+              
               <Text style={{fontFamily: constants.FONT, color: constants.LIGHTGREY}} numberOfLines={1}>
                 {searchResultPlaceholder}
               </Text>
