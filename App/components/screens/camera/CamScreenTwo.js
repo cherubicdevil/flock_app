@@ -510,7 +510,7 @@ const CamScreenTwo = ({navigation, route}) => {
         
             return;
           }
-          if (false) {
+          if (!confirmedDialog) {
           openDialog(true);
           } else if (newImport) {
             setNewImportVisible(true);
