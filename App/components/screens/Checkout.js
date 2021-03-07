@@ -44,7 +44,12 @@ const Checkout = ({navigation, route}) => {
         if (hasId) {
             fetchCustomerInfo(customerId).then((customerInfo) =>{
                 // setInfo({...info, ...customerInfo.customer});
-                setInfo({...info, ...customer.card});
+                console.log('customerrrr? error')
+                try {
+                setInfo({...info, ...customerInfo.card});
+                } catch (err) {
+                    console.log(err);
+                }
             });
         }
     },[]);
@@ -183,7 +188,9 @@ const Checkout = ({navigation, route}) => {
     </View>
             </View>
             <View style={{alignSelf:'flex-end', flexDirection:'row', alignItems:'center', marginTop: 10, marginHorizontal:15, justifyContent: 'space-between'}}>
-                <Tooltip width={300} height={75} popover={<View><Text>Keep your shipping a secret from your fellow flockers.</Text><Text>Instead, we will ship items to you directly.</Text></View>}>
+                <Tooltip 
+                backgroundColor={constants.BLUERGREY}
+                width={300} height={75} popover={<View><Text style={{color: 'white'}}>Keep your mailing address private from your co-flockers by having Flock ship to you directly.</Text></View>}>
                 <Text>Hide shipping information. <Icon name="question" size={15} color={constants.DARKGREY} /></Text>
                 </Tooltip>
                 <Switch value={tog2}

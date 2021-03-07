@@ -16,7 +16,7 @@ import {
   KeyboardAvoidingView,
   ScrollView,
   FlatList,
-
+ 
   SafeAreaView
 } from 'react-native';
 import TooltipFirst from 'App/components/TooltipFirst';
@@ -89,7 +89,7 @@ const CamScreenTwo = ({navigation, route}) => {
   const [canGoForward, setCanGoForward] = useState(false);
 
   const [errorMessage, setErrorMessage] = useState("");
-  const [imageError, setImageError] = useState(false);
+  const [imageError, setImageError] = useState({value: false});
   const [priceWrong, setPriceWrong] = useState(false);
   const [titleWrong, setTitleWrong] = useState(false);
   const [brandWrong, setBrandWrong] = useState(false);
@@ -250,7 +250,7 @@ const CamScreenTwo = ({navigation, route}) => {
             <Image
               defaultSource={require('App/Assets/Images/Blank_Photo_Icon.png')}
               onError={()=>{
-                setImageError(true);
+                imageError.value = true;
               }}
               source={
                 {uri: imageState}
@@ -295,7 +295,8 @@ const CamScreenTwo = ({navigation, route}) => {
             </View>
             <View style={{marginBottom: 10}}>
               <Text style={{marginLeft: 15, color: titleWrong?constants.RED:constants.DARKGREY}}>Item Name</Text>
-              <TextInput
+              <ExpandableText textState={titleState} setTextState={setTitleState} placeholder="Describe the product" invalid={priceWrong} />
+              {/* <TextInput
                 placeholder="Describe the product"
                 style={[styles.descriptionStyle,{borderColor: priceWrong?constants.RED:constants.DARKGREY}]}
                 placeholderTextColor={constants.DARKGREY}
@@ -303,7 +304,7 @@ const CamScreenTwo = ({navigation, route}) => {
                   setTitleState(text);
                 }}
                 value={titleState}
-              />
+              /> */}
             </View>
 
 
@@ -495,11 +496,11 @@ const CamScreenTwo = ({navigation, route}) => {
           height: '100%',
         }}
         onPress={()=>{
-          if (priceState === "" || priceState===undefined || brandState==="" || brandState===undefined || titleState==="" || titleState===undefined || titleState.split(" ").length < 2 || imageError) {
+          if (priceState === "" || priceState===undefined || brandState==="" || brandState===undefined || titleState==="" || titleState===undefined || titleState.split(" ").length < 2 || imageError.value) {
             setPriceWrong(priceState === "" || priceState===undefined);
             setBrandWrong(brandState==="" || brandState===undefined);
             setTitleWrong(titleState==="" || titleState===undefined || titleState.length < 2);
-            if (imageError) {
+            if (imageError.value) {
               setErrorMessage("Choose a different image.");
             } else if (titleState.split(" ").length < 4) {
               setErrorMessage("Add more detail to the item name.")
@@ -703,7 +704,7 @@ const CamScreenTwo = ({navigation, route}) => {
           item.item = "https:" +item.item;
         }
         // return <Image source={{uri: item}} style={{height:200, aspectRatio:1, borderRadius: 40}} />
-        return <ImageListing key={item.item} image={item.item} setState={setImageState} setOpenFalse={openChangePicture} />
+        return <ImageListing key={item.item} image={item.item} setState={setImageState} imageError={imageError} setImageErrorMessage={setErrorMessage} setOpenFalse={openChangePicture} />
 
       }} />
       
@@ -768,7 +769,40 @@ const styles = StyleSheet.create({
   descriptionStyle: {padding: 5, paddingLeft: 15, borderRadius: 30, borderWidth: 1, borderColor: constants.DARKGREY,},
 });
 
-const ImageListing = ({image, setState, setOpenFalse})=>{
+const ExpandableText = ({textState, setTextState, placeholder="", priceWrong}) => {
+  const [height, setHeight] = useState(new Animated.Value(35));
+  const expand = ()=>{
+    Animated.timing(height, {
+      toValue: 90,
+    }).start();
+  }
+  const deflate = ()=>{
+    Animated.timing(height, {
+      toValue: 35,
+    }).start();
+  }
+  return <Animated.View style={[styles.descriptionStyle,{borderColor: priceWrong?constants.RED:constants.DARKGREY, overflow: 'hidden', 
+  height: height
+  }]}>
+    <TextInput
+    multiline
+    onFocus={()=>{
+      expand();
+    }}
+    onBlur={()=>{
+      deflate();
+    }}
+                placeholder={placeholder}
+                placeholderTextColor={constants.DARKGREY}
+                onChangeText={(text) => {
+                  setTextState(text);
+                }}
+                value={textState}
+              />
+  </Animated.View>
+}
+
+const ImageListing = ({image, setState, imageError, setImageErrorMessage, setOpenFalse})=>{
   const [show, setShow] = useState(true);
   if (!show) {
     return <></>;
@@ -776,6 +810,8 @@ const ImageListing = ({image, setState, setOpenFalse})=>{
   return <TouchableOpacity onPress={()=>{
 
     setState(image);
+    imageError.value = false;
+    setImageErrorMessage("");
     setOpenFalse(false);
     console.log(image);
   }}><View style={{flex:1, height: 100,alignItems: 'center', resizeMode:'cover'}}>

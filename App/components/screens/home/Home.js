@@ -161,7 +161,6 @@ const DataList = ({navigation, route}) => {
 </Animated.View>
 <View style={{height: '100%', backgroundColor: constants.PINK_BACKGROUND_OPAQUE, width: '100%'}}><Text style={{color: 'white'}}>{val}</Text><FeedList testArray={testArray} setTestArray={setTestArray} navigation={navigation} route={route} videoData={route.params.videoData} flockOrNot={route.params.dataType} KeyContext={KeyContext} 
   FeedItemLocal={React.memo(({al})=>{
-    console.log('feeditem id:',al.id);
   // console.log('al image', al.image, al.title, al.product.image);
     return <TouchableOpacity key={al.id} onPress={()=>{
     if (al.completed === false) { // flock
@@ -595,12 +594,12 @@ const MiniCarouselFlocking = ({navigation, route}) => {
       // setKeyFinishedLoading(false);
       Animated.timing(coverFade, {
         toValue: 0,
-        duration: 500,
+        duration: 1000,
         delay: 2000,
         useNativeDriver: false,
       }).start();
       setKeyFinishedLoading(true);
-      setTimeout(()=>setCover(false), 2500);
+      setTimeout(()=>setCover(false), 1000);
     });
   },[]);
 

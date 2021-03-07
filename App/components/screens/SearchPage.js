@@ -33,7 +33,6 @@ const NoResults = () => {
 const SearchPage = ({navigation, route}) => {
     const [search, setSearch] = useState("");
     const [results, setResults] = useState([]);
-    console.log('NAVG?',navigation);
 
 
     console.log('no results', search!=="" && results.length ==0 )
@@ -122,7 +121,7 @@ const FeedItemTemp = ({navigation, image, item, type}) => {
     }}
     style={{resizeMode: 'cover', width: '100%'}}>
         <TouchableOpacity onPress={()=>{
-            console.log(item);
+            console.log(type);
             if (type !== "rent") {
                 navigation.navigate("Product", {album: item.product, flockId: item.objectID, data: item, id: item.objectID})
             } else {

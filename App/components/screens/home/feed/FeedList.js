@@ -46,7 +46,6 @@ const ConsoleTest = React.memo(({id, item}) => {
 },(prev, next)=>prev.id == next.id);
 
 const FeedItemLocal = React.memo(({al, navigation})=>{
-  console.log('feeditem id:',al.id);
 // console.log('al image', al.image, al.title, al.product.image);
   return <TouchableOpacity key={al.id} onPress={()=>{
   if (al.completed === false) { // flock
@@ -66,8 +65,7 @@ const FeedItemLocal = React.memo(({al, navigation})=>{
   </TouchableOpacity>}, (prev, next)=>prev.al.id==next.al.id);
 
 const FeedList= ({testArray, setTestArray, navigation, route, videoData, productBlurb=null, KeyContext= null, flockOrNot, feedItemCustom}) => {
-  
-  console.log('navigatoin?', navigation);
+
 
   const [myAr, setMyAr] = useState([]);
   // const [localAr, setLocalAr] = useState(videoData);
@@ -129,7 +127,7 @@ return <FeedItemLocal al={al} key={al.id} navigation={navigation} />;
         return <HalfProduct navigation={navigation} album={al} />;
       } else {
         return (
-          <View key={al.id}>
+          <View key={al.id || Math.random()}>
                     <View
                     key={al.id}
         style={{
@@ -215,6 +213,7 @@ var testing2 = testing;
           }}></LinearGradient> */}
                       
         <ScrollView
+        showsVerticalScrollIndicator={false}
           style={{
             paddingLeft: 15,
             paddingRight: 15,
@@ -229,7 +228,7 @@ var testing2 = testing;
           onScrollEndDrag={(event) => {
             if (
               event.nativeEvent.contentOffset.y + 400 >
-              0.8 * event.nativeEvent.contentSize.height
+              0.6 * event.nativeEvent.contentSize.height - 200
             ) {
               console.log('should be fetching albums');
               fetchRentables().then((ar)=>{

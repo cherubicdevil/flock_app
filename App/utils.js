@@ -974,7 +974,7 @@ const fetchCustomerInfo = (customerId) =>{
                   cardRes.json().then((card)=>{
                     // console.log("THIS IS CARD", card);
                   resolve({customer: res, card: card});
-                  })
+                  }).catch(err=>console.log(err))
               })
 
       }).catch(err=>console.log(err))

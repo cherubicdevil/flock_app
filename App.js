@@ -26,7 +26,7 @@ class App extends React.Component {
     au.onAuthStateChanged((user) => {
       if (user) {
         fetchUserData(user).then((user) => {
-          this.setState({loggedIn: true, userData: user || {eggCoins: 300, likedVideos: [], customerId: 'none'}});
+          this.setState({loggedIn: true, userData: user || {eggCoins: 0, likedVideos: [], customerId: 'none'}});
         }).catch();
         
       } else {

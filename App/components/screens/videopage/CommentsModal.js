@@ -82,7 +82,7 @@ const CommentsModal = ({modalVisible, data, toggleFunc}) => {
   const [commentsCache, setCommentsCache] = useState([]);
   var lastVisible;
 
-  const [didMount, setDidMount] = useState(false);
+  const [didMount, setDidMount] = useState({mount: false});
 
   
 
@@ -144,6 +144,7 @@ const CommentsModal = ({modalVisible, data, toggleFunc}) => {
       });
   };
   const fetchComments = () => {
+    console.log('fetching comments', data.id);
     const ar = [];
     var counter = 0;
     firebase
@@ -166,7 +167,7 @@ const CommentsModal = ({modalVisible, data, toggleFunc}) => {
           if (counter == n) {
             //console.log('THIS IS ARRRRR', ar);
             //console.log('THIS IS TRUE ID: ', data.id);
-            if (didMount) {
+            if (didMount.mount) {
               setComments(ar);
             }
             //console.log(comments[0]);
@@ -267,6 +268,7 @@ const CommentsModal = ({modalVisible, data, toggleFunc}) => {
         replies: 0,
         children: [],
       };
+      console.log('sending og comment!', 'hello?',docId, data.id);
       db.collection('comments').doc(docId).set(commentData);
       // FLOCK_CONFUSION... why does the new comments show up even when you don't fetch
       // or refresh?
@@ -274,21 +276,24 @@ const CommentsModal = ({modalVisible, data, toggleFunc}) => {
     }
   };
 
-  var sendOgComment = () => {
-    console.log('sending og comment');
-  }
+  // var sendOgComment = () => {
+  //   console.log('sending og comment');
+  // }
 
   useEffect(() => {
+    if (modalVisible) {
     fetchComments();
     //setSendFunction(() => sendOgComment);
     sendFunction = sendOgComment;
     //console.log(sendOgComment);
     //setModalVis(modalVisible);
-    setDidMount(true);
-    return () => setDidMount(false);
+    didMount.mount = true;
+    }
+    
+    return () => didMount.mount = false;
   }, [modalVisible]);
 
-  if (!didMount) {
+  if (!didMount.mount) {
     return null;
   }
   // const sendReply = (event) => {
@@ -446,7 +451,7 @@ const CommentsModal = ({modalVisible, data, toggleFunc}) => {
     }
   };
   return (
-    <AnimatedModal upPercent="65%" nested={true} keyboard={true} behavior="padding" fade={true} colored={true} colors={[constants.PEACH, constants.GREYORANGE]} modalAnimationType="slide" transparent={true} visible={modalVisible} close={()=>toggleFunc(false)}>
+    <AnimatedModal bgcolor={constants.PINK_BACKGROUND_OPAQUE} upPercent="65%" nested={true} keyboard={true} behavior="padding" fade={true} colored={true} colors={[constants.PEACH, constants.GREYORANGE]} modalAnimationType="slide" transparent={true} visible={modalVisible} close={()=>toggleFunc(false)}>
       {/* <KeyboardAvoidingView behavior="padding" style={styles.centeredView}> */}
         <View
           style={styles.modalView}
@@ -526,7 +531,7 @@ const CommentsModal = ({modalVisible, data, toggleFunc}) => {
 						</ScrollView>*/}
           <TextInput
             type="reset"
-            multiline
+            // multiline
             
             elevation={2}
             placeholder={replyPlaceholder}
@@ -660,7 +665,8 @@ const styles = StyleSheet.create({
     shadowColor: '#ddd',
     borderRadius: 20,
     // borderTopWidth: 0.2,
-    borderWidth: 1,
+    borderWidth: 0,
+    paddingTop:5,
     borderBottomLeftRadius:0,
     borderBottomRightRadius:0,
     borderColor: constants.DARKGREY,
