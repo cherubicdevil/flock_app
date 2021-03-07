@@ -29,6 +29,7 @@ import {Dimensions, ScrollView, View, Button, TouchableOpacity, Text} from 'reac
 import FeedItem from './FeedItem';
 import HalfProduct from './HalfProduct';
 import {constants} from 'App/constants';
+import {shuffle} from 'App/utils';
 import {fetchAlbums, fetchProducts, mergeArrays, fetchFlockables, fetchRentables} from 'App/utils';
 import LinearGradient from 'react-native-linear-gradient';
 import ProductBlurb from 'App/components/screens/home/feed/ProductBlurb';
@@ -44,10 +45,29 @@ const ConsoleTest = React.memo(({id, item}) => {
   </>;
 },(prev, next)=>prev.id == next.id);
 
+const FeedItemLocal = React.memo(({al, navigation})=>{
+  console.log('feeditem id:',al.id);
+// console.log('al image', al.image, al.title, al.product.image);
+  return <TouchableOpacity key={al.id} onPress={()=>{
+  if (al.completed === false) { // flock
+    navigation.navigate("Product", {album: al.product, data: al, id: al.id});
+  } else if (al.completed === true) {
+  navigation.navigate('FlockReserve', {data:al});
+  } else {
+    navigation.navigate("Product", {album: al.product, data: al, id: al.id})
+  }
+}}
 
-const FeedList= ({testArray, setTestArray, navigation, route, videoData, FeedItemLocal=null, productBlurb=null, KeyContext= null, flockOrNot}) => {
+>
+  <View style={{backgroundColor: 'black', width: '100%', resizeMode: 'contain'}} >
+    <ResizeableImage source = {{uri: al?.product?.image}} wLimit = {Dimensions.get('window').width/2 - 30} />
+  {/* <Image defaultSource={require('App/Assets/Images/flock_logo_white.png')} style={{width: 50, height: 50,}} source = {{uri: al?.product?.image}} /> */}
+  </View>
+  </TouchableOpacity>}, (prev, next)=>prev.al.id==next.al.id);
+
+const FeedList= ({testArray, setTestArray, navigation, route, videoData, productBlurb=null, KeyContext= null, flockOrNot, feedItemCustom}) => {
   
-
+  console.log('navigatoin?', navigation);
 
   const [myAr, setMyAr] = useState([]);
   // const [localAr, setLocalAr] = useState(videoData);
@@ -59,6 +79,9 @@ const FeedList= ({testArray, setTestArray, navigation, route, videoData, FeedIte
     return <ProductBlurb data={product} />
   }
   const renderFeedItem = (al) => {
+    if (feedItemCustom) {
+      return feedItemCustom(al);
+    }
     if (FeedItemLocal) {
       var type = al.type;
 
@@ -71,7 +94,7 @@ const FeedList= ({testArray, setTestArray, navigation, route, videoData, FeedIte
 //       }}>
 // {feedItem(al)}
 //       </TouchableOpacity>;
-return <FeedItemLocal al={al} key={al.id} />;
+return <FeedItemLocal al={al} key={al.id} navigation={navigation} />;
     }
     return <FeedItem
     mute={true}
@@ -137,12 +160,27 @@ var testing = videoData.map((item)=>{
   return <ConsoleTest id={item.id} item={item} key={item.id}/>
 })
 
-var testing2 = [...testing].reverse();
+var testing2 = testing;
 
     const ar = mergeArrays(videoData, []);
-    const album1 = videoData;
+    const album1 = [];
+    const album2 = [];
+    for (let i = 0; i < videoData.length;i++) {
+      if (i%2 == 0) {
+        album1.push(videoData[i]);
+      } else {
+        album2.push(videoData[i]);
+      }
+    }
     // const album1 = ar.slice(0, ar.length / 2);
     // const album2 = ar.slice(ar.length / 2, ar.length);
+
+    var testing3 = ar.map((item)=>{
+      return <>
+      {renderFeedItem(item)}
+      {renderProductBlurb(item)}
+      </>
+    })
 
     var limit = 0;
     var setLimit = ()=>{};
@@ -151,7 +189,7 @@ var testing2 = [...testing].reverse();
       var {limitKey, setLimitKey, limitKeyRent, setLimitKeyRent} = useContext(KeyContext);
     }
     if (KeyContext) {
-    var {keyArrRent, keyArrFlock, setKeyArrRent, setKeyArrFlock} = useContext(KeyContext);
+    var {keyArrRent, keyArrFlock, setKeyArrRent, setKeyArrFlock, keyVideoData, setKeyVideoData} = useContext(KeyContext);
     }
     return (
       <>
@@ -195,11 +233,14 @@ var testing2 = [...testing].reverse();
             ) {
               console.log('should be fetching albums');
               fetchRentables().then((ar)=>{
-                setKeyArrRent([...keyArrRent,...ar]);
+                // setKeyArrRent([...keyArrRent,...ar]);
+                fetchFlockables().then((ar2) => {
+                  setKeyVideoData([...keyVideoData,...shuffle([...ar, ...ar2])])
+                })
               })
-              fetchFlockables().then((ar)=>{
-                setKeyArrFlock([...keyArrFlock,...ar]);
-              })
+              // fetchFlockables().then((ar)=>{
+              //   setKeyArrFlock([...keyArrFlock,...ar]);
+              // })
               
               //this.props.fetchAlbums();
             }
@@ -214,14 +255,14 @@ var testing2 = [...testing].reverse();
             }}>
 
             <View style={styles.columnStyle}>
-              {testing2}
-              {/* {renderClucks(album1)} */}
+              {/* {testing3} */}
+              {renderClucks(album1)}
             </View>
             <View key="1" style={styles.columnStyle}>
-            <Button title="click me to add tests" onPress={()=>{
+            {/* <Button title="click me to add tests" onPress={()=>{
                 setTestArray([...testArray, Math.round(Math.random()*100)].reverse());
-              }} />
-              {/* {renderClucks(album2)} */}
+              }} /> */}
+              {renderClucks(album2)}
             </View>
           </View>
           

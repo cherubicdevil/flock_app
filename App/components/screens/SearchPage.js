@@ -33,6 +33,7 @@ const NoResults = () => {
 const SearchPage = ({navigation, route}) => {
     const [search, setSearch] = useState("");
     const [results, setResults] = useState([]);
+    console.log('NAVG?',navigation);
 
 
     console.log('no results', search!=="" && results.length ==0 )
@@ -103,7 +104,7 @@ const SearchPage = ({navigation, route}) => {
     })} */}
     {search === "" && results.length == 0?<InitialText/>:<></> }
     <FeedList videoData={results} navigation={navigation} route={route} 
-    FeedItemLocal={({al})=>{
+    feedItemCustom={(al)=>{
         var dataType = al.type;
         
         return <FeedItemTemp item={al} navigation = {navigation} dataType={al.type} image={al.product.image} />;

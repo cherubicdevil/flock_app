@@ -50,6 +50,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import ResizeableImage from 'App/components/ResizeableImage';
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 //import {useFocusEffect} from 'react-navigation-hooks';
+import {rentPrice} from 'App/utils';
 import {useFocusEffect} from '@react-navigation/native';
 import {database} from 'firebase';
 
@@ -288,7 +289,7 @@ useEffect(()=>{
               <View style={{flex: 1}}>
               <Text numberOfLines={2}><Text style={{fontWeight: 'bold'}}>{data?.product?.brand?data?.product?.brand+" ":""}</Text>{data?.product?.title}</Text>
               <Text></Text>
-              <Text style={{color: dataType==="rent"?constants.LAVENDER:constants.GREYORANGE}}>{dataType==="rent"?(data?.product?.price / 25).toFixed(2)+" to borrow":"$"+(1.4 * data?.product?.price / 25).toFixed(2) + " to flock"}</Text>
+              <Text style={{color: dataType==="rent"?constants.LAVENDER:constants.GREYORANGE}}>${dataType==="rent"?rentPrice(data?.product?.price)+" to borrow":"$"+(1.4 * data?.product?.price / 25).toFixed(2) + " to flock"}</Text>
               <Text style={{color: "grey"}}>${data?.product?.price} original</Text>
               </View>
               <Icon color={dataType==="rent"?constants.LAVENDER:constants.GREYORANGE} name="chevron-right" size={30} />

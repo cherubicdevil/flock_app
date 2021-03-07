@@ -98,7 +98,12 @@ const DataList = ({navigation, route}) => {
   } else if (route.params.dataType === "rentData") {
     route.params.videoData = keyArrRent;
   } else if (route.params.dataType === "videoData") {
-    route.params.videoData = shuffle([...keyVideoData, ...keyArrRent, ...keyArrFlock]);
+    if (keyVideoData == null || keyVideoData.length  == 0) {
+    route.params.videoData = shuffle([...keyArrRent, ...keyArrFlock]);
+    keyVideoData.push(...route.params.videoData);
+    } else {
+      route.params.videoData = keyVideoData;
+    }
   }
   useEffect(() => {
     if (route.params.dataType === 'flockData') {
@@ -154,7 +159,7 @@ const DataList = ({navigation, route}) => {
 }}/>
 <Image source={require('App/Assets/Images/flock_gif.gif')} style={{width: 300, marginTop: 50,height: 300, resizeMode:'contain', alignSelf: 'center', position: 'absolute', top:'20%'}} />
 </Animated.View>
-<View style={{height: '100%', backgroundColor: constants.PINK_BACKGROUND_OPAQUE, width: '100%'}}><Text style={{color: 'white'}}>{val}</Text><FeedList testArray={testArray} setTestArray={setTestArray} route={route} videoData={route.params.videoData} flockOrNot={route.params.dataType} KeyContext={KeyContext} 
+<View style={{height: '100%', backgroundColor: constants.PINK_BACKGROUND_OPAQUE, width: '100%'}}><Text style={{color: 'white'}}>{val}</Text><FeedList testArray={testArray} setTestArray={setTestArray} navigation={navigation} route={route} videoData={route.params.videoData} flockOrNot={route.params.dataType} KeyContext={KeyContext} 
   FeedItemLocal={React.memo(({al})=>{
     console.log('feeditem id:',al.id);
   // console.log('al image', al.image, al.title, al.product.image);
