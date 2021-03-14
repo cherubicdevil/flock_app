@@ -123,7 +123,9 @@ const AddItem = ({image, text, navigation, route}) => {
       /> */}
                   
       <AnimatedModal showClose = {false} colored={true} colors={[constants.PEACH, constants.GREYORANGE]} curve={false} visible = {modalOpen} close = {()=> setModalOpen(false)} navigation={navigation} content={<View style={{flex:1}}>
-<View style={{flex: 1, justifyContent: 'center'}}><View style={{height: 70, borderRadius: 40, backgroundColor: 'white', marginLeft: 20, marginRight: 20}}><TouchableOpacity onPress={()=>{
+<View style={{flex: 1, justifyContent: 'center'}}>
+  <View style={{height: '90%', borderRadius: 40, backgroundColor: 'white', marginLeft: 20, marginRight: 20}}>
+    <TouchableOpacity onPress={()=>{
   setModalOpen(false);
   navigation.navigate('CamScreen', {data: {}});
 
@@ -133,7 +135,7 @@ const AddItem = ({image, text, navigation, route}) => {
     </Text>
     </TouchableOpacity></View></View>
 <View style={{flex: 1}}>
-<View style={{height: 70, borderRadius: 40, backgroundColor: constants.DARKGREY, marginLeft: 20, marginRight: 20, justifyContent: 'center'}}><TouchableOpacity onPress={()=>{
+<View style={{height: '90%', borderRadius: 40, backgroundColor: constants.DARKGREY, marginLeft: 20, marginRight: 20, justifyContent: 'center'}}><TouchableOpacity onPress={()=>{
   setModalOpen(false);
   // navigation.navigate('CamScreen');
 

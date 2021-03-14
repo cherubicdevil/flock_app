@@ -64,13 +64,14 @@ const ProfilePicture = () => {
       style={{
         backgroundColor: '#ddd',
         //alignSelf: 'center',
-        width: 120,
-        height: 120,
+        
+        height: '90%',
+        aspectRatio:1,
         borderRadius: 60,
       }}>
       <Image
       defaultSource={constants.PLACEHOLDER_IMAGE}
-        style={{width: 120, height: 120, borderRadius: 60}}
+        style={{width: '100%', height: '100%', borderRadius: 60}}
         source={avatar}
       />
     </View>
@@ -319,7 +320,7 @@ const ProfileMain = ({navigation}) => {
             paddingLeft: 40,
           }}>
           
-          <View style={{flexDirection: 'row'}}>
+          <View style={{flexDirection: 'row',}}>
             <ProfilePicture />
             <View style={{flex: 1, marginLeft: 10}}>
               <View style={{flexDirection: 'row',}}>

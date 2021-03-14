@@ -218,6 +218,9 @@ useEffect(()=>{
       onStartShouldSetResponder={()=>true}
       onResponderTerminationRequest={()=>true}
       onMoveShouldSetResponder={()=>false}
+      onResponderGrant={()=>{
+        console.log('touching');
+      }}
       onResponderRelease={()=>{
         const video = data.video;
         console.log(dataType);
