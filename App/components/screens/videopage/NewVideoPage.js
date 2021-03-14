@@ -22,74 +22,36 @@
  *
  */
 
-import React, {useState, useEffect, useRef, useContext} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {
-  KeyboardAvoidingView,
   ScrollView,
-  FlatList,
   Dimensions,
   Image,
   View,
   Text,
   StyleSheet,
-  Modal,
   TouchableOpacity,
-  TextInput,
   TouchableWithoutFeedback,
-  Share,
-  ImageBackground,
-  TouchableHighlight,
 } from 'react-native';
 import {constants} from 'App/constants';
 import CommentsModal from './CommentsModal';
-import Video from 'App/components/Video';
-import VideoDescription from './VideoDescription';
-import {firebase, db, au} from 'App/firebase/config';
+import {db} from 'App/firebase/config';
 import {useDispatch, useSelector} from 'react-redux';
 import ResizeableImage from 'App/components/ResizeableImage';
-import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
-//import {useFocusEffect} from 'react-navigation-hooks';
 import {rentPrice} from 'App/utils';
 import {useFocusEffect} from '@react-navigation/native';
-import {database} from 'firebase';
-
-import CircleProfile from './CircleProfile';
 import HeartButton from './HeartButton';
-import ResizeableVideo from '../../ResizeableVideo';
 
 import Countdown from 'App/components/Countdown';
 
 
 const ICON_SIZE = 37;
-const config = {
-  velocityThreshold: 0.3,
-  directionalOffsetThreshold: 80,
-};
 
 
-var renderProduct = (navigation, data) => {
-  // return (
-  //   <VideoDescription
-  //     video={data.video}
-  //     album={data.product}
-  //     user={data.username}
-  //     description={data.title}
-  //     navigation={navigation}
-  //     style={{
-  //       position: 'absolute',
-  //       top: 0,
-  //       alignSelf: 'center',
-  //       zIndex: 20,
-  //     }}
-  //   />
-  // );
-};
-
-const NewVideoPage = React.memo(({navigation, route, array, index, data, currIndex, viewHeight}) => {
-    var dataType = "initial";
+const getDataType = (data) => {
     if (data.video) {
-        dataType = "video";
+        var dataType = "video";
     } else if (data.completed) {
         dataType = "rent";
     } else if (data.completed == false) {
@@ -97,28 +59,14 @@ const NewVideoPage = React.memo(({navigation, route, array, index, data, currInd
     } else {
         dataType = "product";
     }
-    if (data.type ==="rec") {
-      // FLOCK_BUG
-    }
-  var likes = data.likes || 0;
-  const dispatch = useDispatch();
-  const [myData, setMyData] = useState(data);
-  const [leavePage, setLeavePage] = useState(false);
-  const [paused, setPaused] = useState(false);
-  const [modalVisible, setModalVisible] = useState(false);
+    return dataType;
+}
 
-  const [flockCountdowns, setFlockCountdowns] = useState([]);
-
-  const percentage= 100;
-
-  var lastVisible = null;
-  const select = useSelector(state=>state);
-    // console.log(select.videopage.carIndexRent, select.videopage.carIndexFlock, select.videopage.carIndex, data );
-
-//   return <Text>hi</Text>
-
-const comments = [{user: {name: 'Hellowrld'}, content: "this is a message", time: 1234, replies: []}, ];
-const [firstComment, setFirstComment] = useState({});
+const NewVideoPage = React.memo(({navigation, route, array, index, data, currIndex, viewHeight}) => {
+    const dispatch = useDispatch();
+    const dataType = getDataType(data);
+    const [modalVisible, setModalVisible] = useState(false);
+    const [flockCountdowns, setFlockCountdowns] = useState([]);
 
 useEffect(()=>{
 
@@ -128,24 +76,20 @@ useEffect(()=>{
     .get().then(function(querySnapshot) {
       const arr = [];
       querySnapshot.forEach(function(doc) {
-        const data = doc.data();
         if (data.completed === false && data.time >= Date.now()/1000 - 60*60*24*7) {
         arr.push(doc.data());
         }
       });
       setFlockCountdowns(arr);
-      // console.log(arr, 'countdowns');
     });
     }
 
-    // console.log("DATAID", data.id);
     db.collection('comments')
     .where('cluck', '==', `${data.id}`)
     .orderBy('date', 'desc')
     .limit(1)
     .get()
     .then((querySnapshot) => {
-      //console.log(querySnapshot.getKey());
       querySnapshot.forEach((doc) => {
         const entity = doc.data();
         setFirstComment(entity);
@@ -159,10 +103,8 @@ useEffect(()=>{
         style={{
           alignItems: 'flex-end',
           alignSelf: 'flex-end',
-          // position: 'absolute',
           right: 10,
           width: 100,
-          // bottom: 105,
           zIndex: 25,
 
           shadowOpacity:0.2,
@@ -211,7 +153,6 @@ useEffect(()=>{
     );
   };
 
-  // console.log("FIRST COMMENT", firstComment, firstComment === undefined || Object.keys(firstComment).length==0);
   const renderVid = () => {
     return (
       <View
@@ -240,17 +181,13 @@ useEffect(()=>{
         }}>
         <View
           style={{
-            //position: 'absolute',
             width: '100%',
-            //justifyContent: 'center',
             zIndex: -10,
             borderRadius: 60,
             borderTopLeftRadius: 0,
             borderTopRightRadius: 0,
-            // overflow: 'hidden',
             backgroundColor: 'white',
           }}>
-              {/* <Image source = {{uri: data?.poster || data?.product?.image || ''}} style={{position: 'absolute', zIndex: -10, top: 0, width: '100%', height: '100%' }} blurRadius={100} /> */}
               <View style={{alignSelf: 'center', height: '100%'}}>
                 <View style={{height: '100%', justifyContent: 'center'}}>
               <ResizeableImage aspectRatio={0.5} optimize={true} source={{uri: data?.product?.image || ''}} limitHorizontal={false} wLimit = {Dimensions.get('window').width} hLimit={viewHeight * 1.1} />
@@ -262,10 +199,6 @@ useEffect(()=>{
               <View style={{width: '100%', position: 'absolute', bottom: 0}}>
                 <View>
               {renderIcons()}
-              
-          {/* <ResizeableImage source={{uri: data?.poster || data?.product?.image || ''}} limitHorizontal={false} hLimit={viewHeight * percentage/100} /> */}
-          
-          {/* <ConditionalVideo index={index} data={data} viewHeight={viewHeight * percentage/100} /> */}
           {(dataType !=="rent")?
           <TouchableOpacity onPress={()=>{
             navigation.navigate('Product', {album: data.product, data: data, id: data.id});
@@ -302,27 +235,7 @@ useEffect(()=>{
 
         </View>
         <View pointerEvents="none">
-
-          {renderProduct(navigation, data)}
-          {/* <View style={{height: (100-percentage)+"%", position: 'absolute', bottom: -50, zIndex: 2000, backgroundColor: 'black'}} ><TouchableWithoutFeedback style={{width:'100%', height: '100%', backgroundColor: 'yellow'}} onPress={()=>setModalVisible(true)}>{firstComment === undefined || Object.keys(firstComment).length==0?<></>:<View style={{marginLeft: 30}}><View style={{flexDirection: 'row', marginTop: 10}}><Text style={{fontWeight: 'bold'}}>@{firstComment.user.name}</Text><Text style={{marginLeft: 5}}>{firstComment.text}</Text></View><TouchableOpacity onPress={()=>setModalVisible(true)}><Text style={{color: 'grey', fontSize: 12, marginTop: 5}}>View all comments</Text></TouchableOpacity></View>}</TouchableWithoutFeedback></View> */}
         </View>
-        <View style={{height: (100-percentage)+"%",  zIndex: 2000}} ><TouchableWithoutFeedback style={{width:'100%', height: '100%', backgroundColor: 'yellow'}} onPress={()=>setModalVisible(true)}>{firstComment === undefined || Object.keys(firstComment).length==0?<></>:<View style={{marginLeft: 30}}><View style={{flexDirection: 'row', marginTop: 10}}><Text style={{fontWeight: 'bold'}}>@{firstComment.user.name}</Text><Text style={{marginLeft: 5}}>{firstComment.text}</Text></View><TouchableOpacity onPress={()=>setModalVisible(true)}><Text style={{color: 'grey', fontSize: 12, marginTop: 5}}>View all comments</Text></TouchableOpacity></View>}</TouchableWithoutFeedback></View>
-        {/* {renderClose(navigation)} */}
-        
-        
-        {/* <CircleProfile
-        photoUrl={constants.PLACEHOLDER_IMAGE}
-        style={{
-          resizeMode: 'contain',
-          position: 'absolute',
-          bottom: constants.NAVBARHEIGHT + 50,
-          //height: 400,
-          left: 20,
-          zIndex: 20,
-          paddingLeft: 5,
-          paddingRight: 5,
-        }}
-      /> */}
         
         <CommentsModal
           data={data}
@@ -339,69 +252,6 @@ useEffect(()=>{
   };
   return <View>{renderVid()}</View>;
 });
-
-const ConditionalVideo = ({index, data, viewHeight, route}) => {
-    const select = useSelector(state=>state);
-    if (data?.video && (index == select.videopage.carIndex) && select.videopage.leave===false) {
-        return <View style={{position: 'absolute', top:0, right: 0}}>
-        <ResizeableVideo data={data} horizontalLimit = {false} hLimit={150}/>
-        </View>
-    } else {
-        return <></>;
-    }
-}
-
-// const ResizeableImage = ({source, limitHorizontal=true, hLimit, wLimit, optimize=false, blurred=false}) => {
-//   const [width, setWidth] = useState(0);
-//   const [height, setHeight] = useState(0);
-
-//   const maxWidth = wLimit || Dimensions.get('window').width;
-//   const maxHeight = hLimit || Dimensions.get('window').height;
-//   useEffect(()=>{
-//     let isMounted = true;
-// if (isMounted) {
-//   if (source?.uri) {
-//   Image.getSize(source.uri, (w, h) => {
-//     if (limitHorizontal) {
-//     const ratio = maxWidth / w;
-//     setHeight(h * ratio);
-//     setWidth(maxWidth);
-//     } else {
-//       var ratio = maxHeight / h;
-//       if (optimize && w/h > .75) {
-//           var ratio = maxWidth / w;
-//           setHeight(h * ratio);
-//           setWidth(maxWidth);
-//       } else {
-//       setWidth(w * ratio);
-//       setHeight(maxHeight);
-//       }
-//     }
-//   });
-// }
-// }
-
-// return ()=>{
-//   isMounted=true;
-// }
-// },[])
-//   if (source == null) {
-//     source = {uri:''};
-//   }
-//   return (
-//     <Image
-//     blurRadius={blurred?50: 0}
-//       source={source?.uri === ''?require('App/Assets/Images/flock_logo_white.png'):source}
-//       style={{
-//         //position: 'absolute',
-//         zIndex: -10,
-//         opacity: 0.935,
-//         width: width,
-//         height: height,
-//       }}
-//     />
-//   );
-// };
 
 const ScrollCount = ({data}) => {
     const scrollRef = useRef();
