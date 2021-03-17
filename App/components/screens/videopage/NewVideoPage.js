@@ -68,8 +68,7 @@ const NewVideoPage = React.memo(({navigation, route, array, index, data, currInd
     const [modalVisible, setModalVisible] = useState(false);
     const [flockCountdowns, setFlockCountdowns] = useState([]);
 
-useEffect(()=>{
-
+    useEffect(()=>{
     if (dataType==="flock" || dataType==="product") {
     db.collection("chatGroups")
     .where("productTitle", "==", data?.product?.title || "")
@@ -83,18 +82,6 @@ useEffect(()=>{
       setFlockCountdowns(arr);
     });
     }
-
-    db.collection('comments')
-    .where('cluck', '==', `${data.id}`)
-    .orderBy('date', 'desc')
-    .limit(1)
-    .get()
-    .then((querySnapshot) => {
-      querySnapshot.forEach((doc) => {
-        const entity = doc.data();
-        setFirstComment(entity);
-      });
-    });
   }, []);
 
   const renderIcons = () => {
@@ -106,7 +93,6 @@ useEffect(()=>{
           right: 10,
           width: 100,
           zIndex: 25,
-
           shadowOpacity:0.2,
           shadowRadius: 4,
           shadowOffset: {height: 2, width: 0}
@@ -132,11 +118,6 @@ useEffect(()=>{
         <View style={{alignItems: 'center'}}>
         <TouchableWithoutFeedback
           onPress={() => {
-            // Share.share({
-            //   message: data.title,
-            //   title: 'Flock Content',
-            //   url: 'https://www.shopwithflock.com/videos/?id=' + data.id,
-            // });
             navigation.navigate("ShareSocial", {data: data, product: data.product, flockId: data.id || data.flockId})
           }}>
           <Image
@@ -259,7 +240,6 @@ const ScrollCount = ({data}) => {
 
     const callback = ()=>{
         offset+=50;
-        // console.log('repeat');
         if (offset/50 +1 > data.length) {
             scrollRef.current.scrollTo({y:0});
             offset = 0;
@@ -315,7 +295,6 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 0,
     paddingTop: 30,
     paddingLeft: 0,
-    //paddingLeft: 10,
     alignItems: 'center',
     shadowColor: '#000',
     shadowOffset: {
