@@ -69,7 +69,7 @@ const NewVideoPage = React.memo(({navigation, route, array, index, data, currInd
     const [flockCountdowns, setFlockCountdowns] = useState([]);
 
     useEffect(()=>{
-    if (dataType==="flock" || dataType==="product") {
+    if (dataType==="flock") {
     db.collection("chatGroups")
     .where("productTitle", "==", data?.product?.title || "")
     .get().then(function(querySnapshot) {

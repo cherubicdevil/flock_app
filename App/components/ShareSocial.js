@@ -35,17 +35,17 @@ const ShareSocial = ({product, data={}, flockId, shareApp=false, showImage=true,
         <Text style={{fontFamily: constants.FONT, fontSize:20, paddingHorizontal: 15}}>
             Co-own this with me for <Text style={{textDecorationLine:'line-through'}}>${product.price}</Text> ${(parseFloat(product.price)/25 * 1.4).toFixed(2)}
         </Text>
+        <Text style={{fontFamily: constants.FONT, fontSize:20, paddingHorizontal: 15}}>search {<Text style={{color: 'black'}}>%{flockId.padStart(5,'0').substring(0,5)}</Text>} in app</Text>
         <ResizeableImage source = {{uri: product.image}} wLimit={Dimensions.get('window').width} />
-        <View style={{ position:'absolute', height:'100%', width:'100%', justifyContent:'center', alignItems:'center',}}>
-        <View style={{justifyContent: 'center', 
-        backgroundColor: "rgba(255,255,255,0.4)", paddingVertical:5,
-        shadowColor: 'white', shadowOpacity: 100, shadowRadius: 5, shadowOffset:{height:0},
-         }}>
-        <Image style={{height: 120, width: 300}} source={require('App/Assets/Images/Flock_Watermark.png')}/>
-<Text style={{marginTop: -35, alignSelf: 'flex-end', width: 170, 
+        <View style={{ position:'absolute',left: 0, top: 30}}>
+
+        <Image style={{resizeMode:'contain', width: .4 * Dimensions.get('window').width, height:.3 * Dimensions.get('window').height,
+    
+    shadowColor: 'white', shadowOpacity: 1, shadowOffset:{height:0}, 
+    }} source={require('App/Assets/Images/Watermark.png')}/>
+{/* <Text style={{marginTop: -35, alignSelf: 'flex-end', width: 170, 
 shadowColor: 'white', shadowOpacity: 1, shadowOffset:{height:0}, 
-fontFamily: 'Nunito', fontWeight: 'bold', fontSize: 16}}>search {<Text style={{color: 'black'}}>%{flockId.padStart(5,'0').substring(0,5)}</Text>} in app</Text>
-        </View>
+fontFamily: 'Nunito', fontWeight: 'bold', fontSize: 16}}>search {<Text style={{color: 'black'}}>%{flockId.padStart(5,'0').substring(0,5)}</Text>} in app</Text> */}
         </View>
         </>:<></>}
       </ViewShot>:
