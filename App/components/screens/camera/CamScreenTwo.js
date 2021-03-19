@@ -168,6 +168,7 @@ const CamScreenTwo = ({navigation, route}) => {
     }
     // console.log(url, searchUrl);
     setUrlState(url);
+    Keyboard.dismiss();
     //setSearchUrl(url);
   };
 

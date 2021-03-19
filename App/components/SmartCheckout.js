@@ -156,7 +156,7 @@ return <><View style={{marginTop: 5,}} >
             </View>
             :hasId?<ActivityIndicator animating={hasIdLoading} color={constants.LAVENDER} style={{marginRigth:10}} />:<Text style={{color: constants.RED}}>Needs Action</Text>}
             </View>
-            <Icon name="chevron-right" size={20} color={constants.DARKGREY} style={{marginRight: 10}} />
+            <Icon name="chevron-right" size={20} color={constants.LAVENDER} style={{marginRight: 10}} />
             </View>
             </TouchableOpacity>
             :
@@ -181,7 +181,7 @@ return <><View style={{marginTop: 5,}} >
             :<Text style={{color: constants.RED, textAlign: 'right'}}>Needs Action</Text>}
             </View>
             <View style={{marginRight: 10}}>
-            <Icon name="chevron-right" size={20} color={constants.DARKGREY} />
+            <Icon name="chevron-right" size={20} color={constants.LAVENDER} />
             </View>
             </View>
             </TouchableOpacity>
