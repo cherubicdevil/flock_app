@@ -19,6 +19,8 @@ const ProductBlurb = ({data}) => {
     type="rent";
   } else if (data.completed==false) {
     type="flock";
+  } else {
+    type="product";
   }
 
   if (type == "flock") {
@@ -59,20 +61,18 @@ const ProductBlurb = ({data}) => {
       <Text numberOfLines={1} style={{color: 'black', fontWeight:'bold'}}>{data?.product?.title}</Text>
     <Text>${data?.product?.price}</Text>
     </View>;
+  } else {
+    return <View style= {{
+      padding: 15,
+      width: '100%'
+    }}>
+      <Text numberOfLines={1} style={{flex: 1, color: 'black'}}><Text style={{fontWeight: 'bold'}}>{data?.product?.brand} </Text>{data?.product?.title}</Text>
+      <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+      <Text style={{color: constants.ORANGE, fontWeight: 'bold'}}>${(data?.product?.price / 25 * 1.4).toFixed(2)}</Text>
+      <Text>flock now</Text>
+      </View>
+    </View>;
   }
-  return (
-    <View
-      style={{
-        width: '100%',
-        overflow: 'hidden',
-        //backgroundColor: 'rgb(255,255,255)',
-        //borderRadius: 15,
-        borderBottomLeftRadius: 15,
-        borderBottomRightRadius: 15,
-      }}>
-      <RightBlurb product={data.product} title={data.product.title} />
-    </View>
-  );
 };
 
 const RightBlurb = ({product, title}) => {

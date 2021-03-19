@@ -60,6 +60,7 @@ import stripe from 'tipsi-stripe';
 var lastVisible = null;
 var lastVisibleFlock = null;
 var lastVisibleRent = null;
+var lastVisiblePost = null;
 
 const fetchStreamableSource = async (src) => {
   if (src === null || src === undefined) {
@@ -328,13 +329,65 @@ const fetchFlockables = async () => {
         var counter = 0;
         const n = querySnapshot.size;
         const ar = [];
+        if (n == 0) {
+          resolve(ar);
+          return;
+        }
         querySnapshot.forEach((doc) => {
+          console.log('doing')
           const entity = doc.data();
           ar.push({...entity, id:doc.id});
           counter = counter + 1;
           if (counter === n) {
             resolve(ar);
             lastVisibleFlock = doc;
+          }
+        });
+      });
+  });
+};
+
+const fetchPosts = async () => {
+  return new Promise((resolve) => {
+    db.collection('posts')
+      .limit(10)
+      .orderBy("createdAt", "desc")
+      .startAfter(lastVisiblePost)
+      .get()
+      .then((querySnapshot) => {
+        var counter = 0;
+        const n = querySnapshot.size;
+        const ar = [];
+        querySnapshot.forEach((doc) => {
+          const entity = doc.data();
+          ar.push({...entity, id:doc.id});
+          counter = counter + 1;
+          if (counter === n) {
+            resolve(ar);
+            lastVisiblePost = doc;
+          }
+        });
+      });
+  });
+};
+
+const fetchPostsFirst = async () => {
+  return new Promise((resolve) => {
+    db.collection('posts')
+      .limit(10)
+      .orderBy("createdAt", "desc")
+      .get()
+      .then((querySnapshot) => {
+        var counter = 0;
+        const n = querySnapshot.size;
+        const ar = [];
+        querySnapshot.forEach((doc) => {
+          const entity = doc.data();
+          ar.push({...entity, id:doc.id});
+          counter = counter + 1;
+          if (counter === n) {
+            resolve(ar);
+            lastVisiblePost = doc;
           }
         });
       });
@@ -353,6 +406,10 @@ const fetchRentables = async () => {
         var counter = 0;
         const n = querySnapshot.size;
         const ar = [];
+        if (n == 0) {
+          resolve(ar);
+          return;
+        }
         querySnapshot.forEach((doc) => {
           const entity = doc.data();
           ar.push({...entity, id:doc.id});
@@ -1059,6 +1116,8 @@ export {
   fetchFlockablesFirst,
   fetchRentables,
   fetchRentablesFirst,
+  fetchPosts,
+  fetchPostsFirst,
   mergeArrays,
   pickVideo,
   fadeIn,

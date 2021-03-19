@@ -24,15 +24,16 @@
  */
 
 
-import React, {useState, useContext} from 'react';
+import React, {useState, useContext, useEffect} from 'react';
 import {Dimensions, ScrollView, View, Button, TouchableOpacity, Text} from 'react-native';
 import FeedItem from './FeedItem';
 import HalfProduct from './HalfProduct';
 import {constants} from 'App/constants';
 import {shuffle} from 'App/utils';
-import {fetchAlbums, fetchProducts, mergeArrays, fetchFlockables, fetchRentables} from 'App/utils';
+import {fetchAlbums, fetchProducts, mergeArrays, fetchFlockables, fetchRentables, fetchPosts, fetchPostsFirst, fetchFlockablesFirst, fetchRentablesFirst} from 'App/utils';
 import LinearGradient from 'react-native-linear-gradient';
 import ProductBlurb from 'App/components/screens/home/feed/ProductBlurb';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 import ResizeableImage from 'App/components/ResizeableImage'
 const width = Dimensions.get('window').width / 2 - 30;
@@ -65,8 +66,12 @@ const FeedItemLocal = React.memo(({al, navigation})=>{
   </TouchableOpacity>}, (prev, next)=>prev.al.id==next.al.id);
 
 const FeedList= ({testArray, setTestArray, navigation, route, videoData, productBlurb=null, KeyContext= null, flockOrNot, feedItemCustom}) => {
-
-
+  const [mounted, setMounted] = useState({value: false});
+  useEffect(()=>{
+    fetchPostsFirst().then((ar)=>{
+      console.log(ar);
+    })
+  },[]);
   const [myAr, setMyAr] = useState([]);
   // const [localAr, setLocalAr] = useState(videoData);
 
@@ -233,8 +238,14 @@ var testing2 = testing;
               console.log('should be fetching albums');
               fetchRentables().then((ar)=>{
                 // setKeyArrRent([...keyArrRent,...ar]);
+                console.log('fetchar1');
                 fetchFlockables().then((ar2) => {
-                  setKeyVideoData([...keyVideoData,...shuffle([...ar, ...ar2])])
+                  console.log('fetch ar2')
+                  fetchPosts().then((ar3)=> {
+                    console.log('ar3', ar3);
+                    setKeyVideoData([...keyVideoData,...shuffle([...ar, ...ar2,...ar3])])
+                  });
+                  
                 })
               })
               // fetchFlockables().then((ar)=>{
@@ -242,10 +253,22 @@ var testing2 = testing;
               // })
               
               //this.props.fetchAlbums();
+            } else if (event.nativeEvent.contentOffset.y < -40) {
+              console.log('refresh');
+              fetchRentablesFirst().then((ar1)=>{
+                // setKeyArrRent([...keyArrRent,...ar]);
+                fetchFlockablesFirst().then((ar2) => {
+                  fetchPostsFirst().then((ar3)=> {
+                    setKeyVideoData(shuffle([...ar1, ...ar2,...ar3]))
+                  });
+                  
+                })
+              })
             }
 
           }}>
-
+            {/* <Text style={{width: '100%', textAlign: 'center',position: 'absolute', top: -40, color: constants.LAVENDER}}>refresh feed</Text> */}
+            <Icon style={{width: '100%', textAlign: 'center',position: 'absolute', top: -40,  }} name="refresh" color={constants.LAVENDER} size={25} />
           <View
             key="0"
             style={{
