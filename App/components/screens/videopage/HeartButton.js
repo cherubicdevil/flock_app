@@ -61,6 +61,7 @@ const HeartIcon = ({data, ICON_SIZE=37}) => {
     return (
       <View style={{zIndex: 900}}>
         <TouchableOpacity
+        
           onPress={() => {
             //var likes = data.likes || 0;
             var change = 1;
@@ -78,6 +79,7 @@ const HeartIcon = ({data, ICON_SIZE=37}) => {
               height: ICON_SIZE,
               width: ICON_SIZE,
               tintColor: heartColor ? constants.RED : '#fff',
+              
             }}
             source={require('App/Assets/Images/Heart_Icon_White.png')}
           />

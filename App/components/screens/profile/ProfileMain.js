@@ -116,6 +116,7 @@ const ProfileMain = ({navigation}) => {
             numColumns={3}
             data={flockData}
             renderItem={(el) => {
+
               return <TouchableOpacity onPress={()=>{navigation.navigate("ChatInterface", {data: el.item})}}><View style={{borderWidth: 0, borderColor: constants.GREYORANGE, width: Dimensions.get('window').width/3 - 10, margin: 5,borderBottomRightRadius: 40, borderBottomLeftRadius: 40, backgroundColor: 'white', resizeMode: 'contain', overflow: 'hidden'}} >
                 {/* <Text>Current Price: ${(el.item.product.price/el.item.members.length).toFixed(2)} </Text> */}
               {/* <Text>Your Maximum: ${(el.item.maximums[firebase.auth().currentUser.uid])}</Text> */}
@@ -159,9 +160,21 @@ const ProfileMain = ({navigation}) => {
         <FlatList
           //contentContainerStyle={{flexDirection: 'row', flexWrap: 'wrap'}}
           numColumns={3}
-          data={productData}
+          data={[...productData, 'more']}
+          keyExtractor={(el)=>{
+            if (el==='more') return 'more';
+            return el.product.url + el.createdAt;
+          }}
           renderItem={(el) => {
-            return <TouchableOpacity onPress={()=>{navigation.navigate('Product', {data: el.item, id: el.item.id, album: el.item.product})}}><View style={{borderWidth: 0, borderColor: constants.GREYORANGE, width: Dimensions.get('window').width/3 - 10, margin: 5,borderBottomRightRadius: 40, borderBottomLeftRadius: 40, backgroundColor: 'white', resizeMode: 'contain', overflow: 'hidden'}} >
+            if (el.item === 'more') {
+              return <TouchableOpacity key="more" onPress={getMorePinned}>
+                <View style={{borderWidth: 0, borderColor: constants.GREYORANGE, width: Dimensions.get('window').width/3 - 10, margin: 5,borderBottomRightRadius: 40, borderBottomLeftRadius: 40, borderColor: constants.LAVENDER, borderWidth:2, resizeMode: 'contain', overflow: 'hidden', aspectRatio:1, justifyContent:'center'}} >
+              <Text style={{textAlign:'center', fontSize: 18, color: constants.LAVENDER, marginTop:-7}}>More</Text>
+              </View></TouchableOpacity>
+            }
+            return <TouchableOpacity key={el.item.product.url + el.item.createdAt} onPress={()=>{navigation.navigate('Product', {data: el.item, id: el.item.id, album: el.item.product})}}><View 
+            key={el.item.product.url + el.item.createdAt}
+            style={{borderWidth: 0, borderColor: constants.GREYORANGE, width: Dimensions.get('window').width/3 - 10, margin: 5,borderBottomRightRadius: 40, borderBottomLeftRadius: 40, backgroundColor: 'white', resizeMode: 'contain', overflow: 'hidden'}} >
             {/* <Text>Current Price: ${(el.item.product.price/el.item.members.length).toFixed(2)} </Text> */}
           {/* <Text>Your Maximum: ${(el.item.maximums[firebase.auth().currentUser.uid])}</Text> */}
           {/* <ResizeableImage limitHorizontal={false} hLimit={50} source={{uri: el.item.product.image}}  /> */}
@@ -226,6 +239,32 @@ const ProfileMain = ({navigation}) => {
   const [flockData, setFlockData] = useState([]);
   const [rentData, setRentData] = useState([]);
   const [productData, setProductData] = useState([]);
+  const [productPage, setProductPage] = useState({value: null});
+
+  const getMorePinned = () => {
+    db.collection("posts").where("createdBy", "==", au.currentUser.uid)
+    .orderBy("createdAt", "desc")
+    .startAfter(productPage.value)
+    .limit(20)
+    .get()
+    .then((snapshot)=>{
+      console.log('snapshot length', snapshot.size)
+      const ar = [];
+      var count = 0;
+      snapshot.forEach((doc)=>{
+        ar.push({...doc.data(), id: doc.id});
+        count+=1;
+        if (count==snapshot.size) {
+          console.log('hello')
+          productPage.value=doc;
+          setProductData([...productData,...ar]);
+        }
+      });
+
+
+    })
+  }
+
   useEffect(() => {
     var citiesRef = db.collection("chatGroups");
     // this filter is kind of inefficient; gets the entire table
@@ -255,9 +294,15 @@ const ProfileMain = ({navigation}) => {
     .get()
     .then((snapshot)=>{
       const ar = [];
+      var count = 0;
       snapshot.forEach((doc)=>{
         ar.push({...doc.data(), id: doc.id});
+        count += 1;
+        if (count == snapshot.size) {
+          productPage.value = doc;
+        }
       });
+      
       setProductData(ar);
     })
 

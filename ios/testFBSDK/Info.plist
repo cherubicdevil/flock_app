@@ -33,7 +33,7 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>com.googleusercontent.apps.510453859520-3rebq4g06jmrrf3eek2mvbhh7r46j6pa</string>
+				<string>com.googleusercontent.apps.510453859520-akgh91v2u2hcrdecq4scjb5t2i897inm</string>
 			</array>
 		</dict>
 	</array>
@@ -100,6 +100,8 @@
 		<string>UIInterfaceOrientationPortrait</string>
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
+	<false/>
+	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 </dict>
 </plist>

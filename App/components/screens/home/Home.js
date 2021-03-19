@@ -594,12 +594,12 @@ const MiniCarouselFlocking = ({navigation, route}) => {
       // setKeyFinishedLoading(false);
       Animated.timing(coverFade, {
         toValue: 0,
-        duration: 1000,
+        duration: 2000,
         delay: 2000,
         useNativeDriver: false,
       }).start();
       setKeyFinishedLoading(true);
-      setTimeout(()=>setCover(false), 1000);
+      setTimeout(()=>setCover(false), 2000);
     });
   },[]);
 

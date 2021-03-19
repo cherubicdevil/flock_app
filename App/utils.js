@@ -472,6 +472,7 @@ const shareActions = {
     Share.share({
       // message: 'hello world',
       // title: 'Flock Content',
+      message: "https://apps.apple.com/us/app/flock-share-cost-buy-designer/id1551725800",
       url: "data:image/png;base64,"+uri,
     }).then((result)=> {
       if (result.action === Share.dismissedAction) {
@@ -516,6 +517,7 @@ const shareActions = {
     Share.share({
       // message: 'hello world',
       // title: 'Flock Content',
+      message: "https://apps.apple.com/us/app/flock-share-cost-buy-designer/id1551725800",
       url: "data:image/png;base64,"+uri,
     }).then((result)=> {
       if (result.action === Share.dismissedAction) {
@@ -539,6 +541,7 @@ const shareActions = {
     Share.share({
       // message: 'hello world',
       // title: 'Flock Content',
+      message: "https://apps.apple.com/us/app/flock-share-cost-buy-designer/id1551725800",
       url: "data:image/png;base64,"+uri,
     }).then((result)=> {
       if (result.action === Share.dismissedAction) {
@@ -580,6 +583,7 @@ const shareActions = {
     Share.share({
       // message: 'hello world',
       // title: 'Flock Content',
+      message: "https://apps.apple.com/us/app/flock-share-cost-buy-designer/id1551725800",
       url: "data:image/png;base64,"+uri,
     }).then((result)=> {
       if (result.action === Share.dismissedAction) {
@@ -604,6 +608,7 @@ const shareActions = {
     Share.share({
       // message: 'hello world',
       // title: 'Flock Content',
+      message: "https://apps.apple.com/us/app/flock-share-cost-buy-designer/id1551725800",
       url: "data:image/png;base64,"+uri,
     }).then((result)=> {
       if (result.action === Share.dismissedAction) {

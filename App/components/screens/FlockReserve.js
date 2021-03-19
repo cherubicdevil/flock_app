@@ -104,12 +104,16 @@ const FlockReserve = ({navigation, route}) => {
 
         <View style={{flexDirection: 'row',height: '100%', flex: 1,marginRight: 10, marginLeft:20, justifyContent: 'space-between', alignItems: 'center', }}>
 
-<View style={{flexDirection: 'row', flex: 1, justifyContent: 'space-between', marginRight: 20}}>
+<View style={{flexDirection: 'row', flex: 1, justifyContent: 'space-between', marginRight: 20,
+shadowOpacity:0.2,
+  shadowRadius: 4,
+  shadowOffset: {height: 2, width: 0}
+}}>
 <View style={{alignSelf: 'center'}}>
                 <HeartButton data={route.params.data} ICON_SIZE={32} />
                 </View>
 
-<TouchableOpacity style={{shadowOpacity: 0.3, shadowColor: '#555', shadowOffset: {height: 2, width: 0},}} onPress={()=>{
+<TouchableOpacity  onPress={()=>{
   setCommentsModalVisible(true);
 }}>
 <Image
@@ -123,7 +127,7 @@ source={require('App/Assets/Images/Comment_Icon_White.png')}
   navigation.navigate('ShareSocial', {product:route.params.data.product, data:{}, flockId: route.params.data.id})
 }}>
 <Image 
-style={{shadowOpacity: 0.3, shadowOffset:{height:2, width:0},  width: 35, height: 35, aspectRatio:1}}
+style={{  width: 35, height: 35, aspectRatio:1}}
 source={require('App/Assets/Images/Share_Icon_White_Earn.png') } />
 </TouchableOpacity>
 </View>

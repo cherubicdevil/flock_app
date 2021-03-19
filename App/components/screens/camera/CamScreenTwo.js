@@ -732,7 +732,7 @@ const CamScreenTwo = ({navigation, route}) => {
         console.log(newImport,'import')
       if (newImport) {
         console.log('openning new import visbe')
-        // openDialog(false);
+        openDialog(false);
         setTimeout(()=>{
           setNewImportVisible(true);
         }, 500);
