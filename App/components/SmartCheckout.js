@@ -11,6 +11,7 @@ import {
   SafeAreaView,
   ScrollView,
   KeyboardAvoidingView,
+  ActivityIndicator
 } from 'react-native';
 import {PaymentCardTextField} from 'tipsi-stripe';
 import {createOrUpdate, fetchCustomerInfo, fetchShipping} from 'App/utils';
@@ -60,7 +61,7 @@ const [hasId, setHasId] = useState(false);
 const select = useSelector(state=>state.userInfo);
 
 const [errorMessage, setErrorMessage] = useState("");
-
+const [hasIdLoading, setHasIdLoading] = useState(true);
 const [updating, setUpdating] = useState(false);
 
 useEffect(()=>{
@@ -153,7 +154,7 @@ return <><View style={{marginTop: 5,}} >
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
             {showCardIcon(creditInfo.brand, constants.LAVENDER)}<Text style={{marginLeft: 5, color: 'black'}}>{creditInfo.last4}</Text>
             </View>
-            :<Text style={{color: constants.RED}}>Needs Action</Text>}
+            :hasId?<ActivityIndicator animating={hasIdLoading} color={constants.LAVENDER} style={{marginRigth:10}} />:<Text style={{color: constants.RED}}>Needs Action</Text>}
             </View>
             <Icon name="chevron-right" size={20} color={constants.DARKGREY} style={{marginRight: 10}} />
             </View>
@@ -175,7 +176,7 @@ return <><View style={{marginTop: 5,}} >
               <View style={{marginRight: 10}}>
             {info?.address?.line1?
             <View style={{flexDirection: 'row', alignItems: 'center',}}>
-            <Text numberOfLines={1} style={{width: 120}}>{info.address.line1}</Text>
+            <Text numberOfLines={1}>{info.address.line1}</Text>
             </View>
             :<Text style={{color: constants.RED, textAlign: 'right'}}>Needs Action</Text>}
             </View>

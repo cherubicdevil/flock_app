@@ -279,6 +279,7 @@ const Profile = ({navigation}) => {
           {label}
         </Text>
         <TextInput
+        placeholderTextColor={constants.PINK_BACKGROUND_OPAQUE}
         numberOfLines={numberOfLines}
           defaultValue={defaultValue}
           placeholder={placeholder}
