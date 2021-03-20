@@ -83,7 +83,7 @@ const CommentsModal = ({modalVisible, data, toggleFunc}) => {
   const [commentsCache, setCommentsCache] = useState([]);
   var lastVisible;
 
-  const [didMount, setDidMount] = useState({mount: false});
+  const [didMount, setDidMount] = useState(false);
 
   
 
@@ -168,7 +168,7 @@ const CommentsModal = ({modalVisible, data, toggleFunc}) => {
           if (counter == n) {
             //console.log('THIS IS ARRRRR', ar);
             //console.log('THIS IS TRUE ID: ', data.id);
-            if (didMount.mount) {
+            if (didMount) {
               setComments(ar);
             }
             //console.log(comments[0]);
@@ -288,13 +288,13 @@ const CommentsModal = ({modalVisible, data, toggleFunc}) => {
     sendFunction = sendOgComment;
     //console.log(sendOgComment);
     //setModalVis(modalVisible);
-    didMount.mount = true;
+    setDidMount(true);
     }
     
-    return () => didMount.mount = false;
+    return () => setDidMount(false);
   }, [modalVisible]);
 
-  if (!didMount.mount) {
+  if (!didMount) {
     return null;
   }
   // const sendReply = (event) => {
