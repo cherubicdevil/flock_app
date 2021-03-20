@@ -202,10 +202,11 @@ const handleDayPress = (day) => {
 }
 
   return <View style={{paddingBottom: 20, backgroundColor: 'white'}}>
-            {requestTypeIsRent?
-            <Text style={{alignSelf:'center'}}>Select {numDays} to borrow this item.</Text>:
-            <Text style={{alignSelf: 'center'}}>Select {numDays} days to use your item. If there are no users who want the item by the end of the {numDays} days, you can keep it until the next user requests it.</Text>}
-            <Text style={{alignSelf: 'center'}}>Choose a start date 2 days before you intend to use it.</Text>
+            {requestTypeIsRent?<>
+            <Text style={{alignSelf:'center'}}>Select {numDays} to borrow this item.</Text>
+            <Text style={{alignSelf: 'center'}}>Choose a start date 2 days before you intend to use it.</Text></>:
+            <Text style={{alignSelf: 'center', marginHorizontal: 20}}>Select {numDays} days to use your item. Keep it until the next user wants it.</Text>}
+            
             <Calendar
             minDate={moment(new Date()).format("YYYY-MM-DD")}
             // hideExtraDays={true}

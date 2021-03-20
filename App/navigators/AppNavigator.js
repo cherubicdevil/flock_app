@@ -162,7 +162,7 @@ const AppNavigator5 = () => {
           options={{
             tabBarVisible: false,
             title: 'Chat',
-            cap: 'eggs',
+            cap: 'earn',
             image: require('App/Assets/Images/Goose_Egg_White.png'),
           }}
         />

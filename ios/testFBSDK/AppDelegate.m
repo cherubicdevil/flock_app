@@ -27,20 +27,20 @@
 @implementation AppDelegate
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
-  [FBSDKAppEvents activateApp];
+//  [FBSDKAppEvents activateApp];
 }
 
 
 
-- (BOOL)application:(UIApplication *)application
-            openURL:(NSURL *)url
-  sourceApplication:(NSString *)sourceApplication
-         annotation:(id)annotation {
-  return [[FBSDKApplicationDelegate sharedInstance] application:application
-                                                         openURL:url
-                                               sourceApplication:sourceApplication
-                                                      annotation:annotation];
-}
+//- (BOOL)application:(UIApplication *)application
+//            openURL:(NSURL *)url
+//  sourceApplication:(NSString *)sourceApplication
+//         annotation:(id)annotation {
+//  return [[FBSDKApplicationDelegate sharedInstance] application:application
+//                                                         openURL:url
+//                                               sourceApplication:sourceApplication
+//                                                      annotation:annotation];
+//}
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
@@ -51,20 +51,20 @@
   //InitializeFlipper(application);
 #endif
 
-  [[FBSDKApplicationDelegate sharedInstance] application:application
-                           didFinishLaunchingWithOptions:launchOptions];
-  
-  RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
-  RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:bridge
-                                                   moduleName:@"testFBSDK"
-                                            initialProperties:nil];
+//  [[FBSDKApplicationDelegate sharedInstance] application:application
+//                           didFinishLaunchingWithOptions:launchOptions];
+//
+//  RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
+//  RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:bridge
+//                                                   moduleName:@"testFBSDK"
+//                                            initialProperties:nil];
 
-  rootView.backgroundColor = [[UIColor alloc] initWithRed:1.0f green:1.0f blue:1.0f alpha:1];
-
-  self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
-  UIViewController *rootViewController = [UIViewController new];
-  rootViewController.view = rootView;
-  self.window.rootViewController = rootViewController;
+//  rootView.backgroundColor = [[UIColor alloc] initWithRed:1.0f green:1.0f blue:1.0f alpha:1];
+//
+//  self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
+//  UIViewController *rootViewController = [UIViewController new];
+//  rootViewController.view = rootView;
+//  self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
   return YES;
 }

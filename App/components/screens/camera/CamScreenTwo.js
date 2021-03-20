@@ -572,7 +572,7 @@ const CamScreenTwo = ({navigation, route}) => {
     <AnimatedModal colored = {true} colors={['#ff7009', '#ff9966']} behind={false} upPercent={"90%"} visible={modalOpen} close={()=>setModalOpen(false)} content={
       
     <View style={{height:"100%"}}>
-      <View style={{alignItems: 'center', width: '100%', height: 50, flexDirection: 'row'}}>
+      <View style={{alignItems: 'center', width: '100%', height: 50, flexDirection: 'row', borderBottomWidth: 3, borderColor: constants.PINK_BACKGROUND_OPAQUE}}>
 
         <TouchableOpacity 
         style={{marginRight: 10, marginLeft: 30, paddingLeft: 15, paddingRight: 15, height: 40, justifyContent:'center', alignItems:'center', backgroundColor: "#d8d8d8", borderRadius: 50,}}
@@ -632,10 +632,11 @@ const CamScreenTwo = ({navigation, route}) => {
                 }}
                 style={{
                   backgroundColor: enlarge ? 'white' : 'transparent',
+                  
                 }}
                 source={{uri: urlState}}
               />
-              <View style={{width: '100%', backgroundColor: 'white', height: 80, justifyContent: 'space-around', flexDirection: 'row', padding: 15, alignItems: 'center'}}>
+              <View style={{borderTopWidth:3, borderColor: constants.PINK_BACKGROUND_OPAQUE, width: '100%', backgroundColor: 'white', height: 80, justifyContent: 'space-around', flexDirection: 'row', padding: 15, alignItems: 'center'}}>
                 <TouchableOpacity hitSlop={{left:30, top: 30, bottom: 30, right: 30}} onPress={()=>{
                   try {
                   if (webviewRef.current) webviewRef.current.goBack()

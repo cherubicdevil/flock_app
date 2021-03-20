@@ -61,7 +61,7 @@ const HeartIcon = ({data, ICON_SIZE=37}) => {
     return (
       <View style={{zIndex: 900}}>
         <TouchableOpacity
-        
+        hitSlop={{top: 30, bottom: 10, left: 30, right: 30}}
           onPress={() => {
             //var likes = data.likes || 0;
             var change = 1;
