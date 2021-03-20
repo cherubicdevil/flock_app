@@ -122,7 +122,7 @@ const AddItem = ({image, text, navigation, route}) => {
         }}
       /> */}
                   
-      <AnimatedModal showClose = {false} colored={true} colors={[constants.PEACH, constants.GREYORANGE]} curve={false} visible = {modalOpen} close = {()=> setModalOpen(false)} navigation={navigation} content={<View style={{flex:1}}>
+      {/* <AnimatedModal showClose = {false} colored={true} colors={[constants.PEACH, constants.GREYORANGE]} curve={false} visible = {modalOpen} close = {()=> setModalOpen(false)} navigation={navigation} content={<View style={{flex:1}}>
 <View style={{flex: 1, justifyContent: 'center'}}>
   <View style={{height: '90%', borderRadius: 40, backgroundColor: 'white', marginLeft: 20, marginRight: 20}}>
     <TouchableOpacity onPress={()=>{
@@ -144,7 +144,7 @@ const AddItem = ({image, text, navigation, route}) => {
       </View>} 
       viewParams={{width:1500, height: 1500, left: -300, bottom: -200}}
       modalAnimationType="fade"
-       bgcolor="transparent" upPercent="25%"/>
+       bgcolor="transparent" upPercent="25%"/> */}
 
 <View style={{flex:1}}>
             <TooltipFirst id="add" info="Add a product!">
@@ -176,8 +176,9 @@ const AddItem = ({image, text, navigation, route}) => {
             <TouchableOpacity
         style={{flex: 1, position: 'absolute', zIndex: 500, height:'100%', width: '100%'}}
         onPress={() => {
-          setModalOpen(true);;
-          console.log('middle');
+          // setModalOpen(true);;
+          navigation.navigate('CamScreen', {data: {}});
+          // console.log('middle');
         }}>
         
       </TouchableOpacity>

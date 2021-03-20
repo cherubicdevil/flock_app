@@ -34,6 +34,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import {pinLocalFunc} from 'App/utils';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+
 const setStorage = async () => {
   console.log('storing');
   try {
@@ -652,17 +653,49 @@ const CamScreenTwo = ({navigation, route}) => {
                 <TouchableOpacity 
         style={{paddingLeft: 15, paddingRight: 15, height: 40, justifyContent:'center', alignItems:'center', backgroundColor:constants.ORANGE, borderRadius: 50,}}
         onPress={()=>{
-          setTimeout(()=>{
+          setTimeout(async ()=>{
           const result = pinLocalFunc(htmlBody, urlState);
+
+          var arResult = [];
+          console.log('results', result.imageSet);
+          setModalOpen(false);
+          for (var i = 0; i < result.imageSet.length; i++) {
+            var img = result.imageSet[i];
+            var dims={width:0, height:0};
+          //   try {
+          //   const dims = await new Promise((resolve, reject) => {
+          //     try {
+          //     Image.getSize(img, (width, height) => resolve({width:width, height:height}));
+          //     } catch (err) {
+          //       console.log('fasdfadfafd');
+          //     }
+          //   }, ()=>{reject('err promse')});
+          // } catch (err) {
+          //   console.log('err with size image');
+          // }
+            // console.log('my dim', dims);
+            // console.log(dims);
+            try {
+            var dims = await new Promise((resolve, reject) =>Image.getSize(img, (width, height) => resolve({width:width, height:height}), (err)=>{reject()
+          }));
+        } catch (err) {
+          console.log(err);
+        }
+        console.log(dims);
+            if (dims.width * dims.height > 100000) {
+              console.log('doneeeeee');
+              arResult.push(img);
+            }
+          }
+          
           setImageState(result.image);
-          setImageSet(result.imageSet);
-          console.log(result.imageSet);
+          console.log('my dims', arResult);
+          setImageSet(arResult);
           setTitleState(result.title);
           setPriceState(cleanPrice(result.price));
-          // console.log(result.price.replace(',','').replace('$','').replace(/[^0-9.]+/, ''), result.price);
           setBrandState(result.brand.charAt(0).toUpperCase() + result.brand.slice(1));
           setDataUrl(urlState);
-          setModalOpen(false);
+          
           setPinned(true);
           setCanNext(true);
 
@@ -674,7 +707,7 @@ const CamScreenTwo = ({navigation, route}) => {
           openChangePicture(true);
           
           setSearchResultPlaceholder(result.brand.charAt(0).toUpperCase() + result.brand.slice(1) + " | " + result.title);
-        }, 500);
+        }, 200);
           }}>
             
           <Text style={{color: 'white'}}>import</Text>
