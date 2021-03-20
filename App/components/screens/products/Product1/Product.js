@@ -423,7 +423,7 @@ const Product = ({route, navigation}) => {
                 }}
     
                   >
-                    <Text style={{textAlign: 'center', color: 'white', fontWeight: 'bold', fontSize: 13}}>Start Flock</Text>
+                    <Text style={{textAlign: 'center', color: 'white', fontWeight: 'bold', fontSize: 13}}>{flockAr.length > 0?"Start Flock":"Start Your Flock"}</Text>
                 </TouchableOpacity>
                 </View>
                 </LinearGradient>
