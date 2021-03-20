@@ -107,6 +107,7 @@ const NewVideoPage = React.memo(({navigation, route, array, index, data, currInd
             onPress={function () {
               dispatch({type: 'toggle'});
               setModalVisible(true);
+              console.log('make visible');
               dispatch({type: 'TOGGLE_COMMENTS'});
             }}>
             <Image
@@ -118,7 +119,7 @@ const NewVideoPage = React.memo(({navigation, route, array, index, data, currInd
         </View>
         <View style={{alignItems: 'center'}}>
         <TouchableWithoutFeedback
-        hitSlop={{top: 30, bottom: 30, left: 30, right: 30}}
+        hitSlop={{top: 10, bottom: 30, left: 30, right: 30}}
           onPress={() => {
             navigation.navigate("ShareSocial", {data: data, product: data.product, flockId: data.id || data.flockId})
           }}>
