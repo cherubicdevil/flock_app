@@ -66,7 +66,6 @@ const FeedItemLocal = React.memo(({al, navigation})=>{
   </TouchableOpacity>}, (prev, next)=>prev.al.id==next.al.id);
 
 const FeedList= ({testArray, setTestArray, navigation, route, videoData, productBlurb=null, KeyContext= null, flockOrNot, feedItemCustom}) => {
-  const [mounted, setMounted] = useState({value: false});
   useEffect(()=>{
     fetchPostsFirst().then((ar)=>{
       console.log(ar);
