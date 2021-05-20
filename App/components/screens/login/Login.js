@@ -21,8 +21,14 @@ import { TouchableWithoutFeedback } from 'react-native';
 import MyFormPhone from './MyFormPhone';
 import LoginCommon from './LoginCommon';
 const Login = ({navigation}) => {
-    return (
+    return (<>
       <LoginCommon content={<MyFormPhone navigation={navigation} registration= {false} />} />
+      <TouchableOpacity onPress={()=>{
+        navigation.navigate('Tutorial')
+      }}>
+        <Text>Back to turotial</Text>
+      </TouchableOpacity>
+      </>
  
 
 
