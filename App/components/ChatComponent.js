@@ -74,7 +74,9 @@ const onSend = (messages) => {
   setRecvMessages((prevState) => GiftedChat.append(prevState, messages[0]));
 };
 
+
 return <GiftedChat
+placeholder="Say Hi to your co-flockers"
 scrollToBottom={true}
 // ref={giftedRef}
 style={{alignSelf: 'flex-end'}}

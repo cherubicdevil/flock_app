@@ -190,6 +190,7 @@ function ChatInterface({route, navigation}) {
   const socket = useRef(null);
   const dispatch = useDispatch();
   const [testMessages, setTestMessages] = useState("");
+  const [descriptionCollapsed, setDescriptionCollapsed]  = useState(false);
 
 
   console.log(route.params.data);
@@ -302,7 +303,7 @@ return <ScrollView  style={{marginLeft: 15, overflow: 'visible', backgroundColor
   
   <View style={{marginBottom:0, justifyContent: 'flex-end'}}>
 {/* <Text style={{fontSize: 14, textAlign: 'center'}}>%{route.params.data.id}</Text> */}
-  {route.params.data.completed?<></>:<Countdown dateObj={route.params.data.time} fontSize = {14} />}
+  {route.params.data.completed?<></>:(route.params.data.time + 7*24*3600 > Date.now()/1000)?<Countdown dateObj={route.params.data.time} fontSize = {14} />:<Text>expired</Text>}
   {/* <Text>{testMessages}</Text> */}
   </View>
   <View style={{bottom: 20, right: 20, position: 'absolute', zIndex: 400, flexDirection:'row', alignItems:'center'}}>
@@ -317,8 +318,9 @@ return <ScrollView  style={{marginLeft: 15, overflow: 'visible', backgroundColor
   </View>
 </HeaderGradient>
 
-      <View style={{zIndex: 200,width: '100%', borderRadius: 0, borderBottomRightRadius: 70, borderBottomLeftRadius: 70}}>
+      <View style={{zIndex: 200, overflow: 'visible', width: '100%', borderRadius: 0, borderBottomRightRadius: 70, borderBottomLeftRadius: 70}}>
       <View style={{
+        
         // shadowColor: "#ff7009", shadowOffset: {height: 0, width: 0}, shadowOpacity: 0.42, elevation: 13, shadowRadius: 28.30,
        borderBottomLeftRadius: 70, borderBottomRightRadius: 70}}>
       <ScrollView scrollEnabled={false} keyboardShouldPersistTaps="never" >
@@ -328,6 +330,7 @@ return <ScrollView  style={{marginLeft: 15, overflow: 'visible', backgroundColor
           start={{ x: 0, y: 0 }} end={{ x: 0, y: 1 }}
           style={{
             borderRadius: 20,
+            // overflow: 'visible',
             borderBottomLeftRadius: 40,
             borderBottomRightRadius: 40,
             
@@ -355,9 +358,9 @@ return <ScrollView  style={{marginLeft: 15, overflow: 'visible', backgroundColor
                 navigation.navigate("FlockReserve", {data: route.params.data});
               }
             }}>
-            <View style={{flexDirection: 'row', padding: 20, paddingLeft: 30, paddingRight: 30,borderRadius: 50, shadowRadius: 2.62, backgroundColor: 'white', shadowOpacity: 0.23, shadowOffset:{height: 2,width:0}, elevation: 1}}>
+            <View style={{flexDirection: 'row', verflow: 'visible', padding: 20, paddingLeft: 30, paddingRight: 30,borderRadius: 50, shadowRadius: 2.62, backgroundColor: 'white', shadowOpacity: 0.23, shadowOffset:{height: 2,width:0}, elevation: 1}}>
             <Image style={{width: 50, height: 50}} source={{uri: route.params.data.product.image}} />
-            <View style={{flex:1, marginLeft: 5, marginRight: 5,}}>
+            <View style={{overflow: 'visible',flex:1, marginLeft: 5, marginRight: 5,}}>
             <Text numberOfLines={2}>{route.params.data.product.title}</Text>
             <Text>${route.params.data.product.price}</Text>
             </View>
@@ -374,6 +377,8 @@ return <ScrollView  style={{marginLeft: 15, overflow: 'visible', backgroundColor
             {/* <Text style={{marginLeft: 85, marginBottom: -20}}>
           {route.params.data.description}
         </Text> */}
+
+<Collapsible collapsed={descriptionCollapsed}>
       <View style={{marginTop: 20, flexDirection: 'row',
       shadowColor: constants.GREYBLUE, shadowOffset: {height: 5, width: 0}, shadowOpacity: 0.42, elevation: 13, shadowRadius: 8.30,
     }}>
@@ -391,9 +396,16 @@ return <ScrollView  style={{marginLeft: 15, overflow: 'visible', backgroundColor
           </View>
           </View>
       </View>
+      </Collapsible>
+      
           </LinearGradient>
           </ScrollView>
         </View>
+        <TouchableOpacity style={{alignSelf: 'flex-end', position: 'absolute', bottom: -20,right: 30}} onPress={()=>{setDescriptionCollapsed(!descriptionCollapsed)}}>
+        <View style={{backgroundColor: chatColors[1], padding: 5, paddingTop: 9, marginTop: -3, borderBottomEndRadius:5, borderBottomLeftRadius: 5}}>
+        <Icon name={descriptionCollapsed?"chevron-down":"chevron-up"} />
+        </View>
+      </TouchableOpacity>
 
       </View>
       <MemberPics memberIds={route.params.data.memberIds} />
@@ -618,6 +630,7 @@ const [infoModal, setInfoModal] = useState(false);
 
 const MemberPics = ({memberIds}) => {
   const [collapsed, setCollapsed] = useState(false);
+  
   const [membersData, setMembersData] = useState([]);
 
   console.log(membersData, memberIds);
