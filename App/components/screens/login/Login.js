@@ -26,7 +26,8 @@ const Login = ({navigation}) => {
       <TouchableOpacity onPress={()=>{
         navigation.navigate('Tutorial')
       }}>
-        <Text>Back to turotial</Text>
+        <View style={{height:100, width: '100%', position: 'absolute', bottom: 0}}></View>
+        {/* <Text>Back to turotial</Text> */}
       </TouchableOpacity>
       </>
  

@@ -163,7 +163,8 @@ const ProfileMain = ({navigation}) => {
           data={[...productData, 'more']}
           keyExtractor={(el)=>{
             if (el==='more') return 'more';
-            return el.product.url + el.createdAt;
+            return el.
+            product.url + el.createdAt;
           }}
           renderItem={(el) => {
             if (el.item === 'more') {
@@ -276,7 +277,8 @@ const ProfileMain = ({navigation}) => {
       querySnapshot.forEach(function(doc) {
         
         if (doc.data().completed === false) {
-          if (doc.data().time + 7*24*3600 > Date.now()/1000) {
+          if (true) {
+          // if (doc.data().time + 7*24*3600 > Date.now()/1000) {
         flock.push({...doc.data(), id: doc.id});
           }
         } else {
