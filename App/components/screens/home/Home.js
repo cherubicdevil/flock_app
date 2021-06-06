@@ -91,7 +91,7 @@ const DataList = ({navigation, route}) => {
   const val = route.params?.value || null;
   const {key, setKey, key1, setKey1} = useContext(KeyContext);
   const {keyArrFlock, keyArrRent, keyVideoData} = useContext(KeyContext);
-  const [cover, setCover] = useState(true);
+  const [cover, setCover] = useState(false);
   //route.params.videoData = route.params[route.params.dataType];
   if (route.params.dataType === "flockData") {
     route.params.videoData = keyArrFlock;
@@ -595,11 +595,12 @@ const MiniCarouselFlocking = ({navigation, route}) => {
       Animated.timing(coverFade, {
         toValue: 0,
         duration: 2000,
-        delay: 2000,
+        delay: 0,
         useNativeDriver: false,
       }).start();
       setKeyFinishedLoading(true);
-      setTimeout(()=>setCover(false), 2000);
+      setTimeout(()=>setCover(false), 200);
+      console.log("done with cover")
     });
   },[]);
 

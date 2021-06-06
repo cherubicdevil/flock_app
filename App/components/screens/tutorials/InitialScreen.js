@@ -2,6 +2,7 @@ import React, {Fragment, useState} from 'react';
 import {View, SafeAreaView,Text, TouchableOpacity, Image} from 'react-native';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import {constants} from 'App/constants';
+import Login from 'App/components/screens/login/Login';
 
 import MultiSlider from '@ptomasroos/react-native-multi-slider';
 
@@ -44,7 +45,9 @@ const SwipeNavigator = ({navigation}) => {
     <Tab.Screen name="screenchoose" component = {ScreenChoose}/>
     <Tab.Screen name="screencalendar" component = {ScreenCalendar}/>
     <Tab.Screen name="screen5" component = {Screen5}/>
-    <Tab.Screen name="screen6" component = {Screen6}/>
+    <Tab.Screen name="screen6" component = {Screen6} initialParams={{parentNavigator: navigation}}/>
+
+
 </Tab.Navigator>;
 
 
@@ -53,7 +56,7 @@ return <>
 </>;
 }
 
-const screens = ["screen1", "screen2", "screen3","screen4", 'screenchoose', 'screencalendar', "screen5"]
+const screens = ["screen1", "screen2", "screen3","screen4", 'screenchoose', 'screencalendar', "screen5", 'enjoy']
 
 const Circle = ({color='white'}) =>{
     const height = 10;
@@ -145,10 +148,11 @@ const Screen5 = () => {
         </ScreenTemplate>
 }
 
-const Screen6 = () => {
+const Screen6 = ({route}) => {
     return <ScreenTemplate page={7}>
         <Text style={{textAlign:'center', fontFamily: constants.FONT, fontSize: 24}}>Enjoy!</Text>
         <Image source={require("App/Assets/Images/duck_butler.png")} style={{height: '80%',width:'80%', alignSelf: 'center'}}/>
+        <TouchableOpacity style={{alignSelf: 'center', padding: 20, width: 150, borderRadius: 30, alignItems: 'center', backgroundColor: constants.LAVENDER}} onPress={()=>route.params.parentNavigator.navigate("Login")}><Text style={{color: 'white', fontSize: 18}}>Get Started!</Text></TouchableOpacity>
         </ScreenTemplate>
 }
 
