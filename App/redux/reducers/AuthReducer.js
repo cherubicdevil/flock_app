@@ -11,6 +11,7 @@ export default (state = INITIAL_STATE, action) => {
 		case 'user_login':
 			return {...state, password: user};
 		case 'guest':
+			console.log('turning guest on')
 			return {...state, guest: true};
 		case 'guest_off':
 			return {...state, guest:false};

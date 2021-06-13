@@ -34,6 +34,8 @@ export default function (state = {likedVideos: [], eggCoins: 0}, action) {
       return action.payload;
     case 'IMPORT_CHAT_ID':
       return {...state, chatGroups: action.payload};
+    case 'SET_USER_INFO':
+      return {...action.payload}
     case 'UPDATE_DATA':
       const [membertype, actiontype, arraytype, data] = action.payload;
       const res = {...state};
