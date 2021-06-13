@@ -21,7 +21,7 @@ const WrapperApp = () => {
 }
 
 const App = () => {
-  const [state, setState] = useState({isLoaded: false, loggedIn: null, userData: null});
+  const [aggState, setState] = useState({isLoaded: false, loggedIn: null, userData: null});
 
   // const [isLoaded, setIsLoaded] = useState(false);
   // const [loggedIn, setLoggedIn] = useState(null);
@@ -29,6 +29,7 @@ const App = () => {
 
 
   const select = useSelector(state=>state);
+  console.log(select.auth.guest)
   const dispatch = useDispatch();
   useEffect(()=>{
     //firebase.firestore().collection('post').get();
@@ -51,9 +52,13 @@ const App = () => {
   }, []);
 
   const renderContent = ()  => {
-    switch (state.loggedIn || select.auth.guest) {
+    switch (aggState.loggedIn
+       || select.auth.guest
+       ) {
       case true:
-        dispatch({type: 'SET_USER_INFO', payload: state.userData})
+        if (!select.auth.guest) {
+        dispatch({type: 'SET_USER_INFO', payload: aggState.userData})
+        }
         return (
               <PortalProvider>
               <Portal.Host>

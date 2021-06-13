@@ -316,6 +316,7 @@ const ProfileMain = ({navigation}) => {
   const [modalOpen, setModalOpen] = useState(false);
   const Tab = createMaterialTopTabNavigator();
 
+  const dispatch = useDispatch();
 
   return (
     <View style={{backgroundColor: constants.PINK_BACKGROUND_OPAQUE, flex: 1}}>
@@ -334,6 +335,7 @@ const ProfileMain = ({navigation}) => {
         <TouchableOpacity
           onPress={() => {
             au.signOut();
+            dispatch('guest_off')
             console.log('logout');
           }}
           style={{padding: 20, alignItems: 'center', justifyContent: 'center', borderBottomWidth: 1, borderColor: constants.GREY, borderTopWidth:0}}

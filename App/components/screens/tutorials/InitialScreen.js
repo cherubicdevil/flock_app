@@ -156,8 +156,8 @@ const Screen6 = ({route}) => {
         <Text style={{textAlign:'center', fontFamily: constants.FONT, fontSize: 24}}>Enjoy!</Text>
         <Image source={require("App/Assets/Images/duck_butler.png")} style={{height: '80%',width:'80%', alignSelf: 'center'}}/>
         <TouchableOpacity style={{alignSelf: 'center', padding: 20, width: 150, borderRadius: 30, alignItems: 'center', backgroundColor: constants.LAVENDER}} onPress={()=>{
-            route.params.parentNavigator.navigate("Login")
-            // dispatch({type: 'guest'})
+            // route.params.parentNavigator.navigate("Login")
+            dispatch({type: 'guest'})
         }
             }><Text style={{color: 'white', fontSize: 18}}>Get Started!</Text></TouchableOpacity>
         </ScreenTemplate>
