@@ -12,6 +12,13 @@ import Share from './Share';
 // import {Text} from 'react-native';
 import {name as appName} from './app.json';
 import {LogBox} from 'react-native';
+
+
+import {Provider} from 'react-redux';
+import {createStore} from 'redux';
+import reducers from 'App/redux/reducers';
+
+
 LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
 LogBox.ignoreAllLogs();//Ignore all log notifications
 

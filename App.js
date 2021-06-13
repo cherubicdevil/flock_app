@@ -13,6 +13,12 @@ import {fetchUserData} from './App/utils';
 import {Portal} from 'react-native-paper';
 import {Provider as PortalProvider} from "react-native-paper";
 
+const WrapperApp = () => {
+  return <Provider store={createStore(reducers)}>
+    <App></App>
+  </Provider>
+}
+
 class App extends React.Component {
   state = {
     isLoaded: false,
@@ -38,6 +44,7 @@ class App extends React.Component {
   renderContent() {
     switch (this.state.loggedIn) {
       case true:
+        
         return (
           <Provider
             store={createStore(reducers, {userInfo: this.state.userData})}>
