@@ -39,6 +39,7 @@ const CustomBar = ({descriptors, state, navigation}) => {
         return (
           <NavItem
           key={route.key}
+            title={options.title}
             image={options.image}
             text={options.cap}
             focused={isFocused}

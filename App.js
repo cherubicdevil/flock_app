@@ -43,10 +43,12 @@ const App = () => {
           // setLoggedIn(true);
           setState({loggedIn: true, userData: userdat || {eggCoins: 0, likedVideos: [], customerId: 'none'}});
         }).catch();
+        dispatch({type: 'guest_off'})
         
       } else {
         // setLoggedIn(false);
         setState({loggedIn: false});
+        // dispatch({type: 'guest'});
       }
     });
   }, []);
@@ -56,7 +58,7 @@ const App = () => {
        || select.auth.guest
        ) {
       case true:
-        if (!select.auth.guest) {
+        if (!select.auth.guest & !aggState.loggedIn) {
         dispatch({type: 'SET_USER_INFO', payload: aggState.userData})
         }
         return (

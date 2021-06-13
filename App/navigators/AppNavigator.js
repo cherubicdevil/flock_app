@@ -10,6 +10,7 @@ import Home from 'App/components/screens/home/Home';
 import CamNavigator from './CamNavigator';
 import Chat from 'App/components/screens/chat/Chat';
 import Egg from 'App/components/screens/Egg';
+import Login2 from 'App/components/screens/login/Login2';
 import ShareScreen from 'App/components/screens/videopage/ShareScreen';
 
 import Profile from 'App/components/screens/profile/Profile';
@@ -30,11 +31,14 @@ import FlockChatComplete from 'App/components/screens/FlockChatComplete';
 import FlockReserve from 'App/components/screens/FlockReserve';
 import Checkout from 'App/components/screens/Checkout';
 import FlockSuccess from '../components/screens/FlockSuccess';
+import {useSelector} from 'react-redux';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
 const AppNavigator5 = () => {
+
+  const select = useSelector(state => state.auth);
   return (
     <NavigationContainer>
       <Tab.Navigator
@@ -60,6 +64,7 @@ const AppNavigator5 = () => {
           initialParams={{vidVisible: true, scrollIndex: 0}}
           // FLOCK_BUG when click carousel nav bar, doesn't play automatically
         />
+
         <Tab.Screen
           name="Home"
           component={SearchPage}
@@ -111,6 +116,7 @@ const AppNavigator5 = () => {
 
           }}
         />
+
         <Tab.Screen
           name="ProfileMain"
           component={ProfileMain}
@@ -204,10 +210,24 @@ const AppNavigator5 = () => {
           }}
         />
         <Tab.Screen
+          name="Login"
+          component={Login2}
+          options={{
+            tabBarVisible: false,
+            swipeEnabled: false,
+            title:select.guest?'Login':undefined,
+            cap: 'you',
+            unmountOnBlur: true,
+            image: require('App/Assets/Images/cute_duck_silhouette.png'),
+          }}
+          initialParams={{vidVisible: true, scrollIndex: 0}}
+          // FLOCK_BUG when click carousel nav bar, doesn't play automatically
+        />
+        <Tab.Screen
           name="Egg"
           component={ProfileMain}
           options={{
-            title: 'ProfileMain',
+            title: select.guest?undefined:'ProfileMain',
             cap: 'you',
             unmountOnBlur: true,
             image: require('App/Assets/Images/cute_duck_silhouette.png'),

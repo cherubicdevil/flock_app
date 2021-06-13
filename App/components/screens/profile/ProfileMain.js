@@ -19,7 +19,7 @@ import HelpDialog from 'App/components/HelpDialog';
 
 import ImagePicker from 'react-native-image-picker';
 import Video from 'react-native-video';
-import {useSelector} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 import {constants} from 'App/constants';
 //import Input from 'App/components/common/Input';
 import {firebase, db, au} from 'App/firebase/config';
@@ -335,7 +335,7 @@ const ProfileMain = ({navigation}) => {
         <TouchableOpacity
           onPress={() => {
             au.signOut();
-            dispatch('guest_off')
+            // dispatch('guest_off')
             console.log('logout');
           }}
           style={{padding: 20, alignItems: 'center', justifyContent: 'center', borderBottomWidth: 1, borderColor: constants.GREY, borderTopWidth:0}}
