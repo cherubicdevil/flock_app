@@ -7,6 +7,7 @@ import Login from 'App/components/screens/login/Login';
 import Signup from 'App/components/screens/login/Signup';
 import ForgotPassword from 'App/components/screens/login/ForgotPassword';
 import InitialScreen from 'App/components/screens/tutorials/InitialScreen';
+import Terms from 'App/components/screens/login/Terms';
 
 const Stack = createStackNavigator();
 
@@ -26,6 +27,13 @@ const AuthNavigator = () => {
           component={Signup} />
       <Stack.Screen name="ForgotPassword"
           component={ForgotPassword} />
+                <Stack.Screen
+          name="Terms"
+          component={Terms}
+          options={{
+            tabBarVisible: true,
+          }}
+        />
     </Stack.Navigator>
   </NavigationContainer>
   </>

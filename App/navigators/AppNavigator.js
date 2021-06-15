@@ -11,6 +11,8 @@ import CamNavigator from './CamNavigator';
 import Chat from 'App/components/screens/chat/Chat';
 import Egg from 'App/components/screens/Egg';
 import Login2 from 'App/components/screens/login/Login2';
+import Terms from 'App/components/screens/login/Terms';
+
 import ShareScreen from 'App/components/screens/videopage/ShareScreen';
 
 import Profile from 'App/components/screens/profile/Profile';
@@ -178,8 +180,8 @@ const Tabs = () => {
       tabBarVisible: false,
     }}
   />
-  {/* <Tab.Screen
-    name="Login"
+  <Tab.Screen
+    name="Login2"
     component={Login2}
     options={{
       tabBarVisible: false,
@@ -191,7 +193,7 @@ const Tabs = () => {
     }}
     initialParams={{vidVisible: true, scrollIndex: 0}}
     // FLOCK_BUG when click carousel nav bar, doesn't play automatically
-  /> */}
+  />
   <Tab.Screen
     name="Egg"
     component={ProfileMain}
@@ -238,6 +240,14 @@ const AppNavigator5 = () => {
         <Stack.Screen
           name="FlockChatComplete"
           component={ChatInterface}
+          options={{
+            tabBarVisible: true,
+          }}
+        />
+
+      <Stack.Screen
+          name="Terms"
+          component={Terms}
           options={{
             tabBarVisible: true,
           }}

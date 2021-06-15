@@ -19,7 +19,7 @@ import auth from '@react-native-firebase/auth';
 import LinearGradient from 'react-native-linear-gradient';
 
 
-const MyFormPhone = ({registration, navigation}) => {
+const MyFormPhone = ({registration, navigation, instructions}) => {
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");

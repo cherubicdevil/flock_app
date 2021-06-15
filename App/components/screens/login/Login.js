@@ -23,14 +23,8 @@ import LoginCommon from './LoginCommon';
 import Icon from 'react-native-vector-icons/FontAwesome';
 const Login = ({navigation}) => {
     return (<>
-      <LoginCommon content={<MyFormPhone navigation={navigation} registration= {false} />} />
-      <TouchableOpacity style={{position:'absolute', alignSelf: 'center', bottom: '10%'}} onPress={()=>{
-        navigation.navigate('Tutorial')
-      }}>
-        <View style={{justifyContent: 'center', alignItems: 'center', height:50, width: 50, backgroundColor: 'rgba(255,255,255,0.2)', borderRadius: 30}}>
-        <Icon name="times" size={30} color="rgba(255,255,255,0.5)" />
-        </View>
-      </TouchableOpacity>
+      <LoginCommon navigation={navigation} content={<MyFormPhone navigation={navigation} registration= {false} />} />
+
       </>
  
 

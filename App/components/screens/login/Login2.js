@@ -15,6 +15,7 @@ import {
   Keyboard,
 } from 'react-native';
 import LottieView from 'lottie-react-native';
+import {constants} from 'App/constants';
 import Myform from './Myform';
 import Social from './Social';
 import { TouchableWithoutFeedback } from 'react-native';
@@ -23,7 +24,8 @@ import LoginCommon from './LoginCommon';
 import Icon from 'react-native-vector-icons/FontAwesome';
 const Login2 = ({navigation}) => {
     return (<>
-      <LoginCommon content={<MyFormPhone navigation={navigation} registration= {false} />} />
+      <LoginCommon navigation={navigation} content={<MyFormPhone instructions = "Thank you for enjoying our app. Please signup to continue." navigation={navigation} registration= {false} />} />
+
       <TouchableOpacity style={{position:'absolute', alignSelf: 'center', bottom: '10%'}} onPress={()=>{
         navigation.goBack();
       }}>
