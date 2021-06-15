@@ -36,143 +36,198 @@ import {useSelector} from 'react-redux';
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
+const Tabs = () => {
+  const select = useSelector(state => state.auth);
+  return <Tab.Navigator
+  tabBar={(props) => <CustomBar {...props} />}
+  initialRouteName="Carousel"
+  swipeEnabled={true}
+  //initialRouteName="ProfileMain"
+  screenOptions={{
+    headerShown: false,
+    // swipeEnabled:true
+    // unmountOnBlur: true,
+    //animationEnabled: false,
+  }}>
+  <Tab.Screen
+    name="Carousel"
+    component={Home}
+    options={{
+      tabBarVisible: true,
+      title: 'Carousel',
+      cap: 'home',
+      image: require('App/Assets/Images/Home_Icon.png'),
+    }}
+    initialParams={{vidVisible: true, scrollIndex: 0}}
+    // FLOCK_BUG when click carousel nav bar, doesn't play automatically
+  />
+
+  <Tab.Screen
+    name="Home"
+    component={SearchPage}
+    options={{
+      title: 'VideoMasonry',
+      cap: 'search',
+      image: require('App/Assets/Images/Magnifying_Glass.png'),
+    }}
+    initialParams={{vidVisible: false}}
+  />
+          {/* <Tab.Screen
+    name="VideoMasonry"
+    component={Home}
+    options={{
+      title: 'VideoMasonry',
+      cap: 'shop',
+      image: require('App/Assets/Images/Happy_Shopping_Icon.png'),
+    }}
+    initialParams={{vidVisible: false}}
+  /> */}
+  <Tab.Screen
+    name="CamScreen"
+    component={CamNavigator}
+    initialParams={{vidVisible: false}}
+    
+    options={{
+      unmountOnBlur:true,
+      tabBarVisible: false,
+      title: 'CamScreen',
+      cap: 'add',
+      image: require('App/Assets/Images/Add_Icon.png'),
+    }}
+  />
+  <Tab.Screen
+    name="Profile"
+    component={Profile}
+    initialParams={{vidVisible: false}}
+    options={{
+      tabBarVisible: true,
+      unmountOnBlur:true,
+    }}
+  />
+    <Tab.Screen
+    name="FlockSuccess"
+    component={FlockSuccess}
+    initialParams={{vidVisible: false}}
+    options={{
+      tabBarVisible: true,
+
+    }}
+  />
+
+  <Tab.Screen
+    name="ProfileMain"
+    component={ProfileMain}
+    initialParams={{vidVisible: false}}
+  />
+  <Tab.Screen
+    name="ShareSocial"
+    component={ShareScreen}
+    // initialParams={{vidVisible: false}}
+  />
+  <Tab.Screen
+    name="Products"
+    component={Products}
+    options={{animationEnabled: true, gestureEnabled: true}}
+    initialParams={{vidVisible: false}}
+  />
+
+  <Tab.Screen
+    name="StartFlock"
+    component={StartFlock}
+    initialParams={{data: {}}}
+    options={{tabBarVisible: true}}
+  />
+  <Tab.Screen
+    name="PayTest"
+    component={PayTest}
+    initialParams={{vidVisible: false, index: 1}}
+  />
+  <Tab.Screen
+    name="Payment"
+    component={PaymentInfo}
+    initialParams={{vidVisible: false}}
+  />
+  <Tab.Screen
+    name="Success"
+    component={Success}
+    initialParams={{vidVisible: false}}
+  />
+  <Tab.Screen
+    name="Chat"
+    component={Chat}
+    options={{
+      tabBarVisible: false,
+      title: 'Chat',
+      cap: 'earn',
+      image: require('App/Assets/Images/Goose_Egg_White.png'),
+    }}
+  />
+
+    <Tab.Screen
+    name="Checkout"
+    component={Checkout}
+    options={{
+      tabBarVisible: true,
+      unmountOnBlur: true,
+    }}
+  />
+  <Tab.Screen
+    name="Info"
+    component={Info}
+    options={{
+      tabBarVisible: false,
+    }}
+  />
+  <Tab.Screen
+    name="Login"
+    component={Login2}
+    options={{
+      tabBarVisible: false,
+      swipeEnabled: false,
+      title:select.guest?'Login':undefined,
+      cap: 'you',
+      unmountOnBlur: true,
+      image: require('App/Assets/Images/cute_duck_silhouette.png'),
+    }}
+    initialParams={{vidVisible: true, scrollIndex: 0}}
+    // FLOCK_BUG when click carousel nav bar, doesn't play automatically
+  />
+  <Tab.Screen
+    name="Egg"
+    component={ProfileMain}
+    options={{
+      title: select.guest?undefined:'ProfileMain',
+      cap: 'you',
+      unmountOnBlur: true,
+      image: require('App/Assets/Images/cute_duck_silhouette.png'),
+    }}
+  />
+</Tab.Navigator>
+}
+
 const AppNavigator5 = () => {
 
   const select = useSelector(state => state.auth);
   return (
-    <NavigationContainer>
-      <Tab.Navigator
-        tabBar={(props) => <CustomBar {...props} />}
-        initialRouteName="Carousel"
-        swipeEnabled={true}
-        //initialRouteName="ProfileMain"
-        screenOptions={{
-          headerShown: false,
-          // swipeEnabled:true
-          // unmountOnBlur: true,
-          //animationEnabled: false,
-        }}>
-        <Tab.Screen
-          name="Carousel"
-          component={Home}
+    <NavigationContainer
+    screenOptions={{
+      headerShown: false
+    }}
+    >
+      <Stack.Navigator
+      screenOptions={{
+        headerShown: false
+      }}
+>
+        <Stack.Screen
+          name="Tabs"
+          component={Tabs}
           options={{
+            unmountOnBlur: true,
             tabBarVisible: true,
-            title: 'Carousel',
-            cap: 'home',
-            image: require('App/Assets/Images/Home_Icon.png'),
-          }}
-          initialParams={{vidVisible: true, scrollIndex: 0}}
-          // FLOCK_BUG when click carousel nav bar, doesn't play automatically
-        />
-
-        <Tab.Screen
-          name="Home"
-          component={SearchPage}
-          options={{
-            title: 'VideoMasonry',
-            cap: 'search',
-            image: require('App/Assets/Images/Magnifying_Glass.png'),
-          }}
-          initialParams={{vidVisible: false}}
-        />
-                {/* <Tab.Screen
-          name="VideoMasonry"
-          component={Home}
-          options={{
-            title: 'VideoMasonry',
-            cap: 'shop',
-            image: require('App/Assets/Images/Happy_Shopping_Icon.png'),
-          }}
-          initialParams={{vidVisible: false}}
-        /> */}
-        <Tab.Screen
-          name="CamScreen"
-          component={CamNavigator}
-          initialParams={{vidVisible: false}}
-          
-          options={{
-            unmountOnBlur:true,
-            tabBarVisible: false,
-            title: 'CamScreen',
-            cap: 'add',
-            image: require('App/Assets/Images/Add_Icon.png'),
           }}
         />
-        <Tab.Screen
-          name="Profile"
-          component={Profile}
-          initialParams={{vidVisible: false}}
-          options={{
-            tabBarVisible: true,
-            unmountOnBlur:true,
-          }}
-        />
-          <Tab.Screen
-          name="FlockSuccess"
-          component={FlockSuccess}
-          initialParams={{vidVisible: false}}
-          options={{
-            tabBarVisible: true,
-
-          }}
-        />
-
-        <Tab.Screen
-          name="ProfileMain"
-          component={ProfileMain}
-          initialParams={{vidVisible: false}}
-        />
-        <Tab.Screen
-          name="ShareSocial"
-          component={ShareScreen}
-          // initialParams={{vidVisible: false}}
-        />
-        <Tab.Screen
-          name="Products"
-          component={Products}
-          options={{animationEnabled: true, gestureEnabled: true}}
-          initialParams={{vidVisible: false}}
-        />
-        <Tab.Screen
-          name="Product"
-          component={Product}
-          initialParams={{vidVisible: false}}
-          options={{tabBarVisible: false,
-            unmountOnBlur:true
-          }}
-        />
-        <Tab.Screen
-          name="StartFlock"
-          component={StartFlock}
-          initialParams={{data: {}}}
-          options={{tabBarVisible: true}}
-        />
-        <Tab.Screen
-          name="PayTest"
-          component={PayTest}
-          initialParams={{vidVisible: false, index: 1}}
-        />
-        <Tab.Screen
-          name="Payment"
-          component={PaymentInfo}
-          initialParams={{vidVisible: false}}
-        />
-        <Tab.Screen
-          name="Success"
-          component={Success}
-          initialParams={{vidVisible: false}}
-        />
-        <Tab.Screen
-          name="Chat"
-          component={Chat}
-          options={{
-            tabBarVisible: false,
-            title: 'Chat',
-            cap: 'earn',
-            image: require('App/Assets/Images/Goose_Egg_White.png'),
-          }}
-        />
-        <Tab.Screen
+        <Stack.Screen
           name="ChatInterface"
           component={ChatInterface}
           options={{
@@ -180,36 +235,30 @@ const AppNavigator5 = () => {
             tabBarVisible: true,
           }}
         />
-        <Tab.Screen
+        <Stack.Screen
           name="FlockChatComplete"
           component={ChatInterface}
           options={{
             tabBarVisible: true,
           }}
         />
-        <Tab.Screen
+          <Stack.Screen
+    name="Product"
+    component={Product}
+    initialParams={{vidVisible: false}}
+    options={{tabBarVisible: false,
+      unmountOnBlur:true
+    }}
+  />
+        <Stack.Screen
           name="FlockReserve"
           component={FlockReserve}
           options={{
             tabBarVisible: false,
           }}
         />
-          <Tab.Screen
-          name="Checkout"
-          component={Checkout}
-          options={{
-            tabBarVisible: true,
-            unmountOnBlur: true,
-          }}
-        />
-        <Tab.Screen
-          name="Info"
-          component={Info}
-          options={{
-            tabBarVisible: false,
-          }}
-        />
-        <Tab.Screen
+ 
+        <Stack.Screen
           name="Login"
           component={Login2}
           options={{
@@ -223,17 +272,8 @@ const AppNavigator5 = () => {
           initialParams={{vidVisible: true, scrollIndex: 0}}
           // FLOCK_BUG when click carousel nav bar, doesn't play automatically
         />
-        <Tab.Screen
-          name="Egg"
-          component={ProfileMain}
-          options={{
-            title: select.guest?undefined:'ProfileMain',
-            cap: 'you',
-            unmountOnBlur: true,
-            image: require('App/Assets/Images/cute_duck_silhouette.png'),
-          }}
-        />
-      </Tab.Navigator>
+
+      </Stack.Navigator>
     </NavigationContainer>
   );
 };

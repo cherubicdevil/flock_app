@@ -10,6 +10,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import { rentPrice } from '../../utils';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import HeaderGradient from '../HeaderGradient';
+import {useSelector} from 'react-redux';
 import CommentsModal from 'App/components/screens/videopage/CommentsModal';
 import Description from 'App/components/Description';
 import Wrapper from 'App/components/Wrapper';
@@ -24,7 +25,18 @@ const FlockReserve = ({navigation, route}) => {
     const [myMarkedDates, setMyMarkedDates] = useState({});
     const [commentsModalVisible, setCommentsModalVisible] = useState(false);
 
+
+    const select = useSelector(state=>state.auth);
+    useEffect(()=> {
+      if (select.guest) {
+        navigation.replace("Login");
+        return;
+      }
+    }, []);
+
       useEffect(()=> {
+        // console.log('guest?', guest);
+        if (select.guest) return;
         console.log(route.params.data.id, "DATA ID");
         db.collection("chatGroups").doc(route.params.data.id)
     .onSnapshot(function(doc) {
@@ -44,6 +56,9 @@ const FlockReserve = ({navigation, route}) => {
       },[route.params.data.id]);
 
 
+      if (select.guest) {
+        return <></>;
+      }
     const [modalOpen, setModalOpen] = useState(false);
     const requestTypeIsRent = !route.params.data.memberIds.includes(au.currentUser.uid);
     // console.log(route.params);

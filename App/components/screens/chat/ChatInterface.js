@@ -89,8 +89,16 @@ function ChatInterface({route, navigation}) {
   console.log('remaning percent', remainingPercent);
   console.log('importants', route.params.data.maximums);
 
+
+  useFocusEffect(()=>{
+    if (select?.auth?.guest) {
+      navigation.replace("Login");
+    }
+  }, []);
+
   useFocusEffect(()=>{
     // setUUID(Math.random());
+    if (select?.auth?.guest) return;
     setPriceShare(route.params.data.maximums[au.currentUser.uid]);
 
     console.log(route.params.data.id, route.params.data.maximums[au.currentUser.uid]);
@@ -130,6 +138,7 @@ function ChatInterface({route, navigation}) {
   },[])
 
   useFocusEffect(()=>{
+    if (select?.auth?.guest) return;
     setPartOf(part);
   }, []);
   const completeFunc = (customerId, maximums) => {

@@ -13,6 +13,7 @@ import {
   Dimensions,
   Animated
 } from 'react-native';
+import {useSelector} from 'react-redux';
 import Wrapper from 'App/components/Wrapper';
 import NewTutorial from 'App/components/NewTutorial';
 import Description from 'App/components/Description';
@@ -99,8 +100,17 @@ const Product = ({route, navigation}) => {
   const [flockAr, setFlockAr] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
 
-  useEffect(()=>{
-
+  const guest = useSelector(state=>state?.auth?.guest);
+useEffect(()=>{
+  if (guest) {
+    navigation.replace('Login');
+  }
+})
+if (guest) {return <></>};
+    useEffect(()=>{
+      if (guest) {
+        return;
+      }
     var citiesRef = firebase.firestore().collection("chatGroups");
     // console.log(route.parm.title);
     // Create a query against the collection.
