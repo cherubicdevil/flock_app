@@ -178,7 +178,7 @@ const Tabs = () => {
       tabBarVisible: false,
     }}
   />
-  <Tab.Screen
+  {/* <Tab.Screen
     name="Login"
     component={Login2}
     options={{
@@ -191,7 +191,7 @@ const Tabs = () => {
     }}
     initialParams={{vidVisible: true, scrollIndex: 0}}
     // FLOCK_BUG when click carousel nav bar, doesn't play automatically
-  />
+  /> */}
   <Tab.Screen
     name="Egg"
     component={ProfileMain}

@@ -68,6 +68,8 @@ const NewVideoPage = React.memo(({navigation, route, array, index, data, currInd
     const [modalVisible, setModalVisible] = useState(false);
     const [flockCountdowns, setFlockCountdowns] = useState([]);
 
+    const guest = useSelector(state=>state?.auth?.guest)
+
     useEffect(()=>{
     if (dataType==="flock") {
     db.collection("chatGroups")
@@ -99,16 +101,20 @@ const NewVideoPage = React.memo(({navigation, route, array, index, data, currInd
         }}>
           <View style={{alignItems: 'center'}}>
         <View style={{marginTop: 10, marginBottom: 20,}}>
-          <HeartButton  data={data} />
+          <HeartButton  data={data} navigation={navigation} />
         </View>
         <View style={{marginTop: 5}}>
           <TouchableOpacity
           hitSlop={{top: 10, bottom: 10, left: 30, right: 30}}
             onPress={function () {
+              if (guest) {
+                navigation.navigate('Login');
+              } else {
               dispatch({type: 'toggle'});
               setModalVisible(true);
               console.log('make visible');
               dispatch({type: 'TOGGLE_COMMENTS'});
+              }
             }}>
             <Image
               style={{height: ICON_SIZE, width: ICON_SIZE}}

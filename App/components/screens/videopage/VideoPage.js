@@ -176,6 +176,8 @@ const VideoPage = ({navigation, array, index, data, currIndex}) => {
 
   var first = db.collection('comments').orderBy('rating').limit(25);
 
+  const guest = useSelector(state=>state?.auth?.guest)
+
   //fetchAlbums();
 
   useFocusEffect(
@@ -316,8 +318,12 @@ const VideoPage = ({navigation, array, index, data, currIndex}) => {
         <View style={{marginTop: 10}}>
           <TouchableOpacity
             onPress={function () {
+              if (guest) {
+                navigation.navigate('Login');
+              } else {
               dispatch({type: 'toggle'});
               setModalVisible(true);
+              }
             }}>
             <Image
               style={{height: ICON_SIZE, width: ICON_SIZE}}

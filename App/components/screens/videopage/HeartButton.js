@@ -5,8 +5,9 @@ import {useSelector, useDispatch} from 'react-redux';
 import {constants} from 'App/constants';
 import { useFocusEffect } from '@react-navigation/native';
 
-const HeartIcon = ({data, ICON_SIZE=37}) => {
+const HeartIcon = ({data, ICON_SIZE=37, navigation}) => {
   const dispatch = useDispatch();
+  const guest = useSelector(state=>state?.auth?.guest);
   
   var likes = data.likes || 0;
     const selector = useSelector((state) => state);
@@ -63,6 +64,10 @@ const HeartIcon = ({data, ICON_SIZE=37}) => {
         <TouchableOpacity
         hitSlop={{top: 30, bottom: 10, left: 30, right: 30}}
           onPress={() => {
+            if (guest) {
+              navigation.navigate('Login');
+              return;
+            }
             //var likes = data.likes || 0;
             var change = 1;
             if (heartColor) {
