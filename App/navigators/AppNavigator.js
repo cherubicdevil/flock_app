@@ -13,6 +13,8 @@ import Egg from 'App/components/screens/Egg';
 import Login2 from 'App/components/screens/login/Login2';
 import Terms from 'App/components/screens/login/Terms';
 
+import Privacy from 'App/components/screens/login/Privacy';
+
 import ShareScreen from 'App/components/screens/videopage/ShareScreen';
 
 import Profile from 'App/components/screens/profile/Profile';
@@ -246,8 +248,16 @@ const AppNavigator5 = () => {
         />
 
       <Stack.Screen
-          name="Terms"
+          name="Termss"
           component={Terms}
+          options={{
+            tabBarVisible: true,
+          }}
+        />
+
+      <Stack.Screen
+          name="Privacy"
+          component={Privacy}
           options={{
             tabBarVisible: true,
           }}

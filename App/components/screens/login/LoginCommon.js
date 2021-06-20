@@ -92,9 +92,14 @@ const LoginCommon = ({content, children, lowerlink, navigation}) => {
 
 
       <View style={{padding:5, alignItems: 'center'}}>
+        <View style={{flexDirection: 'row'}}>
         <TouchableOpacity onPress={()=>{
           navigation.navigate('Terms');
-        }}><Text style={{textAlign: 'center',fontFamily: constants.FONT, color: "rgba(255,255,255,0.5)", alignSelf: 'center'}}>Terms {'&'} Conditions | Privacy Policy</Text></TouchableOpacity>
+        }}><Text style={{textAlign: 'center',fontFamily: constants.FONT, color: "rgba(255,255,255,0.5)", alignSelf: 'center'}}>Terms {'&'} Conditions |</Text></TouchableOpacity>
+        <TouchableOpacity onPress={()=>{
+          navigation.navigate('Privacy');
+        }}><Text style={{textAlign: 'center',fontFamily: constants.FONT, color: "rgba(255,255,255,0.5)", alignSelf: 'center'}}> Privacy Policy</Text></TouchableOpacity>
+        </View>
         <Text style={{textAlign: 'center',color: "rgba(255,255,255,0.5)"}}>© 2021, Flock Shop Inc. v1.6.1</Text>
       </View>
       </View>

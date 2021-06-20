@@ -8,6 +8,7 @@ import Signup from 'App/components/screens/login/Signup';
 import ForgotPassword from 'App/components/screens/login/ForgotPassword';
 import InitialScreen from 'App/components/screens/tutorials/InitialScreen';
 import Terms from 'App/components/screens/login/Terms';
+import Privacy from 'App/components/screens/login/Privacy';
 
 const Stack = createStackNavigator();
 
@@ -30,6 +31,13 @@ const AuthNavigator = () => {
                 <Stack.Screen
           name="Terms"
           component={Terms}
+          options={{
+            tabBarVisible: true,
+          }}
+        />
+                <Stack.Screen
+          name="Privacy"
+          component={Privacy}
           options={{
             tabBarVisible: true,
           }}
