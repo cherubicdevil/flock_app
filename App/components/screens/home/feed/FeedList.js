@@ -24,8 +24,8 @@
  */
 
 
-import React, {useState, useContext, useEffect} from 'react';
-import {Dimensions, ScrollView, View, Button, TouchableOpacity, Text} from 'react-native';
+import React, {useState, useContext, useEffect, useRef} from 'react';
+import {Dimensions, ScrollView, View, Button, TouchableOpacity, Text, Animated} from 'react-native';
 import FeedItem from './FeedItem';
 import HalfProduct from './HalfProduct';
 import {constants} from 'App/constants';
@@ -34,6 +34,7 @@ import {fetchAlbums, fetchProducts, mergeArrays, fetchFlockables, fetchRentables
 import LinearGradient from 'react-native-linear-gradient';
 import ProductBlurb from 'App/components/screens/home/feed/ProductBlurb';
 import Icon from 'react-native-vector-icons/FontAwesome';
+
 
 import ResizeableImage from 'App/components/ResizeableImage'
 const width = Dimensions.get('window').width / 2 - 30;
@@ -83,6 +84,16 @@ const FeedList= ({testArray, setTestArray, navigation, route, videoData, product
     })
   },[]);
   const [myAr, setMyAr] = useState([]);
+
+  const [refreshRotate, setRefreshRotate] = useState(new Animated.Value(-1));
+  const startRefreshRotate = ()=> {Animated.timing(refreshRotate, {
+    useNativeDriver: false,
+    toValue: -refreshRotate.__getValue(),
+    delay: 0,
+    duration: 500,
+  }).start();
+}
+  const scrollRef = useRef();
   // const [localAr, setLocalAr] = useState(videoData);
 
   const renderProductBlurb = (product) => {
@@ -229,6 +240,8 @@ var testing2 = testing;
                       
         <ScrollView
         showsVerticalScrollIndicator={false}
+        scrollToOverflowEnabled
+        ref = {scrollRef}
           style={{
             paddingLeft: 15,
             paddingRight: 15,
@@ -240,6 +253,7 @@ var testing2 = testing;
             justifyContent: 'space-around',
             flexDirection: 'row',
           }}
+          decelerationRate={0.5}
           onScrollEndDrag={(event) => {
             if (
               event.nativeEvent.contentOffset.y + 400 >
@@ -264,6 +278,8 @@ var testing2 = testing;
               
               //this.props.fetchAlbums();
             } else if (event.nativeEvent.contentOffset.y < -40) {
+              startRefreshRotate();
+              scrollRef.current.scrollTo(-40);
               console.log('refresh');
               fetchRentablesFirst().then((ar1)=>{
                 // setKeyArrRent([...keyArrRent,...ar]);
@@ -271,6 +287,7 @@ var testing2 = testing;
                   fetchPostsFirst().then((ar3)=> {
                     
                     setKeyVideoData(shuffle([...ar1, ...ar2,...ar3]))
+                    scrollRef.current.scrollTo(0);
                   });
                   
                 })
@@ -279,7 +296,14 @@ var testing2 = testing;
 
           }}>
             {/* <Text style={{width: '100%', textAlign: 'center',position: 'absolute', top: -40, color: constants.LAVENDER}}>refresh feed</Text> */}
-            <Icon style={{width: '100%', textAlign: 'center',position: 'absolute', top: -40,  }} name="refresh" color={constants.LAVENDER} size={25} />
+            <View style={{width: '100%', textAlign: 'center', alignItems: 'center', position: 'absolute', top: -40,}}>
+            <Animated.View style={{height: 40, width: 40, justifyContent: 'center', alignItems: 'center',   
+              transform: [{ rotate: refreshRotate.interpolate({
+                inputRange: [-1, 1],
+                outputRange: ['0deg', '180deg'] })}]}}>
+            <Icon style={{}} name="refresh" color={constants.LAVENDER} size={25} />
+            </Animated.View>
+            </View>
           <View
             key="0"
             style={{
