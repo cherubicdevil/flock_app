@@ -248,7 +248,7 @@ const AppNavigator5 = () => {
         />
 
       <Stack.Screen
-          name="Termss"
+          name="Terms"
           component={Terms}
           options={{
             tabBarVisible: true,

@@ -69,7 +69,7 @@ const renderPostTime = (nowDate, thenDate) => {
   return 'now';
 };
 const CommentsModal = ({modalVisible, data, toggleFunc}) => {
-  console.log('modal visible', modalVisible);
+  // console.log('modal visible', modalVisible);
   const dispatch = useDispatch();
   const [comments, setComments] = useState([]);
   const [comment, setComment] = useState('');

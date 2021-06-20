@@ -67,8 +67,19 @@ const FeedItemLocal = React.memo(({al, navigation})=>{
 
 const FeedList= ({testArray, setTestArray, navigation, route, videoData, productBlurb=null, KeyContext= null, flockOrNot, feedItemCustom}) => {
   useEffect(()=>{
-    fetchPostsFirst().then((ar)=>{
-      console.log(ar);
+    // fetchPostsFirst().then((ar)=>{
+    //   // console.log(ar);
+    // })
+
+    fetchRentablesFirst().then((ar1)=>{
+      // setKeyArrRent([...keyArrRent,...ar]);
+      fetchFlockablesFirst().then((ar2) => {
+        fetchPostsFirst().then((ar3)=> {
+          
+          setKeyVideoData(shuffle([...ar1, ...ar2,...ar3]))
+        });
+        
+      })
     })
   },[]);
   const [myAr, setMyAr] = useState([]);
@@ -241,7 +252,7 @@ var testing2 = testing;
                 fetchFlockables().then((ar2) => {
                   console.log('fetch ar2')
                   fetchPosts().then((ar3)=> {
-                    console.log('ar3', ar3);
+                    // console.log('ar3', ar3);
                     setKeyVideoData([...keyVideoData,...shuffle([...ar, ...ar2,...ar3])])
                   });
                   
@@ -258,6 +269,7 @@ var testing2 = testing;
                 // setKeyArrRent([...keyArrRent,...ar]);
                 fetchFlockablesFirst().then((ar2) => {
                   fetchPostsFirst().then((ar3)=> {
+                    
                     setKeyVideoData(shuffle([...ar1, ...ar2,...ar3]))
                   });
                   

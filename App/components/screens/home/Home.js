@@ -600,7 +600,7 @@ const MiniCarouselFlocking = ({navigation, route}) => {
       }).start();
       setKeyFinishedLoading(true);
       setTimeout(()=>setCover(false), 200);
-      console.log("done with cover")
+      // console.log("done with cover")
     });
   },[]);
 
