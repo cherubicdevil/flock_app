@@ -101,7 +101,7 @@ const Screen2 = () => {
 const Screen3 = () => {
     return <ScreenTemplate page={2}>
         <Text style={{textAlign:'center', fontFamily: constants.FONT, fontSize: 24}}>Search the world wide web for your favorite clothes</Text>
-        <Image source={require("App/Assets/Images/gucci.png")} style={{height: '80%',width:'80%', alignSelf: 'center'}}/>
+        <Image source={require("App/Assets/Images/gucci.png")} style={{resizeMode: 'contain', height: '80%',width:'80%', alignSelf: 'center'}}/>
         </ScreenTemplate>
 
 }
@@ -110,22 +110,35 @@ const Screen4 = () => {
     return <ScreenTemplate page={3}>
         <Text style={{textAlign:'center', fontFamily: constants.FONT, fontSize: 24}}>Find others to split the cost!</Text>
         <View style={{flex:1, }}>
-        <Image source={require("App/Assets/Images/chat_demo.png")} style={{marginTop: 70, resizeMode: 'cover',width:'80%', alignSelf: 'center'}}/>
+        <Image source={require("App/Assets/Images/chat_demo.png")} style={{marginTop: 70, resizeMode: 'contain',width:'80%', alignSelf: 'center'}}/>
         </View>
         </ScreenTemplate>
 
 }
 
 const ScreenChoose = () => {
-    const [percent, setPercent] = useState(0);
+    const [percent, setPercent] = useState(25);
     return <ScreenTemplate page={4}>
         <Text style={{textAlign:'center', fontFamily: constants.FONT, fontSize: 24}}>Choose how much you want to pay</Text>
-<View style={{marginHorizontal:50, flex:1,flexDirection:'row', alignItems:'center', justifyContent:'center'}}>
+<View style={{marginHorizontal:50, paddingVertical: '10%', height: '80%', flexDirection:'row', alignItems:'center', justifyContent:'center'}}>
     <Text style={{flex:2, marginBottom:100,fontSize:60, overflow:'hidden'}}>{percent}%</Text>
-        <View style={{flex:1}}><MultiSlider min={1} max={100.5} defaul vertical={true} onValuesChange={(stuff)=>{
+        <View style={{flex:1}}>
+            <View style={{flex: 2}} />
+            <MultiSlider 
+            values={[percent]}
+            min={1} max={100} vertical={true} 
+            markerStyle={{width: 40, height: 40, shadowOpacity:0}}
+            selectedStyle={{backgroundColor: constants.BLUERGREY}}
+            trackStyle={{height: 15, borderRadius: 10,  backgroundColor:constants.BLUERGREY}}
+            // containerStyle={{height: 20}}
+            selectedStyle={{backgroundColor:constants.ORANGE}}
+            markerContainerStyle={{alignSelf: 'center', marginTop: 7.5}}
+            
+            onValuesChange={(stuff)=>{
             setPercent(stuff[0])
         }}>
         </MultiSlider>
+        <View style={{flex: 1, zIndex: -19}} />
         </View>
 </View>
         </ScreenTemplate>
@@ -136,7 +149,7 @@ const ScreenCalendar = () => {
     return <ScreenTemplate page={5}>
         <Text style={{textAlign:'center', fontFamily: constants.FONT, fontSize: 24}}>Use when you want</Text>
         <View style={{flex:1, marginTop:30}}>
-        <Image source={require("App/Assets/Images/reserve.png")} style={{height: '80%',width:'80%', alignSelf: 'center'}}/>
+        <Image source={require("App/Assets/Images/reserve.png")} style={{resizeMode: 'contain', height: '80%',width:'80%', alignSelf: 'center'}}/>
         </View>
         </ScreenTemplate>
 
@@ -145,7 +158,9 @@ const ScreenCalendar = () => {
 const Screen5 = () => {
     return <ScreenTemplate page={6}>
         <Text style={{textAlign:'center', fontFamily: constants.FONT, fontSize: 24}}>Ship to your co-owners when you are done.</Text>
-        <Image source={require("App/Assets/Images/share_houses.png")} style={{height: '80%',width:'80%', alignSelf: 'center'}}/>
+        <View style={{flex: 1, justifyContent: 'flex-start'}}>
+        <Image source={require("App/Assets/Images/share_houses.png")} style={{resizeMode: 'contain', marginTop: 10, height: '80%',width:'80%', alignSelf: 'center'}}/>
+        </View>
         </ScreenTemplate>
 }
 
