@@ -67,10 +67,32 @@ const Circle = ({color='white'}) =>{
     </View>
 }
 
-const ScreenTemplate = ({page, children}) => {
+const ScreenTemplate = ({page, text="", children}) => {
     return <View style={{backgroundColor:background, flex: 1}}>
-            <View style={{flex:1, marginHorizontal:20, marginTop:'40%', height: '70%'}}>
+            <View style={{flex:1, marginHorizontal:20, marginTop:'10%', height: '70%'}}>
+                <View style={{flex: 1,
+                // borderColor: 'yellow',
+                // borderWidth: 1,
+                justifyContent: 'flex-end'
+                
+                }}><Text style={{textAlign:'center', fontFamily: constants.FONT, fontSize: 24}}>{text}</Text></View>
+                <View style={{flex: 3}}>
+<View style={{flex: .5, 
+// borderColor: 'orange',
+// borderWidth: 1,
+}} />
+<View style={{flex: 5,
+// borderColor: 'green',
+// borderWidth: 3,
+justifyContent: 'flex-start'
+}}>
             {children}
+            </View>
+            <View style={{flex: .5, 
+// borderColor: 'red',
+// borderWidth: 1,
+}} />
+            </View>
             </View>
             <View style={{flexDirection: 'row', alignSelf: 'center'}}>
             {screens.map((item, index)=>{
@@ -91,41 +113,46 @@ const Screen1 = () => {
 }
 
 const Screen2 = () => {
-    return <ScreenTemplate page={1}>
-        <Text style={{textAlign:'center', fontFamily: constants.FONT, fontSize: 24}}>Flock is a co-owning service that lets you buy expensive clothes for cheap</Text>
+    return <ScreenTemplate page={1} text="Flock is a co-owning service that lets you buy expensive clothes for cheap">
         <Image source={require("App/Assets/Images/money_clothes.png")} style={{marginTop: -50,height: '100%',width:'100%', alignSelf: 'center'}}/>
         </ScreenTemplate>
 
 }
 
 const Screen3 = () => {
-    return <ScreenTemplate page={2}>
-        <Text style={{textAlign:'center', fontFamily: constants.FONT, fontSize: 24}}>Search the world wide web for your favorite clothes</Text>
+    return <ScreenTemplate page={2} text="Search the internet for your favorite clothes">
         <Image source={require("App/Assets/Images/gucci.png")} style={{resizeMode: 'contain', height: '80%',width:'80%', alignSelf: 'center'}}/>
         </ScreenTemplate>
 
 }
 
 const Screen4 = () => {
-    return <ScreenTemplate page={3}>
-        <Text style={{textAlign:'center', fontFamily: constants.FONT, fontSize: 24}}>Find others to split the cost!</Text>
+    return <ScreenTemplate page={3} text="Find others to split the cost!">
         <View style={{flex:1, }}>
-        <Image source={require("App/Assets/Images/chat_demo.png")} style={{marginTop: 70, resizeMode: 'contain',width:'80%', alignSelf: 'center'}}/>
+
+        <Image source={require("App/Assets/Images/chat_demo.png")} style={{marginTop: 10, resizeMode: 'contain',width:'80%', alignSelf: 'center'}}/>
+
         </View>
         </ScreenTemplate>
 
 }
 
 const ScreenChoose = () => {
+    const [height, setHeight] = useState(0);
     const [percent, setPercent] = useState(25);
-    return <ScreenTemplate page={4}>
-        <Text style={{textAlign:'center', fontFamily: constants.FONT, fontSize: 24}}>Choose how much you want to pay</Text>
-<View style={{marginHorizontal:50, paddingVertical: '10%', height: '80%', flexDirection:'row', alignItems:'center', justifyContent:'center'}}>
+    return <ScreenTemplate page={4} text="Choose how much you want to pay">
+<View 
+onLayout={(event)=>{
+    // console.log('height', event.nativeEvent.layout.height)
+    setHeight(event.nativeEvent.layout.height * .7);
+}}
+style={{marginHorizontal:50, height: '100%', flexDirection:'row', alignItems:'center', justifyContent:'center'}}>
     <Text style={{flex:2, marginBottom:100,fontSize:60, overflow:'hidden'}}>{percent}%</Text>
         <View style={{flex:1}}>
             <View style={{flex: 2}} />
             <MultiSlider 
             values={[percent]}
+            sliderLength={height}
             min={1} max={100} vertical={true} 
             markerStyle={{width: 40, height: 40, shadowOpacity:0}}
             selectedStyle={{backgroundColor: constants.BLUERGREY}}
@@ -146,29 +173,28 @@ const ScreenChoose = () => {
 }
 
 const ScreenCalendar = () => {
-    return <ScreenTemplate page={5}>
-        <Text style={{textAlign:'center', fontFamily: constants.FONT, fontSize: 24}}>Use when you want</Text>
-        <View style={{flex:1, marginTop:30}}>
-        <Image source={require("App/Assets/Images/reserve.png")} style={{resizeMode: 'contain', height: '80%',width:'80%', alignSelf: 'center'}}/>
+    return <ScreenTemplate page={5} text="Use when you want">
+        <View style={{flex:1,}}>
+        <Image source={require("App/Assets/Images/reserve.png")} style={{resizeMode: 'contain', height: "80%", alignSelf: 'center'}}/>
         </View>
         </ScreenTemplate>
 
 }
 
 const Screen5 = () => {
-    return <ScreenTemplate page={6}>
-        <Text style={{textAlign:'center', fontFamily: constants.FONT, fontSize: 24}}>Ship to your co-owners when you are done.</Text>
-        <View style={{flex: 1, justifyContent: 'flex-start'}}>
-        <Image source={require("App/Assets/Images/share_houses.png")} style={{resizeMode: 'contain', marginTop: 10, height: '80%',width:'80%', alignSelf: 'center'}}/>
-        </View>
+    return <ScreenTemplate page={6} text="Ship to your co-owners when you are done">
+        
+        <Image 
+        source={require("App/Assets/Images/share_houses.png")} style={{alignSelf: 'center', height: '80%', width: '80%', resizeMode: 'contain'}}
+        />
+
         </ScreenTemplate>
 }
 
 const Screen6 = ({route}) => {
     const dispatch = useDispatch();
 
-    return <ScreenTemplate page={7}>
-        <Text style={{textAlign:'center', fontFamily: constants.FONT, fontSize: 24}}>Enjoy!</Text>
+    return <ScreenTemplate page={7} text="Enjoy!">
         <Image source={require("App/Assets/Images/duck_butler.png")} style={{height: '80%',width:'80%', alignSelf: 'center'}}/>
         <TouchableOpacity style={{alignSelf: 'center', padding: 20, width: 150, borderRadius: 30, alignItems: 'center', backgroundColor: constants.LAVENDER}} onPress={()=>{
             // route.params.parentNavigator.navigate("Login")
