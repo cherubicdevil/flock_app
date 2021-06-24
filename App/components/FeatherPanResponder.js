@@ -64,9 +64,9 @@ const FeatherList = ({navigation, route, data=data, viewHeight, type="flock"}) =
         // positions.push(positionInstance);
         positions.push(new Animated.ValueXY());
     }
-// console.log('wtf',data);
+// console.log('wtf',data); // LKJH
     return <View 
-        style={{alignItems: 'center', height: '100%', width: '100%', backgroundColor: constants.PINK_BACKGROUND}}>
+        style={{alignItems: 'center', height: '100%', width: '100%', backgroundColor: constants.PINK_BACKGROUND, backgroundColor: 'black'}}>
             {data.map((item)=> {
                 return <FeatherPanResponder 
             navigation={navigation}
@@ -122,6 +122,7 @@ const FeatherPanResponder = React.memo(({navigation, route, index, positions, cu
         previouspercentage = Math.pow(widthdecay, diff);
         topPercentage =  Math.pow(topdecay, diff);
         previoustop = Math.round(topPercentage * previoustop);
+        // const getDiminishingBotOffset = (topdecay, previoustop)
         previouswidth = Math.round(previouspercentage * previouswidth);
 
         topPercentage = 1;
@@ -141,7 +142,6 @@ const FeatherPanResponder = React.memo(({navigation, route, index, positions, cu
     const [widthAnim, setWidthAnim] = useState(new Animated.Value(previouswidth));
     const [leftAnim, setLeftAnim] = useState(new Animated.Value(previousleft));
 
-    var topAnim;
 
     // if (index == currentIndex && currentIndex < previousIndex) {
     //     var [topAnim, setTopAnim] = useState(new Animated.Value(50));
@@ -149,7 +149,7 @@ const FeatherPanResponder = React.memo(({navigation, route, index, positions, cu
     // var [topAnim, setTopAnim] = useState(new Animated.Value(previoustop));
     // }
 
-    var [topAnim, setTopAnim] = useState(new Animated.Value(previoustop));
+    var [topAnim, setTopAnim] = useState(new Animated.Value(0));
     // const widthAnim = new Animated.Value(top);
 
     useEffect(()=>{
@@ -334,7 +334,7 @@ const FeatherPanResponder = React.memo(({navigation, route, index, positions, cu
           duration: 300,
         }).start();
       };
-      var isDown = false;
+      var isDown = false; // these are to get rid of bug where it is up then down in quick succession
       var isUp = false;
       const panResponder = PanResponder.create({
           onPanResponderTerminationRequest:(event, gesture) => true,
@@ -362,7 +362,7 @@ const FeatherPanResponder = React.memo(({navigation, route, index, positions, cu
                 }
             } else if (gesture.dy < 0) {
                 if (isDown) {
-                    position.setValue({ x: gesture.dx, y: gesture.dy });
+                    position.setValue({ x: gesture.dx, y: -gesture.dy });
                     return;
                 }
                 if (!isDown && !isUp) {
@@ -469,7 +469,7 @@ const FeatherPanResponder = React.memo(({navigation, route, index, positions, cu
             // { rotateY: "45deg" },
             { rotateZ: position.getLayout().left.interpolate({
                 inputRange: [0, Dimensions.get('window').width],
-                outputRange: ['0deg', '45deg'] })}
+                outputRange: ['0deg', '45deg'] })} // lkjh
           ],
         borderTopLeftRadius: 70, borderTopRightRadius: 70, overflow: 'hidden', alignSelf: 'center', opacity: fade, justifyContent: 'center', position: 'absolute', top: position.getLayout().top, marginTop: topAnim, marginLeft: leftAnim, left: position.getLayout().left, zIndex: index + 50, height: viewHeight - 35, width: widthAnim, borderWidth:0, backgroundColor: 'white'}} {...panResponder.panHandlers}>
             {/* <Animated.View style={{position: 'absolute', zIndex: 400, top: 30, right:30, opacity: position.getLayout().top

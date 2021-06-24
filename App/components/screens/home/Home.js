@@ -128,7 +128,7 @@ const DataList = ({navigation, route}) => {
     const sizeAnimation = Animated.timing(coverheight,
       {
         toValue: 0,
-        delay: 4700,
+        delay: 300,
         duration: 300,
         useNativeDriver: false,
       });
