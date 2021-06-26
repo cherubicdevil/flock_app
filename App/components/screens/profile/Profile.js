@@ -75,7 +75,7 @@ const ProfilePicture = () => {
       resizeMode='cover'
         style={{
           // alignSelf: 'flex-start',
-          marginLeft: 30,
+
           width: 120,
           height: 120,
           // borderRadius: 60,
@@ -395,9 +395,11 @@ const Profile = ({navigation}) => {
           Edit Profile
         </Text>
         <View style={{flexDirection: 'row'}}>
+          <View style={{flex: 1,           marginLeft: 30,}}>
         <ProfilePicture setOpenModal={setOpenModal} />
-
-        <View style={{flex: 1, marginLeft: 20, justifyContent: 'flex-start'}}>
+      <Text style={{fontSize: 10, marginTop: 5}}>{au.currentUser.uid}</Text>
+      </View>
+        <View style={{flex: 2, marginLeft: 20, justifyContent: 'flex-start'}}>
           {/* {renderFormBoxes()} */}
           {renderFormBox(0.5, "Username", "username", "username", username, setUserName)}
           {/* {renderFormBox(0.5, "email", "test", "test", email, setEmail)} */}

@@ -56,7 +56,8 @@ const StartFlock = ({navigation, route}) => {
     number={3}
     checkIndex={1}
     checkFunc = {()=>{
-        return select.customerId !== "none" && select.customerId !== undefined && select.email !== "";
+        // return select.customerId !== "none" && select.customerId !== undefined && select.email !== "";
+        return select.hasCard;
     }}
     checkOpen={()=>{
         setCreditModal(true);

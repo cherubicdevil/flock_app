@@ -140,8 +140,8 @@ const hasShipping = select.shipping !== undefined && select.shipping !== "none";
 var notAllowedMessage="hello initial";
 var {allowed:allowed, errorMessage: notAllowedMessage} = allowConfirm(creditCardChanged, changed, hasId, hasShipping);
 console.log("??????????", allowed, creditCardChanged, changed, hasId, hasShipping, 'stuff');
-return <><View style={{marginTop: 5,}} >
-        <View style={[styles.row, {justifyContent: 'space-between'}]}>
+return <><View style={{marginTop: 5}} >
+        <View style={[styles.row, {justifyContent: 'space-between',}]}>
             {!shippingOnly || (billingOnly && shippingOnly)?
             <TouchableOpacity 
             style={{marginRight: 10,width: '100%', justifyContent: 'space-between', flexDirection:'row'}}
@@ -153,6 +153,13 @@ return <><View style={{marginTop: 5,}} >
               <Text>Billing Information</Text>
               </View>
             <View style={{flexDirection: 'row', alignItems: 'center', flex: 1}}>
+              <TouchableOpacity onPress={()=>{
+                console.log('remove card')
+              }}>
+                <View style={{borderRadius: 40, backgroundColor: 'red', padding: 7, justifyContent: 'center', alignItems: 'center',}}>
+                <Icon name="minus" size={10} color="white"/>
+                </View>
+              </TouchableOpacity>
               <View style={{flex: 1, alignItems: 'flex-end'}}>
             {creditInfo.last4?
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
@@ -160,7 +167,7 @@ return <><View style={{marginTop: 5,}} >
             </View>
             :hasId?<ActivityIndicator animating={hasIdLoading} color={constants.LAVENDER} style={{marginRigth:10}} />:<Text style={{color: constants.RED, paddingRight: 10}}>Needs Action</Text>}
             </View>
-            <View style={{alignSelf: 'flex-end'}}>
+            <View style={{alignSelf: 'center'}}>
             <Icon name="chevron-right" size={20} color={constants.LAVENDER} style={{marginRight: 10}} />
             </View>
             </View>
