@@ -66,7 +66,7 @@ const FeatherList = ({navigation, route, data=data, viewHeight, type="flock"}) =
     }
 // console.log('wtf',data); // LKJH
     return <View 
-        style={{alignItems: 'center', height: '100%', width: '100%', backgroundColor: constants.PINK_BACKGROUND, backgroundColor: 'black'}}>
+        style={{alignItems: 'center', height: '100%', width: '100%', backgroundColor: constants.PINK_BACKGROUND,}}>
             {data.map((item)=> {
                 return <FeatherPanResponder 
             navigation={navigation}
@@ -471,7 +471,7 @@ const FeatherPanResponder = React.memo(({navigation, route, index, positions, cu
                 inputRange: [0, Dimensions.get('window').width],
                 outputRange: ['0deg', '45deg'] })} // lkjh
           ],
-        borderTopLeftRadius: 70, borderTopRightRadius: 70, overflow: 'hidden', alignSelf: 'center', opacity: fade, justifyContent: 'center', position: 'absolute', top: position.getLayout().top, marginTop: topAnim, marginLeft: leftAnim, left: position.getLayout().left, zIndex: index + 50, height: viewHeight, paddingBottom: 30, width: widthAnim, borderWidth:0, backgroundColor: 'white'}} {...panResponder.panHandlers}>
+        borderTopLeftRadius: 70, borderTopRightRadius: 70, overflow: 'hidden', alignSelf: 'center', opacity: fade, justifyContent: 'center', position: 'absolute', top: position.getLayout().top, marginTop: topAnim, marginLeft: leftAnim, left: position.getLayout().left, zIndex: index + 50, height: viewHeight, paddingBottom: '10%', width: widthAnim, borderWidth:0, backgroundColor: 'white'}} {...panResponder.panHandlers}>
             {/* <Animated.View style={{position: 'absolute', zIndex: 400, top: 30, right:30, opacity: position.getLayout().top
             .interpolate({
                 inputRange: [-500,-100,0, 100],

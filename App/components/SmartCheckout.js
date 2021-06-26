@@ -147,16 +147,22 @@ return <><View style={{marginTop: 5,}} >
             style={{marginRight: 10,width: '100%', justifyContent: 'space-between', flexDirection:'row'}}
             onPress={()=>{
                 setBillModal(true);
-            }}><Text>Billing Information</Text>
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <View style={{marginRight: 10}}>
+                
+            }}>
+              <View style={{flex: 1}}>
+              <Text>Billing Information</Text>
+              </View>
+            <View style={{flexDirection: 'row', alignItems: 'center', flex: 1}}>
+              <View style={{flex: 1, alignItems: 'flex-end'}}>
             {creditInfo.last4?
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            {showCardIcon(creditInfo.brand, constants.LAVENDER)}<Text style={{marginLeft: 5, color: 'black'}}>{creditInfo.last4}</Text>
+            {showCardIcon(creditInfo.brand, constants.LAVENDER)}<Text style={{marginLeft: 5, color: 'black', paddingRight: 10}}>{creditInfo.last4}</Text>
             </View>
-            :hasId?<ActivityIndicator animating={hasIdLoading} color={constants.LAVENDER} style={{marginRigth:10}} />:<Text style={{color: constants.RED}}>Needs Action</Text>}
+            :hasId?<ActivityIndicator animating={hasIdLoading} color={constants.LAVENDER} style={{marginRigth:10}} />:<Text style={{color: constants.RED, paddingRight: 10}}>Needs Action</Text>}
             </View>
+            <View style={{alignSelf: 'flex-end'}}>
             <Icon name="chevron-right" size={20} color={constants.LAVENDER} style={{marginRight: 10}} />
+            </View>
             </View>
             </TouchableOpacity>
             :
@@ -170,17 +176,20 @@ return <><View style={{marginTop: 5,}} >
             style={{marginRight: 10,width: '100%', justifyContent: 'space-between', flexDirection:'row'}}
             onPress={()=>{
                 setShipModal(true);
-            }}><Text>Shipping Information</Text>
+            }}>
+              <View style={{flex: 1}}>
+              <Text>Shipping Information</Text>
+              </View>
 
-            <View style={{flexDirection: 'row'}}>
-              <View style={{marginRight: 10}}>
+            <View style={{flexDirection: 'row', flex: 1}}>
+              <View style={{flex: 1}}>
             {info?.address?.line1?
-            <View style={{flexDirection: 'row', alignItems: 'center',}}>
+            <View style={{flexDirection: 'row', flex: 1, alignItems: 'center',}}>
             <Text numberOfLines={1}>{info.address.line1}</Text>
             </View>
             :<Text style={{color: constants.RED, textAlign: 'right'}}>Needs Action</Text>}
             </View>
-            <View style={{marginRight: 10}}>
+            <View style={{marginRight: 10, alignSelf: 'flex-end'}}>
             <Icon name="chevron-right" size={20} color={constants.LAVENDER} />
             </View>
             </View>
@@ -701,9 +710,9 @@ const BillingModal = ({state, setState, close, setChanged}) => {
       borderWidth: 1,
     },
     textbox: {borderWidth: 1, borderColor: constants.DARKGREY, borderRadius: 30, padding: 10, paddingVertical: 10, fontSize: 18},
-    row: {width: '100%', marginLeft: 10, borderBottomWidth: 2,
+    row: {borderBottomWidth: 2,
     borderColor: constants.PINK_BACKGROUND,
-    paddingHorizontal:20, paddingVertical:20},
+    paddingHorizontal:20, paddingRight: 10, paddingVertical:20},
   });
 
 
