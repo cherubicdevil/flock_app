@@ -37,8 +37,8 @@ export default function (state = {likedVideos: [], eggCoins: 0}, action) {
     case 'SET_USER_INFO':
       return {...action.payload}
     case 'UPDATE_DATA':
-      const [membertype, actiontype, arraytype, data] = action.payload;
-      const res = {...state};
+      var [membertype, actiontype, arraytype, data] = action.payload;
+      var res = {...state};
       if (arraytype === "array") {
         if (actiontype === "add") {
           if (res[membertype] ===  null || res[membertype] === undefined || res[membertype].length == 0) {
@@ -54,6 +54,14 @@ export default function (state = {likedVideos: [], eggCoins: 0}, action) {
         res[membertype] = data;
         // assumed to always be add if not array
       }
+      return res;
+    case 'UPDATE_DATA_UPLOAD':
+      var [membertype, actiontype, arraytype, data] = action.payload;
+      var res = {...state};
+        res[membertype] = data;
+        // assumed to always be add if not array
+      
+      uploadUserInfo(res);
       return res;
     case 'spendEggs':
       const num = action.payload;

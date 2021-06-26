@@ -145,6 +145,25 @@ const [creditInfo, setCreditInfo] = useState(defaultCredit);
 const hasShipping = select.shipping !== undefined && select.shipping !== "none";
 var notAllowedMessage="hello initial";
 var {allowed:allowed, errorMessage: notAllowedMessage} = allowConfirm(creditCardChanged, changed, hasId, hasShipping);
+
+const updateShipping = (changed) =>{
+  if (changed) { // update shipping info
+    console.log('changed shipping');
+    setUpdating(true);
+    console.log('updateShipping');
+    dispatch({type:'UPDATE_DATA', payload: ["shipping", null, null, info]});
+    db.collection('users').doc(au.currentUser.uid).update({
+      
+      shipping: info
+    }).then(()=>{
+      console.log('updaing shipping');
+      setUpdating(false);
+    }).catch((errr)=>{
+      console.log("UPDATING SHIP ERR:", errr);
+    });
+    confirmFunc(select.customerId);
+  }
+}
 return <><View style={{marginTop: 5}} >
         <View style={[styles.row, {justifyContent: 'space-between',}]}>
             {!shippingOnly || (billingOnly && shippingOnly)?
@@ -164,7 +183,7 @@ return <><View style={{marginTop: 5}} >
                 if (creditCardChanged) {
                   setCreditInfo(defaultCredit);
                 } else {
-                  dispatch({type:'UPDATE_DATA', payload: ["hasCard", null, null, false]});
+                  dispatch({type:'UPDATE_DATA_UPLOAD', payload: ["hasCard", null, null, false]});
                   setCreditInfo(defaultCredit);
                 }
 
@@ -256,95 +275,77 @@ return <><View style={{marginTop: 5}} >
               // opacity: allowed?1:0.2,
             }}
             onPress={() => {
-                console.log('pressed creditcard changed, changed',creditCardChanged, changed, hasId);
-                console.log("creditInfo", creditInfo);
+                // console.log('pressed creditcard changed, changed',creditCardChanged, changed, hasId);
+                // console.log("creditInfo", creditInfo);
                 // setErrorMessage("");
                 if (!allowed) {
                   setErrorMessage(notAllowedMessage || "ugh null?");
                   return;
-                } else {
-                  // setErrorMessage("");
                 }
               if (hasId && creditCardChanged) {
                   console.log('has id and creditcardchanged');
                 updateCard(select.customerId, creditInfo);
                 confirmFunc(select.customerId);
                 setErrorMessage("");
-              } 
-              if (changed) { // update shipping info
-                console.log('changed shipping');
-                setUpdating(true);
-                const tempCredit = {...creditInfo, exp_month: parseInt(creditInfo.expMonth), exp_year: parseInt(creditInfo.expYear),expMonth: parseInt(creditInfo.expMonth), expYear: parseInt(creditInfo.expYear)};
-                // createOrUpdate(hasId, select.customerId, tempCredit).then((id)=>{
-                //   dispatch({type:'UPDATE_DATA', payload: ["customerId", null, null, id]});
-                //   console.log('done in profile change');
-                //   setUpdating(false);
-                //   confirmFunc(id);
-                // })
-                console.log('updateShipping');
-                dispatch({type:'UPDATE_DATA', payload: ["shipping", null, null, info]});
-                db.collection('users').doc(au.currentUser.uid).update({
-                  
-                  shipping: info
-                }).then(()=>{
-                  console.log('updaing shipping');
-                  setUpdating(false);
-                }).catch((errr)=>{
-                  console.log("UPDATING SHIP ERR:", errr);
-                });
-                confirmFunc(select.customerId);
+                dispatch({type:'UPDATE_DATA_UPLOAD', payload: ["hasCard", null, null, true]});
+                updateShipping(changed);
+              } else if (hasId && !creditCardChanged) {
 
+              } else if (!hasId && !creditCardChanged) {
 
-              }
-                  if (hasId) {
-                      console.log('hasId');
-                      confirmFunc(select.customerId);
-                  } else { // doesn't have id, credit card changed
-                      console.log('doesnt have id');
-                      if (!changed && !creditCardChanged) {
-                        confirmFunc(null);
-                        return;
-                      }
-                      if (changed && creditCardChanged) {
-                        setUpdating(true);
-                        const tempCredit = {...creditInfo, exp_month: parseInt(creditInfo.expMonth), exp_year: parseInt(creditInfo.expYear),expMonth: parseInt(creditInfo.expMonth), expYear: parseInt(creditInfo.expYear)};
-                    createOrUpdate(hasId, select.customerId, tempCredit).then((id)=>{
-                        dispatch({type:'UPDATE_DATA', payload: ["customerId", null, null, id]});
-                        dispatch({type:'UPDATE_DATA', payload: ["hasCard", null, null, true]});
-                        console.log('done in profile change');
-                        setUpdating(false);
-                        confirmFunc(id);
-                      });
+              } else if (!hasId && creditCardChanged) {
+                if (hasId) {
+                  console.log('hasId');
+                  confirmFunc(select.customerId);
+              } else { // doesn't have id, credit card changed
+                  console.log('doesnt have id');
+                  if (!changed && !creditCardChanged) {
+                    confirmFunc(null);
+                    return;
+                  }
+                  if (changed && creditCardChanged) {
+                    setUpdating(true);
+                    const tempCredit = {...creditInfo, exp_month: parseInt(creditInfo.expMonth), exp_year: parseInt(creditInfo.expYear),expMonth: parseInt(creditInfo.expMonth), expYear: parseInt(creditInfo.expYear)};
+                createOrUpdate(hasId, select.customerId, tempCredit).then((id)=>{
+                    dispatch({type:'UPDATE_DATA', payload: ["customerId", null, null, id]});
+                    dispatch({type:'UPDATE_DATA_UPLOAD', payload: ["hasCard", null, null, true]});
+                    console.log('done in profile change');
+                    setUpdating(false);
+                    confirmFunc(id);
+                  });
 
-                      db.collection('users').doc(au.currentUser.uid).update({
-                        shipping: info
-                      });
-                      dispatch({type:'UPDATE_DATA', payload: ["shipping", null, null, info]});
+                  db.collection('users').doc(au.currentUser.uid).update({
+                    shipping: info
+                  });
+                  dispatch({type:'UPDATE_DATA', payload: ["shipping", null, null, info]});
 
-                    } else if (creditCardChanged) {
-                      // console.log(creditInfo['exp_month'], parseInt(creditInfo.expMonth));
-                      const tempCredit = {...creditInfo, exp_month: parseInt(creditInfo.expMonth), exp_year: parseInt(creditInfo.expYear),expMonth: parseInt(creditInfo.expMonth), expYear: parseInt(creditInfo.expYear)};
-                      console.log("credit", tempCredit);
-                      setUpdating(true);
-                      // createOrUpdate(hasId, select.customerId, info).then((id)=>{
-                      createOrUpdate(hasId, select.customerId, tempCredit).then((id)=>{
-                        if (typeof id === "object") {
-                          setUpdating(false);
-                          setErrorMessage(id.message);
-                          return;
-                        }
-                        setUpdating(false);
-                        dispatch({type:'UPDATE_DATA', payload: ["customerId", null, null, id]});
-                        dispatch({type:'UPDATE_DATA', payload: ["hasId", null, null, true]});
-                        // console.log('done in profile change');
-                        confirmFunc(id);
-                      }).catch((err)=>{
-                        console.log("update credit error", err);
-                      });
+                } else if (creditCardChanged) {
+                  // console.log(creditInfo['exp_month'], parseInt(creditInfo.expMonth));
+                  const tempCredit = {...creditInfo, exp_month: parseInt(creditInfo.expMonth), exp_year: parseInt(creditInfo.expYear),expMonth: parseInt(creditInfo.expMonth), expYear: parseInt(creditInfo.expYear)};
+                  console.log("credit", tempCredit);
+                  setUpdating(true);
+                  // createOrUpdate(hasId, select.customerId, info).then((id)=>{
+                  createOrUpdate(hasId, select.customerId, tempCredit).then((id)=>{
+                    if (typeof id === "object") {
+                      setUpdating(false);
+                      setErrorMessage(id.message);
+                      return;
                     }
-                  
-                  
+                    setUpdating(false);
+                    dispatch({type:'UPDATE_DATA', payload: ["customerId", null, null, id]});
+                    dispatch({type:'UPDATE_DATA_UPLOAD', payload: ["hasCard", null, null, true]});
+                    // console.log('done in profile change');
+                    confirmFunc(id);
+                  }).catch((err)=>{
+                    console.log("update credit error", err);
+                  });
+                }
+              
+              
+          }
               }
+
+
 
               
 
