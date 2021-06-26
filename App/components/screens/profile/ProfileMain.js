@@ -79,6 +79,7 @@ const ProfilePicture = () => {
 };
 const ProfileMain = ({navigation}) => {
   const select = useSelector(state=>state);
+  console.log(select.userInfo)
   // au.currentUser.reload();
 
   // useFocusEffect(()=>{

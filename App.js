@@ -22,7 +22,7 @@ const WrapperApp = () => {
 
 const App = () => {
   const [aggState, setState] = useState({isLoaded: false, loggedIn: null, userData: null});
-
+  const [stopLoop, setStopLoop] = useState(false)
   // const [isLoaded, setIsLoaded] = useState(false);
   // const [loggedIn, setLoggedIn] = useState(null);
   // const [userData, setUserData] = useState(null);
@@ -41,6 +41,7 @@ const App = () => {
         fetchUserData(user).then((userdat) => {
           // setUserData(userdat || {eggCoins: 0, likedVideos: [], customerId: 'none'});
           // setLoggedIn(true);
+          console.log('MY USER DAT', userdat)
           setState({loggedIn: true, userData: userdat || {eggCoins: 0, likedVideos: [], customerId: 'none'}});
         }).catch();
         dispatch({type: 'guest_off'})
@@ -58,8 +59,12 @@ const App = () => {
        || select.auth.guest
        ) {
       case true:
-        if (!select.auth.guest & !aggState.loggedIn) {
-        dispatch({type: 'SET_USER_INFO', payload: aggState.userData})
+        console.log('IM IN')
+        // if (!select.auth.guest & !aggState.loggedIn) {
+          if (!select.auth.guest && !stopLoop) {
+          console.log('setting USER INFO')
+        dispatch({type: 'SET_USER_INFO', payload: aggState.userData});
+        setStopLoop(true);
         }
         return (
               <PortalProvider>

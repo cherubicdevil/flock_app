@@ -21,7 +21,6 @@ import ImagePicker from 'react-native-image-picker';
 import {constants} from 'App/constants';
 import LinearGradient from 'react-native-linear-gradient';
 import {useSelector} from 'react-redux';
-//import Input from 'App/components/common/Input';
 import {firebase, au, db} from 'App/firebase/config';
 import OptionsModal from 'App/navigators/OptionsModal';
 import {useDispatch} from 'react-redux';
@@ -50,7 +49,7 @@ const SmartCheckout = ({confirmFunc, cancelFunc, children, billingOnly=false, sh
     return {allowed:true, errorMessage:"shouldn't happen"};
   }
 }}) => {
-console.log("HAS ID", hasId)
+// console.log("HAS ID", hasId)
 const dispatch = useDispatch();
 const [billModal, setBillModal] = useState(false);
 const [shipModal, setShipModal] = useState(false);
@@ -65,6 +64,7 @@ const [hasIdLoading, setHasIdLoading] = useState(true);
 const [updating, setUpdating] = useState(false);
 
 useEffect(()=>{
+
   if (select.customerId === "none" || select.customerId === undefined) {
     console.log("NOETAPPLCABE", select.customerId);
     // hasId = false;
@@ -73,6 +73,7 @@ useEffect(()=>{
     console.log("EHEREIT IS", select.customerId);
     // hasId = true;
     setHasId(true);
+    if (select.hasCard) {
     fetchCustomerInfo(select.customerId).then((data)=>{
         // setInfo(data.customer);
         console.log("ADDRESSSS");
@@ -81,23 +82,27 @@ useEffect(()=>{
         setCreditInfo(data.card);
       // console.log(data.card,"MY CARD");
       }).catch(err=>console.log(err));
-      console.log('hello');
+      // console.log('hello');
+    }
 
-    const shipping = select.shipping;
-    if (shipping !== undefined && shipping !== "none") {
-      setInfo(shipping);
-      console.log('shipping', shipping);
-    }
   }
-  fetchShipping(au.currentUser.uid).then((data)=>{
-    console.log('shipping non?', data);
-    if (data !== "none") {
-      setInfo(data);
-      console.log('shipping', data);
-    }
+
+  const shipping = select.shipping;
+  if (shipping !== undefined && shipping !== "none") {
+    setInfo(shipping);
+    console.log('shipping', shipping);
+  } 
+//   else {
+//   fetchShipping(au.currentUser.uid).then((data)=>{
+//     console.log('shipping non?', data);
+//     if (data !== "none") {
+//       setInfo(data);
+//       console.log('shipping', data);
+//     }
     
-  })
-}, [select.customerId]);
+//   })
+// }
+}, []);
 
 const defaultInfo = {
   // mandatory
@@ -116,10 +121,7 @@ const defaultInfo = {
   addressCountry: 'USA',
   addressZip: '',
 };
-const [info, setInfo] = useState(defaultInfo);
-console.log(info);
-
-const [creditInfo, setCreditInfo] = useState({
+const defaultCredit = {
   // mandatory
   number: '',
   exp_month: null,
@@ -134,12 +136,15 @@ const [creditInfo, setCreditInfo] = useState({
   addressState: '',
   addressCountry: 'USA',
   addressZip: '',
-});
+};
+const [info, setInfo] = useState(defaultInfo);
+console.log(info);
+
+const [creditInfo, setCreditInfo] = useState(defaultCredit);
 
 const hasShipping = select.shipping !== undefined && select.shipping !== "none";
 var notAllowedMessage="hello initial";
 var {allowed:allowed, errorMessage: notAllowedMessage} = allowConfirm(creditCardChanged, changed, hasId, hasShipping);
-console.log("??????????", allowed, creditCardChanged, changed, hasId, hasShipping, 'stuff');
 return <><View style={{marginTop: 5}} >
         <View style={[styles.row, {justifyContent: 'space-between',}]}>
             {!shippingOnly || (billingOnly && shippingOnly)?
@@ -155,6 +160,14 @@ return <><View style={{marginTop: 5}} >
             <View style={{flexDirection: 'row', alignItems: 'center', flex: 1}}>
               <TouchableOpacity onPress={()=>{
                 console.log('remove card')
+                // console.log("lag", allowed, creditCardChanged, changed, hasId, select, hasShipping, 'stuff');
+                if (creditCardChanged) {
+                  setCreditInfo(defaultCredit);
+                } else {
+                  dispatch({type:'UPDATE_DATA', payload: ["hasCard", null, null, false]});
+                  setCreditInfo(defaultCredit);
+                }
+
               }}>
                 <View style={{borderRadius: 40, backgroundColor: 'red', padding: 7, justifyContent: 'center', alignItems: 'center',}}>
                 <Icon name="minus" size={10} color="white"/>
@@ -165,7 +178,7 @@ return <><View style={{marginTop: 5}} >
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
             {showCardIcon(creditInfo.brand, constants.LAVENDER)}<Text style={{marginLeft: 5, color: 'black', paddingRight: 10}}>{creditInfo.last4}</Text>
             </View>
-            :hasId?<ActivityIndicator animating={hasIdLoading} color={constants.LAVENDER} style={{marginRigth:10}} />:<Text style={{color: constants.RED, paddingRight: 10}}>Needs Action</Text>}
+            :select.hasCard?<ActivityIndicator animating={hasIdLoading} color={constants.LAVENDER} style={{marginRigth:10}} />:<Text style={{color: constants.RED, paddingRight: 10}}>Needs Action</Text>}
             </View>
             <View style={{alignSelf: 'center'}}>
             <Icon name="chevron-right" size={20} color={constants.LAVENDER} style={{marginRight: 10}} />
@@ -297,6 +310,7 @@ return <><View style={{marginTop: 5}} >
                         const tempCredit = {...creditInfo, exp_month: parseInt(creditInfo.expMonth), exp_year: parseInt(creditInfo.expYear),expMonth: parseInt(creditInfo.expMonth), expYear: parseInt(creditInfo.expYear)};
                     createOrUpdate(hasId, select.customerId, tempCredit).then((id)=>{
                         dispatch({type:'UPDATE_DATA', payload: ["customerId", null, null, id]});
+                        dispatch({type:'UPDATE_DATA', payload: ["hasCard", null, null, true]});
                         console.log('done in profile change');
                         setUpdating(false);
                         confirmFunc(id);
@@ -321,6 +335,7 @@ return <><View style={{marginTop: 5}} >
                         }
                         setUpdating(false);
                         dispatch({type:'UPDATE_DATA', payload: ["customerId", null, null, id]});
+                        dispatch({type:'UPDATE_DATA', payload: ["hasId", null, null, true]});
                         // console.log('done in profile change');
                         confirmFunc(id);
                       }).catch((err)=>{
