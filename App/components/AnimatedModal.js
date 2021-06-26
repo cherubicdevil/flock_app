@@ -98,7 +98,15 @@ const AnimatedModal = ({
         }}
       >
     {colored?<LinearGradient style={{height: '100%'}} colors={colors} />:<></>}
-
+    <TouchableOpacity hitSlop={{left:20, right:20, top:20, bottom:20}} style={{position: 'absolute', top: '5%', right: '10%'}} onPress={()=>{
+                setTimeout(()=>{
+                  close();
+                }, nested?300:0);
+            resetAnimation();
+              }}
+               >
+                {showClose?<Icon name="times" color="white" size={25}/>:<></>}
+              </TouchableOpacity>
       </Animated.View></Portal>
       <Modal
         animationType={modalAnimationType}
@@ -134,15 +142,7 @@ const AnimatedModal = ({
             {behind?<View style={{position: 'absolute', bottom: 8, height: upPercent, width: '90%', backgroundColor: bgcolor, opacity: 0.5, alignSelf: 'center', borderRadius: curve?80:0,}} />:<></>}
             <View style={{zIndex: -40, justifyContent: 'center', alignItems: 'center', position: 'absolute', top: 0, width: '100%', height: (100-parseInt(upPercent.replace("%",""))) + "%", backgroundColor:"rgba(255,255,255,0)"}}>
               {contentTop}
-              <TouchableOpacity hitSlop={{left:20, right:20, top:20, bottom:20}} style={{position: 'absolute', top: 60, right: 40}} onPress={()=>{
-                setTimeout(()=>{
-                  close();
-                }, nested?300:0);
-            resetAnimation();
-              }}
-               >
-                {showClose?<Icon name="times" color={constants.LIGHTGREY} size={25}/>:<></>}
-              </TouchableOpacity>
+
             </View>
             <KeyboardAvoidingView enabled={keyboard} behavior={behavior} style={{position: 'absolute', zIndex: 20, width: '100%', backgroundColor: 'transparent', height: upPercent, }}>
             <View behavior="padding" style={{width: '100%', height: "100%", borderRadius: curve?100:0, borderBottomRightRadius: 0, borderBottomLeftRadius: 0, backgroundColor: bgcolor, paddingTop: noPadding?0:40, overflow: 'hidden'}}>

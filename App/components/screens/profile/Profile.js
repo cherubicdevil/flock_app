@@ -387,7 +387,7 @@ const Profile = ({navigation}) => {
         modalVisible={openModal}
       /> */}
     <SafeAreaView style={{flex: 1, paddingLeft: 30, paddingRight: 20, backgroundColor: constants.PINK_BACKGROUND}}>
-      <ScrollView style={{paddingTop: 20}}>
+      <ScrollView style={{marginTop: '4%'}}>
         <Text style={{fontSize: 24, textAlign: 'center', marginBottom: 20}}>
           Edit Profile
         </Text>
