@@ -90,7 +90,7 @@ useEffect(()=>{
   const shipping = select.shipping;
   if (shipping !== undefined && shipping !== "none") {
     setInfo(shipping);
-    console.log('shipping', shipping);
+    // console.log('shipping', shipping);
   } 
 //   else {
 //   fetchShipping(au.currentUser.uid).then((data)=>{
@@ -161,7 +161,7 @@ const updateShipping = (changed) =>{
     }).catch((errr)=>{
       console.log("UPDATING SHIP ERR:", errr);
     });
-    confirmFunc(select.customerId);
+    // confirmFunc(select.customerId);
   }
 }
 return <><View style={{marginTop: 5}} >
@@ -290,10 +290,11 @@ return <><View style={{marginTop: 5}} >
                 dispatch({type:'UPDATE_DATA_UPLOAD', payload: ["hasCard", null, null, true]});
                 updateShipping(changed);
               } else if (hasId && !creditCardChanged) {
-
+                confirmFunc(select.customerId);
               } else if (!hasId && !creditCardChanged) {
-
+console.log('option3')
               } else if (!hasId && creditCardChanged) {
+                console.log('option4')
                 if (hasId) {
                   console.log('hasId');
                   confirmFunc(select.customerId);
@@ -343,6 +344,9 @@ return <><View style={{marginTop: 5}} >
               
               
           }
+              } else {
+                console.log('hello should be here')
+                confirmFunc(id);
               }
 
 

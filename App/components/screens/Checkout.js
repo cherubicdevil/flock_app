@@ -41,10 +41,9 @@ const Checkout = ({navigation, route}) => {
     const customerId = select.customerId;
     var hasId = customerId !== undefined && customerId !== null && customerId !== "none"
     useEffect(()=>{
-        if (hasId) {
+        if (select.hasCard) {
             fetchCustomerInfo(customerId).then((customerInfo) =>{
                 // setInfo({...info, ...customerInfo.customer});
-                console.log('customerrrr? error')
                 try {
                 setInfo({...info, ...customerInfo.card});
                 } catch (err) {
@@ -54,9 +53,6 @@ const Checkout = ({navigation, route}) => {
         }
     },[]);
 
-
-
-    console.log(customerId);
     const [info, setInfo] = useState({
         // mandatory
         number: '4000000000000077',
@@ -84,7 +80,7 @@ const Checkout = ({navigation, route}) => {
     //   console.log(amount, route.params.subtotal, (parseFloat(shipMain) + parseFloat(route.params.subtotal)).toFixed(2))
 
       const confirmFunc = (cid) => {
-            var chargeCustomerEndpoint = constants.CHARGE_CUSTOMER + "?id="+cid+"&amount="+ amount*100;
+            // var chargeCustomerEndpoint = constants.CHARGE_CUSTOMER + "?id="+cid+"&amount="+ amount*100;
             dispatch({type: "UPDATE_DATA", payload: ['customerId',null, null,cid]});
             console.log('customer id, cid', cid);
     //   fetch(chargeCustomerEndpoint).then(()=>{
@@ -101,6 +97,7 @@ const Checkout = ({navigation, route}) => {
         type: 'request',
         userId: au.currentUser.uid,
         members: route.params.data.memberIds,
+        debug: true,
     }
     fetch(constants.CHARGE_CUSTOMER_POST, {
         method: 'POST',
