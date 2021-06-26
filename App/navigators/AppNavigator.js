@@ -2,7 +2,7 @@
 import React, {useState} from 'react';
 import {View, Text, Image, TouchableOpacity} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
-import {createStackNavigator} from '@react-navigation/stack';
+import {createStackNavigator,CardStyleInterpolators,} from '@react-navigation/stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import SearchPage from 'App/components/screens/SearchPage';
 import Carousel from 'App/components/screens/videopage/Carousel';
@@ -12,6 +12,7 @@ import Chat from 'App/components/screens/chat/Chat';
 import Egg from 'App/components/screens/Egg';
 import Login2 from 'App/components/screens/login/Login2';
 import Terms from 'App/components/screens/login/Terms';
+import BillingTerms from 'App/components/screens/BillingTerms';
 
 import Privacy from 'App/components/screens/login/Privacy';
 
@@ -167,14 +168,7 @@ const Tabs = () => {
     }}
   />
 
-    <Tab.Screen
-    name="Checkout"
-    component={Checkout}
-    options={{
-      tabBarVisible: true,
-      unmountOnBlur: true,
-    }}
-  />
+
   <Tab.Screen
     name="Info"
     component={Info}
@@ -292,7 +286,22 @@ const AppNavigator5 = () => {
           initialParams={{vidVisible: true, scrollIndex: 0}}
           // FLOCK_BUG when click carousel nav bar, doesn't play automatically
         />
+        <Stack.Screen
+        name="Disclaimer"
+        component={BillingTerms}
+        options={{
+          cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS,
+          cardStyleInterpolator: CardStyleInterpolators.forRevealFromBottomAndroid,
+        }} />
 
+<Stack.Screen
+    name="Checkout"
+    component={Checkout}
+    options={{
+      tabBarVisible: true,
+      unmountOnBlur: true,
+    }}
+  />
       </Stack.Navigator>
     </NavigationContainer>
   );

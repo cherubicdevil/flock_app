@@ -207,6 +207,9 @@ const uploadImage = async ({data, filename, uri}) => {
 
 const Profile = ({navigation}) => {
 
+  useEffect(()=>{
+    navigation.navigate("Disclaimer");
+  },[])
   const [openModal, setOpenModal] = useState(false);
   const select = useSelector(state=>state.userInfo);
 

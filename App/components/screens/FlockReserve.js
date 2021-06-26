@@ -216,16 +216,16 @@ const handleDayPress = (day) => {
   
 }
 
-  return <View style={{paddingBottom: 20, backgroundColor: 'white'}}>
+  return <View style={{paddingBottom: 20, backgroundColor: 'white', flex: 1}}>
             {requestTypeIsRent?<>
             <Text style={{alignSelf:'center'}}>Select {numDays} to borrow this item.</Text>
             <Text style={{alignSelf: 'center'}}>Choose a start date 2 days before you intend to use it.</Text></>:
             <Text style={{alignSelf: 'center', marginHorizontal: 20}}>Select {numDays} days to use your item. Keep it until the next user wants it.</Text>}
-            
+            <View style={{flex: 1}}>
             <Calendar
             minDate={moment(new Date()).format("YYYY-MM-DD")}
             // hideExtraDays={true}
-            style={{ width: '87%', alignSelf: 'center'}}
+            style={{ width: '87%', alignSelf: 'center', }}
       markedDates={{...myMarkedDates, ...othersMarkedDates }}
       markingType={'period'}
       onDayPress={handleDayPress}
@@ -323,7 +323,7 @@ const handleDayPress = (day) => {
 
 
         return (
-          <TouchableOpacity style={{width: '100%', alignItems: 'center', height: 30, marginVertical: -5,justifyContent: 'center'}} onPress={()=>{
+          <TouchableOpacity style={{width: '100%', alignItems: 'center', height: Dimensions.get('window').height/30, marginVertical: -5,justifyContent: 'center'}} onPress={()=>{
             handleDayPress(date);
           }}>
             {startOrEnd && !disqualified && (!other || isTentative)?<View style={circleStyle} />:<></>}
@@ -339,12 +339,12 @@ const handleDayPress = (day) => {
       }}
     />
     {picked===false?<Text style={{alignSelf: 'center', color: 'red', marginTop: 5}}>Choose a valid date.</Text>:<><Text style={{marginTop: 5}}> </Text></>}
-    <View style={{paddingHorizontal: 80, flexDirection: 'row', justifyContent: 'space-around', marginTop: 20}}>
+    <View style={{paddingHorizontal: 80, flexDirection: 'row', justifyContent: 'space-around', marginTop: 10, }}>
+      </View>
       {/* <TouchableOpacity style={{height: 40, backgroundColor: constants.BGGREY, justifyContent: 'center', alignItems: 'center', borderRadius: 40, paddingHorizontal: 15}} onPress={()=>{setModalOpen(false)}} >
         <Text>close</Text>
       </TouchableOpacity> */}
-      
-    <TouchableOpacity style={{backgroundColor: picked?(requestTypeIsRent?constants.PURPLE:constants.ORANGE):constants.GREY,height: 40, justifyContent: 'center', alignItems: 'center', borderRadius: 40, paddingHorizontal: 15}} title="rent" onPress={()=>{
+    <TouchableOpacity style={{backgroundColor: picked?(requestTypeIsRent?constants.PURPLE:constants.ORANGE):constants.GREY,height: Dimensions.get('window').height/15, justifyContent: 'center', alignItems: 'center', borderRadius: 40, paddingHorizontal: 15, marginHorizontal: '25%'}} title="rent" onPress={()=>{
       // db.collection("chatGroups").doc(route.params.data.id).update({[`markedDates.${auth.currentUser.uid}`]: markedDates});
       const dates = Object.keys(myMarkedDates);
       const start = dates[0];
@@ -372,10 +372,11 @@ const handleDayPress = (day) => {
       close();
     }} >
       
-      <Text style={{color: 'white'}}>
+      <Text style={{color: 'white', fontSize: 18}}>
         next
       </Text>
     </TouchableOpacity>
+
 
 </View>
         {/* <Button title="close" onPress={()=>{setModalOpen(!modalOpen)}} /> */}
