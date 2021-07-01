@@ -350,7 +350,7 @@ const handleDayPress = (day) => {
       const start = dates[0];
       const end = dates[1];
       // db.collection("chatGroups").doc(route.params.data.id).update({'markedDates': {...othersMarkedDates, ...myMarkedDates}});
-      navigation.navigate('Checkout', {doneFunc: (customerId)=> {
+      navigation.navigate('Checkout', {type: requestTypeIsRent?"borrow":"use", doneFunc: (customerId)=> {
         db.collection("chatGroups").doc(route.params.data.id).update({'markedDates': {...othersMarkedDates, ...myMarkedDates}});
         const myDates = Object.entries({...othersMarkedDates, ...myMarkedDates});
     //     let postData = {

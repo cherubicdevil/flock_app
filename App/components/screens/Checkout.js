@@ -94,10 +94,12 @@ const Checkout = ({navigation, route}) => {
         id: cid,
         chatId: route.params.id,
         product: route.params.product,
-        type: 'request',
+        type: route.params.type,
+        email: email,
         userId: au.currentUser.uid,
         members: route.params.data.memberIds,
         debug: true,
+        date: [route.params.start, route.params.end]
     }
     fetch(constants.CHARGE_CUSTOMER_POST, {
         method: 'POST',
