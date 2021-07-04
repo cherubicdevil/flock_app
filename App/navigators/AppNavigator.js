@@ -37,6 +37,7 @@ import FlockReserve from 'App/components/screens/FlockReserve';
 import Checkout from 'App/components/screens/Checkout';
 import FlockSuccess from '../components/screens/FlockSuccess';
 import {useSelector} from 'react-redux';
+import { ErrorScreen } from 'App/components/screens/ErrorScreen';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -106,7 +107,7 @@ const Tabs = () => {
     initialParams={{vidVisible: false}}
     options={{
       tabBarVisible: true,
-      unmountOnBlur:true,
+      unmountOnBlur:false,
     }}
   />
     <Tab.Screen
@@ -289,6 +290,14 @@ const AppNavigator5 = () => {
         <Stack.Screen
         name="Disclaimer"
         component={BillingTerms}
+        options={{
+          cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS,
+          cardStyleInterpolator: CardStyleInterpolators.forRevealFromBottomAndroid,
+        }} />
+
+        <Stack.Screen
+        name="Error"
+        component={ErrorScreen}
         options={{
           cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS,
           cardStyleInterpolator: CardStyleInterpolators.forRevealFromBottomAndroid,

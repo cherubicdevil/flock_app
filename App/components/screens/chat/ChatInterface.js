@@ -434,7 +434,10 @@ return <ScrollView  style={{marginLeft: 15, overflow: 'visible', backgroundColor
        <KeyboardAvoidingView behavior="position" style={{flex: 1}} keyboardVerticalOffset={-200}>
 <ScrollView>
   
-       <SmartCheckout billingOnly={true} allowConfirm={(creditChanged, )=>{
+       <SmartCheckout 
+       delayedCapture={true}
+       navigation={navigation}
+       billingOnly={true} allowConfirm={(creditChanged, )=>{
          const validEmail = (em)=>{
           return em !== "" && em.indexOf("@") != -1;
          }

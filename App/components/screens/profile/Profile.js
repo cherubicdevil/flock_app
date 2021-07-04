@@ -406,7 +406,9 @@ const Profile = ({navigation}) => {
           {renderFormBox(0.5, "Email", "email", "email", email, setEmail, 1)}
         </View>
         </View>
-<SmartCheckout confirmFunc={confirmFunc} cancelFunc={cancelFunc} billingOnly={false} shippingOnly={false} />
+<SmartCheckout 
+navigation={navigation}
+confirmFunc={confirmFunc} cancelFunc={cancelFunc} billingOnly={false} shippingOnly={false} />
         
       </ScrollView>
     </SafeAreaView>

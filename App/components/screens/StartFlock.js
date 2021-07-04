@@ -153,6 +153,7 @@ const StartFlock = ({navigation, route}) => {
 <ScrollView>
   
        <SmartCheckout billingOnly={true} 
+       navigation={navigation}
        delayedCapture = {true}
        cancelFunc={()=>{
            setCreditModal(false);

@@ -984,7 +984,9 @@ const createOrUpdate = async (hasId, customerId, info) => {
     if (!hasId) {
       
       try {
-      const token = await createToken(info);
+        // const newInfo = {type:'Person'}
+        // console.log('input to ge ttoken,', info)
+      const token = await createToken({'type': 'Person'});
       // const endpoint = constants.PAY_ENDPOINT + `?price=${100}&token=${token.tokenId}`;
       // fetch(endpoint);
     
@@ -997,7 +999,10 @@ const createOrUpdate = async (hasId, customerId, info) => {
               resolve(err);
           });
           resolve(cid.id);
-      }).catch(err=>console.log(err))
+      }).catch(err=>{
+        console.log('create or update error', err)
+        resolve({message:"Something went wrong."});
+      })
     });
 
   } catch (err) {

@@ -24,7 +24,11 @@
 
 import {Dimensions} from 'react-native';
 
+const DEBUG = true;
+const STRIPE_ENDPOINT = DEBUG?'https://stripe-dev-yrj4czdimydbojgxeng.herokuapp.com':'https://protected-thicket-47492.herokuapp.com'
+
 export const constants = {
+  DEBUG: DEBUG,
   BLUE_FADE: "rgba(166,184,205,0.5)",
   LIGHT_PURPLE_BG: '#8796b5',
   MENU_COLOR: 'rgba(239, 232, 237,1)',
@@ -81,15 +85,15 @@ export const constants = {
   BLUERGREY: '#7488b0',
   CHAT_ENDPOINT: 'https://enigmatic-bastion-86695.herokuapp.com/',
   PAY_ENDPOINT: 'https://protected-thicket-47492.herokuapp.com/', // ?price=&token=
-  RETR_CUST: 'https://protected-thicket-47492.herokuapp.com/retrieveCustomer/', // ?id=
-  RETR_CARD: 'https://protected-thicket-47492.herokuapp.com/retrieveCard/', // ?id=&card=
-  CHARGE_CUSTOMER: 'https://protected-thicket-47492.herokuapp.com/chargeCustomer', // ?id=&amount=
-  CHARGE_CUSTOMER_POST: 'https://protected-thicket-47492.herokuapp.com/chargeCustomerPost',
-  UPDATE_CUST: 'https://protected-thicket-47492.herokuapp.com/updateCustomer/', // post query
-  UPDATE_CARD: 'https://protected-thicket-47492.herokuapp.com/updateCard/', // post query
-  CREATE_CARD_SWITCH_DEFAULT: 'https://protected-thicket-47492.herokuapp.com/createCardSwitchDefault/', // post query
-  CHARGE_FLOCK_COMPLETE_ENDPOINT: 'https://protected-thicket-47492.herokuapp.com/chargeCustomerFlockComplete/',
-  CUSTOMER_ENDPOINT: 'https://protected-thicket-47492.herokuapp.com/createCustomer/', // ?token=
+  RETR_CUST: STRIPE_ENDPOINT+'/retrieveCustomer/', // ?id=
+  RETR_CARD: STRIPE_ENDPOINT+'/retrieveCard/', // ?id=&card=
+  CHARGE_CUSTOMER: STRIPE_ENDPOINT+'/chargeCustomer', // ?id=&amount=
+  CHARGE_CUSTOMER_POST: STRIPE_ENDPOINT+'/chargeCustomerPost',
+  UPDATE_CUST: STRIPE_ENDPOINT+'/updateCustomer/', // post query
+  UPDATE_CARD: STRIPE_ENDPOINT+'/updateCard/', // post query
+  CREATE_CARD_SWITCH_DEFAULT: STRIPE_ENDPOINT+'/createCardSwitchDefault/', // post query
+  CHARGE_FLOCK_COMPLETE_ENDPOINT: STRIPE_ENDPOINT+'/chargeCustomerFlockComplete/',
+  CUSTOMER_ENDPOINT: STRIPE_ENDPOINT+'/createCustomer/', // ?token=
   // CUSTOMER_ENDPOINT: 'http://localhost:5000/createCustomer/',
   ALGOLIA_SEARCH: '3a59c3ff5dd5ec3b1fc14e11a2044115',
   ALGOLIA_ID: 'QDYS7569GL',

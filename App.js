@@ -15,6 +15,8 @@ import {useSelector} from 'react-redux';
 import {Portal} from 'react-native-paper';
 import {Provider as PortalProvider} from "react-native-paper";
 
+import {constants} from 'App/constants';
+
 const WrapperApp = () => {
   return <Provider store={createStore(reducers)}>
     <App></App>
@@ -69,7 +71,8 @@ const App = () => {
         }
         return (
           <StripeProvider
-      publishableKey="pk_live_51HRYtCBCefwmKQic3Ydh5x9XYz2Ipv4Uam6O0KURXH9Db9270ZaiIaFxxk4MaudBer7ApMKmA3q2SgHaisdVMDZn00jUe8KTQo"
+      publishableKey={!constants.DEBUG?"pk_live_51HRYtCBCefwmKQic3Ydh5x9XYz2Ipv4Uam6O0KURXH9Db9270ZaiIaFxxk4MaudBer7ApMKmA3q2SgHaisdVMDZn00jUe8KTQo":
+      "pk_test_51HRYtCBCefwmKQicYNJlKwc3Rv6B8PhDItxUM2210aBt2eI5qZcm5AJTImMQf6zor7c98pP5kPO8WN0rhRtQzyPL00tG4jcyqq"}
       urlScheme="your-url-scheme" // required for 3D Secure and bank redirects
       merchantIdentifier="merchant.com.{{YOUR_APP_NAME}}" // required for Apple Pay
     >

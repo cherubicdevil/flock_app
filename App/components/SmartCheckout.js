@@ -34,6 +34,7 @@ const showCardIcon = (brand, color)=>{
     }
 
 const SmartCheckout = ({confirmFunc, 
+  navigation,
   delayedCapture = false,
   cancelFunc, children, billingOnly=false, shippingOnly=false, showSummary=true, allowConfirm = (creditCardChanged, shippingChanged, hasId, hasShipping)=>{
 
@@ -227,7 +228,7 @@ return <><View style={{marginTop: 5}} >
             <View style={{flexDirection: 'row', flex: 1, alignItems: 'center',}}>
             <Text numberOfLines={1}>{info.address.line1}</Text>
             </View>
-            :<Text style={{color: constants.RED, paddingRight: 10}}>Needs Action</Text>}
+            :<Text style={{color: constants.RED, textAlign: 'right', paddingRight: 10}}>Needs Action</Text>}
             </View>
             <View style={{marginRight: 10, alignSelf: 'flex-end'}}>
             <Icon name="chevron-right" size={20} color={constants.LAVENDER} />
@@ -309,6 +310,13 @@ console.log('option3')
                     setUpdating(true);
                     const tempCredit = {...creditInfo, exp_month: parseInt(creditInfo.expMonth), exp_year: parseInt(creditInfo.expYear),expMonth: parseInt(creditInfo.expMonth), expYear: parseInt(creditInfo.expYear)};
                 createOrUpdate(hasId, select.customerId, tempCredit).then((id)=>{
+                  if (typeof id === "object") {
+                    setUpdating(false);
+                    // navigation.navigate('Error');
+                    setErrorMessage(id.message);
+                    
+                    return;
+                  }
                     dispatch({type:'UPDATE_DATA', payload: ["customerId", null, null, id]});
                     dispatch({type:'UPDATE_DATA_UPLOAD', payload: ["hasCard", null, null, true]});
                     console.log('done in profile change');
