@@ -153,6 +153,7 @@ const StartFlock = ({navigation, route}) => {
 <ScrollView>
   
        <SmartCheckout billingOnly={true} 
+       delayedCapture = {true}
        cancelFunc={()=>{
            setCreditModal(false);
        }}
@@ -174,7 +175,6 @@ const StartFlock = ({navigation, route}) => {
        
        confirmFunc={(customerId)=>{
         //  au.currentUser.updateEmail(creditEmail);
-        console.log("YYYYYYYYYYYYYYYYY");
         dispatch({type:'UPDATE_DATA', payload: ["email", null, null, localEmail]});
         db.collection('users').doc(au.currentUser.uid).update({
           email: localEmail,

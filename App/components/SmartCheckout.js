@@ -34,7 +34,9 @@ const showCardIcon = (brand, color)=>{
     return cardIcons[brand];
     }
 
-const SmartCheckout = ({confirmFunc, cancelFunc, children, billingOnly=false, shippingOnly=false, showSummary=true, allowConfirm = (creditCardChanged, shippingChanged, hasId, hasShipping)=>{
+const SmartCheckout = ({confirmFunc, 
+  delayedCapture = false,
+  cancelFunc, children, billingOnly=false, shippingOnly=false, showSummary=true, allowConfirm = (creditCardChanged, shippingChanged, hasId, hasShipping)=>{
 
 
   if (billingOnly && shippingOnly) { //  both needed
