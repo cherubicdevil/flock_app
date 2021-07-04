@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {View, Text, SafeAreaView, TouchableOpacity, Button, Modal, TextInput, Switch, ScrollView} from 'react-native';
-import stripe from 'tipsi-stripe';
-import {PaymentCardTextField} from 'tipsi-stripe';
+// import {PaymentCardTextField} from 'tipsi-stripe';
 import AnimatedModal from 'App/components/AnimatedModal';
 import {constants} from 'App/constants';
 import HeaderGradient from '../HeaderGradient';

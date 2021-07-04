@@ -1,5 +1,4 @@
 import React, {PureComponent} from 'react';
-import stripe from 'tipsi-stripe';
 import {
 	View,
 	Text,
@@ -178,12 +177,4 @@ const styles = StyleSheet.create({
 		backgroundColor: 'white',
 		alignItems: 'center',
 	},
-});
-
-stripe.setOptions({
-	// publishableKey:
-	// 	'pk_test_51HRYtCBCefwmKQicYNJlKwc3Rv6B8PhDItxUM2210aBt2eI5qZcm5AJTImMQf6zor7c98pP5kPO8WN0rhRtQzyPL00tG4jcyqq',
-	publishableKey: 'pk_live_51HRYtCBCefwmKQic3Ydh5x9XYz2Ipv4Uam6O0KURXH9Db9270ZaiIaFxxk4MaudBer7ApMKmA3q2SgHaisdVMDZn00jUe8KTQo',
-	//merchantId: 'MERCHANT_ID', // Optional
-	//androidPayMode: 'test', // Android only
 });

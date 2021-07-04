@@ -13,7 +13,6 @@ import {
   KeyboardAvoidingView,
 } from 'react-native';
 import storage from '@react-native-firebase/storage';
-import {PaymentCardTextField} from 'tipsi-stripe';
 import SmartCheckout from 'App/components/SmartCheckout';
 import {createOrUpdate, fetchCustomerInfo} from 'App/utils';
 import Icon from 'react-native-vector-icons/FontAwesome';

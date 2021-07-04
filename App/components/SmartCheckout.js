@@ -13,7 +13,6 @@ import {
   KeyboardAvoidingView,
   ActivityIndicator
 } from 'react-native';
-import {PaymentCardTextField} from 'tipsi-stripe';
 import {createOrUpdate, fetchCustomerInfo, fetchShipping} from 'App/utils';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import AnimatedModal from 'App/components/AnimatedModal';
