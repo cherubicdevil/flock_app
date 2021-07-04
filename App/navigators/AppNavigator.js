@@ -107,7 +107,7 @@ const Tabs = () => {
     initialParams={{vidVisible: false}}
     options={{
       tabBarVisible: true,
-      unmountOnBlur:false,
+      unmountOnBlur:true,
     }}
   />
     <Tab.Screen
