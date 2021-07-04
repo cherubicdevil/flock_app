@@ -4,6 +4,7 @@ import AnimatedSplash from 'react-native-animated-splash-screen';
 import {firebase, au} from 'App/firebase/config';
 import {Provider, useDispatch} from 'react-redux';
 import {createStore} from 'redux';
+import { StripeProvider } from '@stripe/stripe-react-native';
 
 import AppNavigator from 'App/navigators/AppNavigator';
 import AuthNavigator from 'App/navigators/AuthNavigator';
@@ -67,12 +68,18 @@ const App = () => {
         setStopLoop(true);
         }
         return (
+          <StripeProvider
+      publishableKey="pk_live_51HRYtCBCefwmKQic3Ydh5x9XYz2Ipv4Uam6O0KURXH9Db9270ZaiIaFxxk4MaudBer7ApMKmA3q2SgHaisdVMDZn00jUe8KTQo"
+      urlScheme="your-url-scheme" // required for 3D Secure and bank redirects
+      merchantIdentifier="merchant.com.{{YOUR_APP_NAME}}" // required for Apple Pay
+    >
               <PortalProvider>
               <Portal.Host>
                 {/* <Text style={{position: 'absolute', zIndex: 500, top: 200,}}>Hello word</Text> */}
             <AppNavigator />
             </Portal.Host>
             </PortalProvider>
+            </StripeProvider>
         );
       case false:
         return (

@@ -53,7 +53,7 @@ import { AppInstalledChecker, CheckPackageInstallation } from 'react-native-chec
 import CameraRoll from '@react-native-community/cameraroll';
 const cheerio = require('react-native-cheerio')
 const stringSimilarity = require("string-similarity");
-import stripe from 'tipsi-stripe';
+import {createToken} from '@stripe/stripe-react-native';
 // var sizeOf = require('image-size');
 
 
@@ -984,7 +984,7 @@ const createOrUpdate = async (hasId, customerId, info) => {
     if (!hasId) {
       
       try {
-      const token = await stripe.createTokenWithCard(info);
+      const token = await createToken(info);
       // const endpoint = constants.PAY_ENDPOINT + `?price=${100}&token=${token.tokenId}`;
       // fetch(endpoint);
     

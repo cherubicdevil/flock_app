@@ -227,7 +227,7 @@ return <><View style={{marginTop: 5}} >
             <View style={{flexDirection: 'row', flex: 1, alignItems: 'center',}}>
             <Text numberOfLines={1}>{info.address.line1}</Text>
             </View>
-            :<Text style={{color: constants.RED, textAlign: 'right'}}>Needs Action</Text>}
+            :<Text style={{color: constants.RED, paddingRight: 10}}>Needs Action</Text>}
             </View>
             <View style={{marginRight: 10, alignSelf: 'flex-end'}}>
             <Icon name="chevron-right" size={20} color={constants.LAVENDER} />
