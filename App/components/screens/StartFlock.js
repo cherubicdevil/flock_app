@@ -60,7 +60,9 @@ const StartFlock = ({navigation, route}) => {
         return select.hasCard;
     }}
     checkOpen={()=>{
-        setCreditModal(true);
+        navigation.navigate("Disclaimer", {after: () => {
+            setCreditModal(true);
+        }});
     }}
     data={route.params.data}
     closeText="done"

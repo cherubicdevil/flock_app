@@ -2,7 +2,7 @@ import React from 'react';
 import {View, TouchableOpacity, Button, Text, Linking, Image} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-const BillingTerms = ({navigation}) => {
+const BillingTerms = ({navigation, route}) => {
     return <View style={{flex: 1, justifyContent: 'center', alignItems: 'center', marginHorizontal: '10%'}}>
         <View style={{flex: 2, justifyContent: 'center', alignItems: 'center'}}>
             <Image source= {require('App/Assets/Images/stripe_lock.png')} style={{flex: 1, maxHeight: '80%', alignSelf: 'flex-start', resizeMode: 'contain'}} />
@@ -43,6 +43,9 @@ const BillingTerms = ({navigation}) => {
             </Text>
         <TouchableOpacity style={{marginTop: 30}} title="click me" onPress={()=>{
         navigation.goBack();
+        if (route?.params?.after) {
+        route.params.after();
+        }
     }} >
         <View style={{backgroundColor: 'black', padding: '5%', borderRadius: 5, alignItems: 'center'}}>
         <Text style={{color: 'white'}}>Continue</Text>
