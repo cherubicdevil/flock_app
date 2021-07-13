@@ -53,7 +53,7 @@ import { AppInstalledChecker, CheckPackageInstallation } from 'react-native-chec
 import CameraRoll from '@react-native-community/cameraroll';
 const cheerio = require('react-native-cheerio')
 const stringSimilarity = require("string-similarity");
-import {createToken} from '@stripe/stripe-react-native';
+import {createToken, Card} from '@stripe/stripe-react-native';
 // var sizeOf = require('image-size');
 
 
@@ -985,8 +985,13 @@ const createOrUpdate = async (hasId, customerId, info) => {
       
       try {
         // const newInfo = {type:'Person'}
-        // console.log('input to ge ttoken,', info)
-      const token = await createToken({'type': 'Person'});
+        // console.log('input to ge ttoken,', info);
+      const token = await createToken({type:'Card'});
+      // info['address'] = {'city': 'Livermore', 'country': 'USA', 'line1':'1662 Call of the Wild Court', 'line2':'1662 Call of the Wild Court','postalCode': '94550', 'state':'CA'}
+      // console.log('credit info', info);
+      if (token?.error?.code == "Failed") resolve({message:"Something went wrong."});
+      console.log("tokenn", token);
+
       // const endpoint = constants.PAY_ENDPOINT + `?price=${100}&token=${token.tokenId}`;
       // fetch(endpoint);
     
@@ -996,7 +1001,7 @@ const createOrUpdate = async (hasId, customerId, info) => {
       resp.json().then((cid)=>{
           
           db.collection('users').doc(au.currentUser.uid).update({customerId: cid.id}).catch(err=>{
-              resolve(err);
+              resolve({message:"Something went wrong."});
           });
           resolve(cid.id);
       }).catch(err=>{
@@ -1007,6 +1012,7 @@ const createOrUpdate = async (hasId, customerId, info) => {
 
   } catch (err) {
     resolve(err);
+    // resolve({message:"Something went wrong."});
   }
     
     } else {

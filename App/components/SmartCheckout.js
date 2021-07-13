@@ -13,6 +13,7 @@ import {
   KeyboardAvoidingView,
   ActivityIndicator
 } from 'react-native';
+import {confirmPaymentSheetPayment, useStripe} from '@stripe/stripe-react-native';
 import {createOrUpdate, fetchCustomerInfo, fetchShipping} from 'App/utils';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import AnimatedModal from 'App/components/AnimatedModal';
@@ -52,6 +53,8 @@ const SmartCheckout = ({confirmFunc,
   }
 }}) => {
 // console.log("HAS ID", hasId)
+
+
 const dispatch = useDispatch();
 const [billModal, setBillModal] = useState(false);
 const [shipModal, setShipModal] = useState(false);
@@ -64,6 +67,9 @@ const select = useSelector(state=>state.userInfo);
 const [errorMessage, setErrorMessage] = useState("");
 const [hasIdLoading, setHasIdLoading] = useState(true);
 const [updating, setUpdating] = useState(false);
+
+
+
 
 useEffect(()=>{
 
@@ -147,6 +153,9 @@ const [creditInfo, setCreditInfo] = useState(defaultCredit);
 const hasShipping = select.shipping !== undefined && select.shipping !== "none";
 var notAllowedMessage="hello initial";
 var {allowed:allowed, errorMessage: notAllowedMessage} = allowConfirm(creditCardChanged, changed, hasId, hasShipping);
+
+
+
 
 const updateShipping = (changed) =>{
   if (changed) { // update shipping info
@@ -264,6 +273,7 @@ return <><View style={{marginTop: 5}} >
               Cancel
             </Text>
           </TouchableOpacity>
+          
           <TouchableOpacity
             title="update"
             style={{

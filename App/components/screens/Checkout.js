@@ -12,8 +12,10 @@ import moment from 'moment';
 import LinearGradient from 'react-native-linear-gradient';
 import {createOrUpdate, fetchCustomerInfo} from 'App/utils';
 import SmartCheckout from 'App/components/SmartCheckout';
+import StripeCheckout from 'App/components/StripeCheckout';
 import {throttle} from 'lodash';
 import {Tooltip} from 'react-native-elements';
+// import ShippingModal from 'App/components/ShippingModal';
 
 
 
@@ -156,7 +158,7 @@ const Checkout = ({navigation, route}) => {
 
             
         </View> */}
-        <SmartCheckout confirmFunc = {confirmFunc} cancelFunc={cancelFunc} billingOnly={true} shippingOnly={true} >
+
         <View style={[styles.row, {borderBottomWidth: 0}]}>
                 <Text style={{fontWeight: 'bold'}}>Summary</Text>
         <Text>Arriving {["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"][moment(route.params.start).day()]} {route.params.start}</Text>
@@ -210,7 +212,10 @@ const Checkout = ({navigation, route}) => {
             style={{width: '100%'}}
             ></TextInput>
             </View>
-            </SmartCheckout >
+            <StripeCheckout amount={10.99} completeFunc={()=>{
+                navigation.navigate('Success', {amount: "$"+amount, period: route.params.start+ " to " +route.params.end});
+            }}
+            />
             
             {/* </View> */}
                 {/* <TouchableOpacity style={{width: '90%',height: 40, overflow: 'hidden', borderRadius: 40, marginHorizontal:20,}} onPress={async ()=>{

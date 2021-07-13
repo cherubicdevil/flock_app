@@ -28,6 +28,7 @@ const DEBUG = true;
 const STRIPE_ENDPOINT = DEBUG?'https://stripe-dev-yrj4czdimydbojgxeng.herokuapp.com':'https://protected-thicket-47492.herokuapp.com'
 
 export const constants = {
+  API_URL: STRIPE_ENDPOINT,
   DEBUG: DEBUG,
   BLUE_FADE: "rgba(166,184,205,0.5)",
   LIGHT_PURPLE_BG: '#8796b5',
