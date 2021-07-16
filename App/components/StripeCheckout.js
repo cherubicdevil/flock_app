@@ -22,7 +22,7 @@ import {confirmPaymentSheetPayment, useStripe} from '@stripe/stripe-react-native
 
 import {constants} from 'App/constants';
 
-const StripeCheckout = ({amount, completeFunc=()=>{}}) => {
+const StripeCheckout = ({amount, completeFunc=()=>{}, setHook=()=>{}}) => {
     const [shipModal, setShipModal] = useState(false);
     const [shippingDone, setShippingDone] = useState(false);
     const { initPaymentSheet, presentPaymentSheet } = useStripe();
@@ -30,6 +30,7 @@ const StripeCheckout = ({amount, completeFunc=()=>{}}) => {
     const [clientSecret, setClientSecret] = useState("");
     const dispatch = useDispatch();
     const select = useSelector(state=>state.userInfo);
+
 
 
     const fetchPaymentSheetParams = async () => {
@@ -85,10 +86,14 @@ const StripeCheckout = ({amount, completeFunc=()=>{}}) => {
     
     // see below
     };
-
+    // console.log('reender stripehcekout')
     useEffect(() => {
     initializePaymentSheet();
+    console.log('changing hook function');
+    setHook(()=>()=>{openPaymentSheet()});
+    // setHook([()=>console.log('fasdfasdfa;lfaskfdja;')])
     }, []);
+
 
 
 
@@ -105,7 +110,7 @@ const StripeCheckout = ({amount, completeFunc=()=>{}}) => {
     }
     return <>
     
-    <Button
+    {/* <Button
     variant="primary"
     // disabled={!loading}
     title="test stripe ui"
@@ -126,7 +131,7 @@ const StripeCheckout = ({amount, completeFunc=()=>{}}) => {
                 />
                 }/>
                 {getShippingInfo()}
-
+ */}
 
             </>
 }

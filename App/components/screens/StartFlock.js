@@ -19,6 +19,8 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import WebView from 'react-native-webview';
 import Wrapper from 'App/components/Wrapper';
 
+import StripeCheckout from 'App/components/StripeCheckout';
+
 
 const StartFlock = ({navigation, route}) => {
     const flockId =  route.params.flockId;
@@ -31,6 +33,9 @@ const StartFlock = ({navigation, route}) => {
     const dispatch = useDispatch();
     const select = useSelector(state=>state.userInfo);
     const [canNext, setCanNext] = useState(true);
+    const [stripeHook, setStripeHook] = useState(()=>()=>{
+        console.log('hello')
+    });
 
     const [creditEmail, setCreditEmail] = useState(select.email);
     const [localEmail, setLocalEmail] = useState(creditEmail);
@@ -40,10 +45,15 @@ const StartFlock = ({navigation, route}) => {
     const Tab = createMaterialTopTabNavigator();
 
     useEffect(()=>{
+        console.log('adsfasdfaf mount startflock')
+    },[])
+    useEffect(()=>{
         setCreditEmail(select.email);
+        
     }, [select]);
     var ar = [<PageOne product = {route.params.product} data = {route.params.data} setCanNext={setCanNext} />, <PageTwo product = {route.params.product} data = {route.params.data} setCanNext={setCanNext} />, <ShareSocial product = {route.params.product} data = {route.params.data} flockId={flockId} />, <PageFour product = {route.params.product} data = {route.params.data} />];
     return <Wrapper><ScrollView scrollEnabled={false} keyboardShouldPersistTaps="never" style={{backgroundColor: constants.PINK_BACKGROUND}}>
+    <StripeCheckout amount={5.00} setHook={setStripeHook} />
     <ProgressHeader
     idText={"id: %"+flockId}
     nextRoute="StartFlock"
@@ -61,7 +71,9 @@ const StartFlock = ({navigation, route}) => {
     }}
     checkOpen={()=>{
         navigation.navigate("Disclaimer", {after: () => {
-            setCreditModal(true);
+            // setCreditModal(true);
+            // console.log('type of ', typeof(stripeHook))
+            stripeHook();
         }});
     }}
     data={route.params.data}
@@ -151,7 +163,7 @@ const StartFlock = ({navigation, route}) => {
      >
        <KeyboardAvoidingView behavior="position" style={{flex: 1}} keyboardVerticalOffset={-200}>
 <ScrollView>
-  
+        
        <SmartCheckout billingOnly={true} 
        navigation={navigation}
        delayedCapture = {true}
