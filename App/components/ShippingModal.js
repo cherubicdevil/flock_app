@@ -4,7 +4,7 @@ import AnimatedModal from 'App/components/AnimatedModal';
 import {constants} from 'App/constants';
 import LinearGradient from 'react-native-linear-gradient';
 
-const ShippingModal = ({close, completeFunc=()=>{}}) => {
+const ShippingModal = ({close, completeFunc=()=>{}, visible = false}) => {
     const [address, setAddress] = useState('');
     const [geostate, setGeostate] = useState('');
     const [city, setCity] = useState('');
@@ -19,7 +19,8 @@ const ShippingModal = ({close, completeFunc=()=>{}}) => {
     // const [name, setName] = useState('');
     var valid = false;
     const [error, setError] = useState(false);
-    return <ScrollView scrollEnabled={false} style={{paddingLeft: 30, paddingRight: 30, borderTopLeftRadius: 40, borderTopRightRadius: 40, backgroundColor:'white', zIndex: 50}}>
+    return <AnimatedModal colored={true} keyboard = {true} colors={[constants.ORANGE, constants.GREYORANGE]} visible={visible} close={close} >
+    <ScrollView scrollEnabled={false} style={{paddingLeft: 30, paddingRight: 30, borderTopLeftRadius: 40, borderTopRightRadius: 40, backgroundColor:'white', zIndex: 50}}>
             <Text style={{alignSelf: 'center',fontSize: 15, fontFamily: constants.FONT, fontWeight: 'bold'}}>Shipping Address</Text>
             <Text style={{color: 'red', opacity: error?1:0}}>Please review your information for errors</Text>
             {/* <Text style={{marginLeft: 10, marginTop: 10, marginBottom: 5}}>Full Name</Text>
@@ -72,7 +73,10 @@ const ShippingModal = ({close, completeFunc=()=>{}}) => {
   
             <TouchableOpacity style={{marginTop:30, borderRadius: 40, overflow: 'hidden',  height: 35, width: "100%", alignSelf:'center', backgroundColor:constants.ORANGE, justifyContent:'center', alignItems: 'center', borderRadius:30}} onPress={()=>{
                 close();
-                completeFunc();
+                setTimeout(()=>{
+                    completeFunc();
+                }, 800)
+                
             }}>
                     <LinearGradient style={{width: '100%', height: '100%',
                     justifyContent: 'center', alignItems: 'center',}}
@@ -84,6 +88,7 @@ const ShippingModal = ({close, completeFunc=()=>{}}) => {
                     </TouchableOpacity>
                     
             </ScrollView>
+            </AnimatedModal>
             
             
   

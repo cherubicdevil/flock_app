@@ -15,7 +15,7 @@ import SmartCheckout from 'App/components/SmartCheckout';
 import StripeCheckout from 'App/components/StripeCheckout';
 import {throttle} from 'lodash';
 import {Tooltip} from 'react-native-elements';
-// import ShippingModal from 'App/components/ShippingModal';
+import ShippingModal from 'App/components/ShippingModal';
 
 
 
@@ -27,6 +27,9 @@ const Checkout = ({navigation, route}) => {
     const [changed, setChanged] = useState(false);
     const [tog, setToggle] = useState(false);
     const [tog2, setToggle2] = useState(false);
+
+    const [stripeHook, setStripeHook] = useState(()=>()=>{console.log('default stripe hook')});
+
     const toggleFunc = () => {
         setToggle(!tog);
     }
@@ -102,11 +105,11 @@ const Checkout = ({navigation, route}) => {
         debug: true,
         date: [route.params.start, route.params.end]
     }
-    fetch(constants.CHARGE_CUSTOMER_POST, {
-        method: 'POST',
-        body: JSON.stringify(chargeData),
-        headers: { 'Content-Type': 'application/json' }
-    });
+    // fetch(constants.CHARGE_CUSTOMER_POST, {
+    //     method: 'POST',
+    //     body: JSON.stringify(chargeData),
+    //     headers: { 'Content-Type': 'application/json' }
+    // });
       if (route.params.doneFunc) {
         route.params.doneFunc();
     }
@@ -212,25 +215,29 @@ const Checkout = ({navigation, route}) => {
             style={{width: '100%'}}
             ></TextInput>
             </View>
-            <StripeCheckout amount={10.99} completeFunc={()=>{
-                navigation.navigate('Success', {amount: "$"+amount, period: route.params.start+ " to " +route.params.end});
+            <StripeCheckout amount={10.99}
+             setHook = {setStripeHook} 
+            completeFunc={()=>{
+                confirmFunc();
             }}
             />
             
             {/* </View> */}
-                {/* <TouchableOpacity style={{width: '90%',height: 40, overflow: 'hidden', borderRadius: 40, marginHorizontal:20,}} onPress={async ()=>{
-            createOrUpdate(hasId, customerId, info).then();
+                <TouchableOpacity style={{width: '90%',height: 40, marginTop: 30, overflow: 'hidden', borderRadius: 40, marginHorizontal:20,}} onPress={async ()=>{
+            // createOrUpdate(hasId, customerId, info).then();
+            console.log('asdfafa');
+            setShipModal(true);
 
             
         }} >
                                 <LinearGradient style={{width: '100%', height: '100%',
                     justifyContent: 'center', alignItems: 'center',}}
-                    colors={[constants.YELLOW, constants.ORANGE]}
+                    colors={[constants.LAVENDER, constants.PURPLE]}
                     start={{ x: 0, y: 1 }} end={{ x: 1, y: 1 }}
                     >
-                    <Text style={{color: 'white'}}>confirm</Text>
+                    <Text style={{color: 'white'}}>checkout</Text>
                     </LinearGradient>
-            </TouchableOpacity> */}
+            </TouchableOpacity>
 
         
         
@@ -239,8 +246,12 @@ const Checkout = ({navigation, route}) => {
 {/* </View> */}
 </ScrollView>
     </SafeAreaView>
-    <AnimatedModal colored={true} keyboard = {true} colors={[constants.ORANGE, constants.GREYORANGE]} visible={billModal} close={()=>setBillModal(false)} state={info} setState={setInfo} content={<BillingModal state={info} setState={setInfo} setChanged={setChanged} close={()=>setBillModal(false)}/>}/>
-        <AnimatedModal colored={true} keyboard = {true} colors={[constants.ORANGE, constants.GREYORANGE]} visible={shipModal} close={()=>setShipModal(false)} state={info} setState={setInfo} content={<ShippingModal state={info} setState={setInfo} setChanged={setChanged} close={()=>setShipModal(false)}/>}/>
+    {/* <AnimatedModal colored={true} keyboard = {true} colors={[constants.ORANGE, constants.GREYORANGE]} visible={billModal} close={()=>setBillModal(false)} state={info} setState={setInfo} content={<BillingModal state={info} setState={setInfo} setChanged={setChanged} close={()=>setBillModal(false)}/>}/> */}
+        {/* <AnimatedModal colored={true} keyboard = {true} colors={[constants.ORANGE, constants.GREYORANGE]} visible={shipModal} close={()=>setShipModal(false)} state={info} setState={setInfo} content={<ShippingModal state={info} setState={setInfo} setChanged={setChanged} close={()=>setShipModal(false)}/>}/> */}
+        <ShippingModal
+        visible={shipModal}
+        // state={info} setState={setInfo}
+        setChanged={setChanged} close={()=>setShipModal(false)} completeFunc={stripeHook} />
     </>
 };
 
@@ -311,77 +322,77 @@ const BillingModal = ({state, setState, close, setChanged}) => {
             
 }
 
-const ShippingModal = ({state, setState, close, setChanged}) => {
-    const [localState, setLocalState] = useState(state);
-    // const [cardNumber, setCardNumber] = useState('');
-    // const [expMonth, setExpMonth] = useState('');
-    // const [expYear, setExpYear] = useState('');
-    // const [sec, setSec] = useState('');
+// const ShippingModal = ({state, setState, close, setChanged}) => {
+//     const [localState, setLocalState] = useState(state);
+//     // const [cardNumber, setCardNumber] = useState('');
+//     // const [expMonth, setExpMonth] = useState('');
+//     // const [expYear, setExpYear] = useState('');
+//     // const [sec, setSec] = useState('');
     
-    // const [name, setName] = useState('');
-    var valid = false;
-    const [error, setError] = useState(false);
-    return <View style={{paddingLeft: 30, paddingRight: 30, borderTopLeftRadius: 40, borderTopRightRadius: 40, backgroundColor:'white', zIndex: 50}}>
-            <Text style={{alignSelf: 'center',fontSize: 15, fontFamily: constants.FONT, fontWeight: 'bold'}}>Shipping Address</Text>
-            <Text style={{color: 'red', opacity: error?1:0}}>Please review your information for errors</Text>
-            <Text style={{marginLeft: 10, marginTop: 10, marginBottom: 5}}>Full Name</Text>
-            <TextInput defaultValue={localState.name} onChangeText={(text)=> {
-                localState.name = text;
-            }} style={styles.textbox} />
-            <Text style={{marginLeft: 10, marginTop: 15, marginBottom: 5}}>Address</Text>
-            <TextInput defaultValue={localState.addressLine1} onChangeText={(text)=> {
-                localState.addressLine1 = text;
-            }} style={styles.textbox} />
+//     // const [name, setName] = useState('');
+//     var valid = false;
+//     const [error, setError] = useState(false);
+//     return <View style={{paddingLeft: 30, paddingRight: 30, borderTopLeftRadius: 40, borderTopRightRadius: 40, backgroundColor:'white', zIndex: 50}}>
+//             <Text style={{alignSelf: 'center',fontSize: 15, fontFamily: constants.FONT, fontWeight: 'bold'}}>Shipping Address</Text>
+//             <Text style={{color: 'red', opacity: error?1:0}}>Please review your information for errors</Text>
+//             <Text style={{marginLeft: 10, marginTop: 10, marginBottom: 5}}>Full Name</Text>
+//             <TextInput defaultValue={localState.name} onChangeText={(text)=> {
+//                 localState.name = text;
+//             }} style={styles.textbox} />
+//             <Text style={{marginLeft: 10, marginTop: 15, marginBottom: 5}}>Address</Text>
+//             <TextInput defaultValue={localState.addressLine1} onChangeText={(text)=> {
+//                 localState.addressLine1 = text;
+//             }} style={styles.textbox} />
 
-            <View style={{flexDirection: 'row', justifyContent:'space-between'}}>
-                <View style={{flex: 1, marginRight: 20}}>
-            <Text style={{marginLeft: 10, marginTop: 15, marginBottom: 5}}>City</Text>
-            <TextInput defaultValue={localState.addressCity} onChangeText={(text)=> {
-                localState.addressCity = text;
-            }} style={styles.textbox} />
-                        </View>
-                        <View >
-                        <Text style={{marginLeft: 10, marginTop: 15, marginBottom: 5}}>State</Text>
-            <TextInput defaultValue={localState.addressState} onChangeText={(text)=> {
-                localState.addressState = text;
-            }} style={styles.textbox} />
-                        </View>
-                        {/* <View>
-                        <Text style={{marginLeft: 10, marginTop: 15, marginBottom: 5}}>Country</Text>
-            <TextInput defaultValue={localState.addressCountry} onChangeText={(text)=> {
-                localState.addressCountry = text;
-            }} style={styles.textbox} />
-            </View> */}
-            </View>            
-            <Text style={{marginLeft: 10, marginTop: 15, marginBottom: 5}}>Zip Code</Text>
-            <TextInput defaultValue={localState.addressZip} onChangeText={(text)=> {
-                localState.addressZip = text;
-            }} style={styles.textbox} />
+//             <View style={{flexDirection: 'row', justifyContent:'space-between'}}>
+//                 <View style={{flex: 1, marginRight: 20}}>
+//             <Text style={{marginLeft: 10, marginTop: 15, marginBottom: 5}}>City</Text>
+//             <TextInput defaultValue={localState.addressCity} onChangeText={(text)=> {
+//                 localState.addressCity = text;
+//             }} style={styles.textbox} />
+//                         </View>
+//                         <View >
+//                         <Text style={{marginLeft: 10, marginTop: 15, marginBottom: 5}}>State</Text>
+//             <TextInput defaultValue={localState.addressState} onChangeText={(text)=> {
+//                 localState.addressState = text;
+//             }} style={styles.textbox} />
+//                         </View>
+//                         {/* <View>
+//                         <Text style={{marginLeft: 10, marginTop: 15, marginBottom: 5}}>Country</Text>
+//             <TextInput defaultValue={localState.addressCountry} onChangeText={(text)=> {
+//                 localState.addressCountry = text;
+//             }} style={styles.textbox} />
+//             </View> */}
+//             </View>            
+//             <Text style={{marginLeft: 10, marginTop: 15, marginBottom: 5}}>Zip Code</Text>
+//             <TextInput defaultValue={localState.addressZip} onChangeText={(text)=> {
+//                 localState.addressZip = text;
+//             }} style={styles.textbox} />
 
-            <TouchableOpacity style={{marginTop:30, borderRadius: 40, overflow: 'hidden',  height: 35, width: "100%", alignSelf:'center', backgroundColor:constants.ORANGE, justifyContent:'center', alignItems: 'center', borderRadius:30}} onPress={()=>{
-                 // if (!(validateCard(cardNumber(cardNumber)) && validateExp(expMonth, expYear)))
-                valid = true;
-                 if (!valid) {
-                    setError(true);
-                    console.log('error');
-                    return;
-                }
-                setState(localState);
-                setChanged(true);
-                close();
-                }}>
-                    <LinearGradient style={{width: '100%', height: '100%',
-                    justifyContent: 'center', alignItems: 'center',}}
-                    colors={[constants.YELLOW, constants.ORANGE]}
-                    start={{ x: 0, y: 1 }} end={{ x: 1, y: 1 }}
-                    >
-                    <Text style={{color: 'white'}}>confirm</Text>
-                    </LinearGradient>
-                    </TouchableOpacity>
+//             <TouchableOpacity style={{marginTop:30, borderRadius: 40, overflow: 'hidden',  height: 35, width: "100%", alignSelf:'center', backgroundColor:constants.ORANGE, justifyContent:'center', alignItems: 'center', borderRadius:30}} onPress={()=>{
+//                  // if (!(validateCard(cardNumber(cardNumber)) && validateExp(expMonth, expYear)))
+//                 valid = true;
+//                  if (!valid) {
+//                     setError(true);
+//                     console.log('error');
+//                     return;
+//                 }
+//                 setState(localState);
+//                 setChanged(true);
+//                 close();
+//                 }}>
+//                     <LinearGradient style={{width: '100%', height: '100%',
+//                     justifyContent: 'center', alignItems: 'center',}}
+//                     colors={[constants.YELLOW, constants.ORANGE]}
+//                     start={{ x: 0, y: 1 }} end={{ x: 1, y: 1 }}
+//                     >
+//                     <Text style={{color: 'white'}}>confirm</Text>
+//                     </LinearGradient>
+//                     </TouchableOpacity>
                 
-            </View>
+//             </View>
             
-}
+// }
 
 const styles = {
     textbox: {borderWidth: 1, borderColor: constants.DARKGREY, borderRadius: 30, padding: 10, paddingBottom: 10, paddingTop: 10, fontSize: 18},
