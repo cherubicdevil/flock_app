@@ -22,7 +22,7 @@ import {confirmPaymentSheetPayment, useStripe} from '@stripe/stripe-react-native
 
 import {constants} from 'App/constants';
 
-const StripeCheckout = ({amount, completeFunc=()=>{}, setHook=()=>{}}) => {
+const StripeCheckout = ({amount, completeFunc=()=>{}, setHook=()=>{}, hookDependency = []}) => {
     const [shipModal, setShipModal] = useState(false);
     const [shippingDone, setShippingDone] = useState(false);
     const { initPaymentSheet, presentPaymentSheet } = useStripe();
@@ -31,7 +31,7 @@ const StripeCheckout = ({amount, completeFunc=()=>{}, setHook=()=>{}}) => {
     const dispatch = useDispatch();
     const select = useSelector(state=>state.userInfo);
 
-
+    
 
     const fetchPaymentSheetParams = async () => {
     const idIsNone = select.customerId === "none" || select.customerId === undefined;
@@ -76,23 +76,29 @@ const StripeCheckout = ({amount, completeFunc=()=>{}, setHook=()=>{}}) => {
 
     const openPaymentSheet = async () => {
     const { error } = await presentPaymentSheet({ clientSecret });
-
         if (error) {
         // Alert.alert(`Error code: ${error.code}`, error.message);
         } else {
         // Alert.alert('Success', 'Your order is confirmed!');
+        console.log("PAYMENT SHEET");
         completeFunc();
         }
     
     // see below
     };
+
+ 
     // console.log('reender stripehcekout')
     useEffect(() => {
     initializePaymentSheet();
-    console.log('changing hook function');
-    setHook(()=>()=>{openPaymentSheet()});
+    
     // setHook([()=>console.log('fasdfasdfa;lfaskfdja;')])
     }, []);
+
+    useEffect(()=>{
+        console.log('changing hook function');
+        setHook(()=>()=>{openPaymentSheet()});
+    }, hookDependency)
 
 
 

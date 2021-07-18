@@ -84,6 +84,15 @@ const Checkout = ({navigation, route}) => {
     //   console.log(amount, route.params.subtotal, (parseFloat(shipMain) + parseFloat(route.params.subtotal)).toFixed(2))
 
 
+      const confirmFunc = ()=>{
+                          // if (route.params.doneFunc) {
+                //     route.params.doneFunc();
+                // }
+                // dispatch({type:'spendEggs', payload: reductionEggs});
+                // navigation.navigate('Success', {amount: "$"+amount, period: route.params.start+ " to " +route.params.end, email: email});
+                console.log('email before dispatch', email);
+                // dispatch({type: "UPDATE_DATA_UPLOAD", payload: ['email',null, null,email]});
+      }
 
     const cancelFunc = () => {
         navigation.goBack();
@@ -183,14 +192,8 @@ const Checkout = ({navigation, route}) => {
             </View>
             <StripeCheckout amount={10.99}
              setHook = {setStripeHook} 
-            completeFunc={()=>{
-                if (route.params.doneFunc) {
-                    route.params.doneFunc();
-                }
-                dispatch({type:'spendEggs', payload: reductionEggs});
-                navigation.navigate('Success', {amount: "$"+amount, period: route.params.start+ " to " +route.params.end, email: email});
-                            dispatch({type: "UPDATE_DATA_UPLOAD", payload: ['email',null, null,email]});
-            }}
+             hookDependency = {[email]}
+            completeFunc={confirmFunc}
             />
             
             {/* </View> */}
@@ -226,7 +229,9 @@ const Checkout = ({navigation, route}) => {
         <ShippingModal
         visible={shipModal}
         // state={info} setState={setInfo}
-        setChanged={setChanged} close={()=>setShipModal(false)} completeFunc={stripeHook} />
+        setChanged={setChanged} close={()=>setShipModal(false)} 
+        completeFunc={stripeHook}
+         />
     </>
 };
 
