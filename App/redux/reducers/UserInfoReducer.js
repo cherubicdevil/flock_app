@@ -57,11 +57,14 @@ export default function (state = {likedVideos: [], eggCoins: 0}, action) {
       return res;
     case 'UPDATE_DATA_UPLOAD':
       var [membertype, actiontype, arraytype, data] = action.payload;
+      const past = state[membertype]
       var res = {...state};
         res[membertype] = data;
         // assumed to always be add if not array
+      if (past != data) {
+        uploadUserInfo(res);
+      }
       
-      uploadUserInfo(res);
       return res;
     case 'spendEggs':
       const num = action.payload;

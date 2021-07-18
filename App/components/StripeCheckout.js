@@ -47,7 +47,7 @@ const StripeCheckout = ({amount, completeFunc=()=>{}, setHook=()=>{}}) => {
 
 
     // update customer id
-    dispatch({type:'UPDATE_DATA', payload: ["customerId", null, null, customer]});
+    dispatch({type:'UPDATE_DATA_UPLOAD', payload: ["customerId", null, null, customer]});
 
     return {
         paymentIntent,

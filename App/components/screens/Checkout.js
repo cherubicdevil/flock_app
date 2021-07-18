@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, SafeAreaView, TouchableOpacity, Button, Modal, TextInput, Switch, ScrollView} from 'react-native';
+import {View, Text, SafeAreaView, TouchableOpacity, Button, Modal, TextInput, Switch, ScrollView, Alert} from 'react-native';
 // import {PaymentCardTextField} from 'tipsi-stripe';
 import AnimatedModal from 'App/components/AnimatedModal';
 import {constants} from 'App/constants';
@@ -83,42 +83,7 @@ const Checkout = ({navigation, route}) => {
       const amount = (parseFloat(shipMain) + parseFloat(route.params.subtotal)).toFixed(2);
     //   console.log(amount, route.params.subtotal, (parseFloat(shipMain) + parseFloat(route.params.subtotal)).toFixed(2))
 
-      const confirmFunc = (cid) => {
-            // var chargeCustomerEndpoint = constants.CHARGE_CUSTOMER + "?id="+cid+"&amount="+ amount*100;
-            dispatch({type: "UPDATE_DATA", payload: ['customerId',null, null,cid]});
-            console.log('customer id, cid', cid);
-    //   fetch(chargeCustomerEndpoint).then(()=>{
-    //       console.log('done');
-    //   }).catch(err=>{
-    //       console.log(err);
-    //   });
-    // var chargeCustomerEndpoint
-    const chargeData = {
-        amount: amount* 100,
-        id: cid,
-        chatId: route.params.id,
-        product: route.params.product,
-        type: route.params.type,
-        email: email,
-        userId: au.currentUser.uid,
-        members: route.params.data.memberIds,
-        debug: true,
-        date: [route.params.start, route.params.end]
-    }
-    // fetch(constants.CHARGE_CUSTOMER_POST, {
-    //     method: 'POST',
-    //     body: JSON.stringify(chargeData),
-    //     headers: { 'Content-Type': 'application/json' }
-    // });
-      if (route.params.doneFunc) {
-        route.params.doneFunc();
-    }
-    console.log('done');
-    dispatch({type:'spendEggs', payload: reductionEggs});
-    db.collection('users').doc(au.currentUser.uid).update({email: email});
-    dispatch({type: "UPDATE_DATA", payload: ['email',null, null,email]});
-    navigation.navigate('Success', {amount: "$"+amount, period: route.params.start+ " to " +route.params.end});
-    };
+
 
     const cancelFunc = () => {
         navigation.goBack();
@@ -209,6 +174,7 @@ const Checkout = ({navigation, route}) => {
                 <Text>Send receipt to: </Text>
                 {/* <Text style={{marginLeft: 0}}>Email to receive receipt</Text> */}
             <TextInput value={email} onChangeText={throttle((text)=>{
+                console.log(email);
                 setEmail(text.toLowerCase());
             }, 500)} 
             placeholder="Email to receive receipt"  keyboardType="email-address" defaultValue={select.email}
@@ -218,15 +184,24 @@ const Checkout = ({navigation, route}) => {
             <StripeCheckout amount={10.99}
              setHook = {setStripeHook} 
             completeFunc={()=>{
-                confirmFunc();
+                if (route.params.doneFunc) {
+                    route.params.doneFunc();
+                }
+                dispatch({type:'spendEggs', payload: reductionEggs});
+                navigation.navigate('Success', {amount: "$"+amount, period: route.params.start+ " to " +route.params.end, email: email});
+                            dispatch({type: "UPDATE_DATA_UPLOAD", payload: ['email',null, null,email]});
             }}
             />
             
             {/* </View> */}
                 <TouchableOpacity style={{width: '90%',height: 40, marginTop: 30, overflow: 'hidden', borderRadius: 40, marginHorizontal:20,}} onPress={async ()=>{
             // createOrUpdate(hasId, customerId, info).then();
-            console.log('asdfafa');
-            setShipModal(true);
+            if (email == undefined || email === "" || !email.includes("@")) {
+                Alert.alert("Input a valid email.")
+            } else {
+                setShipModal(true);
+            }
+            
 
             
         }} >

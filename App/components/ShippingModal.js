@@ -1,8 +1,9 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, Text, ScrollView, TextInput, TouchableOpacity} from 'react-native';
 import AnimatedModal from 'App/components/AnimatedModal';
 import {constants} from 'App/constants';
 import LinearGradient from 'react-native-linear-gradient';
+import {useSelector, useDispatch} from 'react-redux';
 
 const ShippingModal = ({close, completeFunc=()=>{}, visible = false}) => {
     const [address, setAddress] = useState('');
@@ -10,6 +11,9 @@ const ShippingModal = ({close, completeFunc=()=>{}, visible = false}) => {
     const [city, setCity] = useState('');
     const [zip, setZip] = useState('')
     const [name, setName] = useState('');
+
+    const select = useSelector(state=>state.userInfo);
+    const dispatch = useDispatch()
   
     // const [cardNumber, setCardNumber] = useState('');
     // const [expMonth, setExpMonth] = useState('');
@@ -18,6 +22,15 @@ const ShippingModal = ({close, completeFunc=()=>{}, visible = false}) => {
     
     // const [name, setName] = useState('');
     var valid = false;
+
+    useEffect(()=>{
+        if (select.shipping == undefined || select.shipping == "none") return;
+        setAddress(select.shipping.address);
+        setGeostate(select.shipping.state);
+        setCity(select.shipping.city);
+        setZip(select.shipping.zip);
+        setName(select.shipping.name);
+    },[])
     const [error, setError] = useState(false);
     return <AnimatedModal colored={true} keyboard = {true} colors={[constants.ORANGE, constants.GREYORANGE]} visible={visible} close={close} >
     <ScrollView scrollEnabled={false} style={{paddingLeft: 30, paddingRight: 30, borderTopLeftRadius: 40, borderTopRightRadius: 40, backgroundColor:'white', zIndex: 50}}>
@@ -62,9 +75,9 @@ const ShippingModal = ({close, completeFunc=()=>{}, visible = false}) => {
             }} style={styles.textbox} />
             </View> */}
                         
-                        <View styles={{flex: 1, marginLeft: 10,}}>
+                        <View styles={{flex: 1.3, marginLeft: 10,}}>
                         <Text style={{marginLeft: 10, marginTop: 15, marginBottom: 5}}>Zip Code</Text>
-            <TextInput value={zip} maximumLength={5} keyboardType="numeric" onChangeText={(text)=> {
+            <TextInput value={zip} maxLength={5} keyboardType="numeric" onChangeText={(text)=> {
                 setZip(text);
             }} style={styles.textbox} />
             </View>
@@ -74,6 +87,15 @@ const ShippingModal = ({close, completeFunc=()=>{}, visible = false}) => {
             <TouchableOpacity style={{marginTop:30, borderRadius: 40, overflow: 'hidden',  height: 35, width: "100%", alignSelf:'center', backgroundColor:constants.ORANGE, justifyContent:'center', alignItems: 'center', borderRadius:30}} onPress={()=>{
                 close();
                 setTimeout(()=>{
+                    const shippingData = {
+                        'name': name,
+                        'address': address,
+                        'city': city,
+                        'state': geostate,
+                        'country': 'US',
+                        'zip': zip, 
+                    }
+                    dispatch({type: "UPDATE_DATA_UPLOAD", payload: ['shipping',null, null,shippingData]});
                     completeFunc();
                 }, 800)
                 
@@ -97,6 +119,6 @@ const ShippingModal = ({close, completeFunc=()=>{}, visible = false}) => {
   export default ShippingModal;
 
   const styles = {
-    textbox: {borderWidth: 1, borderColor: constants.DARKGREY, borderRadius: 30, padding: 10, paddingBottom: 10, paddingTop: 10, fontSize: 18},
+    textbox: {flex: 1,borderWidth: 1, borderColor: constants.DARKGREY, borderRadius: 30, padding: 10, paddingBottom: 10, paddingTop: 10, fontSize: 18},
     row: {width: '100%', borderBottomWidth: 2, borderColor: constants.PINK_BACKGROUND,paddingHorizontal:20, paddingVertical:20},
 }
