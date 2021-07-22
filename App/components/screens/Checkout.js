@@ -85,13 +85,13 @@ const Checkout = ({navigation, route}) => {
 
 
       const confirmFunc = ()=>{
-                          // if (route.params.doneFunc) {
-                //     route.params.doneFunc();
-                // }
-                // dispatch({type:'spendEggs', payload: reductionEggs});
-                // navigation.navigate('Success', {amount: "$"+amount, period: route.params.start+ " to " +route.params.end, email: email});
-                console.log('email before dispatch', email);
-                // dispatch({type: "UPDATE_DATA_UPLOAD", payload: ['email',null, null,email]});
+                          if (route.params.doneFunc) {
+                    route.params.doneFunc();
+                }
+                dispatch({type:'spendEggs', payload: reductionEggs});
+                navigation.navigate('Success', {amount: "$"+amount, period: route.params.start+ " to " +route.params.end, email: email});
+                // console.log('email before dispatch', email);
+                dispatch({type: "UPDATE_DATA_UPLOAD", payload: ['email',null, null,email]});
       }
 
     const cancelFunc = () => {

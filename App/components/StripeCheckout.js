@@ -22,7 +22,7 @@ import {confirmPaymentSheetPayment, useStripe} from '@stripe/stripe-react-native
 
 import {constants} from 'App/constants';
 
-const StripeCheckout = ({amount, completeFunc=()=>{}, setHook=()=>{}, hookDependency = []}) => {
+const StripeCheckout = ({amount, completeFunc=()=>{}, setHook=()=>{}, hookDependency = [], delayedCharge=false}) => {
     const [shipModal, setShipModal] = useState(false);
     const [shippingDone, setShippingDone] = useState(false);
     const { initPaymentSheet, presentPaymentSheet } = useStripe();
@@ -36,12 +36,14 @@ const StripeCheckout = ({amount, completeFunc=()=>{}, setHook=()=>{}, hookDepend
     const fetchPaymentSheetParams = async () => {
     const idIsNone = select.customerId === "none" || select.customerId === undefined;
     console.log('id is none?', idIsNone, select.customerId);
+    const bodyData = {custId: idIsNone?null:select?.customerId, amount: amount, captureMethod: delayedCharge?"manual":"automatic"};
+
     const response = await fetch(`${constants.API_URL}/payment-sheet`, {
         method: 'POST',
         headers: {
         'Content-Type': 'application/json',
         },
-        body: JSON.stringify({custId: idIsNone?null:select?.customerId, amount: amount})
+        body: JSON.stringify(bodyData)
     });
     const { paymentIntent, ephemeralKey, customer } = await response.json();
 

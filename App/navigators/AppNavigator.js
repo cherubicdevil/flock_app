@@ -141,7 +141,7 @@ const Tabs = () => {
     name="StartFlock"
     component={StartFlock}
     initialParams={{data: {}}}
-    options={{tabBarVisible: true}}
+    options={{tabBarVisible: true,unmountOnBlur: true,}}
   />
   <Tab.Screen
     name="PayTest"
