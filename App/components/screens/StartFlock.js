@@ -53,7 +53,9 @@ const StartFlock = ({navigation, route}) => {
     }, [select]);
     var ar = [<PageOne product = {route.params.product} data = {route.params.data} setCanNext={setCanNext} />, <PageTwo product = {route.params.product} data = {route.params.data} setCanNext={setCanNext} />, <ShareSocial product = {route.params.product} data = {route.params.data} flockId={flockId} />, <PageFour product = {route.params.product} data = {route.params.data} />];
     return <Wrapper><ScrollView scrollEnabled={false} keyboardShouldPersistTaps="never" style={{backgroundColor: constants.PINK_BACKGROUND}}>
-    <StripeCheckout amount={5.00} setHook={setStripeHook} delayedCharge={true} />
+    <StripeCheckout amount={5.00} setHook={setStripeHook} delayedCharge={true} completeFunc = {()=>{
+        navigation.navigate()
+    }}/>
     <ProgressHeader
     idText={"id: %"+flockId}
     nextRoute="StartFlock"

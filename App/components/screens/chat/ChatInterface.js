@@ -141,6 +141,13 @@ function ChatInterface({route, navigation}) {
     if (select?.auth?.guest) return;
     setPartOf(part);
   }, []);
+
+  // for error handling... connection issues?
+  // useEffect(()=>{
+  //   socket.current.on("error", ()=>{
+  //     Alert.alert("Something went wrong.")
+  //   })
+  // },[])
   const completeFunc = (customerId, maximums) => {
     if (maximums === undefined) {
       maximums = route.params.data.maximums;
@@ -153,9 +160,9 @@ function ChatInterface({route, navigation}) {
       console.log(route.params.data.maximums);
     // const res = splitAlgorithm(route.params.data.members, route.params.data.maximums, route.params.data.product.price)
     console.log('coplete maximums', route.params.data.maximums);
-    const flockTookOff = didFlockTakeOff(route.params.data.members, maximums, route.params.data.product.price* 1.4);
+    const flockTookOff = didFlockTakeOff(maximums, route.params.data.product.price* 1.4);
     if (flockTookOff) {
-    socket.current.emit('complete', route.params.data.id);
+    socket.current.emit('complete', {chatId: route.params.data.id, groupData: {prices: route.params.data.maximums}});
     db.collection('chatGroups').doc(route.params.data.id).update({
       // members: res,
       completed: true,
@@ -757,7 +764,7 @@ const data = {
   },
 };
 
-var didFlockTakeOff = (members, maximums, totalPrice) => {
+var didFlockTakeOff = (maximums, totalPrice) => {
   var sumTotal = 0;
   var ar = Object.entries(maximums);
   for (const item of ar) {

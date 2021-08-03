@@ -30,6 +30,7 @@ import ProfileMain from 'App/components/screens/profile/ProfileMain';
 
 import CustomBar from './CustomBar';
 import StartFlock from 'App/components/screens/StartFlock';
+import StartFlockNavigator from 'App/components/screens/StartFlockNavigator';
 import ChatInterface from 'App/components/screens/chat/ChatInterface';
 import Info from 'App/components/screens/chat/info/Info';
 import FlockChatComplete from 'App/components/screens/FlockChatComplete';
@@ -137,12 +138,7 @@ const Tabs = () => {
     initialParams={{vidVisible: false}}
   />
 
-  <Tab.Screen
-    name="StartFlock"
-    component={StartFlock}
-    initialParams={{data: {}}}
-    options={{tabBarVisible: true,unmountOnBlur: true,}}
-  />
+
   <Tab.Screen
     name="PayTest"
     component={PayTest}
@@ -264,6 +260,13 @@ const AppNavigator5 = () => {
     options={{tabBarVisible: false,
       unmountOnBlur:true
     }}
+  />
+    <Stack.Screen
+    name="StartFlock"
+    component={StartFlockNavigator}
+    
+    initialParams={{data: {}}}
+    options={{tabBarVisible: true,unmountOnBlur: true,}}
   />
         <Stack.Screen
           name="FlockReserve"

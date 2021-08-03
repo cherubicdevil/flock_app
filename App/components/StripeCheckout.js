@@ -38,13 +38,18 @@ const StripeCheckout = ({amount, completeFunc=()=>{}, setHook=()=>{}, hookDepend
     console.log('id is none?', idIsNone, select.customerId);
     const bodyData = {custId: idIsNone?null:select?.customerId, amount: amount, captureMethod: delayedCharge?"manual":"automatic"};
 
-    const response = await fetch(`${constants.API_URL}/payment-sheet`, {
-        method: 'POST',
-        headers: {
-        'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(bodyData)
-    });
+    var response;
+    try {
+        response = await fetch(`${constants.API_URL}/payment-sheet`, {
+            method: 'POST',
+            headers: {
+            'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(bodyData)
+        });
+    }  catch (err) {
+        Alert.alert("somehting went wrong")
+    }
     const { paymentIntent, ephemeralKey, customer } = await response.json();
 
 
@@ -79,7 +84,8 @@ const StripeCheckout = ({amount, completeFunc=()=>{}, setHook=()=>{}, hookDepend
     const openPaymentSheet = async () => {
     const { error } = await presentPaymentSheet({ clientSecret });
         if (error) {
-        // Alert.alert(`Error code: ${error.code}`, error.message);
+            console.log('something went wrong')
+        Alert.alert(`Error code: ${error.code}`, error.message);
         } else {
         // Alert.alert('Success', 'Your order is confirmed!');
         console.log("PAYMENT SHEET");
@@ -99,7 +105,10 @@ const StripeCheckout = ({amount, completeFunc=()=>{}, setHook=()=>{}, hookDepend
 
     useEffect(()=>{
         console.log('changing hook function');
-        setHook(()=>()=>{openPaymentSheet()});
+        setHook(()=>()=>{
+            console.log('opening payment sheet')
+            openPaymentSheet()
+        });
     }, hookDependency)
 
 
