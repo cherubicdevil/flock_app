@@ -428,15 +428,22 @@ return <ScrollView  style={{marginLeft: 15, overflow: 'visible', backgroundColor
       <View style={{backgroundColor: constants.PINK_BACKGROUND_OPAQUE, flex: 1, justifyContent: 'flex-end'}}>
         <ChatComponent navigation={navigation} route={route} socket={socket} />
  </View>
-      <JoinDialog navigation={navigation} route={route} data={route.params.data} setCreditModal={setCreditModal} initialDialog={initialDialog} setInitialDialog={setInitialDialog} setPriceStartPercent={setPriceStartPercent} setPartOf = {setPartOf} completeFunc = {completeFunc} maxPercent = {remainingPercent} productPrice={route.params.data.product.price} remainingPercent={remainingPercent} />
-      {partOf?<></>:<View style={{position: 'absolute', bottom: 0, width: '100%', height: 100, backgroundColor: 'white'}}><View style={{height: '100%', backgroundColor: constants.PINK_BACKGROUND }}>
+      <JoinDialog navigation={navigation} route={route} data={route.params.data} creditModal={creditModal} setCreditModal={setCreditModal} initialDialog={initialDialog} setInitialDialog={setInitialDialog} setPriceStartPercent={setPriceStartPercent} setPartOf = {setPartOf} completeFunc = {completeFunc} maxPercent = {remainingPercent} productPrice={route.params.data.product.price} remainingPercent={remainingPercent} />
+      {partOf?<>
+      {/* <TouchableOpacity onPress={()=>{
+        
+      }}>
+
+      </TouchableOpacity> */}
+      </>:<View style={{position: 'absolute', bottom: 0, width: '100%', height: 100, backgroundColor: 'white'}}><View style={{height: '100%', backgroundColor: constants.PINK_BACKGROUND }}>
         <TouchableOpacity style={{width: '90%', height: 50, backgroundColor: constants.ORANGE, alignSelf: 'center', borderRadius: 30, justifyContent: 'center'}} onPress={()=>{
           setInitialDialog(true);
           // setCreditModal(true);
       }}><Text style={{color: 'white', alignSelf: 'center', fontWeight: 'bold'}}>JOIN</Text></TouchableOpacity></View></View>}
     
       </Wrapper>
-    <AnimatedModal upPercent="70%" colored={true} colors={[constants.ORANGE, constants.GREYORANGE]} nested={false} visible={creditModal} close={()=>setCreditModal(false)} navigation={navigation} 
+      <PreCheckout visible={creditModal} />
+    {/* <AnimatedModal upPercent="70%" colored={true} colors={[constants.ORANGE, constants.GREYORANGE]} nested={false} visible={creditModal} close={()=>setCreditModal(false)} navigation={navigation} 
      >
        <KeyboardAvoidingView behavior="position" style={{flex: 1}} keyboardVerticalOffset={-200}>
 <ScrollView>
@@ -511,7 +518,7 @@ setPartOf(true);
        
        </ScrollView>
        </KeyboardAvoidingView>
-       </AnimatedModal>
+       </AnimatedModal> */}
       {/* <Modal transparent={false} visible={creditModal}>
         <TouchableOpacity  style = {{marginTop: 400}} onPress={()=>setCreditModal(false)}>
           <Text>touch me</Text>
@@ -522,7 +529,7 @@ setPartOf(true);
   );
 }
 
-const JoinDialog = ({navigation, route, data, setCreditModal, initialDialog, setInitialDialog, setPriceStartPercent, setPartOf, completeFunc, minPercent=4, maxPercent, productPrice, remainingPercent}) =>{
+const JoinDialog = ({navigation, route, data, creditModal, setCreditModal, initialDialog, setInitialDialog, setPriceStartPercent, setPartOf, completeFunc, minPercent=4, maxPercent, productPrice, remainingPercent}) =>{
   const store = useStore();
   const dispatch = useDispatch();
 
@@ -572,39 +579,33 @@ const JoinDialog = ({navigation, route, data, setCreditModal, initialDialog, set
   }}/>
   <Dialog.Button label="Confirm" onPress={()=>{
     
-    if (store.getState().userInfo.customerId !== "none") {
-      console.log('asdfasdfasdfasdfafdsaf');
+    // if (store.getState().userInfo.customerId !== "none") {
+    //   console.log('asdfasdfasdfasdfafdsaf');
 
-      const memberInfo = {name: au.currentUser.displayName, uid: au.currentUser.uid};
-      db.collection('users').doc(au.currentUser.uid).update({
-        chatIds: firebase.firestore.FieldValue.arrayUnion(data.id)
-      });
-      data.maximums[au.currentUser.uid] = (initialPercent/100 * parseFloat(data.product.price * 1.4)).toFixed(2);
-      // console.log('route  id', route.params.data.id);
-      db.collection('chatGroups').doc(data.id).update({
-        // members: firebase.firestore.FieldValue.arrayUnion(memberInfo),
-        memberIds: firebase.firestore.FieldValue.arrayUnion(memberInfo.uid),
-        maximums: {...data.maximums},
-      });
-      setPartOf(true);
-    // dispatch({type: "UPDATE_DATA", payload: ["chatIds", "add", "array", data.id]});
-    // dispatch({type: "UPDATE_DATA", payload: ["chatGroups", "add", "array", data]});
-      // data.members.push(memberInfo);
-      // setPriceStartPercent(initialPercent);
-      data.memberIds.push(au.currentUser.uid);
-      completeFunc(store.getState().userInfo.customerId);
-      setInitialDialog(false);
-      // navigation.navigate("ChatInterface", {data: {...data}, refreshKey: Math.random()});
-    } else {
-      // initialPercentTemp = initialPercent;
-      setPriceStartPercent(initialPercent);
-      setInitialDialog(false);
-      setTimeout(()=>{
-        setCreditModal(true);
-      }, 500);
-      
-    }
-    // setInitialDialog(false);
+    //   const memberInfo = {name: au.currentUser.displayName, uid: au.currentUser.uid};
+    //   db.collection('users').doc(au.currentUser.uid).update({
+    //     chatIds: firebase.firestore.FieldValue.arrayUnion(data.id)
+    //   });
+    //   data.maximums[au.currentUser.uid] = (initialPercent/100 * parseFloat(data.product.price * 1.4)).toFixed(2);
+    //   db.collection('chatGroups').doc(data.id).update({
+    //     memberIds: firebase.firestore.FieldValue.arrayUnion(memberInfo.uid),
+    //     maximums: {...data.maximums},
+    //   });
+    //   setPartOf(true);
+    //   data.memberIds.push(au.currentUser.uid);
+    //   completeFunc(store.getState().userInfo.customerId);
+    //   setInitialDialog(false);
+    // } else {
+    //   setPriceStartPercent(initialPercent);
+    //   setInitialDialog(false);
+    //   setTimeout(()=>{
+    //     setCreditModal(true);
+    //   }, 500);
+    // }
+
+    setCreditModal(!creditModal);
+    setInitialDialog(false);
+
   }}/>
 </Dialog.Container>
 }
@@ -724,6 +725,15 @@ const MemberPics = ({memberIds}) => {
 
 </View>
 };
+
+const PreCheckout = ({visible}) => {
+  useEffect(()=>{
+      Alert.alert('test precheckout');
+
+  }, [visible])
+
+  return <></>
+}
 
 const data = {
   0: {
