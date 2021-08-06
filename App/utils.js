@@ -301,24 +301,35 @@ const fetchGlobalFlocks = async () => {
   });
 };
 
-const fetchFlockablesFirst = async () => {
-  return new Promise((resolve) => {
-    db.collection('chatGroups')
+const fetchFlockables = async () => {
+  return new Promise(async (resolve) => {
+    var filtered = await db.collection('chatGroups')
       .limit(10)
       .orderBy("time", "desc")
       .where('completed', '==', false)
-      .get()
+
+      if (lastVisibleFlock != null) {
+        filtered = await filtered.startAfter(lastVisibleFlock);
+      }
+
+      filtered
+.get()
       .then((querySnapshot) => {
         var counter = 0;
+        let numFiltered = 0;
         const n = querySnapshot.size;
         const ar = [];
         querySnapshot.forEach((doc) => {
           
           const entity = doc.data();
-          console.log('time variable', Date.now()/1000 - entity.time - 3600 * 24 * 7)
-          ar.push({...entity, id:doc.id});
-          counter = counter + 1;
-          if (counter === n) {
+          if (!checkFlockExpired(entity.time)) {
+            ar.push({...entity, id:doc.id});
+            counter = counter + 1;
+          } else {
+            numFiltered = numFiltered + 1
+          }
+          if (counter === n - numFiltered) {
+            console.log('num filtered', numFiltered)
             resolve(ar);
             lastVisibleFlock = doc;
             
@@ -327,35 +338,35 @@ const fetchFlockablesFirst = async () => {
       });
   });
 };
-const fetchFlockables = async () => {
-  return new Promise((resolve) => {
-    db.collection('chatGroups')
-      .limit(10)
-      .orderBy("time", "desc")
-      .where('completed', '==', false)
-      .startAfter(lastVisibleFlock)
-      .get()
-      .then((querySnapshot) => {
-        var counter = 0;
-        const n = querySnapshot.size;
-        const ar = [];
-        if (n == 0) {
-          resolve(ar);
-          return;
-        }
-        querySnapshot.forEach((doc) => {
-          console.log('doing')
-          const entity = doc.data();
-          ar.push({...entity, id:doc.id});
-          counter = counter + 1;
-          if (counter === n) {
-            resolve(ar);
-            lastVisibleFlock = doc;
-          }
-        });
-      });
-  });
-};
+// const fetchFlockables = async () => {
+//   return new Promise((resolve) => {
+//     db.collection('chatGroups')
+//       .limit(10)
+//       .orderBy("time", "desc")
+//       .where('completed', '==', false)
+//       .startAfter(lastVisibleFlock)
+//       .get()
+//       .then((querySnapshot) => {
+//         var counter = 0;
+//         const n = querySnapshot.size;
+//         const ar = [];
+//         if (n == 0) {
+//           resolve(ar);
+//           return;
+//         }
+//         querySnapshot.forEach((doc) => {
+//           console.log('doing')
+//           const entity = doc.data();
+//           ar.push({...entity, id:doc.id});
+//           counter = counter + 1;
+//           if (counter === n) {
+//             resolve(ar);
+//             lastVisibleFlock = doc;
+//           }
+//         });
+//       });
+//   });
+// };
 
 const fetchPosts = async () => {
   return new Promise((resolve) => {
@@ -1136,7 +1147,7 @@ export {
   fetchAlbums,
   fetchProducts,
   fetchFlockables,
-  fetchFlockablesFirst,
+  // fetchFlockablesFirst,
   fetchRentables,
   fetchRentablesFirst,
   fetchPosts,

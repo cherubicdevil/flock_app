@@ -102,9 +102,9 @@ const Product = ({route, navigation}) => {
 
   const guest = useSelector(state=>state?.auth?.guest);
 
-  const routeProduct = routeProduct;
-  const routeData = routeData;
-  const routeFlockId = routeFlockId;
+  const routeProduct = route.params.album;
+  const routeData = route.params.data;
+  const routeFlockId = route.params.flockId;
 useEffect(()=>{
   if (guest) {
     navigation.replace('Login');

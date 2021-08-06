@@ -30,7 +30,7 @@ import FeedItem from './FeedItem';
 import HalfProduct from './HalfProduct';
 import {constants} from 'App/constants';
 import {shuffle} from 'App/utils';
-import {fetchAlbums, fetchProducts, mergeArrays, fetchFlockables, fetchRentables, fetchPosts, fetchPostsFirst, fetchFlockablesFirst, fetchRentablesFirst} from 'App/utils';
+import {fetchAlbums, fetchProducts, mergeArrays, fetchFlockables, fetchRentables, fetchPosts, fetchPostsFirst, fetchRentablesFirst} from 'App/utils';
 import LinearGradient from 'react-native-linear-gradient';
 import ProductBlurb from 'App/components/screens/home/feed/ProductBlurb';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -74,7 +74,7 @@ const FeedList= ({testArray, setTestArray, navigation, route, videoData, product
 
     fetchRentablesFirst().then((ar1)=>{
       // setKeyArrRent([...keyArrRent,...ar]);
-      fetchFlockablesFirst().then((ar2) => {
+      fetchFlockables().then((ar2) => {
         fetchPostsFirst().then((ar3)=> {
           
           setKeyVideoData(shuffle([...ar1, ...ar2,...ar3]))
@@ -283,7 +283,7 @@ var testing2 = testing;
               console.log('refresh');
               fetchRentablesFirst().then((ar1)=>{
                 // setKeyArrRent([...keyArrRent,...ar]);
-                fetchFlockablesFirst().then((ar2) => {
+                fetchFlockables().then((ar2) => {
                   fetchPostsFirst().then((ar3)=> {
                     
                     setKeyVideoData(shuffle([...ar1, ...ar2,...ar3]))

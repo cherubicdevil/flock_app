@@ -587,7 +587,7 @@ const MiniCarouselFlocking = ({navigation, route}) => {
   var finalAr;
 
   useEffect(()=>{
-    fetchFlockablesFirst().then((ar) => {
+    fetchFlockables().then((ar) => {
       // setFinalAr(ar);
       setKeyArrFlock(ar);
       dispatch({type:'sendCarouselFlockIndex', payload: ar.length - 1});
