@@ -126,11 +126,7 @@ const Tabs = () => {
     component={ProfileMain}
     initialParams={{vidVisible: false}}
   />
-  <Tab.Screen
-    name="ShareSocial"
-    component={ShareScreen}
-    // initialParams={{vidVisible: false}}
-  />
+
   <Tab.Screen
     name="Products"
     component={Products}
@@ -237,7 +233,11 @@ const AppNavigator5 = () => {
             tabBarVisible: true,
           }}
         />
-
+  <Stack.Screen
+    name="ShareSocial"
+    component={ShareScreen}
+    // initialParams={{vidVisible: false}}
+  />
       <Stack.Screen
           name="Terms"
           component={Terms}
