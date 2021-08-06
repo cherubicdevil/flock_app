@@ -13,6 +13,7 @@ import StripeCheckout from 'App/components/StripeCheckout';
 import ShareSocial from 'App/components/ShareSocial';
 import {firebase, db, au} from 'App/firebase/config';
 import {CommonActions} from '@react-navigation/native';
+import {getCurrentTime} from 'App/utils';
 
 const Tab = createBottomTabNavigator();
 
@@ -156,7 +157,7 @@ const Page2=({navigation, route})=>{
           completed: false,
           productTitle: route.params.product.title,
           messages: [],
-          time: Math.round(Date.now() / 1000),
+          time: getCurrentTime(),
           members: [{name: user.displayName, uid: user.uid}],
           memberIds: [user.uid],
           likes: 0,

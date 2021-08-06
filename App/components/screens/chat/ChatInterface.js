@@ -37,7 +37,7 @@ import TooltipFirst from 'App/components/TooltipFirst';
 import Checkout from 'App/components/Checkout';
 import {useFocusEffect} from '@react-navigation/native';
 import PriceSlider from 'App/components/PriceSlider';
-import {toDateTime} from 'App/utils';
+import {toDateTime, checkFlockExpired} from 'App/utils';
 // import NumericTextInput from 'App/components'
 import {
   DrawerContentScrollView,
@@ -319,7 +319,7 @@ return <ScrollView  style={{marginLeft: 15, overflow: 'visible', backgroundColor
   
   <View style={{marginBottom:0, justifyContent: 'flex-end'}}>
 {/* <Text style={{fontSize: 14, textAlign: 'center'}}>%{route.params.data.id}</Text> */}
-  {route.params.data.completed?<></>:(route.params.data.time + 7*24*3600 > Date.now()/1000)?<Countdown dateObj={route.params.data.time} fontSize = {14} />:<Text>expired</Text>}
+  {route.params.data.completed?<></>:checkFlockExpired(route.params.data.time)?<Countdown dateObj={route.params.data.time} fontSize = {14} />:<Text>expired</Text>}
   {/* <Text>{testMessages}</Text> */}
   </View>
   <View style={{bottom: 20, right: 20, position: 'absolute', zIndex: 400, flexDirection:'row', alignItems:'center'}}>

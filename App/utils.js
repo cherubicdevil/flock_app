@@ -62,6 +62,15 @@ var lastVisibleFlock = null;
 var lastVisibleRent = null;
 var lastVisiblePost = null;
 
+
+const getCurrentTime = () => {
+  return Math.round(Date.now() / 1000);
+}
+
+const checkFlockExpired = (time) => {
+  return getCurrentTime() - time > 24 * 3600 * 7;
+}
+
 const fetchStreamableSource = async (src) => {
   if (src === null || src === undefined) {
     return new Promise(function (resolve, reject) {
@@ -145,7 +154,7 @@ const fetchProducts = (lastVisible = null) => {
     .limit(6)
     .get()
     .then((querySnapshot) => {
-      counter = 0;
+      let counter = 0;
       const n = querySnapshot.size;
       querySnapshot.forEach((doc) => {
         const entity = doc.data();
@@ -306,6 +315,7 @@ const fetchFlockablesFirst = async () => {
         querySnapshot.forEach((doc) => {
           
           const entity = doc.data();
+          console.log('time variable', Date.now()/1000 - entity.time - 3600 * 24 * 7)
           ar.push({...entity, id:doc.id});
           counter = counter + 1;
           if (counter === n) {
@@ -1068,18 +1078,18 @@ function cc_brand_id(cur_val) {
   // regexp string length {0} provided for soonest detection of beginning of the card numbers this way it could be used for BIN CODE detection also
 
   //JCB
-  jcb_regex = new RegExp('^(?:2131|1800|35)[0-9]{0,}$'); //2131, 1800, 35 (3528-3589)
+  let jcb_regex = new RegExp('^(?:2131|1800|35)[0-9]{0,}$'); //2131, 1800, 35 (3528-3589)
   // American Express
-  amex_regex = new RegExp('^3[47][0-9]{0,}$'); //34, 37
+  let amex_regex = new RegExp('^3[47][0-9]{0,}$'); //34, 37
   // Diners Club
-  diners_regex = new RegExp('^3(?:0[0-59]{1}|[689])[0-9]{0,}$'); //300-305, 309, 36, 38-39
+  let diners_regex = new RegExp('^3(?:0[0-59]{1}|[689])[0-9]{0,}$'); //300-305, 309, 36, 38-39
   // Visa
-  visa_regex = new RegExp('^4[0-9]{0,}$'); //4
+  let visa_regex = new RegExp('^4[0-9]{0,}$'); //4
   // MasterCard
-  mastercard_regex = new RegExp('^(5[1-5]|222[1-9]|22[3-9]|2[3-6]|27[01]|2720)[0-9]{0,}$'); //2221-2720, 51-55
-  maestro_regex = new RegExp('^(5[06789]|6)[0-9]{0,}$'); //always growing in the range: 60-69, started with / not something else, but starting 5 must be encoded as mastercard anyway
+  let mastercard_regex = new RegExp('^(5[1-5]|222[1-9]|22[3-9]|2[3-6]|27[01]|2720)[0-9]{0,}$'); //2221-2720, 51-55
+  let maestro_regex = new RegExp('^(5[06789]|6)[0-9]{0,}$'); //always growing in the range: 60-69, started with / not something else, but starting 5 must be encoded as mastercard anyway
   //Discover
-  discover_regex = new RegExp('^(6011|65|64[4-9]|62212[6-9]|6221[3-9]|622[2-8]|6229[01]|62292[0-5])[0-9]{0,}$');
+  let discover_regex = new RegExp('^(6011|65|64[4-9]|62212[6-9]|6221[3-9]|622[2-8]|6229[01]|62292[0-5])[0-9]{0,}$');
   ////6011, 622126-622925, 644-649, 65
 
 
@@ -1119,6 +1129,8 @@ function toDateTime(secs) {
 }
 
 export {
+  getCurrentTime,
+  checkFlockExpired,
   rentPrice,
   fetchStreamableSource,
   fetchAlbums,

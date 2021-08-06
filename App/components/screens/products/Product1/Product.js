@@ -101,6 +101,10 @@ const Product = ({route, navigation}) => {
   const [modalOpen, setModalOpen] = useState(false);
 
   const guest = useSelector(state=>state?.auth?.guest);
+
+  const routeProduct = routeProduct;
+  const routeData = routeData;
+  const routeFlockId = routeFlockId;
 useEffect(()=>{
   if (guest) {
     navigation.replace('Login');
@@ -114,7 +118,7 @@ if (guest) {return <></>};
     var citiesRef = firebase.firestore().collection("chatGroups");
     // console.log(route.parm.title);
     // Create a query against the collection.
-    var query = citiesRef.where("productTitle", "==", route.params.album.title);
+    var query = citiesRef.where("productTitle", "==", routeProduct.title);
     var unsubscribe = query
     .onSnapshot(function(querySnapshot) {
       const arr = [];
@@ -142,7 +146,7 @@ if (guest) {return <></>};
     // })
 
     return () => {unsubscribe()};
-  }, [route.params.album]);
+  }, [routeProduct]);
   useFocusEffect(()=>{
     // const animateArrow = Animated.spring(arrowMargin, {
     //   velocity: 5,
@@ -170,7 +174,7 @@ if (guest) {return <></>};
       <TouchableOpacity style={{flexDirection:'row', justifyContent:'space-between'}} onPress={() => {
         Linking.openURL(
           'https://shopwithflock.com/redirect/?url=' +
-            route.params.album.url,
+            routeProduct.url,
         );
       }}>
         <Text style={{fontFamily: constants.FONTBOLD, fontSize: 14, color: 'black'}}>
@@ -219,7 +223,7 @@ if (guest) {return <></>};
                 alignSelf: 'center',
               }}
               
-              source={{uri: route.params.album.image}}
+              source={{uri: routeProduct.image}}
             />
             </View>
             {/* <Video
@@ -307,7 +311,7 @@ if (guest) {return <></>};
               //backgroundColor: 'white',
             }}>
             
-            <View style={styles.productRow}><Description lowkey={true} brand={route.params.album.brand} price={route.params.album.price} title={route.params.album.title} productId={route.params?.data?.id} /></View>
+            <View style={styles.productRow}><Description lowkey={true} brand={routeProduct.brand} price={routeProduct.price} title={routeProduct.title} productId={route.params?.data?.id} /></View>
             <View style={[styles.productRow, {backgroundColor: 'white'}]}>
             <Text style={{fontWeight: 'bold'}}>{membersFlocking} {membersFlocking == 1?"person is":"people are"} currently flocking.</Text>
             <TouchableOpacity 
@@ -315,7 +319,7 @@ if (guest) {return <></>};
             onPress={()=>{
               setModalOpen(true);
             }}>
-            <FlockList close = {()=>{setModalOpen(false)}}navigation = {navigation} route={route} product = {route.params.album} ar = {flockAr} randomId={randomId} />
+            <FlockList close = {()=>{setModalOpen(false)}}navigation = {navigation} route={route} product = {routeProduct} ar = {flockAr} randomId={randomId} />
             </TouchableOpacity>
             </View>
             <View style={styles.productRow}>{renderDetail()}</View>
@@ -369,7 +373,7 @@ if (guest) {return <></>};
                 <Text style={{position: 'absolute', top: 12,fontSize: 12, textAlign: 'center', color: constants.LAVENDER}}>{route.params.data.likes>0?route.params.data.likes:""}</Text>
                 </View> */}
                 <View style={{alignSelf: 'center'}}>
-                <HeartButton data={route.params.data} ICON_SIZE={32} />
+                <HeartButton data={routeData} ICON_SIZE={32} />
                 </View>
                 <TouchableOpacity
                 hitSlop={{top: 20, bottom: 20, left: 20, right: 20}}
@@ -386,7 +390,7 @@ if (guest) {return <></>};
                 <TouchableOpacity 
                 hitSlop={{top: 30, bottom: 30, left: 30, right: 30}}
                 onPress={()=>{
-                  navigation.navigate('ShareSocial', {product:route.params.album, data:{}, flockId: route.params.id})
+                  navigation.navigate('ShareSocial', {product:routeProduct, data:{}, flockId: routeFlockId})
                 }}>
                 <Image 
                 style={{width: 35, height: 35, aspectRatio:1}}
@@ -428,7 +432,7 @@ if (guest) {return <></>};
               <View style={{flex:1, height: 50, justifyContent: 'center'}}>
                 <TouchableOpacity style={{height: "100%", justifyContent: 'center'}} onPress= {() => {
 
-                  navigation.navigate('StartFlock', {index: 0, product: route.params.album, data:{}, flockId: randomId});
+                  navigation.navigate('StartFlock', {index: 0, product: routeProduct, data:{}, flockId: randomId});
     
                 }}
     
@@ -439,8 +443,8 @@ if (guest) {return <></>};
                 </LinearGradient>
                 </View>
                 </View>
-                <AnimatedModal visible={modalOpen} close={()=>{setModalOpen(false)}} content={<View style={{paddingLeft: 20, paddingRight: 20}}><Text style={{textAlign: 'center', fontSize: 15, fontWeight: 'bold'}}>Ongoing Flocks</Text><FlockList close = {()=>{setModalOpen(false)}} limited = {false} navigation={navigation} route={route} product = {route.params.album} ar={flockAr} /></View>} />
-                <CommentsModal data={route.params.data} toggleFunc={() => {
+                <AnimatedModal visible={modalOpen} close={()=>{setModalOpen(false)}} content={<View style={{paddingLeft: 20, paddingRight: 20}}><Text style={{textAlign: 'center', fontSize: 15, fontWeight: 'bold'}}>Ongoing Flocks</Text><FlockList close = {()=>{setModalOpen(false)}} limited = {false} navigation={navigation} route={route} product = {routeProduct} ar={flockAr} /></View>} />
+                <CommentsModal data={routeData} toggleFunc={() => {
             setCommentsVisible(false);
           }}
           modalVisible={commentsVisible}
@@ -628,7 +632,7 @@ const FlockList = ({product, navigation, route, ar, close, limited = true, rando
           }}>
   <TouchableOpacity onPress= {() => {
     // setTutorialScreen(false);
-    navigation.navigate('StartFlock', {index: 0, product: route.params.album, data:{}, flockId: randomId});
+    navigation.navigate('StartFlock', {index: 0, product: routeProduct, data:{}, flockId: randomId});
 
   }}><Text style={{textAlign: 'center', color: 'white', fontWeight: 'bold', fontSize: 14}}>Start Your Flock</Text>
   </TouchableOpacity></View></View></View>)}</ScrollView>;
