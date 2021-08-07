@@ -53,6 +53,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import Countdown from 'App/components/Countdown';
 import HowTo from 'App/HowTo';
 import ChatComponent from 'App/components/ChatComponent';
+import StripeCheckout from '../../StripeCheckout';
 
 const barHeight = 25;
 var initialPercentTemp;
@@ -71,6 +72,9 @@ const updateCache = (id, messages) => {
 const systemMessages = [];
 
 function ChatInterface({route, navigation}) {
+  const [stripeHook, setStripeHook] = useState(()=>()=>{
+    console.log('hello')
+});
   const chatColor = route.params.data.completed?constants.LAVENDER:constants.ORANGE;
   const chatColors = route.params.data.completed?[constants.LAVENDER, constants.PURPINK]:[constants.PEACHBG, constants.PEACHBG];
 
@@ -159,7 +163,6 @@ function ChatInterface({route, navigation}) {
       console.log(route.params.data.product.price);
       console.log(route.params.data.maximums);
     // const res = splitAlgorithm(route.params.data.members, route.params.data.maximums, route.params.data.product.price)
-    console.log('coplete maximums', route.params.data.maximums);
     const flockTookOff = didFlockTakeOff(maximums, route.params.data.product.price* 1.4);
     if (flockTookOff) {
     socket.current.emit('complete', {chatId: route.params.data.id, groupData: {prices: route.params.data.maximums}});
@@ -199,6 +202,27 @@ function ChatInterface({route, navigation}) {
     navigation.navigate('FlockSuccess', {data: route.params.data})
     }
   };
+
+const enterFlockFunc = () => {
+  const data = route.params.data;
+  const memberInfo = {name: au.currentUser.displayName, uid: au.currentUser.uid};
+  db.collection('users').doc(au.currentUser.uid).update({
+    chatIds: firebase.firestore.FieldValue.arrayUnion(data.id)
+  });
+  // data.maximums[au.currentUser.uid] = (initialPercent/100 * parseFloat(data.product.price * 1.4)).toFixed(2);
+  data.maximums[au.currentUser.uid] = (5/100 * parseFloat(data.product.price * 1.4)).toFixed(2);
+  db.collection('chatGroups').doc(data.id).update({
+    memberIds: firebase.firestore.FieldValue.arrayUnion(memberInfo.uid),
+    maximums: {...data.maximums},
+  });
+  setPartOf(true);
+  data.memberIds.push(au.currentUser.uid);
+  completeFunc(store.getState().userInfo.customerId);
+  navigation.navigate("ChatInterface", {data:{...route.params.data}});
+  // possible remove... refresh for new information. ^
+}
+
+
   const store = useStore();
   const select = useSelector((state) => state);
 
@@ -428,7 +452,7 @@ return <ScrollView  style={{marginLeft: 15, overflow: 'visible', backgroundColor
       <View style={{backgroundColor: constants.PINK_BACKGROUND_OPAQUE, flex: 1, justifyContent: 'flex-end'}}>
         <ChatComponent navigation={navigation} route={route} socket={socket} />
  </View>
-      <JoinDialog navigation={navigation} route={route} data={route.params.data} creditModal={creditModal} setCreditModal={setCreditModal} initialDialog={initialDialog} setInitialDialog={setInitialDialog} setPriceStartPercent={setPriceStartPercent} setPartOf = {setPartOf} completeFunc = {completeFunc} maxPercent = {remainingPercent} productPrice={route.params.data.product.price} remainingPercent={remainingPercent} />
+      <JoinDialog navigation={navigation} route={route} data={route.params.data} creditModal={creditModal} setCreditModal={setCreditModal} initialDialog={initialDialog} setInitialDialog={setInitialDialog} setPriceStartPercent={setPriceStartPercent} setPartOf = {setPartOf} maxPercent = {remainingPercent} productPrice={route.params.data.product.price} remainingPercent={remainingPercent} />
       {partOf?<>
         
       <TouchableOpacity onPress={()=>{
@@ -447,6 +471,7 @@ return <ScrollView  style={{marginLeft: 15, overflow: 'visible', backgroundColor
         maximums: {...route.params.data.maximums},
       });
       setPartOf(false);
+      navigation.navigate("ChatInterface", {data:{...route.params.data}});
       }}>
 <Text>LEAVE</Text>
       </TouchableOpacity>
@@ -455,58 +480,18 @@ return <ScrollView  style={{marginLeft: 15, overflow: 'visible', backgroundColor
           setInitialDialog(true);
           // setCreditModal(true);
       }}><Text style={{color: 'white', alignSelf: 'center', fontWeight: 'bold'}}>JOIN</Text></TouchableOpacity></View></View>}
-    <AnimatedModal upPercent="70%" colored={true} colors={[constants.ORANGE, constants.GREYORANGE]} nested={false} visible={creditModal} close={()=>setCreditModal(false)} navigation={navigation} 
+    
+      </Wrapper>
+      {/* <PreCheckout visible={creditModal} /> */}
+      <StripeCheckout amount={5.00} setHook={setStripeHook} delayedCharge={true} completeFunc = {()=>{
+        // navigation.navigate()
+        enterFlockFunc();
+    }}>
+      <AnimatedModal upPercent="70%" colored={true} colors={[constants.ORANGE, constants.GREYORANGE]} nested={false} visible={creditModal} close={()=>setCreditModal(false)} navigation={navigation} 
      >
        <KeyboardAvoidingView behavior="position" style={{flex: 1}} keyboardVerticalOffset={-200}>
 <ScrollView>
-       <SmartCheckout 
-       delayedCapture={true}
-       navigation={navigation}
-       billingOnly={true} allowConfirm={(creditChanged, )=>{
-         const validEmail = (em)=>{
-          return em !== "" && em.indexOf("@") != -1;
-         }
-         if (!(creditChanged)) {
-          return {allowed: false, errorMessage: "Please fill out billing info."}
-      }
-      if (!validEmail) {
-          return {allowed: false, errorMessage: "Please input a valid email."};
-      }
-      return {allowed: true, errorMessage: 'nooo'};
-       }}
-       confirmFunc={(customerId)=>{
-        //  au.currentUser.updateEmail(creditEmail);
-        console.log("YYYYYYYYYYYYYYYYY");
-        dispatch({type:'UPDATE_DATA', payload: ["email", null, null, creditEmail]});
-        db.collection('users').doc(au.currentUser.uid).update({
-          email: creditEmail,
-        });
-         console.log('conffirrrrrm');
-        //  route.params.data.maximums[au.currentUser.uid] = (initialPercentTemp/100 * parseFloat(route.params.data.product.price * 1.4)).toFixed(2);
-         // console.log('route  id', route.params.data.id);
-        //  console.log(initialPercentTemp)
-         route.params.data.maximums[au.currentUser.uid] = (priceStartPercent/100 * parseFloat(route.params.data.product.price * 1.4)).toFixed(2);
-         db.collection('chatGroups').doc(route.params.data.id).update({
-          //  members: firebase.firestore.FieldValue.arrayUnion(memberInfo),
-           memberIds: firebase.firestore.FieldValue.arrayUnion(au.currentUser.uid),
-           maximums: {...route.params.data.maximums},
-         });
-setPartOf(true);
-  route.params.data.memberIds.push(au.currentUser.uid);
-  completeFunc(customerId);
-  navigation.navigate("ChatInterface", {data:{...route.params.data}});
-  // setTimeout(()=>{
-  //   navigation.navigate("ChatInterface", {data:{...route.params.data}});
-  // }, 500);
-    // navigation.navigate("ChatInterface", {data:route.params.data});
-    setCreditModal(false);
 
-  // setCreditModal(false);
-       }} 
-       cancelFunc={()=>{
-         
-       }}
-       >
          <View style={{marginHorizontal: 30, marginTop: 10}}>
          <Text>Email</Text>
          <TextInput style={{paddingLeft: 20, borderWidth: 1, borderColor: constants.DARKGREY, borderRadius: 40, paddingVertical: 5, marginTop: 15}} keyboardType="email-address" defaultValue={au.currentUser.email} 
@@ -516,8 +501,17 @@ setPartOf(true);
           setCreditEmail(text.toLowerCase());
          }}
          />
+         <TouchableOpacity onPress={()=>{
+           setCreditModal(false);
+           setTimeout(()=> {
+            stripeHook();
+           }, 800);
+         }}>
+           <Text>
+             Pay
+           </Text>
+         </TouchableOpacity>
          </View>
-       </SmartCheckout>
        <View style={{marginHorizontal: 30, marginTop: 20}}>
               <Text >
               * Your credit card will only be charged if combined ownership reaches 100%. You can change how much you want to pay any time before the flock takes off.
@@ -530,8 +524,7 @@ setPartOf(true);
        </ScrollView>
        </KeyboardAvoidingView>
        </AnimatedModal>
-      </Wrapper>
-      {/* <PreCheckout visible={creditModal} /> */}
+      
     
       {/* <Modal transparent={false} visible={creditModal}>
         <View style={{backgroundColor: 'white'}}>
@@ -540,8 +533,7 @@ setPartOf(true);
         </TouchableOpacity>
         </View>
       </Modal> */}
-
-
+      </StripeCheckout>
       </>
   );
 }
@@ -595,33 +587,18 @@ const JoinDialog = ({navigation, route, data, creditModal, setCreditModal, initi
     setInitialDialog(false);
   }}/>
   <Dialog.Button label="Confirm" onPress={()=>{
-    
-    // if (store.getState().userInfo.customerId !== "none") {
-    //   console.log('asdfasdfasdfasdfafdsaf');
-
-    //   const memberInfo = {name: au.currentUser.displayName, uid: au.currentUser.uid};
-    //   db.collection('users').doc(au.currentUser.uid).update({
-    //     chatIds: firebase.firestore.FieldValue.arrayUnion(data.id)
-    //   });
-    //   data.maximums[au.currentUser.uid] = (initialPercent/100 * parseFloat(data.product.price * 1.4)).toFixed(2);
-    //   db.collection('chatGroups').doc(data.id).update({
-    //     memberIds: firebase.firestore.FieldValue.arrayUnion(memberInfo.uid),
-    //     maximums: {...data.maximums},
-    //   });
-    //   setPartOf(true);
-    //   data.memberIds.push(au.currentUser.uid);
-    //   completeFunc(store.getState().userInfo.customerId);
-    //   setInitialDialog(false);
-    // } else {
-    //   setPriceStartPercent(initialPercent);
-    //   setInitialDialog(false);
-    //   setTimeout(()=>{
-    //     setCreditModal(true);
-    //   }, 500);
-    // }
-
-    setCreditModal(true);
-    setInitialDialog(false);
+    var hasBillingInfo = store.getState().userInfo.customerId !== "none"
+    hasBillingInfo = false;
+    if (hasBillingInfo) {
+      enterFlockFunc();
+      setInitialDialog(false);
+    } else {
+      // setPriceStartPercent(initialPercent);
+      setInitialDialog(false);
+      setTimeout(()=>{
+        setCreditModal(true);
+      }, 500);
+    }
 
   }}/>
 </Dialog.Container>
