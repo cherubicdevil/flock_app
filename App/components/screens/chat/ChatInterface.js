@@ -455,14 +455,10 @@ return <ScrollView  style={{marginLeft: 15, overflow: 'visible', backgroundColor
           setInitialDialog(true);
           // setCreditModal(true);
       }}><Text style={{color: 'white', alignSelf: 'center', fontWeight: 'bold'}}>JOIN</Text></TouchableOpacity></View></View>}
-    
-      </Wrapper>
-      {/* <PreCheckout visible={creditModal} /> */}
     <AnimatedModal upPercent="70%" colored={true} colors={[constants.ORANGE, constants.GREYORANGE]} nested={false} visible={creditModal} close={()=>setCreditModal(false)} navigation={navigation} 
      >
        <KeyboardAvoidingView behavior="position" style={{flex: 1}} keyboardVerticalOffset={-200}>
 <ScrollView>
-  
        <SmartCheckout 
        delayedCapture={true}
        navigation={navigation}
@@ -534,10 +530,15 @@ setPartOf(true);
        </ScrollView>
        </KeyboardAvoidingView>
        </AnimatedModal>
+      </Wrapper>
+      {/* <PreCheckout visible={creditModal} /> */}
+    
       {/* <Modal transparent={false} visible={creditModal}>
+        <View style={{backgroundColor: 'white'}}>
         <TouchableOpacity  style = {{marginTop: 400}} onPress={()=>setCreditModal(false)}>
           <Text>touch me</Text>
         </TouchableOpacity>
+        </View>
       </Modal> */}
 
 

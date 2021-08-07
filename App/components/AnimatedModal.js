@@ -67,6 +67,7 @@ const AnimatedModal = ({
   };
 
   const resetAnimation = () => {
+    console.log('resetting animation')
     Animated.timing(animation.current, {
       useNativeDriver: false,
       toValue: 0,
@@ -89,12 +90,10 @@ const AnimatedModal = ({
           width: visible?viewParams.width:0,
           position: 'absolute',
           zIndex: 200,
-        //   bottom: -1000,
+
         alignSelf: 'center', 
-          //right: Dimensions.get('window').width/2,
           backgroundColor: (colored || !fade)?'transparent':'rgb(0,0,0)',
           opacity: animation.current,
-          //backgroundColor: modalVisible ? 'rgba(0,0,0,0.7)' : 'transparent',
         }}
       >
     {colored?<LinearGradient style={{height: '100%'}} colors={colors} />:<></>}
