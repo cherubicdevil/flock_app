@@ -430,11 +430,26 @@ return <ScrollView  style={{marginLeft: 15, overflow: 'visible', backgroundColor
  </View>
       <JoinDialog navigation={navigation} route={route} data={route.params.data} creditModal={creditModal} setCreditModal={setCreditModal} initialDialog={initialDialog} setInitialDialog={setInitialDialog} setPriceStartPercent={setPriceStartPercent} setPartOf = {setPartOf} completeFunc = {completeFunc} maxPercent = {remainingPercent} productPrice={route.params.data.product.price} remainingPercent={remainingPercent} />
       {partOf?<>
-      {/* <TouchableOpacity onPress={()=>{
         
+      <TouchableOpacity onPress={()=>{
+        console.log('leave flock');
+              db.collection('users').doc(au.currentUser.uid).update({
+        chatIds: firebase.firestore.FieldValue.arrayRemove(route.params.data.id)
+      });
+    //   data.maximums[au.currentUser.uid] = (initialPercent/100 * parseFloat(data.product.price * 1.4)).toFixed(2);
+    if (au.currentUser.uid in route.params.data.maximums) {
+      delete (route.params.data.maximums)[au.currentUser.uid]
+      console.log('deleting shit')
+    }
+    
+      db.collection('chatGroups').doc(route.params.data.id).update({
+        memberIds: firebase.firestore.FieldValue.arrayRemove(au.currentUser.uid),
+        maximums: {...route.params.data.maximums},
+      });
+      setPartOf(false);
       }}>
-
-      </TouchableOpacity> */}
+<Text>LEAVE</Text>
+      </TouchableOpacity>
       </>:<View style={{position: 'absolute', bottom: 0, width: '100%', height: 100, backgroundColor: 'white'}}><View style={{height: '100%', backgroundColor: constants.PINK_BACKGROUND }}>
         <TouchableOpacity style={{width: '90%', height: 50, backgroundColor: constants.ORANGE, alignSelf: 'center', borderRadius: 30, justifyContent: 'center'}} onPress={()=>{
           setInitialDialog(true);
@@ -525,6 +540,7 @@ setPartOf(true);
         </TouchableOpacity>
       </Modal> */}
 
+
       </>
   );
 }
@@ -603,7 +619,7 @@ const JoinDialog = ({navigation, route, data, creditModal, setCreditModal, initi
     //   }, 500);
     // }
 
-    setCreditModal(!creditModal);
+    setCreditModal(true);
     setInitialDialog(false);
 
   }}/>
