@@ -22,7 +22,7 @@ import {confirmPaymentSheetPayment, useStripe} from '@stripe/stripe-react-native
 
 import {constants} from 'App/constants';
 
-const StripeCheckout = ({amount, completeFunc=()=>{}, setHook=()=>{}, hookDependency = [], delayedCharge=false}) => {
+const StripeCheckout = ({amount, children, completeFunc=()=>{}, setHook=()=>{}, hookDependency = [], delayedCharge=false}) => {
     const [shipModal, setShipModal] = useState(false);
     const [shippingDone, setShippingDone] = useState(false);
     const { initPaymentSheet, presentPaymentSheet } = useStripe();
@@ -125,7 +125,7 @@ const StripeCheckout = ({amount, completeFunc=()=>{}, setHook=()=>{}, hookDepend
             </>
         }
     }
-    return <>
+    return <>{children}
     
     {/* <Button
     variant="primary"

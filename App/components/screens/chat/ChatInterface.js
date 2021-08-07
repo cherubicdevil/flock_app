@@ -442,8 +442,8 @@ return <ScrollView  style={{marginLeft: 15, overflow: 'visible', backgroundColor
       }}><Text style={{color: 'white', alignSelf: 'center', fontWeight: 'bold'}}>JOIN</Text></TouchableOpacity></View></View>}
     
       </Wrapper>
-      <PreCheckout visible={creditModal} />
-    {/* <AnimatedModal upPercent="70%" colored={true} colors={[constants.ORANGE, constants.GREYORANGE]} nested={false} visible={creditModal} close={()=>setCreditModal(false)} navigation={navigation} 
+      {/* <PreCheckout visible={creditModal} /> */}
+    <AnimatedModal upPercent="70%" colored={true} colors={[constants.ORANGE, constants.GREYORANGE]} nested={false} visible={creditModal} close={()=>setCreditModal(false)} navigation={navigation} 
      >
        <KeyboardAvoidingView behavior="position" style={{flex: 1}} keyboardVerticalOffset={-200}>
 <ScrollView>
@@ -518,7 +518,7 @@ setPartOf(true);
        
        </ScrollView>
        </KeyboardAvoidingView>
-       </AnimatedModal> */}
+       </AnimatedModal>
       {/* <Modal transparent={false} visible={creditModal}>
         <TouchableOpacity  style = {{marginTop: 400}} onPress={()=>setCreditModal(false)}>
           <Text>touch me</Text>
@@ -726,7 +726,7 @@ const MemberPics = ({memberIds}) => {
 </View>
 };
 
-const PreCheckout = ({visible}) => {
+const PreCheckout = ({visible, stripehook}) => {
   useEffect(()=>{
       Alert.alert('test precheckout');
 

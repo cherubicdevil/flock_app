@@ -247,7 +247,7 @@ const Page2=({navigation, route})=>{
     </AnimatedModal>
     </View>
     </ContentWrapper>
-    <StripeCheckout amount={5.00} setHook={setStripeHook} delayedCharge={true} completeFunc = {()=>{
+    <StripeCheckout amount={priceValue} setHook={setStripeHook} delayedCharge={true} completeFunc = {()=>{
         // navigation.navigate()
         const new_data = createChat();
         navigation.navigate("Page3", {data: new_data})
