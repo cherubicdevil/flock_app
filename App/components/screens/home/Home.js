@@ -586,6 +586,8 @@ const MiniCarouselFlocking = ({navigation, route}) => {
 
   var finalAr;
 
+  
+
   useEffect(()=>{
     fetchFlockables().then((ar) => {
       // setFinalAr(ar);
@@ -712,6 +714,21 @@ style={{flex: 1}}
 onLayout = {(event) => {
     // setViewHeight(event.nativeEvent.layout.height);
   }}><FeatherPanResponder navigation={navigation} route={route} data={finalAr} viewHeight={Dimensions.get('window').height - 50- constants.NAVBARHEIGHT-80} type="flock" /></View>
+    {keyArrFlock.length == 0?<View style={{flex: 1, backgroundColor: constants.PINK_BACKGROUND, justifyContent: 'center', alignItems: 'center'}}>
+      <Text>No flocks currently.</Text>
+      <TouchableOpacity style={{padding: 10, backgroundColor: constants.LAVENDER, borderRadius: 20, margin: 10}} onPress={()=>{
+        navigation.navigate("for you")
+      }}>
+        <Text>Find a product to flock...</Text>
+      </TouchableOpacity>
+      <Text>or</Text>
+      <TouchableOpacity style={{padding: 10, backgroundColor: constants.GREYBLUE, borderRadius: 20, margin: 10}} onPress={()=>{
+        navigation.navigate("CamScreen")
+      }}>
+        <Text>Search online</Text>
+        </TouchableOpacity>
+    </View>
+  :<></>}
 </>
 };
 
