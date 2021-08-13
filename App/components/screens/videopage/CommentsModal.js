@@ -151,7 +151,7 @@ const CommentsModal = ({modalVisible, data, toggleFunc}) => {
     firebase
       .firestore()
       .collection('comments')
-      .where('cluck', '==', `${data.id}`)
+      .where('cluck', '==', data.id)
       .orderBy('date', 'desc')
       .limit(50)
       .get()
@@ -168,7 +168,7 @@ const CommentsModal = ({modalVisible, data, toggleFunc}) => {
           if (counter == n) {
             //console.log('THIS IS ARRRRR', ar);
             //console.log('THIS IS TRUE ID: ', data.id);
-            if (didMount) {
+            if (true) {
               setComments(ar);
             }
             //console.log(comments[0]);
@@ -282,17 +282,16 @@ const CommentsModal = ({modalVisible, data, toggleFunc}) => {
   // }
 
   useEffect(() => {
-    if (modalVisible) {
     fetchComments();
     //setSendFunction(() => sendOgComment);
     sendFunction = sendOgComment;
     //console.log(sendOgComment);
     //setModalVis(modalVisible);
     setDidMount(true);
-    }
+    
     
     return () => setDidMount(false);
-  }, [modalVisible]);
+  }, []);
 
   if (!didMount) {
     return null;
