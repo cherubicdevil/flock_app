@@ -569,6 +569,21 @@ const MiniCarouselRenting = ({navigation, route}) => {
   onLayout = {(event) => {
     // setViewHeight(event.nativeEvent.layout.height);
   }}><FeatherPanResponder navigation={navigation} route={route} data={finalAr} viewHeight={Dimensions.get('window').height - 80 - 50 - constants.NAVBARHEIGHT} type="rent" /></View>
+      {keyArrRent.length == 0?<View style={{flex: 1, backgroundColor: constants.PINK_BACKGROUND, justifyContent: 'center', alignItems: 'center'}}>
+      <Text>No completed flocks available to borrow from.</Text>
+      <TouchableOpacity style={{padding: 10, backgroundColor: constants.LAVENDER, borderRadius: 20, margin: 10}} onPress={()=>{
+        navigation.navigate("flocks")
+      }}>
+        <Text>Join an ongoing flock</Text>
+      </TouchableOpacity>
+      <Text>or</Text>
+      <TouchableOpacity style={{padding: 10, backgroundColor: constants.GREYBLUE, borderRadius: 20, margin: 10}} onPress={()=>{
+        navigation.navigate("CamScreen")
+      }}>
+        <Text>Search online</Text>
+        </TouchableOpacity>
+    </View>
+  :<></>}
   </>;
 
 };

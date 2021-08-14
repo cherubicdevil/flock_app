@@ -210,7 +210,7 @@ const enterFlockFunc = () => {
     chatIds: firebase.firestore.FieldValue.arrayUnion(data.id)
   });
   // data.maximums[au.currentUser.uid] = (initialPercent/100 * parseFloat(data.product.price * 1.4)).toFixed(2);
-  data.maximums[au.currentUser.uid] = (5/100 * parseFloat(data.product.price * 1.4)).toFixed(2);
+  data.maximums[au.currentUser.uid] = (priceStartPercent * parseFloat(data.product.price * 1.4)).toFixed(2);
   db.collection('chatGroups').doc(data.id).update({
     memberIds: firebase.firestore.FieldValue.arrayUnion(memberInfo.uid),
     maximums: {...data.maximums},
@@ -453,9 +453,13 @@ return <ScrollView  style={{marginLeft: 15, overflow: 'visible', backgroundColor
         <ChatComponent navigation={navigation} route={route} socket={socket} />
  </View>
       <JoinDialog navigation={navigation} route={route} data={route.params.data} creditModal={creditModal} setCreditModal={setCreditModal} initialDialog={initialDialog} setInitialDialog={setInitialDialog} setPriceStartPercent={setPriceStartPercent} setPartOf = {setPartOf} maxPercent = {remainingPercent} productPrice={route.params.data.product.price} remainingPercent={remainingPercent} />
-      {partOf?<>
+      {partOf?route.params.data.memberIds.length <= 1?<></>:<>
         
       <TouchableOpacity onPress={()=>{
+        if (route.params.data.memberIds.length == 1) {
+          Alert.alert("You are the only one in this flock. You can't leave")
+          return;
+        }
         console.log('leave flock');
               db.collection('users').doc(au.currentUser.uid).update({
         chatIds: firebase.firestore.FieldValue.arrayRemove(route.params.data.id)
@@ -483,7 +487,7 @@ return <ScrollView  style={{marginLeft: 15, overflow: 'visible', backgroundColor
     
       </Wrapper>
       {/* <PreCheckout visible={creditModal} /> */}
-      <StripeCheckout amount={5.00} setHook={setStripeHook} delayedCharge={true} completeFunc = {()=>{
+      <StripeCheckout amount={(1.4 *priceStartPercent/100 * route.params.data.product.price).toFixed(2)} setHook={setStripeHook} delayedCharge={true} completeFunc = {()=>{
         // navigation.navigate()
         enterFlockFunc();
     }}>
@@ -501,14 +505,16 @@ return <ScrollView  style={{marginLeft: 15, overflow: 'visible', backgroundColor
           setCreditEmail(text.toLowerCase());
          }}
          />
-         <TouchableOpacity onPress={()=>{
+         <TouchableOpacity 
+         style={{margin: 5, backgroundColor: constants.ORANGE, borderRadius: 20, padding: 5, justifyContent: 'center',alignItems: 'center'}}
+         onPress={()=>{
            setCreditModal(false);
            setTimeout(()=> {
             stripeHook();
            }, 800);
          }}>
-           <Text>
-             Pay
+           <Text style={{color: 'white'}}>
+             Proceed
            </Text>
          </TouchableOpacity>
          </View>
@@ -517,7 +523,7 @@ return <ScrollView  style={{marginLeft: 15, overflow: 'visible', backgroundColor
               * Your credit card will only be charged if combined ownership reaches 100%. You can change how much you want to pay any time before the flock takes off.
        </Text>
        <Text style={{marginTop: 20}}>
-         ** Your email is necessary for receiving receipts and tracking updates.
+         ** Your email is necessary for receiving receipts and reporting status of the flock.
        </Text>
        </View>
        
@@ -593,7 +599,7 @@ const JoinDialog = ({navigation, route, data, creditModal, setCreditModal, initi
       enterFlockFunc();
       setInitialDialog(false);
     } else {
-      // setPriceStartPercent(initialPercent);
+      setPriceStartPercent(initialPercent);
       setInitialDialog(false);
       setTimeout(()=>{
         setCreditModal(true);

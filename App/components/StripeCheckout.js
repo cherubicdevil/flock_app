@@ -19,7 +19,7 @@ import AnimatedModal from 'App/components/AnimatedModal';
 import ShippingModal from 'App/components/ShippingModal';
 import {useSelector, useDispatch} from 'react-redux';
 import {confirmPaymentSheetPayment, useStripe} from '@stripe/stripe-react-native';
-
+import {throttle, debounce} from 'lodash';
 import {constants} from 'App/constants';
 
 const StripeCheckout = ({amount, children, completeFunc=()=>{}, setHook=()=>{}, hookDependency = [], delayedCharge=false}) => {
@@ -31,7 +31,9 @@ const StripeCheckout = ({amount, children, completeFunc=()=>{}, setHook=()=>{}, 
     const dispatch = useDispatch();
     const select = useSelector(state=>state.userInfo);
 
-    
+    const [debounceStack, setDebounceStack] = useState([])
+
+    console.log('amount', amount)
 
     const fetchPaymentSheetParams = async () => {
     const idIsNone = select.customerId === "none" || select.customerId === undefined;
@@ -48,7 +50,7 @@ const StripeCheckout = ({amount, children, completeFunc=()=>{}, setHook=()=>{}, 
             body: JSON.stringify(bodyData)
         });
     }  catch (err) {
-        Alert.alert("somehting went wrong")
+        Alert.alert("Something went wrong")
     }
     const { paymentIntent, ephemeralKey, customer } = await response.json();
 
@@ -63,7 +65,8 @@ const StripeCheckout = ({amount, children, completeFunc=()=>{}, setHook=()=>{}, 
     };
     };
 
-    const initializePaymentSheet = async () => {
+    const initializePaymentSheet = debounce(async () => {
+        console.log('initializing payment sheet')
     const {
         paymentIntent,
         ephemeralKey,
@@ -79,7 +82,7 @@ const StripeCheckout = ({amount, children, completeFunc=()=>{}, setHook=()=>{}, 
         setClientSecret(paymentIntent);
         // setLoading(true);
     }
-    };
+    }, 1000);
 
     const openPaymentSheet = async () => {
     const { error } = await presentPaymentSheet({ clientSecret });
@@ -98,10 +101,38 @@ const StripeCheckout = ({amount, children, completeFunc=()=>{}, setHook=()=>{}, 
  
     // console.log('reender stripehcekout')
     useEffect(() => {
+        while (debounceStack.length > 0) {
+            initializePaymentSheet.cancel();
+            console.log('cancelling');
+            debounceStack.shift();
+        }
+        (async ()=>{
+
+    
     initializePaymentSheet();
+    debounceStack.push("j")
+    setTimeout(()=> {
+        if (debounceStack.length == 0) {
+            initializePaymentSheet.flush();
+        }
+    }, 1000);
+
+})();
+
+
+
+    return () => {
+        console.log("unmounting");
+        while (debounceStack.length > 0) {
+            initializePaymentSheet.cancel();
+            console.log('cancelling');
+            debounceStack.shift();
+        }
+        }
+    
     
     // setHook([()=>console.log('fasdfasdfa;lfaskfdja;')])
-    }, []);
+    }, [amount]);
 
     useEffect(()=>{
         console.log('changing hook function');

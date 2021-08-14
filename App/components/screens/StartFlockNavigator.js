@@ -148,6 +148,7 @@ const Page2=({navigation, route})=>{
         const user  = firebase.auth().currentUser;
         const salt = Math.random(100).toFixed(10);
         route.params.product.id = route.params.flockId;
+        console.log('line 151')
         const data = {
             specifications: route.params.data.specifications,
             description: route.params.data.description,
@@ -167,7 +168,14 @@ const Page2=({navigation, route})=>{
         const maximums = {};
         maximums[user.uid] = route.params.data.maxPrice;
         data["maximums"] = maximums;
-        firebase.firestore().collection("chatGroups").doc(flockId).set(data).then((docRef)=>{
+        console.log('line 171', flockId)
+        const chatGroupsColl = firebase.firestore().collection("chatGroups")
+        console.log('line 171');
+        const afterDoc = chatGroupsColl.doc(`${flockId}`)
+        console.log('after doc')
+        const afterSet = afterDoc.set(data)
+        console.log('line 173')
+        afterSet.then((docRef)=>{
             db.collection('users').doc(firebase.auth().currentUser.uid).update({
                 chatIds: firebase.firestore.FieldValue.arrayUnion(docRef.id)
               }).catch(err=>{
@@ -249,6 +257,7 @@ const Page2=({navigation, route})=>{
     </ContentWrapper>
     <StripeCheckout amount={priceValue} setHook={setStripeHook} delayedCharge={true} completeFunc = {()=>{
         // navigation.navigate()
+        console.log('in complete func');
         const new_data = createChat();
         navigation.navigate("Page3", {data: new_data})
     }}/>
