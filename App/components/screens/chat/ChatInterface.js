@@ -453,7 +453,7 @@ return <ScrollView  style={{marginLeft: 15, overflow: 'visible', backgroundColor
         <ChatComponent navigation={navigation} route={route} socket={socket} />
  </View>
       <JoinDialog navigation={navigation} route={route} data={route.params.data} creditModal={creditModal} setCreditModal={setCreditModal} initialDialog={initialDialog} setInitialDialog={setInitialDialog} setPriceStartPercent={setPriceStartPercent} setPartOf = {setPartOf} maxPercent = {remainingPercent} productPrice={route.params.data.product.price} remainingPercent={remainingPercent} />
-      {partOf?route.params.data.memberIds.length <= 1?<></>:<>
+      {partOf?route.params.data.memberIds.length <= 1 || true?<></>:<>
         
       <TouchableOpacity onPress={()=>{
         if (route.params.data.memberIds.length == 1) {

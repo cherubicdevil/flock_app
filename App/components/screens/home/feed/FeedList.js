@@ -292,6 +292,9 @@ var testing2 = testing;
                   
                 })
               })
+              setTimeout(()=>{
+                scrollRef.current.scrollTo(0);
+              }, 1000);
             }
 
           }}>

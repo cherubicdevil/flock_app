@@ -76,7 +76,8 @@ const FlockReserve = ({navigation, route}) => {
         {/* </View> */}
         <TouchableOpacity 
       hitSlop={{top: 30, bottom: 30, left: 30, right: 30}}
-      style={{resizeMode: 'cover', zIndex: 50, height: 30, width: 50,position: 'absolute', top: 40, left: 30}} onPress={navigation.goBack}><Icon color={constants.DARKGREY} name="chevron-left" size={25} /></TouchableOpacity>
+      style={{backgroundColor: 'rgba(255,255,255,0.5)', padding: 5, paddingRight: 8, borderRadius: 20, 
+        resizeMode: 'cover', zIndex: 50, position: 'absolute', top: 40, left: 30}} onPress={navigation.goBack}><Icon color={constants.DARKGREY} name="chevron-left" size={25} /></TouchableOpacity>
         <ScrollView 
         showsVerticalScrollIndicator={false}
         style={{height:500, width: '100%', flex:1, backgroundColor: constants.PINK_BACKGROUND}}>

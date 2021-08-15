@@ -35,7 +35,7 @@ const ShareSocial = ({product, data={}, flockId, shareApp=false, showImage=true,
         <Text style={{fontFamily: constants.FONT, fontSize:20, paddingHorizontal: 15}}>
             Co-own this with me for <Text style={{textDecorationLine:'line-through'}}>${product.price}</Text> ${(parseFloat(product.price)/25 * 1.4).toFixed(2)}
         </Text>
-        <Text style={{fontFamily: constants.FONT, fontSize:20, paddingHorizontal: 15}}>search {<Text style={{color: 'black'}}>%{flockId.padStart(5,'0').substring(0,5)}</Text>} in app</Text>
+        <Text style={{fontFamily: constants.FONT, fontSize:20, paddingHorizontal: 15}}>search {<Text style={{color: 'black'}}>%{String(flockId).substring(0,5)}</Text>} in app</Text>
         <ResizeableImage source = {{uri: product.image}} wLimit={Dimensions.get('window').width} />
         <View style={{ position:'absolute',left: 0, top: 30}}>
 

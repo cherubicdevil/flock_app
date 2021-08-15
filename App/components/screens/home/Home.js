@@ -578,7 +578,7 @@ const MiniCarouselRenting = ({navigation, route}) => {
       </TouchableOpacity>
       <Text>or</Text>
       <TouchableOpacity style={{padding: 10, backgroundColor: constants.GREYBLUE, borderRadius: 20, margin: 10}} onPress={()=>{
-        navigation.navigate("CamScreen")
+        navigation.navigate("CamScreen", {data:[]})
       }}>
         <Text>Search online</Text>
         </TouchableOpacity>
@@ -738,7 +738,7 @@ onLayout = {(event) => {
       </TouchableOpacity>
       <Text>or</Text>
       <TouchableOpacity style={{padding: 10, backgroundColor: constants.GREYBLUE, borderRadius: 20, margin: 10}} onPress={()=>{
-        navigation.navigate("CamScreen")
+        navigation.navigate("CamScreen", {data:[]})
       }}>
         <Text>Search online</Text>
         </TouchableOpacity>

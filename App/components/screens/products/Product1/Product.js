@@ -247,24 +247,30 @@ if (guest) {return <></>};
   };
 
   const renderBackOrClose = () => {
-    if (!route.params.tutorial) { //  means its from startflock
+//     var goBackFunc = route.params.tutorial?()=>{
+//         navigation.dispatch(
+// CommonActions.reset({
+// index: 0,
+// routes: [
+//   { name: 'Carousel' },
+// ],
+// })
+//         );
+// }:navigation.goBack;
+
+var goBackFunc = navigation.goBack;
+    
+
       return <TouchableOpacity 
       hitSlop={{top: 30, bottom: 30, left: 30, right: 30}}
-      style={{resizeMode: 'cover', zIndex: 50, height: 30, width: 50,position: 'absolute', top: 40, left: 30}} onPress={navigation.goBack}><Icon color={constants.DARKGREY} name="chevron-left" size={25} /></TouchableOpacity>
-    } else {
-      return <TouchableOpacity
-      hitSlop={{top: 30, bottom: 30, left: 30, right: 30}}
-      style={{resizeMode: 'cover', zIndex: 50, height: 30, width: 50,position: 'absolute', top: 40, left: 30}} onPress={()=>{
-                  navigation.dispatch(
-        CommonActions.reset({
-          index: 0,
-          routes: [
-            { name: 'Carousel' },
-          ],
-        })
-                  );
-      }}><Icon name="times" size={35} color={constants.LIGHTGREY} /></TouchableOpacity>
-    }
+      style={{backgroundColor: 'rgba(255,255,255,0.5)',
+        resizeMode: 'cover', zIndex: 50,position: 'absolute', top: 40, left: 30, padding:5, paddingRight: 8,borderRadius: 20}} onPress={goBackFunc}>
+        <Icon color={constants.LAVENDER} name="chevron-left" size={25} 
+        borderColor="black"
+        borderWidth={1}
+        style={{shadowColor:'white', shadowOpacity:0.5, shadowRadius:20, }}
+        /></TouchableOpacity>
+    
   }
   const randomId = (Math.random()*10000).toFixed(0);
   const membersFlocking = flockAr.reduce((total, item)=>total + item.members.length, 0);
@@ -390,7 +396,7 @@ if (guest) {return <></>};
                 <TouchableOpacity 
                 hitSlop={{top: 30, bottom: 30, left: 30, right: 30}}
                 onPress={()=>{
-                  navigation.navigate('ShareSocial', {product:routeProduct, data:{}, flockId: routeFlockId})
+                  navigation.navigate('ShareSocial', {product:routeProduct, data:{}, flockId: route.params.id})
                 }}>
                 <Image 
                 style={{width: 35, height: 35, aspectRatio:1}}
