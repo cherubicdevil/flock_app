@@ -145,13 +145,16 @@ const CommentsModal = ({modalVisible, data, toggleFunc}) => {
       });
   };
   const fetchComments = () => {
+    // if (!data.id) {
+    //   return;
+    // }
     console.log('fetching comments', data.id);
     const ar = [];
     var counter = 0;
     firebase
       .firestore()
       .collection('comments')
-      .where('cluck', '==', data.id)
+      .where('cluck', '==', data.id || data.objectID)
       .orderBy('date', 'desc')
       .limit(50)
       .get()

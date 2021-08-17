@@ -206,9 +206,9 @@ const uploadImage = async ({data, filename, uri}) => {
 
 const Profile = ({navigation}) => {
 
-  useEffect(()=>{
-    navigation.navigate("Disclaimer");
-  },[])
+  // useEffect(()=>{
+  //   navigation.navigate("Disclaimer");
+  // },[])
   const [openModal, setOpenModal] = useState(false);
   const select = useSelector(state=>state.userInfo);
 
@@ -406,9 +406,9 @@ const Profile = ({navigation}) => {
           {renderFormBox(0.5, "Email", "email", "email", email, setEmail, 1)}
         </View>
         </View>
-<SmartCheckout 
+{/* <SmartCheckout 
 navigation={navigation}
-confirmFunc={confirmFunc} cancelFunc={cancelFunc} billingOnly={false} shippingOnly={false} />
+confirmFunc={confirmFunc} cancelFunc={cancelFunc} billingOnly={false} shippingOnly={false} /> */}
         
       </ScrollView>
     </SafeAreaView>
