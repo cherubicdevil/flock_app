@@ -105,7 +105,7 @@ const PriceSlider = ({id, priceShareInitialPercent, completeFunc=()=>{}, product
         </View>:<View style={{opacity:0,padding: 10, marginLeft:30}} ><Text>Confirm</Text></View>}
       </View>
       <View style={{alignItems: 'center'}}>
-      <Text style={{color: constants.RED, alignText: 'center', padding:-20, height: 16, fontSize: 12, marginBottom: -10}}>{zeroWarning}
+      <Text style={{color: constants.RED, textAlign: 'center', padding:-20, height: 16, fontSize: 12, marginBottom: -10}}>{zeroWarning}
       </Text></View>
       <View style={{flexDirection: 'row', alignItems: 'center'}}>
 
@@ -167,7 +167,7 @@ const PriceSlider = ({id, priceShareInitialPercent, completeFunc=()=>{}, product
     smoothSnapped={true}
     sliderLength={maximumWidth * remainingPercent/100}
     step = {4}
-    min={0}
+    min={4}
     max={remainingPercent+2}
     markerSize={100}
     showSteps={true}

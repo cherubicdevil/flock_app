@@ -40,7 +40,9 @@ const StripeCheckout = ({amount, children, completeFunc=()=>{}, setHook=()=>{}, 
     console.log('id is none?', idIsNone, select.customerId);
     const bodyData = {custId: idIsNone?null:select?.customerId, amount: amount, captureMethod: delayedCharge?"manual":"automatic"};
 
+
     var response;
+
     try {
         response = await fetch(`${constants.API_URL}/payment-sheet`, {
             method: 'POST',
@@ -50,9 +52,15 @@ const StripeCheckout = ({amount, children, completeFunc=()=>{}, setHook=()=>{}, 
             body: JSON.stringify(bodyData)
         });
     }  catch (err) {
-        Alert.alert("Something went wrong")
+        Alert.alert("Please check your connection.");
+        console.log('something went wrong fetching payment')
+        console.log(err)
     }
-    const { paymentIntent, ephemeralKey, customer } = await response.json();
+    const { paymentIntent, ephemeralKey, customer, error } = await response.json();
+    if (error && error !== {}) {
+        Alert.alert("Sorry. Something went wrong.");
+        console.log("stripe server issue: ", error);
+    }
 
 
     // update customer id
@@ -108,9 +116,10 @@ const StripeCheckout = ({amount, children, completeFunc=()=>{}, setHook=()=>{}, 
         }
         (async ()=>{
 
-    
+    if (amount != 0) {    
     initializePaymentSheet();
     debounceStack.push("j")
+    }
     setTimeout(()=> {
         if (debounceStack.length == 0) {
             initializePaymentSheet.flush();

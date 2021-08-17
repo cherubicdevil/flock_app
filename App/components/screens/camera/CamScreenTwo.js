@@ -537,7 +537,7 @@ const CamScreenTwo = ({navigation, route}) => {
 <Dialog.Container visible={newImportVisible}>
 
             <Dialog.Title>Saved</Dialog.Title>
-            <Text style={{width: '80%', alignText: 'center',  alignSelf: 'center',fontFamily: constants.FONT, marginBottom: 15, marginTop: -10,}}>Find your pinned product in Profile.</Text>
+            <Text style={{width: '80%', textAlign: 'center',  alignSelf: 'center',fontFamily: constants.FONT, marginBottom: 15, marginTop: -10,}}>Find your pinned product in Profile.</Text>
 <Image source={require('App/Assets/Images/pinExample.png')} style={{width:'100%',height: 500,resizeMode: 'contain',}} />
 {/* <View style={{height: newImportVisible?50:0, width: 100, position: 'absolute', bottom: 30, backgroundColor: constants.ORANGE, alignSelf: 'center',justifyContent: 'center', borderRadius: 40}}>
   <Text style={{color: 'white', textAlign: 'center'}}>Got it</Text>

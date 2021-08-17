@@ -23,14 +23,14 @@
  */
 
 import {Dimensions} from 'react-native';
-import {DEBUG, STRIPE_ENDPOINT} from 'App/debug_consts';
+import {debug_consts} from 'App/debug_consts';
 
 
 
-console.log("ENDPOINT_STRIPE", STRIPE_ENDPOINT);
+console.log("ENDPOINT_STRIPE", debug_consts.STRIPE_ENDPOINT);
 export const constants = {
-  API_URL: STRIPE_ENDPOINT,
-  DEBUG: DEBUG,
+  API_URL: debug_consts.STRIPE_ENDPOINT,
+  DEBUG: debug_consts.DEBUG,
   BLUE_FADE: "rgba(166,184,205,0.5)",
   LIGHT_PURPLE_BG: '#8796b5',
   MENU_COLOR: 'rgba(239, 232, 237,1)',
@@ -87,15 +87,15 @@ export const constants = {
   BLUERGREY: '#7488b0',
   CHAT_ENDPOINT: 'https://enigmatic-bastion-86695.herokuapp.com/',
   PAY_ENDPOINT: 'https://protected-thicket-47492.herokuapp.com/', // ?price=&token=
-  RETR_CUST: STRIPE_ENDPOINT+'/retrieveCustomer/', // ?id=
-  RETR_CARD: STRIPE_ENDPOINT+'/retrieveCard/', // ?id=&card=
-  CHARGE_CUSTOMER: STRIPE_ENDPOINT+'/chargeCustomer', // ?id=&amount=
-  CHARGE_CUSTOMER_POST: STRIPE_ENDPOINT+'/chargeCustomerPost',
-  UPDATE_CUST: STRIPE_ENDPOINT+'/updateCustomer/', // post query
-  UPDATE_CARD: STRIPE_ENDPOINT+'/updateCard/', // post query
-  CREATE_CARD_SWITCH_DEFAULT: STRIPE_ENDPOINT+'/createCardSwitchDefault/', // post query
-  CHARGE_FLOCK_COMPLETE_ENDPOINT: STRIPE_ENDPOINT+'/chargeCustomerFlockComplete/',
-  CUSTOMER_ENDPOINT: STRIPE_ENDPOINT+'/createCustomer/', // ?token=
+  RETR_CUST: debug_consts.STRIPE_ENDPOINT+'/retrieveCustomer/', // ?id=
+  RETR_CARD: debug_consts.STRIPE_ENDPOINT+'/retrieveCard/', // ?id=&card=
+  CHARGE_CUSTOMER: debug_consts.STRIPE_ENDPOINT+'/chargeCustomer', // ?id=&amount=
+  CHARGE_CUSTOMER_POST: debug_consts.STRIPE_ENDPOINT+'/chargeCustomerPost',
+  UPDATE_CUST: debug_consts.STRIPE_ENDPOINT+'/updateCustomer/', // post query
+  UPDATE_CARD: debug_consts.STRIPE_ENDPOINT+'/updateCard/', // post query
+  CREATE_CARD_SWITCH_DEFAULT: debug_consts.STRIPE_ENDPOINT+'/createCardSwitchDefault/', // post query
+  CHARGE_FLOCK_COMPLETE_ENDPOINT: debug_consts.STRIPE_ENDPOINT+'/chargeCustomerFlockComplete/',
+  CUSTOMER_ENDPOINT: debug_consts.STRIPE_ENDPOINT+'/createCustomer/', // ?token=
   // CUSTOMER_ENDPOINT: 'http://localhost:5000/createCustomer/',
   ALGOLIA_SEARCH: '3a59c3ff5dd5ec3b1fc14e11a2044115',
   ALGOLIA_ID: 'QDYS7569GL',
