@@ -23,19 +23,11 @@
  */
 
 import {Dimensions} from 'react-native';
-<<<<<<< HEAD
 import {debug_consts} from 'App/debug_consts';
 
 
 
 console.log("ENDPOINT_STRIPE", debug_consts.STRIPE_ENDPOINT);
-=======
-import {DEBUG, STRIPE_ENDPOINT} from 'App/debug_consts';
-
-
-
-console.log("ENDPOINT_STRIPE", STRIPE_ENDPOINT);
->>>>>>> main
 export const constants = {
   API_URL: debug_consts.STRIPE_ENDPOINT,
   DEBUG: debug_consts.DEBUG,
