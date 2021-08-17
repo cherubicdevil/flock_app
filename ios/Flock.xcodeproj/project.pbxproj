@@ -28,6 +28,8 @@
 		24350EF9259D9642007A6D42 /* Nunito-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 24350EEA259D9641007A6D42 /* Nunito-Italic.ttf */; };
 		24350EFA259D9642007A6D42 /* Nunito-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 24350EEB259D9641007A6D42 /* Nunito-LightItalic.ttf */; };
 		24B0764125D7338D00002C17 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 24B0764025D7338D00002C17 /* GoogleService-Info.plist */; };
+		24C09BCA26C9D6F1000E3193 /* File3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24C09BC926C9D6F1000E3193 /* File3.swift */; };
+		24C09BE026C9E06D000E3193 /* File4.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24C09BDF26C9E06D000E3193 /* File4.swift */; };
 		24DF3B6F26924E16003B7944 /* Fix.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24DF3B6E26924E16003B7944 /* Fix.swift */; };
 		24DF3B7D26924EB4003B7944 /* Fix2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24DF3B7C26924EB4003B7944 /* Fix2.swift */; };
 		2D02E4BC1E0B4A80006451C7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
@@ -89,6 +91,8 @@
 		24350EEB259D9641007A6D42 /* Nunito-LightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Nunito-LightItalic.ttf"; sourceTree = "<group>"; };
 		24B0763F25D72E5C00002C17 /* testFBSDK.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = testFBSDK.entitlements; path = testFBSDK/testFBSDK.entitlements; sourceTree = "<group>"; };
 		24B0764025D7338D00002C17 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
+		24C09BC926C9D6F1000E3193 /* File3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File3.swift; sourceTree = "<group>"; };
+		24C09BDF26C9E06D000E3193 /* File4.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File4.swift; sourceTree = "<group>"; };
 		24DF3B6E26924E16003B7944 /* Fix.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fix.swift; sourceTree = "<group>"; };
 		24DF3B7C26924EB4003B7944 /* Fix2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fix2.swift; sourceTree = "<group>"; };
 		2D02E47B1E0B4A5D006451C7 /* testFBSDK-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "testFBSDK-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -179,6 +183,8 @@
 				24350C8F259D2278007A6D42 /* testFBSDK-Bridging-Header.h */,
 				24DF3B6E26924E16003B7944 /* Fix.swift */,
 				24DF3B7C26924EB4003B7944 /* Fix2.swift */,
+				24C09BC926C9D6F1000E3193 /* File3.swift */,
+				24C09BDF26C9E06D000E3193 /* File4.swift */,
 			);
 			name = testFBSDK;
 			sourceTree = "<group>";
@@ -753,10 +759,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				24DF3B7D26924EB4003B7944 /* Fix2.swift in Sources */,
+				24C09BCA26C9D6F1000E3193 /* File3.swift in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
 				24350C91259D2279007A6D42 /* File.swift in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 				24DF3B6F26924E16003B7944 /* Fix.swift in Sources */,
+				24C09BE026C9E06D000E3193 /* File4.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -849,7 +857,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = testFBSDK/testFBSDK.entitlements;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = Y98CX2C897;
 				ENABLE_BITCODE = NO;
 				HEADER_SEARCH_PATHS = "$(inherited)";
@@ -942,7 +950,7 @@
 					"\"${PODS_ROOT}/CocoaLibEvent/lib\"",
 					"\"${PODS_ROOT}/OpenSSL-Universal/ios/lib\"",
 				);
-				MARKETING_VERSION = 1.6.1;
+				MARKETING_VERSION = 1.7.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -965,12 +973,13 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = testFBSDK/testFBSDK.entitlements;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = Y98CX2C897;
+				ENABLE_BITCODE = NO;
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = testFBSDK/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.6.1;
+				MARKETING_VERSION = 1.7.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -1207,12 +1216,9 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
 				LD_RUNPATH_SEARCH_PATHS = "/usr/lib/swift $(inherited)";
-				LIBRARY_SEARCH_PATHS = (
-					"\"$(TOOLCHAIN_DIR)/usr/lib/swift/$(PLATFORM_NAME)\"",
-					"\"$(TOOLCHAIN_DIR)/usr/lib/swift-5.0/$(PLATFORM_NAME)\"",
-					"\"$(inherited)\"",
-				);
+				LIBRARY_SEARCH_PATHS = "\"$(inherited)\"";
 				MTL_ENABLE_DEBUG_INFO = NO;
+				ONLY_ACTIVE_ARCH = YES;
 				PRESERVE_DEAD_CODE_INITS_AND_TERMS = YES;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;

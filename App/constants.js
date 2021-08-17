@@ -23,10 +23,11 @@
  */
 
 import {Dimensions} from 'react-native';
+import {DEBUG} from 'App/debug_consts';
 
-const DEBUG = false;
+
 const STRIPE_ENDPOINT = DEBUG?'https://stripe-dev-yrj4czdimydbojgxeng.herokuapp.com':'https://protected-thicket-47492.herokuapp.com'
-
+console.log("ENDPOINT_STRIPE", STRIPE_ENDPOINT);
 export const constants = {
   API_URL: STRIPE_ENDPOINT,
   DEBUG: DEBUG,
