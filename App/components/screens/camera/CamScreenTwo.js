@@ -426,6 +426,7 @@ const CamScreenTwo = ({navigation, route}) => {
   .then(function(docRef) {
       console.log("Document written with ID: ", docRef.id);
       route.params.data.id = docRef.id;
+      navigation.navigate("Product", {album: route.params.data.product, data: route.params.data, id: docRef.id});
   })
   .catch(function(error) {
       console.error("Error adding document: ", error);
@@ -439,7 +440,7 @@ const CamScreenTwo = ({navigation, route}) => {
   //     ],
   //   })
   // );
-  navigation.navigate("Product", {album: route.params.data.product, data: route.params.data, id: route.params.data.id || Math.random() * 10000, tutorial: true});
+  
   };
 
   return (
@@ -764,10 +765,10 @@ const CamScreenTwo = ({navigation, route}) => {
     }}/>
     <Dialog.Button label="I'm Done" onPress={()=>{
         // send the email
-        console.log(newImport,'import')
+        openDialog(false);
       if (newImport) {
         console.log('openning new import visbe')
-        openDialog(false);
+        
         setTimeout(()=>{
           setNewImportVisible(true);
         }, 500);

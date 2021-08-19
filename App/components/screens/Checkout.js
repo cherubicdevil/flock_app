@@ -190,7 +190,7 @@ const Checkout = ({navigation, route}) => {
             style={{width: '100%'}}
             ></TextInput>
             </View>
-            <StripeCheckout amount={10.99}
+            <StripeCheckout amount={amount}
              setHook = {setStripeHook} 
              hookDependency = {[email]}
             completeFunc={confirmFunc}

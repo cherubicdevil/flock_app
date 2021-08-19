@@ -145,9 +145,9 @@ const CommentsModal = ({modalVisible, data, toggleFunc}) => {
       });
   };
   const fetchComments = () => {
-    // if (!data.id) {
-    //   return;
-    // }
+    if (!(data.id || data.objectID) ) {
+      return;
+    }
     console.log('fetching comments', data.id);
     const ar = [];
     var counter = 0;
@@ -158,6 +158,7 @@ const CommentsModal = ({modalVisible, data, toggleFunc}) => {
       .orderBy('date', 'desc')
       .limit(50)
       .get()
+
       .then((querySnapshot) => {
         //console.log(querySnapshot.getKey());
         const n = querySnapshot.size;
