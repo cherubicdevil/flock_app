@@ -273,7 +273,7 @@ var goBackFunc = navigation.goBack;
     
   }
   const randomId = (Math.random()*10000).toFixed(0);
-  const membersFlocking = flockAr.reduce((total, item)=>total + item.members.length, 0);
+  const membersFlocking = flockAr.reduce((total, item)=>total + item.memberIds.length, 0);
     return (
       <>
       {/* <Wrapper> */}

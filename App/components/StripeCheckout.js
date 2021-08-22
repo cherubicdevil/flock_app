@@ -99,8 +99,8 @@ const StripeCheckout = ({amount, children, completeFunc=()=>{}, setHook=()=>{}, 
         Alert.alert(`Error code: ${error.code}`, error.message);
         } else {
         // Alert.alert('Success', 'Your order is confirmed!');
-        console.log("PAYMENT SHEET");
-        completeFunc();
+        console.log("PAYMENT SHEET", clientSecret);
+        // completeFunc(clientSecret);
         }
     
     // see below

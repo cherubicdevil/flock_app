@@ -143,7 +143,7 @@ const Page2=({navigation, route})=>{
     const maxPricePercentage = Math.round(100 * parseFloat(initialMax) / (1.4 * parseFloat(product.price)));
     data['maxPrice'] = priceValue;
 
-    const createChat = ()=> {
+    const createChat = (paymentIntentId)=> {
         const flockId = route.params.flockId;
         const user  = firebase.auth().currentUser;
         const salt = Math.random(100).toFixed(10);
@@ -159,8 +159,9 @@ const Page2=({navigation, route})=>{
           productTitle: route.params.product.title,
           messages: [],
           time: getCurrentTime(),
-          members: [{name: user.displayName, uid: user.uid}],
+          members: [{name: user.displayName, id: user.uid}],
           memberIds: [user.uid],
+          paymentIntents: {[user.uid]: paymentIntentId},
           likes: 0,
           comments: 0,
           id: route.params.flockId,
@@ -255,10 +256,10 @@ const Page2=({navigation, route})=>{
     </AnimatedModal>
     </View>
     </ContentWrapper>
-    <StripeCheckout amount={priceValue} setHook={setStripeHook} delayedCharge={true} completeFunc = {()=>{
+    <StripeCheckout amount={priceValue} setHook={setStripeHook} delayedCharge={true} completeFunc = {(clientSecret)=>{
         // navigation.navigate()
         console.log('in complete func');
-        const new_data = createChat();
+        const new_data = createChat(clientSecret);
         navigation.navigate("Page3", {data: new_data})
     }}/>
 </View>
