@@ -28,6 +28,7 @@ const StripeCheckout = ({amount, children, completeFunc=()=>{}, setHook=()=>{}, 
     const { initPaymentSheet, presentPaymentSheet } = useStripe();
     const [loading, setLoading] = useState(false);
     const [clientSecret, setClientSecret] = useState("");
+    const [paymentIntentId, setPaymentId] = useState("");
     const dispatch = useDispatch();
     const select = useSelector(state=>state.userInfo);
 
@@ -56,7 +57,7 @@ const StripeCheckout = ({amount, children, completeFunc=()=>{}, setHook=()=>{}, 
         console.log('something went wrong fetching payment')
         console.log(err)
     }
-    const { paymentIntent, ephemeralKey, customer, error } = await response.json();
+    const { paymentId, paymentIntent, ephemeralKey, customer, error } = await response.json();
     if (error && error !== {}) {
         Alert.alert("Sorry. Something went wrong.");
         console.log("stripe server issue: ", error);
@@ -67,6 +68,7 @@ const StripeCheckout = ({amount, children, completeFunc=()=>{}, setHook=()=>{}, 
     dispatch({type:'UPDATE_DATA_UPLOAD', payload: ["customerId", null, null, customer]});
 
     return {
+        paymentId,
         paymentIntent,
         ephemeralKey,
         customer,
@@ -76,10 +78,12 @@ const StripeCheckout = ({amount, children, completeFunc=()=>{}, setHook=()=>{}, 
     const initializePaymentSheet = debounce(async () => {
         console.log('initializing payment sheet')
     const {
+        paymentId,
         paymentIntent,
         ephemeralKey,
         customer,
     } = await fetchPaymentSheetParams();
+    console.log("MY PEYMENT ID", paymentIntent)
 
     const { error } = await initPaymentSheet({
         customerId: customer,
@@ -88,19 +92,24 @@ const StripeCheckout = ({amount, children, completeFunc=()=>{}, setHook=()=>{}, 
     });
     if (!error) {
         setClientSecret(paymentIntent);
+        console.log('setting payment id', paymentId)
+        setPaymentId(paymentId);
         // setLoading(true);
     }
     }, 1000);
 
-    const openPaymentSheet = async () => {
+    const openPaymentSheet = async (context={}) => {
+        console.log("HI?")
+        console.log("PAYMENT SHEET", paymentIntentId);
+        console.log("UH", clientSecret)
     const { error } = await presentPaymentSheet({ clientSecret });
         if (error) {
             console.log('something went wrong')
         Alert.alert(`Error code: ${error.code}`, error.message);
         } else {
         // Alert.alert('Success', 'Your order is confirmed!');
-        console.log("PAYMENT SHEET", clientSecret);
-        // completeFunc(clientSecret);
+        context['paymentIntentId']=paymentIntentId;
+        completeFunc(context);
         }
     
     // see below
@@ -145,11 +154,13 @@ const StripeCheckout = ({amount, children, completeFunc=()=>{}, setHook=()=>{}, 
 
     useEffect(()=>{
         console.log('changing hook function');
-        setHook(()=>()=>{
-            console.log('opening payment sheet')
-            openPaymentSheet()
+        console.log('pay', paymentIntentId)
+        setHook(()=>(context = {})=>{
+            console.log('opening payment sheet', context)
+            console.log("payment intent: ", paymentIntentId, "client secret", clientSecret);
+            openPaymentSheet(context)
         });
-    }, hookDependency)
+    }, [...hookDependency, paymentIntentId])
 
 
 

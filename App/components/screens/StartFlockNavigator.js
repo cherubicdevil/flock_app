@@ -143,7 +143,7 @@ const Page2=({navigation, route})=>{
     const maxPricePercentage = Math.round(100 * parseFloat(initialMax) / (1.4 * parseFloat(product.price)));
     data['maxPrice'] = priceValue;
 
-    const createChat = (paymentIntentId)=> {
+    const createChat = (context)=> {
         const flockId = route.params.flockId;
         const user  = firebase.auth().currentUser;
         const salt = Math.random(100).toFixed(10);
@@ -161,7 +161,7 @@ const Page2=({navigation, route})=>{
           time: getCurrentTime(),
           members: [{name: user.displayName, id: user.uid}],
           memberIds: [user.uid],
-          paymentIntents: {[user.uid]: paymentIntentId},
+          paymentIntents: {[user.uid]: context.paymentIntentId},
           likes: 0,
           comments: 0,
           id: route.params.flockId,

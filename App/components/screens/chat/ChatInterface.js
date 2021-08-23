@@ -203,8 +203,9 @@ function ChatInterface({route, navigation}) {
     }
   };
 
-const enterFlockFunc = () => {
+const enterFlockFunc = (context) => {
   const data = route.params.data;
+  console.log('contentxt', context);
   const memberInfo = {name: au.currentUser.displayName, uid: au.currentUser.uid};
   db.collection('users').doc(au.currentUser.uid).update({
     chatIds: firebase.firestore.FieldValue.arrayUnion(data.id)
@@ -214,6 +215,7 @@ const enterFlockFunc = () => {
   db.collection('chatGroups').doc(data.id).update({
     memberIds: firebase.firestore.FieldValue.arrayUnion(memberInfo.uid),
     maximums: {...data.maximums},
+    paymentIntents: {...data.paymentIntents, [au.currentUser.uid]: context.paymentIntentId}
   });
   setPartOf(true);
   data.memberIds.push(au.currentUser.uid);
@@ -487,9 +489,10 @@ return <ScrollView  style={{marginLeft: 15, overflow: 'visible', backgroundColor
     
       </Wrapper>
       {/* <PreCheckout visible={creditModal} /> */}
-      <StripeCheckout amount={(1.4 *priceStartPercent/100 * route.params.data.product.price).toFixed(2)} setHook={setStripeHook} delayedCharge={true} completeFunc = {()=>{
+      <StripeCheckout amount={(1.4 *priceStartPercent/100 * route.params.data.product.price).toFixed(2)} setHook={setStripeHook} delayedCharge={true} completeFunc = {(context)=>{
         // navigation.navigate()
-        enterFlockFunc();
+        console.log('context', context)
+        enterFlockFunc(context);
     }}>
       <AnimatedModal upPercent="70%" colored={true} colors={[constants.ORANGE, constants.GREYORANGE]} nested={false} visible={creditModal} close={()=>setCreditModal(false)} navigation={navigation} 
      >
