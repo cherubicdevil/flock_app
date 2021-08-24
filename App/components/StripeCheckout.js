@@ -102,7 +102,8 @@ const StripeCheckout = ({amount, children, completeFunc=()=>{}, setHook=()=>{}, 
         console.log("HI?")
         console.log("PAYMENT SHEET", paymentIntentId);
         console.log("UH", clientSecret)
-    const { error } = await presentPaymentSheet({ clientSecret });
+        // await confirmPaymentSheetPayment({clientSecret});
+    const { error } = await presentPaymentSheet({ clientSecret});
         if (error) {
             console.log('something went wrong')
         Alert.alert(`Error code: ${error.code}`, error.message);

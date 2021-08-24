@@ -190,11 +190,12 @@ function ChatInterface({route, navigation}) {
       // customerId: customerId,
       chatId: route.params.data.id,
       maximums: route.params.data.maximums,
+      ...route.params.data
       // userId: au.currentUser.uid,
     }
     fetch(constants.CHARGE_FLOCK_COMPLETE_ENDPOINT, {
     method: 'POST',
-    body: JSON.stringify(postData),
+    body: JSON.stringify(route.params.data),
     headers: { 'Content-Type': 'application/json' }
 }).then(res => res.json())
   .then(json => console.log(json));
@@ -212,10 +213,11 @@ const enterFlockFunc = (context) => {
   });
   // data.maximums[au.currentUser.uid] = (initialPercent/100 * parseFloat(data.product.price * 1.4)).toFixed(2);
   data.maximums[au.currentUser.uid] = (priceStartPercent * parseFloat(data.product.price * 1.4)).toFixed(2);
+  data.paymentIntents[au.currentUser.uid] = context.paymentIntentId;
   db.collection('chatGroups').doc(data.id).update({
     memberIds: firebase.firestore.FieldValue.arrayUnion(memberInfo.uid),
-    maximums: {...data.maximums},
-    paymentIntents: {...data.paymentIntents, [au.currentUser.uid]: context.paymentIntentId}
+    maximums: data.maximums,
+    paymentIntents: data.paymentIntents,
   });
   setPartOf(true);
   data.memberIds.push(au.currentUser.uid);
