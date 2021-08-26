@@ -77,12 +77,14 @@ const StripeCheckout = ({amount, children, completeFunc=()=>{}, setHook=()=>{}, 
 
     const initializePaymentSheet = debounce(async () => {
         console.log('initializing payment sheet')
+        
     const {
         paymentId,
         paymentIntent,
         ephemeralKey,
         customer,
     } = await fetchPaymentSheetParams();
+    console.log('customer id', customer)
     console.log("MY PEYMENT ID", paymentIntent)
 
     const { error } = await initPaymentSheet({
@@ -103,12 +105,17 @@ const StripeCheckout = ({amount, children, completeFunc=()=>{}, setHook=()=>{}, 
         console.log("PAYMENT SHEET", paymentIntentId);
         console.log("UH", clientSecret)
         // await confirmPaymentSheetPayment({clientSecret});
-    const { error } = await presentPaymentSheet({ clientSecret});
+    const { error, paymentOption } = await presentPaymentSheet({ clientSecret });
+    console.log('payment option', paymentOption);
         if (error) {
             console.log('something went wrong')
         Alert.alert(`Error code: ${error.code}`, error.message);
         } else {
         // Alert.alert('Success', 'Your order is confirmed!');
+        if (paymentIntentId == "") {
+            Alert.alert("Could not complete payment.");
+            return;
+        }
         context['paymentIntentId']=paymentIntentId;
         completeFunc(context);
         }

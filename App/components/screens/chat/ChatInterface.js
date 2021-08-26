@@ -65,6 +65,11 @@ var eventify = function (arr, callback) {
   };
 };
 
+
+const getPercent = (top, bottom) => {
+  return 100 * top / bottom;
+}
+
 const updateCache = (id, messages) => {
   //data[id].messages = messages;
 };
@@ -122,15 +127,16 @@ function ChatInterface({route, navigation}) {
         if (m !== au.currentUser.uid) {
         remaining -= maximums[m];
 
-        theirPer += 100* maximums[m]/(route.params.data.product.price * 1.4)
+        theirPer += getPercent(maximums[m], route.params.data.product.price * 1.4)
         }
       }
       // console.log(remaining/route.params.data.product.price);
       // console.log('first set', Math.round(100 * remaining/route.params.data.product.price));
-      const remPer = Math.round(100 * remaining/(route.params.data.product.price * 1.4));
+      const remPer = Math.round(getPercent(remaining, route.params.data.product.price * 1.4));
       // setRemainingPercent(Math.round(100 * remaining/(route.params.data.product.price * 1.4)));
       setRemainingPercent(remPer);
-      const youPer = 100* maximums[au.currentUser.uid]/(route.params.data.product.price * 1.4);
+      const youPer = getPercent(maximums[au.currentUser.uid], route.params.data.product.price * 1.4);
+
       console.log(theirPer, youPer, maximums);
     }, err => {
       console.log(`Encountered error: ${err}`);
@@ -212,7 +218,7 @@ const enterFlockFunc = (context) => {
     chatIds: firebase.firestore.FieldValue.arrayUnion(data.id)
   });
   // data.maximums[au.currentUser.uid] = (initialPercent/100 * parseFloat(data.product.price * 1.4)).toFixed(2);
-  data.maximums[au.currentUser.uid] = (priceStartPercent * parseFloat(data.product.price * 1.4)).toFixed(2);
+  data.maximums[au.currentUser.uid] = (priceStartPercent/100 * parseFloat(data.product.price * 1.4)).toFixed(2);
   data.paymentIntents[au.currentUser.uid] = context.paymentIntentId;
   db.collection('chatGroups').doc(data.id).update({
     memberIds: firebase.firestore.FieldValue.arrayUnion(memberInfo.uid),
@@ -787,6 +793,7 @@ var didFlockTakeOff = (maximums, totalPrice) => {
     // entry = entry.replace("$","").replace("-","");
     sumTotal += parseFloat(entry);
   }
+  // return false;
   return sumTotal >= totalPrice;
 }
 var splitAlgorithm = (members, maximums, totalPrice) => {
