@@ -395,7 +395,7 @@ return <ScrollView  style={{marginLeft: 15, overflow: 'visible', backgroundColor
             
             {part?
             
-            route.params.data.completed?<></>:<PriceSlider id={route.params.data.id} key={Math.random()} othersPercent={100-remainingPercent} remainingPercent={Math.min(68,remainingPercent)} priceShare = {priceShare} priceShareInitialPercent={parseFloat(priceShare)/ parseFloat(route.params.data.product.price*1.4) * 100} completeFunc={completeFunc} productPrice={route.params.data.product.price} maximums={route.params.data.maximums} />
+            route.params.data.completed?<></>:<PriceSlider id={route.params.data.id} key={Math.random()} othersPercent={100-remainingPercent} remainingPercent={Math.min(68,remainingPercent)} priceShare = {priceShare} priceShareInitialPercent={parseFloat(priceShare)/ parseFloat(route.params.data.product.price*1.4) * 100} completeFunc={completeFunc} productPrice={route.params.data.product.price} maximums={route.params.data.maximums} paymentIntents = {route.params?.data?.paymentIntents} />
             :
             <PriceTextPreview remainingPercent={remainingPercent} productPrice={route.params.data.product.price} />
             }

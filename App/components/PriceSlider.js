@@ -45,8 +45,11 @@ import LinearGradient from 'react-native-linear-gradient';
 import Countdown from 'App/components/Countdown';
 
 
+const getPriceStringFromPercent = (percent, total) => {
+  return (percent/100 * total * 1.4).toFixed(2)
+}
 
-const PriceSlider = ({id, priceShareInitialPercent, completeFunc=()=>{}, productPrice, othersPercent, remainingPercent, maximums, setOutsideState=()=>{}, confirm=true, showInfo = true, initialSlider = false, maximumWidth=Dimensions.get('window').width *.55, showPlusMinus=true}) => {
+const PriceSlider = ({id, priceShareInitialPercent, completeFunc=()=>{}, productPrice, othersPercent, remainingPercent, maximums, paymentIntents, setOutsideState=()=>{}, confirm=true, showInfo = true, initialSlider = false, maximumWidth=Dimensions.get('window').width *.55, showPlusMinus=true}) => {
     console.log("priceSlider maximums", maximums);
     const [initialPercent, setInitialPercent] = useState(priceShareInitialPercent);
     const [pricePercent, setPricePercent] = useState(initialPercent);
@@ -92,13 +95,34 @@ const PriceSlider = ({id, priceShareInitialPercent, completeFunc=()=>{}, product
         <Text style={{fontSize: 18, color: 'black'}}>${(parseFloat(productPrice)*1.4 * pricePercent/100).toFixed(2)} ({pricePercent>remainingPercent?remainingPercent:pricePercent.toFixed(0)}%)</Text>
       </View>
       {changed && confirm?<View style={{backgroundColor: constants.DONE, marginLeft: 30, justifyContent: 'center', borderRadius: 40, padding:10}}>
-          <TouchableOpacity onPress={()=>{
+          <TouchableOpacity onPress={ async ()=>{
+            if (pricePercent > initialPercent) {
+                const postData = {
+                  amount: getPriceStringFromPercent(pricePercent, productPrice),
+                  paymentId: paymentIntents[au.currentUser.uid]
+                }
+
+              const result = await fetch(constants.CANCEL_AND_NEW, {
+                method: 'POST',
+                body: JSON.stringify(postData),
+                headers: { 'Content-Type': 'application/json' }
+            })
+            const {error, new_paymentId} = await result.json();
+            if (!error) {
+              Alert.alert("If you see multiple pending transactions in your bank account, don't worry. They will disappear within a few days.")
+              paymentIntents[au.currentUser.uid] = new_paymentId;
+            } else {
+              Alert.alert('Something went wrong. Please try again.')
+              console.log("Cancel and make new error: ", error);
+              return;
+            }
+            }
             setInitialPercent(pricePercent);
             console.log(select.customerId);
             maximums[au.currentUser.uid] = (pricePercent/100 * productPrice * 1.4).toFixed(2);
             console.log('maximums', maximums);
             completeFunc(select.customerId, maximums);
-            db.collection('chatGroups').doc(id).update({maximums: {...maximums}});
+            db.collection('chatGroups').doc(id).update({maximums: maximums, paymentIntents: paymentIntents});
             setChanged(false);
             
           }}><Text>Confirm</Text></TouchableOpacity>
