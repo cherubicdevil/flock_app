@@ -631,20 +631,42 @@ const CamScreenTwo = ({navigation, route}) => {
                     onMessageRef.current = false;
                   }, 3800)
               }}
+
+              allowsBackForwardNavigationGestures
+
+              onLoadEnd={()=>{
+                console.log('done loading');
+                console.log('repeated?', webviewRef.current.repeated)
+                webviewRef.current.postMessage();
+                // webviewRef.current.count = 0;
+                setTimeout(()=>{
+                  if (!onMessageRef.current && !webviewRef.current.repeated) {
+                    console.log('reload')
+                    webviewRef.current.repeated = true;
+                    webviewRef.current.reload();
+                  }
+                  else {
+                    webviewRef.current.repeated = false;
+                  }
+                  
+                  
+
+                  }, 1500);
+              }}
                 onNavigationStateChange={(webViewState) => {
-                  webviewRef.current.postMessage();
+                  // webviewRef.current.postMessage();
                   setUrlState(webViewState.url);
                   setSearchUrl(webViewState.url);
                   console.log('WEBVIEWTATE', webViewState);
                   
                   setCanGoBack(webViewState.canGoBack);
                   setCanGoForward(webViewState.canGoForward);
-                  setTimeout(()=>{
-                    if (!onMessageRef.current) {
-                    webviewRef.current.reload();
+                  // setTimeout(()=>{
+                  //   if (!onMessageRef.current) {
+                  //   webviewRef.current.reload();
 
-                    }
-                  }, 1500);
+                  //   }
+                  // }, 1500);
                 }}
                 style={{
                   backgroundColor: enlarge ? 'white' : 'transparent',
