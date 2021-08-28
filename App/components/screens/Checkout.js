@@ -84,10 +84,25 @@ const Checkout = ({navigation, route}) => {
     //   console.log(amount, route.params.subtotal, (parseFloat(shipMain) + parseFloat(route.params.subtotal)).toFixed(2))
 
 
-      const confirmFunc = ()=>{
+      const confirmFunc = (context)=>{
                           if (route.params.doneFunc) {
                     route.params.doneFunc();
                 }
+                const utcDate1 = new Date(Date.now());
+                db.collection('purchaseOrders').add({
+				// product: req.body.product,
+				amount: amount,
+                // user: au.currentUser.uid,
+                user: 12345,
+                ...context,
+                email: email,
+                product: route.params.product,
+				type: 'borrow',
+				groupId: "testing123",
+                createdAt: utcDate1,
+                date: utcDate1.toISOString,
+                dates: [route.params.start, route.params.end],
+			});
                 dispatch({type:'spendEggs', payload: reductionEggs});
                 navigation.navigate('Success', {amount: "$"+amount, period: route.params.start+ " to " +route.params.end, email: email});
                 // console.log('email before dispatch', email);
@@ -190,7 +205,7 @@ const Checkout = ({navigation, route}) => {
             style={{width: '100%'}}
             ></TextInput>
             </View>
-            <StripeCheckout amount={10.99}
+            <StripeCheckout amount={amount}
              setHook = {setStripeHook} 
              hookDependency = {[email]}
             completeFunc={confirmFunc}
@@ -230,7 +245,9 @@ const Checkout = ({navigation, route}) => {
         visible={shipModal}
         // state={info} setState={setInfo}
         setChanged={setChanged} close={()=>setShipModal(false)} 
-        completeFunc={stripeHook}
+        completeFunc={(shippingContext)=> {
+            stripeHook(shippingContext)
+        }}
          />
     </>
 };

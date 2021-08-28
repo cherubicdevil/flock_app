@@ -77,7 +77,7 @@ const FeedList= ({testArray, setTestArray, navigation, route, videoData, product
       fetchFlockables().then((ar2) => {
         fetchPostsFirst().then((ar3)=> {
           
-          setKeyVideoData(shuffle([...ar1, ...ar2,...ar3]))
+          setKeyVideoData([...keyVideoData, ...shuffle([...ar1, ...ar2,...ar3])])
         });
         
       })

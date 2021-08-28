@@ -16,6 +16,7 @@ import {
   KeyboardAvoidingView,
   ScrollView,
   FlatList,
+  Alert,
  
   SafeAreaView
 } from 'react-native';
@@ -33,6 +34,7 @@ import AnimatedModal from 'App/components/AnimatedModal';
 import LinearGradient from 'react-native-linear-gradient';
 import {pinLocalFunc} from 'App/utils';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {throttle, debounce} from 'lodash'
 
 
 const setStorage = async () => {
@@ -68,7 +70,7 @@ const getStorage = async () => {
 const jsCode = 'setTimeout(()=>window.ReactNativeWebView.postMessage(document.documentElement.innerHTML),500)';
 
 const cleanPrice = (price) => {
-  return price.replace(',','').replace('$','').replace(/[^0-9.]+/, '').split("$")[0]
+  return parseFloat(price.replace(',','').replace('$','').replace(/[^0-9.]+/, '').split("$")[0]).toFixed(2)
 }
 
 const CamScreenTwo = ({navigation, route}) => {
@@ -78,6 +80,8 @@ const CamScreenTwo = ({navigation, route}) => {
   const [loading, setLoading] = useState(false);
   var urlResult = "";
   const [htmlBody, setHtml] = useState("");
+  const [onMessageReceived, setOnMessageReceived] = useState(false);
+  const onMessageRef = useRef(false)
 
   const [newImport, setNewImport] = useState(true);
   const [newImportVisible, setNewImportVisible] = useState(false);
@@ -426,6 +430,7 @@ const CamScreenTwo = ({navigation, route}) => {
   .then(function(docRef) {
       console.log("Document written with ID: ", docRef.id);
       route.params.data.id = docRef.id;
+      navigation.navigate("Product", {album: route.params.data.product, data: route.params.data, id: docRef.id});
   })
   .catch(function(error) {
       console.error("Error adding document: ", error);
@@ -439,7 +444,7 @@ const CamScreenTwo = ({navigation, route}) => {
   //     ],
   //   })
   // );
-  navigation.navigate("Product", {album: route.params.data.product, data: route.params.data, id: route.params.data.id || Math.random() * 10000, tutorial: true});
+  
   };
 
   return (
@@ -508,6 +513,7 @@ const CamScreenTwo = ({navigation, route}) => {
               setErrorMessage("Add more detail to the item name.")
             } else {
               setErrorMessage("Looks like you missed something.")
+              Alert.alert("That doesn't look right.")
             }
         
             return;
@@ -613,6 +619,7 @@ const CamScreenTwo = ({navigation, route}) => {
                 ref={webviewRef}
                 injectedJavaScript={jsCode}
                 onMessage={event => {
+                  onMessageRef.current = true;
                   setHtml(event.nativeEvent.data);
                   // console.log('Received: ', event.nativeEvent.data)
                   // const $ = cheerio.load(event.nativeEvent.data);
@@ -620,15 +627,46 @@ const CamScreenTwo = ({navigation, route}) => {
                   // console.log(result);
                   // pinLocalFunc(event.nativeEvent.data);
                   console.log('got the html finally');
+                  setTimeout(()=>{
+                    onMessageRef.current = false;
+                  }, 3800)
+              }}
+
+              allowsBackForwardNavigationGestures
+
+              onLoadEnd={()=>{
+                console.log('done loading');
+                console.log('repeated?', webviewRef.current.repeated)
+                webviewRef.current.postMessage();
+                // webviewRef.current.count = 0;
+                setTimeout(()=>{
+                  if (!onMessageRef.current && !webviewRef.current.repeated) {
+                    console.log('reload')
+                    webviewRef.current.repeated = true;
+                    webviewRef.current.reload();
+                  }
+                  else {
+                    webviewRef.current.repeated = false;
+                  }
+                  
+                  
+
+                  }, 1500);
               }}
                 onNavigationStateChange={(webViewState) => {
-                  webviewRef.current.postMessage();
+                  // webviewRef.current.postMessage();
                   setUrlState(webViewState.url);
                   setSearchUrl(webViewState.url);
                   console.log('WEBVIEWTATE', webViewState);
                   
                   setCanGoBack(webViewState.canGoBack);
                   setCanGoForward(webViewState.canGoForward);
+                  // setTimeout(()=>{
+                  //   if (!onMessageRef.current) {
+                  //   webviewRef.current.reload();
+
+                  //   }
+                  // }, 1500);
                 }}
                 style={{
                   backgroundColor: enlarge ? 'white' : 'transparent',
@@ -651,6 +689,7 @@ const CamScreenTwo = ({navigation, route}) => {
                 <Text style={{color:'white', fontFamily: 'Noteworthy-Bold'}}>When you find a product you like</Text>
                 <Text style={{color:'white', fontFamily: 'Noteworthy-Bold',}}>Press to grab it.</Text>
                 </>}>
+                  
                 <TouchableOpacity 
         style={{paddingLeft: 15, paddingRight: 15, height: 40, justifyContent:'center', alignItems:'center', backgroundColor:constants.ORANGE, borderRadius: 50,}}
         onPress={()=>{
@@ -713,7 +752,9 @@ const CamScreenTwo = ({navigation, route}) => {
             
           <Text style={{color: 'white'}}>import</Text>
           </TouchableOpacity>
+          
           </TooltipFirst>
+          
           :<View style={{width: 120}} />}
                 <TouchableOpacity hitSlop={{left:30, top: 30, bottom: 30, right: 30}} onPress={()=>{
                   try {
@@ -764,10 +805,10 @@ const CamScreenTwo = ({navigation, route}) => {
     }}/>
     <Dialog.Button label="I'm Done" onPress={()=>{
         // send the email
-        console.log(newImport,'import')
+        openDialog(false);
       if (newImport) {
         console.log('openning new import visbe')
-        openDialog(false);
+        
         setTimeout(()=>{
           setNewImportVisible(true);
         }, 500);

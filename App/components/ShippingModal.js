@@ -96,7 +96,7 @@ const ShippingModal = ({close, completeFunc=()=>{}, visible = false}) => {
                         'zip': zip, 
                     }
                     dispatch({type: "UPDATE_DATA_UPLOAD", payload: ['shipping',null, null,shippingData]});
-                    completeFunc();
+                    completeFunc({shipping: shippingData});
                 }, 800)
                 
             }}>

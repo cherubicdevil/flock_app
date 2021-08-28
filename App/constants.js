@@ -95,6 +95,7 @@ export const constants = {
   UPDATE_CARD: debug_consts.STRIPE_ENDPOINT+'/updateCard/', // post query
   CREATE_CARD_SWITCH_DEFAULT: debug_consts.STRIPE_ENDPOINT+'/createCardSwitchDefault/', // post query
   CHARGE_FLOCK_COMPLETE_ENDPOINT: debug_consts.STRIPE_ENDPOINT+'/chargeCustomerFlockComplete/',
+  CANCEL_AND_NEW: debug_consts.STRIPE_ENDPOINT + '/cancelAndCreateNewPaymentIntent/',
   CUSTOMER_ENDPOINT: debug_consts.STRIPE_ENDPOINT+'/createCustomer/', // ?token=
   // CUSTOMER_ENDPOINT: 'http://localhost:5000/createCustomer/',
   ALGOLIA_SEARCH: '3a59c3ff5dd5ec3b1fc14e11a2044115',

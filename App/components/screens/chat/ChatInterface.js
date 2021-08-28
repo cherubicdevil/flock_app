@@ -65,6 +65,11 @@ var eventify = function (arr, callback) {
   };
 };
 
+
+const getPercent = (top, bottom) => {
+  return 100 * top / bottom;
+}
+
 const updateCache = (id, messages) => {
   //data[id].messages = messages;
 };
@@ -122,15 +127,16 @@ function ChatInterface({route, navigation}) {
         if (m !== au.currentUser.uid) {
         remaining -= maximums[m];
 
-        theirPer += 100* maximums[m]/(route.params.data.product.price * 1.4)
+        theirPer += getPercent(maximums[m], route.params.data.product.price * 1.4)
         }
       }
       // console.log(remaining/route.params.data.product.price);
       // console.log('first set', Math.round(100 * remaining/route.params.data.product.price));
-      const remPer = Math.round(100 * remaining/(route.params.data.product.price * 1.4));
+      const remPer = Math.round(getPercent(remaining, route.params.data.product.price * 1.4));
       // setRemainingPercent(Math.round(100 * remaining/(route.params.data.product.price * 1.4)));
       setRemainingPercent(remPer);
-      const youPer = 100* maximums[au.currentUser.uid]/(route.params.data.product.price * 1.4);
+      const youPer = getPercent(maximums[au.currentUser.uid], route.params.data.product.price * 1.4);
+
       console.log(theirPer, youPer, maximums);
     }, err => {
       console.log(`Encountered error: ${err}`);
@@ -190,11 +196,12 @@ function ChatInterface({route, navigation}) {
       // customerId: customerId,
       chatId: route.params.data.id,
       maximums: route.params.data.maximums,
+      ...route.params.data
       // userId: au.currentUser.uid,
     }
     fetch(constants.CHARGE_FLOCK_COMPLETE_ENDPOINT, {
     method: 'POST',
-    body: JSON.stringify(postData),
+    body: JSON.stringify(route.params.data),
     headers: { 'Content-Type': 'application/json' }
 }).then(res => res.json())
   .then(json => console.log(json));
@@ -203,17 +210,20 @@ function ChatInterface({route, navigation}) {
     }
   };
 
-const enterFlockFunc = () => {
+const enterFlockFunc = (context) => {
   const data = route.params.data;
+  console.log('contentxt', context);
   const memberInfo = {name: au.currentUser.displayName, uid: au.currentUser.uid};
   db.collection('users').doc(au.currentUser.uid).update({
     chatIds: firebase.firestore.FieldValue.arrayUnion(data.id)
   });
   // data.maximums[au.currentUser.uid] = (initialPercent/100 * parseFloat(data.product.price * 1.4)).toFixed(2);
-  data.maximums[au.currentUser.uid] = (priceStartPercent * parseFloat(data.product.price * 1.4)).toFixed(2);
+  data.maximums[au.currentUser.uid] = (priceStartPercent/100 * parseFloat(data.product.price * 1.4)).toFixed(2);
+  data.paymentIntents[au.currentUser.uid] = context.paymentIntentId;
   db.collection('chatGroups').doc(data.id).update({
     memberIds: firebase.firestore.FieldValue.arrayUnion(memberInfo.uid),
-    maximums: {...data.maximums},
+    maximums: data.maximums,
+    paymentIntents: data.paymentIntents,
   });
   setPartOf(true);
   data.memberIds.push(au.currentUser.uid);
@@ -385,7 +395,7 @@ return <ScrollView  style={{marginLeft: 15, overflow: 'visible', backgroundColor
             
             {part?
             
-            route.params.data.completed?<></>:<PriceSlider id={route.params.data.id} key={Math.random()} othersPercent={100-remainingPercent} remainingPercent={Math.min(68,remainingPercent)} priceShare = {priceShare} priceShareInitialPercent={parseFloat(priceShare)/ parseFloat(route.params.data.product.price*1.4) * 100} completeFunc={completeFunc} productPrice={route.params.data.product.price} maximums={route.params.data.maximums} />
+            route.params.data.completed?<></>:<PriceSlider id={route.params.data.id} key={Math.random()} othersPercent={100-remainingPercent} remainingPercent={Math.min(68,remainingPercent)} priceShare = {priceShare} priceShareInitialPercent={parseFloat(priceShare)/ parseFloat(route.params.data.product.price*1.4) * 100} completeFunc={completeFunc} productPrice={route.params.data.product.price} maximums={route.params.data.maximums} paymentIntents = {route.params?.data?.paymentIntents} />
             :
             <PriceTextPreview remainingPercent={remainingPercent} productPrice={route.params.data.product.price} />
             }
@@ -487,9 +497,10 @@ return <ScrollView  style={{marginLeft: 15, overflow: 'visible', backgroundColor
     
       </Wrapper>
       {/* <PreCheckout visible={creditModal} /> */}
-      <StripeCheckout amount={(1.4 *priceStartPercent/100 * route.params.data.product.price).toFixed(2)} setHook={setStripeHook} delayedCharge={true} completeFunc = {()=>{
+      <StripeCheckout amount={(1.4 *priceStartPercent/100 * route.params.data.product.price).toFixed(2)} setHook={setStripeHook} delayedCharge={true} completeFunc = {(context)=>{
         // navigation.navigate()
-        enterFlockFunc();
+        console.log('context', context)
+        enterFlockFunc(context);
     }}>
       <AnimatedModal upPercent="70%" colored={true} colors={[constants.ORANGE, constants.GREYORANGE]} nested={false} visible={creditModal} close={()=>setCreditModal(false)} navigation={navigation} 
      >
@@ -782,6 +793,7 @@ var didFlockTakeOff = (maximums, totalPrice) => {
     // entry = entry.replace("$","").replace("-","");
     sumTotal += parseFloat(entry);
   }
+  // return false;
   return sumTotal >= totalPrice;
 }
 var splitAlgorithm = (members, maximums, totalPrice) => {
