@@ -30,13 +30,15 @@ import FeedItem from './FeedItem';
 import HalfProduct from './HalfProduct';
 import {constants} from 'App/constants';
 import {shuffle} from 'App/utils';
-import {fetchAlbums, fetchProducts, mergeArrays, fetchFlockables, fetchRentables, fetchPosts, fetchPostsFirst, fetchRentablesFirst} from 'App/utils';
+import {resetLastVisible, fetchAlbums, fetchProducts, mergeArrays, fetchFlockables, fetchRentables, fetchPosts, fetchPostsFirst, fetchRentablesFirst} from 'App/utils';
 import LinearGradient from 'react-native-linear-gradient';
 import ProductBlurb from 'App/components/screens/home/feed/ProductBlurb';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 
 import ResizeableImage from 'App/components/ResizeableImage'
+var mounted = true;
+
 const width = Dimensions.get('window').width / 2 - 30;
 
 const ConsoleTest = React.memo(({id, item}) => {
@@ -67,21 +69,36 @@ const FeedItemLocal = React.memo(({al, navigation})=>{
   </TouchableOpacity>}, (prev, next)=>prev.al.id==next.al.id);
 
 const FeedList= ({testArray, setTestArray, navigation, route, videoData, productBlurb=null, KeyContext= null, flockOrNot, feedItemCustom}) => {
+  const [lastVisibles, setLastVisibles] = useState({rent: null, flock: null, post: null});
+
   useEffect(()=>{
     // fetchPostsFirst().then((ar)=>{
     //   // console.log(ar);
     // })
-
-    fetchRentablesFirst().then((ar1)=>{
+    mounted = true;
+    console.log('mounted')
+    fetchRentables(lastVisibles.rent).then(({ar:ar1, lastVisible: lvr})=>{
+      console.log("HELLO WORLD??")
       // setKeyArrRent([...keyArrRent,...ar]);
-      fetchFlockables().then((ar2) => {
-        fetchPostsFirst().then((ar3)=> {
-          
-          setKeyVideoData([...keyVideoData, ...shuffle([...ar1, ...ar2,...ar3])])
+      fetchFlockables(lastVisibles.flock).then(({ar:ar2, lastVisible: lvf}) => {
+        fetchPosts(lastVisibles.post).then(({ar:ar3, lastVisible: lvp})=> {
+          console.log('mounted', mounted, lastVisibles)
+          if (mounted) {
+            console.log('last visibles', lastVisibles)
+            lastVisibles.rent = lvr;
+            lastVisibles.flock = lvf;
+            lastVisibles.post = lvp;
+            // setLastVisibles({rent: lvr, flock: lvf, post: lvp})
+            setKeyVideoData([...keyVideoData, ...shuffle([...ar1, ...ar2,...ar3])])
+          }
+
         });
         
       })
     })
+    return () => {
+      mounted = false;
+    }
   },[]);
   const [myAr, setMyAr] = useState([]);
 
@@ -260,14 +277,20 @@ var testing2 = testing;
               0.6 * event.nativeEvent.contentSize.height - 200
             ) {
               console.log('should be fetching albums');
-              fetchRentables().then((ar)=>{
+              fetchRentables(lastVisibles.rent).then(({ar:ar1, lastVisible: lvr})=>{
                 // setKeyArrRent([...keyArrRent,...ar]);
-                console.log('fetchar1');
-                fetchFlockables().then((ar2) => {
-                  console.log('fetch ar2')
-                  fetchPosts().then((ar3)=> {
-                    // console.log('ar3', ar3);
-                    setKeyVideoData([...keyVideoData,...shuffle([...ar, ...ar2,...ar3])])
+                fetchFlockables(lastVisibles.flock).then(({ar:ar2, lastVisible: lvf}) => {
+                  fetchPosts(lastVisibles.post).then(({ar:ar3, lastVisible: lvp})=> {
+                    console.log('last visibles?', lastVisibles, lvr, lvf, lvp)
+                    if (mounted) {
+                      lastVisibles.rent = lvr;
+            lastVisibles.flock = lvf;
+            lastVisibles.post = lvp;
+            console.log('last BLE', lastVisibles)
+                      // setLastVisibles({rent: lvr, flock: lvf, post: lvp})
+                      setKeyVideoData([...keyVideoData, ...shuffle([...ar1, ...ar2,...ar3])])
+                    }
+          
                   });
                   
                 })
@@ -281,13 +304,19 @@ var testing2 = testing;
               startRefreshRotate();
               scrollRef.current.scrollTo(-40);
               console.log('refresh');
-              fetchRentablesFirst().then((ar1)=>{
+              fetchRentables().then(({ar:ar1, lastVisible: lvr})=>{
                 // setKeyArrRent([...keyArrRent,...ar]);
-                fetchFlockables().then((ar2) => {
-                  fetchPostsFirst().then((ar3)=> {
-                    
-                    setKeyVideoData(shuffle([...ar1, ...ar2,...ar3]))
-                    scrollRef.current.scrollTo(0);
+                fetchFlockables().then(({ar:ar2, lastVisible: lvf}) => {
+                  fetchPosts().then(({ar:ar3, lastVisible: lvp})=> {
+                    if (mounted) {
+                      lastVisibles.rent = lvr;
+            lastVisibles.flock = lvf;
+            lastVisibles.post = lvp;
+          
+                      setKeyVideoData([...shuffle([...ar1, ...ar2,...ar3])])
+                      scrollRef.current.scrollTo(0)
+                    }
+          
                   });
                   
                 })

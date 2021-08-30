@@ -150,7 +150,7 @@ const DataList = ({navigation, route}) => {
   //   <View style={{width: 30, height: 50, backgroundColor: 'red'}} />
   // })}</View>
   return <>
-      <Animated.View style={{backgroundColor: 'white', position: 'absolute', left: 0, bottom: 0, width:'100%', height: coverheight, opacity: coverfade, zIndex: 500}} >
+      {/* <Animated.View style={{backgroundColor: 'white', position: 'absolute', left: 0, bottom: 0, width:'100%', height: coverheight, opacity: coverfade, zIndex: 500}} >
       <View style={{
     backgroundColor: constants.PINK_BACKGROUND, height: '100%', width: '100%', paddingTop: 100, 
     justifyContent: 'center', alignItems: 'center',
@@ -158,7 +158,7 @@ const DataList = ({navigation, route}) => {
     overflow:'visible'
 }}/>
 <Image source={require('App/Assets/Images/flock_gif.gif')} style={{width: 300, marginTop: 50,height: 300, resizeMode:'contain', alignSelf: 'center', position: 'absolute', top:'20%'}} />
-</Animated.View>
+</Animated.View> */}
 <View style={{height: '100%', backgroundColor: constants.PINK_BACKGROUND_OPAQUE, width: '100%'}}><Text style={{color: 'white'}}>{val}</Text><FeedList testArray={testArray} setTestArray={setTestArray} navigation={navigation} route={route} videoData={route.params.videoData} flockOrNot={route.params.dataType} KeyContext={KeyContext} 
   FeedItemLocal={React.memo(({al})=>{
   // console.log('al image', al.image, al.title, al.product.image);
@@ -472,25 +472,18 @@ const MiniCarouselRenting = ({navigation, route}) => {
   const [viewHeight, setViewHeight] = useState(800);
   const {key, key1, keyArrRent, setKeyArrRent, limitKeyRent, keyArrFlock, setKeyArrFlock, keyVideoData, setKeyVideoData, setKeyFinishedLoading} = useContext(KeyContext);
   var unsubscribeCurrentRent;
+  const [lastVisibleRent, setLastVisibleRent] = useState(null);
   const [cover, setCover] = useState(false);
   const [coverFade, setCoverFade] = useState(new Animated.Value(1));
 
   // const [finalAr, setFinalAr] = useState([]);
   var finalAr;
   useEffect(()=>{
-    fetchRentablesFirst().then((ar) => {
-      // setFinalAr(ar);
+    fetchRentablesFirst().then(({ar, lastVisible}) => {
       setKeyArrRent(ar);
-      // setKeyFinishedLoading(false);
+      setLastVisibleRent(lastVisible);
       dispatch({type:'sendCarouselRentIndex', payload: ar.length - 1});
       dispatch({type:'resetRent'});
-      // Animated.timing(coverFade, {
-      //   toValue: 0,
-      //   duration: 500,
-      //   delay: 2000,
-      //   useNativeDriver: false,
-      // }).start();
-      // setTimeout(()=>setCover(false), 2500);
     });
   },[]);
 
@@ -498,20 +491,9 @@ const MiniCarouselRenting = ({navigation, route}) => {
     // dispatch({type:'sendCarouselRentIndex', payload: 9});
     dispatch({type:'sendCarouselRentIndex', payload: keyArrRent.length < 10?keyArrRent.length-1:9});
     dispatch({type:'resetRent'});
-    fetchRentables().then((ar) => {
+    fetchRentables(lastVisibleRent).then(({ar, lastVisible}) => {
       setKeyArrRent([...ar,...keyArrRent]);
-      // setFinalAr([...ar,...keyArrRent, ]);
-      // dispatch({type:'sendCarouselRentIndex', payload: ar.length});
-      // console.log('done');
-      // setFinishedLoading(true);
-      // Animated.timing(coverFade, {
-      //   toValue: 0,
-      //   duration: 500,
-      //   delay: 2000,
-      //   useNativeDriver: false,
-      // }).start();
-      // setTimeout(()=>setCover(false), 2500);
-
+      setLastVisibleRent(lastVisible);
     }).catch(err=>{
       console.log('something happened', err);
     })
@@ -519,15 +501,17 @@ const MiniCarouselRenting = ({navigation, route}) => {
 
 
   // var finalAr = keyArrRent;
-  var finalAr = keyArrRent.slice(Math.max(0,keyArrRent.length-10), keyArrRent.length);
+  // to be reverted.
+  var finalAr = []
+  // var finalAr = keyArrRent.slice(Math.max(0,keyArrRent.length-10), keyArrRent.length);
   // var finalAr = keyArrRent;
   var res = [];
-  for (const item of finalAr) {
-    res.push(<View style={{height: '100%', width: '100%', borderWidth: 0, borderOpacity: 0.1,borderBottomWidth: 0,}}>
-    {/* <Text>{item?.product?.title || item.flock}</Text> */}
-    <NewVideoPage route={route} navigation={navigation} data={item} index={finalAr.indexOf(item)} currIndex={finalAr.indexOf(item)} viewHeight={viewHeight} />
-    </View>);
-  }
+  // for (const item of finalAr) {
+  //   res.push(<View style={{height: '100%', width: '100%', borderWidth: 0, borderOpacity: 0.1,borderBottomWidth: 0,}}>
+  //   {/* <Text>{item?.product?.title || item.flock}</Text> */}
+  //   <NewVideoPage route={route} navigation={navigation} data={item} index={finalAr.indexOf(item)} currIndex={finalAr.indexOf(item)} viewHeight={viewHeight} />
+  //   </View>);
+  // }
   // return <View onLayout = {(event) => {
   //   setViewHeight(event.nativeEvent.layout.height);
   // }} style={{height: '100%'}}>
@@ -558,12 +542,12 @@ const MiniCarouselRenting = ({navigation, route}) => {
                 <Image source={require('App/Assets/Images/updown_swipe.png')} style={{height: 150, width: 150, shadowOpacity:0.2, tintColor: 'white', shadowOffset:{height:5, width:0}, shadowRadius:5,}} />
             </View>
   </NewTutorial>
-  <Animated.View style={{backgroundColor: 'white', position: 'absolute', left: 0, bottom: 0, width:'100%', height: cover?"100%":0, opacity: coverFade, zIndex: 10000}} ><View style={{
+  {/* <Animated.View style={{backgroundColor: 'white', position: 'absolute', left: 0, bottom: 0, width:'100%', height: cover?"100%":0, opacity: coverFade, zIndex: 10000}} ><View style={{
     backgroundColor: constants.PINK_BACKGROUND, height: '100%', width: '100%',
     justifyContent: 'center', alignItems: 'center',
 }}/>
 <Image source={require('App/Assets/Images/flock_gif.gif')} style={{width: 300, height: 300, resizeMode:'contain', position: 'absolute', top: '30%', left: '30%'}} />
-</Animated.View>
+</Animated.View> */}
   <View 
 
   onLayout = {(event) => {
@@ -592,6 +576,7 @@ const MiniCarouselFlocking = ({navigation, route}) => {
   const store = useStore();
   const select = useSelector(state => state.videopage);
   const {keyFinishedLoading} = useContext(KeyContext);
+  const [lastVisibleFlock, setLastVisibleFlock] = useState(null);
   const dispatch = useDispatch();
   const [viewHeight, setViewHeight] = useState(600);
   const {key, key1, keyArrRent, setKeyArrRent, limitKey, keyArrFlock, setKeyArrFlock, keyVideoData, setKeyVideoData, setKeyFinishedLoading} = useContext(KeyContext);
@@ -604,20 +589,10 @@ const MiniCarouselFlocking = ({navigation, route}) => {
   
 
   useEffect(()=>{
-    fetchFlockables().then((ar) => {
-      // setFinalAr(ar);
+    fetchFlockables().then(({ar, lastVisible}) => {
       setKeyArrFlock(ar);
+      setLastVisibleFlock(lastVisible)
       dispatch({type:'sendCarouselFlockIndex', payload: ar.length - 1});
-      // setKeyFinishedLoading(false);
-      Animated.timing(coverFade, {
-        toValue: 0,
-        duration: 2000,
-        delay: 0,
-        useNativeDriver: false,
-      }).start();
-      setKeyFinishedLoading(true);
-      setTimeout(()=>setCover(false), 200);
-      // console.log("done with cover")
     });
   },[]);
 
@@ -626,25 +601,9 @@ const MiniCarouselFlocking = ({navigation, route}) => {
     if (select.carIndexFlock < 0) {
     dispatch({type:'sendCarouselFlockIndex', payload: keyArrFlock.length < 10?keyArrFlock.length-1:9});
     dispatch({type:'resetFlock'});
-    fetchFlockables().then((ar) => {
+    fetchFlockables(lastVisibleFlock).then(({ar, lastVisible}) => {
+      setLastVisibleFlock(lastVisible);
       setKeyArrFlock([...keyArrFlock, ...ar]);
-      // setFinalAr([...keyArrFlock, ]);
-      // console.log('donneeeee');
-      // setFinalAr([...ar,...k]);
-      // dispatch({type:'sendCarouselFlockIndex', payload: ar.length-1});
-      // console.log(ar.length);
-      // console.log("finalAr", ar);
-      // console.log('done');
-      // dispatch({type:'sendCarouselFlockIndex', payload: 9});
-      // setCover(false);
-      // setFinishedLoading(true);
-      // Animated.timing(coverFade, {
-      //   toValue: 0,
-      //   duration: 500,
-      //   delay: 1000,
-      //   useNativeDriver: false,
-      // }).start();
-      // setTimeout(()=>setCover(false), 2500);
 
     });
     // dispatch({type:'sendCarouselFlockIndex', payload: 7});
@@ -686,7 +645,9 @@ const MiniCarouselFlocking = ({navigation, route}) => {
   // }
 
   var res = [];
-  var finalAr = keyArrFlock.slice(Math.max(0,keyArrFlock.length-10), keyArrFlock.length,);
+  // to be reverted
+  var finalAr = []
+  // var finalAr = keyArrFlock.slice(Math.max(0,keyArrFlock.length-10), keyArrFlock.length,);
   // console.log("finalAr", finalAr, keyArrFlock.length, select.carIndexFlock);
   for (const item of finalAr) {
     res.push(<View style={{height: '100%', width: '100%', borderWidth: 0, borderOpacity: 0.1,borderBottomWidth: 0,}}>
@@ -717,14 +678,15 @@ const MiniCarouselFlocking = ({navigation, route}) => {
                 <Image source={require('App/Assets/Images/updown_swipe.png')} style={{height: 150, width: 150, shadowOpacity:0.2, tintColor: 'white', shadowOffset:{height:5, width:0}, shadowRadius:5,}} />
             </View>
   </NewTutorial>
-    <Animated.View style={{backgroundColor: 'white', position: 'absolute', left: 0, bottom: 0, width:'100%', height: cover?"100%":0, opacity: coverFade, zIndex: 10000}} ><View style={{
+    {/* <Animated.View style={{backgroundColor: 'white', position: 'absolute', left: 0, bottom: 0, width:'100%', height: cover?"100%":0, opacity: coverFade, zIndex: 10000}} ><View style={{
     backgroundColor: constants.PINK_BACKGROUND, height: '100%', width: '100%',
     justifyContent: 'center', alignItems: 'center',
     // resizeMode:'contain'
     overflow:'visible'
 }}/>
 <Image source={require('App/Assets/Images/flock_gif.gif')} style={{width: 300, height: 300, resizeMode:'contain', alignSelf: 'center', position: 'absolute', top:'20%'}} />
-</Animated.View><View 
+</Animated.View> */}
+<View 
 style={{flex: 1}}
 onLayout = {(event) => {
     // setViewHeight(event.nativeEvent.layout.height);

@@ -57,10 +57,10 @@ import {createToken, Card} from '@stripe/stripe-react-native';
 // var sizeOf = require('image-size');
 
 
-var lastVisible = null;
-var lastVisibleFlock = null;
-var lastVisibleRent = null;
-var lastVisiblePost = null;
+// var lastVisible = null;
+// var lastVisibleFlock = null;
+// var lastVisibleRent = null;
+// var lastVisiblePost = null;
 
 
 const getCurrentTime = () => {
@@ -145,6 +145,10 @@ const fetchAlbums = () => {
       });
   });
 };
+
+const resetLastVisible = () => {
+  lastVisible = null;
+}
 
 const fetchProducts = (lastVisible = null) => {
   const productAr = [];
@@ -301,15 +305,15 @@ const fetchGlobalFlocks = async () => {
   });
 };
 
-const fetchFlockables = async () => {
+const fetchFlockables = async (lastVisible = null) => {
   return new Promise(async (resolve) => {
     var filtered = await db.collection('chatGroups')
       .limit(10)
       .orderBy("time", "desc")
       .where('completed', '==', false)
 
-      if (lastVisibleFlock != null) {
-        filtered = await filtered.startAfter(lastVisibleFlock);
+      if (lastVisible != null) {
+        filtered = await filtered.startAfter(lastVisible);
       }
 
       filtered
@@ -318,6 +322,9 @@ const fetchFlockables = async () => {
         var counter = 0;
         let numFiltered = 0;
         const n = querySnapshot.size;
+        if (n == 0) {
+          resolve({ar:[], lastVisible: null})
+        }
         const ar = [];
         querySnapshot.forEach((doc) => {
           
@@ -330,8 +337,9 @@ const fetchFlockables = async () => {
           }
           if (counter === n - numFiltered) {
             console.log('num filtered', numFiltered)
-            resolve(ar);
-            lastVisibleFlock = doc;
+            console.log("FLOCKABLE", lastVisible)
+
+            resolve({ar: ar, lastVisible: doc});
             
           }
         });
@@ -368,24 +376,50 @@ const fetchFlockables = async () => {
 //   });
 // };
 
-const fetchPosts = async () => {
+const fetchPosts = async (lastVisible = null) => {
+  if (lastVisible == null) {
+    return new Promise((resolve) => {
+      db.collection('posts')
+        .limit(10)
+        .orderBy("createdAt", "desc")
+        .get()
+        .then((querySnapshot) => {
+          var counter = 0;
+          const n = querySnapshot.size;
+          if (n == 0) {
+            resolve({ar:[], lastVisible: null})
+          }
+          const ar = [];
+          querySnapshot.forEach((doc) => {
+            const entity = doc.data();
+            ar.push({...entity, id:doc.id});
+            counter = counter + 1;
+            if (counter === n) {
+              resolve({ar: ar, lastVisible: doc});
+            }
+          });
+        });
+    });
+  }
   return new Promise((resolve) => {
     db.collection('posts')
       .limit(10)
       .orderBy("createdAt", "desc")
-      .startAfter(lastVisiblePost)
+      .startAfter(lastVisible)
       .get()
       .then((querySnapshot) => {
         var counter = 0;
         const n = querySnapshot.size;
+        if (n == 0) {
+          resolve({ar:[], lastVisible: null})
+        }
         const ar = [];
         querySnapshot.forEach((doc) => {
           const entity = doc.data();
           ar.push({...entity, id:doc.id});
           counter = counter + 1;
           if (counter === n) {
-            resolve(ar);
-            lastVisiblePost = doc;
+            resolve({ar: ar, lastVisible: doc});
           }
         });
       });
@@ -415,17 +449,49 @@ const fetchPostsFirst = async () => {
   });
 };
 
-const fetchRentables = async () => {
+const fetchRentables = async (lastVisible = null) => {
+  if (lastVisible == null ) {
+    return new Promise((resolve) => {
+      db.collection('chatGroups')
+        .limit(10)
+        .orderBy("time", "desc")
+        .where('completed', '==', true)
+        .get()
+        .then((querySnapshot) => {
+          var counter = 0;
+          const n = querySnapshot.size;
+          if (n == 0) {
+            resolve({ar:[], lastVisible: null})
+          }
+          const ar = [];
+          if (n == 0) {
+            resolve(ar);
+            return;
+          }
+          querySnapshot.forEach((doc) => {
+            const entity = doc.data();
+            ar.push({...entity, id:doc.id});
+            counter = counter + 1;
+            if (counter === n) {
+              resolve({ar:ar, lastVisible: doc});
+            }
+          });
+        });
+    });
+  }
   return new Promise((resolve) => {
     db.collection('chatGroups')
       .limit(10)
       .orderBy("time", "desc")
       .where('completed', '==', true)
-      .startAfter(lastVisibleRent)
+      .startAfter(lastVisible)
       .get()
       .then((querySnapshot) => {
         var counter = 0;
         const n = querySnapshot.size;
+        if (n == 0) {
+          resolve({ar:[], lastVisible: null})
+        }
         const ar = [];
         if (n == 0) {
           resolve(ar);
@@ -436,8 +502,7 @@ const fetchRentables = async () => {
           ar.push({...entity, id:doc.id});
           counter = counter + 1;
           if (counter === n) {
-            resolve(ar);
-            lastVisibleRent = doc;
+            resolve({ar:ar, lastVisible: doc});
           }
         });
       });
@@ -460,8 +525,7 @@ const fetchRentablesFirst = async () => {
           ar.push({...entity, id:doc.id});
           counter = counter + 1;
           if (counter === n) {
-            resolve(ar);
-            lastVisibleRent = doc;
+            resolve({ar:ar, lastVisible: lastVisible});
           }
         });
       });
@@ -1140,6 +1204,7 @@ function toDateTime(secs) {
 }
 
 export {
+  resetLastVisible, 
   getCurrentTime,
   checkFlockExpired,
   rentPrice,
