@@ -58,7 +58,7 @@ const StripeCheckout = ({amount, children, completeFunc=()=>{}, setHook=()=>{}, 
         console.log(err)
     }
     const { paymentId, paymentIntent, ephemeralKey, customer, error } = await response.json();
-    if (error && error !== {}) {
+    if (error && error !== {} && constants.DEBUG) {
         Alert.alert("Sorry. Something went wrong.");
         console.log("stripe server issue: ", error);
     }
@@ -105,9 +105,13 @@ const StripeCheckout = ({amount, children, completeFunc=()=>{}, setHook=()=>{}, 
         console.log("PAYMENT SHEET", paymentIntentId);
         console.log("UH", clientSecret)
         // await confirmPaymentSheetPayment({clientSecret});
+        if (amount < 500) {
+            Alert.alert("Transaction must exceed $0.50");
+            return;
+        }
     const { error, paymentOption } = await presentPaymentSheet({ clientSecret });
     console.log('payment option', paymentOption);
-        if (error) {
+        if (error && constants.DEBUG) {
             console.log('something went wrong')
         Alert.alert(`Error code: ${error.code}`, error.message);
         } else {

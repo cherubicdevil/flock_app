@@ -367,7 +367,7 @@ const HomeTabSwipe = ({videoData, navigation, route}) => {
     {/* <Tab.Screen name="flocking" component={DataList} initialParams={{value: 'hello world', videoData:[], flockData: [], rentData: [], dataType: 'flockData'}} /> */}
     <Tab.Screen name="for you" component={DataList} initialParams={{videoData: keyVideoData, dataType:'videoData'}} />
     <Tab.Screen name="flocks" component = {MiniCarouselFlocking}/>
-    <Tab.Screen name="borrow" component = {MiniCarouselRenting}/>
+    {/* <Tab.Screen name="borrow" component = {MiniCarouselRenting}/> */}
 
     {/* <Tab.Screen name="borrow" component={DataList} initialParams={{value: 'hello world', videoData:[], flockData: [], rentData: [], dataType: 'rentData'}} /> */}
   
@@ -502,8 +502,8 @@ const MiniCarouselRenting = ({navigation, route}) => {
 
   // var finalAr = keyArrRent;
   // to be reverted.
-  var finalAr = []
-  // var finalAr = keyArrRent.slice(Math.max(0,keyArrRent.length-10), keyArrRent.length);
+  // var finalAr = []
+  var finalAr = keyArrRent.slice(Math.max(0,keyArrRent.length-10), keyArrRent.length);
   // var finalAr = keyArrRent;
   var res = [];
   // for (const item of finalAr) {
@@ -646,8 +646,8 @@ const MiniCarouselFlocking = ({navigation, route}) => {
 
   var res = [];
   // to be reverted
-  var finalAr = []
-  // var finalAr = keyArrFlock.slice(Math.max(0,keyArrFlock.length-10), keyArrFlock.length,);
+  // var finalAr = []
+  var finalAr = keyArrFlock.slice(Math.max(0,keyArrFlock.length-10), keyArrFlock.length,);
   // console.log("finalAr", finalAr, keyArrFlock.length, select.carIndexFlock);
   for (const item of finalAr) {
     res.push(<View style={{height: '100%', width: '100%', borderWidth: 0, borderOpacity: 0.1,borderBottomWidth: 0,}}>

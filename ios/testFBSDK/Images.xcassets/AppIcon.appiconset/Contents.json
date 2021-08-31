@@ -1,64 +1,69 @@
 {
   "images" : [
     {
-      "filename" : "flock_logo_revamped-20@2x.png",
+      "filename" : "flock_logo_splash_screen copy-20@2x.png",
       "idiom" : "iphone",
       "scale" : "2x",
       "size" : "20x20"
     },
     {
-      "filename" : "flock_logo_revamped-20@3x.png",
+      "filename" : "flock_logo_splash_screen copy-20@3x.png",
       "idiom" : "iphone",
       "scale" : "3x",
       "size" : "20x20"
     },
     {
-      "filename" : "flock_logo_revamped-29.png",
+      "filename" : "flock_logo_splash_screen copy-29.png",
       "idiom" : "iphone",
       "scale" : "1x",
       "size" : "29x29"
     },
     {
-      "filename" : "flock_logo_revamped-29@2x.png",
+      "filename" : "flock_logo_splash_screen copy-29@2x.png",
       "idiom" : "iphone",
       "scale" : "2x",
       "size" : "29x29"
     },
     {
-      "filename" : "flock_logo_revamped-29@3x.png",
+      "filename" : "flock_logo_splash_screen copy-29@3x.png",
       "idiom" : "iphone",
       "scale" : "3x",
       "size" : "29x29"
     },
     {
-      "filename" : "flock_logo_revamped-40@2x.png",
+      "filename" : "flock_logo_splash_screen copy-40@2x.png",
       "idiom" : "iphone",
       "scale" : "2x",
       "size" : "40x40"
     },
     {
-      "filename" : "flock_logo_revamped-40@3x.png",
+      "filename" : "flock_logo_splash_screen copy-40@3x.png",
       "idiom" : "iphone",
       "scale" : "3x",
       "size" : "40x40"
     },
     {
-      "filename" : "flock_logo_revamped-60@2x.png",
+      "filename" : "flock_logo_splash_screen copy-60@2x.png",
       "idiom" : "iphone",
       "scale" : "2x",
       "size" : "60x60"
     },
     {
-      "filename" : "flock_logo_revamped-60@3x.png",
+      "filename" : "flock_logo_splash_screen copy-60@3x.png",
       "idiom" : "iphone",
       "scale" : "3x",
       "size" : "60x60"
     },
     {
-      "filename" : "flock_logo_revamped-1024.png",
+      "filename" : "flock_logo_splash_screen copy-1024.png",
       "idiom" : "ios-marketing",
       "scale" : "1x",
       "size" : "1024x1024"
+    },
+    {
+      "filename" : "flock_logo_revamped_1-83.5@2x-1.png",
+      "idiom" : "universal",
+      "scale" : "2x"
     },
     {
       "filename" : "flock_logo_revamped-83.5@2x.png",
@@ -66,9 +71,10 @@
       "scale" : "2x"
     },
     {
-      "filename" : "flock_logo_splash_screen copy-83.5@2x.png",
+      "filename" : "flock_logo_revamped_1-21.png",
       "idiom" : "universal",
-      "scale" : "2x"
+      "scale" : "1x",
+      "size" : "20x20"
     },
     {
       "filename" : "flock_logo_revamped-20.png",
@@ -77,10 +83,16 @@
       "size" : "20x20"
     },
     {
-      "filename" : "flock_logo_splash_screen copy-20.png",
+      "filename" : "flock_logo_splash_screen copy-21.png",
       "idiom" : "universal",
       "scale" : "1x",
       "size" : "20x20"
+    },
+    {
+      "filename" : "flock_logo_revamped_1-41.png",
+      "idiom" : "universal",
+      "scale" : "1x",
+      "size" : "40x40"
     },
     {
       "filename" : "flock_logo_revamped-40.png",
@@ -89,10 +101,16 @@
       "size" : "40x40"
     },
     {
-      "filename" : "flock_logo_splash_screen copy-40.png",
+      "filename" : "flock_logo_splash_screen copy-41.png",
       "idiom" : "universal",
       "scale" : "1x",
       "size" : "40x40"
+    },
+    {
+      "filename" : "flock_logo_revamped_1-76.png",
+      "idiom" : "universal",
+      "scale" : "1x",
+      "size" : "76x76"
     },
     {
       "filename" : "flock_logo_revamped-76.png",
@@ -101,9 +119,21 @@
       "size" : "76x76"
     },
     {
-      "filename" : "flock_logo_splash_screen copy-76.png",
+      "filename" : "flock_logo_splash_screen copy-77.png",
       "idiom" : "universal",
       "scale" : "1x",
+      "size" : "76x76"
+    },
+    {
+      "filename" : "flock_logo_splash_screen copy-83.5@2x.png",
+      "idiom" : "universal",
+      "scale" : "1x",
+      "size" : "76x76"
+    },
+    {
+      "filename" : "flock_logo_revamped_1-76@2x-1.png",
+      "idiom" : "universal",
+      "scale" : "2x",
       "size" : "76x76"
     },
     {
@@ -113,10 +143,140 @@
       "size" : "76x76"
     },
     {
-      "filename" : "flock_logo_splash_screen copy-76@2x.png",
+      "filename" : "flock_logo_splash_screen copy-76@2x-1.png",
       "idiom" : "universal",
       "scale" : "2x",
       "size" : "76x76"
+    },
+    {
+      "filename" : "flock_logo_revamped_1-1025.png",
+      "idiom" : "universal",
+      "scale" : "1x",
+      "size" : "1024x1024"
+    },
+    {
+      "filename" : "flock_logo_revamped-1025.png",
+      "idiom" : "universal",
+      "scale" : "1x",
+      "size" : "1024x1024"
+    },
+    {
+      "filename" : "flock_logo_revamped_1-20@2x.png",
+      "idiom" : "iphone",
+      "scale" : "2x",
+      "size" : "20x20",
+      "unassigned" : true
+    },
+    {
+      "filename" : "flock_logo_revamped_1-20@3x.png",
+      "idiom" : "iphone",
+      "scale" : "3x",
+      "size" : "20x20",
+      "unassigned" : true
+    },
+    {
+      "filename" : "flock_logo_revamped_1-29.png",
+      "idiom" : "iphone",
+      "scale" : "1x",
+      "size" : "29x29",
+      "unassigned" : true
+    },
+    {
+      "filename" : "flock_logo_revamped_1-29@2x.png",
+      "idiom" : "iphone",
+      "scale" : "2x",
+      "size" : "29x29",
+      "unassigned" : true
+    },
+    {
+      "filename" : "flock_logo_revamped_1-29@3x.png",
+      "idiom" : "iphone",
+      "scale" : "3x",
+      "size" : "29x29",
+      "unassigned" : true
+    },
+    {
+      "filename" : "flock_logo_revamped_1-40@2x.png",
+      "idiom" : "iphone",
+      "scale" : "2x",
+      "size" : "40x40",
+      "unassigned" : true
+    },
+    {
+      "filename" : "flock_logo_revamped_1-40@3x.png",
+      "idiom" : "iphone",
+      "scale" : "3x",
+      "size" : "40x40",
+      "unassigned" : true
+    },
+    {
+      "filename" : "flock_logo_revamped_1-60@2x.png",
+      "idiom" : "iphone",
+      "scale" : "2x",
+      "size" : "60x60",
+      "unassigned" : true
+    },
+    {
+      "filename" : "flock_logo_revamped_1-60@3x.png",
+      "idiom" : "iphone",
+      "scale" : "3x",
+      "size" : "60x60",
+      "unassigned" : true
+    },
+    {
+      "filename" : "flock_logo_revamped_1-83.5@2x.png",
+      "idiom" : "universal",
+      "scale" : "2x",
+      "unassigned" : true
+    },
+    {
+      "filename" : "flock_logo_revamped_1-20.png",
+      "idiom" : "universal",
+      "scale" : "1x",
+      "size" : "20x20",
+      "unassigned" : true
+    },
+    {
+      "filename" : "flock_logo_splash_screen copy-20.png",
+      "idiom" : "universal",
+      "scale" : "1x",
+      "size" : "20x20",
+      "unassigned" : true
+    },
+    {
+      "filename" : "flock_logo_revamped_1-40.png",
+      "idiom" : "universal",
+      "scale" : "1x",
+      "size" : "40x40",
+      "unassigned" : true
+    },
+    {
+      "filename" : "flock_logo_splash_screen copy-40.png",
+      "idiom" : "universal",
+      "scale" : "1x",
+      "size" : "40x40",
+      "unassigned" : true
+    },
+    {
+      "filename" : "flock_logo_splash_screen copy-76.png",
+      "idiom" : "universal",
+      "scale" : "1x",
+      "size" : "76x76",
+      "unassigned" : true
+    },
+    {
+      "filename" : "flock_logo_revamped_1-76@2x.png",
+      "idiom" : "universal",
+      "scale" : "2x",
+      "size" : "76x76",
+      "unassigned" : true
+    },
+    {
+      "filename" : "flock_logo_splash_screen copy-76@2x.png",
+      "idiom" : "universal",
+      "scale" : "2x",
+      "size" : "76x76",
+      "unassigned" : true
     }
   ],
   "info" : {
