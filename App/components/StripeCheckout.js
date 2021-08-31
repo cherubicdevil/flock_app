@@ -109,6 +109,11 @@ const StripeCheckout = ({amount, children, completeFunc=()=>{}, setHook=()=>{}, 
             Alert.alert("Transaction must exceed $0.50");
             return;
         }
+
+        if (paymentIntentId == "") {
+            Alert.alert("Something went wrong. Try again.");
+            return;
+        }
     const { error, paymentOption } = await presentPaymentSheet({ clientSecret });
     console.log('payment option', paymentOption);
         if (error && constants.DEBUG) {
@@ -116,10 +121,7 @@ const StripeCheckout = ({amount, children, completeFunc=()=>{}, setHook=()=>{}, 
         Alert.alert(`Error code: ${error.code}`, error.message);
         } else {
         // Alert.alert('Success', 'Your order is confirmed!');
-        if (paymentIntentId == "") {
-            Alert.alert("Could not complete payment.");
-            return;
-        }
+
         context['paymentIntentId']=paymentIntentId;
         completeFunc(context);
         }
