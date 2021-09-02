@@ -105,9 +105,11 @@ const StripeCheckout = ({amount, children, completeFunc=()=>{}, setHook=()=>{}, 
         console.log("PAYMENT SHEET", paymentIntentId);
         console.log("UH", clientSecret)
         // await confirmPaymentSheetPayment({clientSecret});
-        if (amount < 500) {
+        if (amount < 0.50) {
             Alert.alert("Transaction must exceed $0.50");
             return;
+        } else {
+            console.log("wrong amount is", amount)
         }
 
         if (paymentIntentId == "") {
@@ -116,7 +118,7 @@ const StripeCheckout = ({amount, children, completeFunc=()=>{}, setHook=()=>{}, 
         }
     const { error, paymentOption } = await presentPaymentSheet({ clientSecret });
     console.log('payment option', paymentOption);
-        if (error && constants.DEBUG) {
+        if (error) {
             console.log('something went wrong')
         Alert.alert(`Error code: ${error.code}`, error.message);
         } else {

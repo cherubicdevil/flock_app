@@ -49,6 +49,14 @@ const getPriceStringFromPercent = (percent, total) => {
   return (percent/100 * total * 1.4).toFixed(2)
 }
 
+const getPercentFromPriceString = (price, total) => {
+  if (typeof(price) == "string") {
+    price = parseFloat(price)
+  }
+  // should it be round or....?
+  return Math.ceil(price / (total * 1.4) * 100)
+}
+
 const PriceSlider = ({id, priceShareInitialPercent, completeFunc=()=>{}, productPrice, othersPercent, remainingPercent, maximums, paymentIntents, setOutsideState=()=>{}, confirm=true, showInfo = true, initialSlider = false, maximumWidth=Dimensions.get('window').width *.55, showPlusMinus=true}) => {
     console.log("priceSlider maximums", maximums);
     const [initialPercent, setInitialPercent] = useState(priceShareInitialPercent);
@@ -72,6 +80,7 @@ const PriceSlider = ({id, priceShareInitialPercent, completeFunc=()=>{}, product
     console.log('remaining', remainingPercent);
     console.log(zeroWarning, 'zero')
 
+    const minPercent = Math.max(4, getPercentFromPriceString(0.50, productPrice));
     var zeroWarning;
     if (pricePercent == 0) {
       zeroWarning = "If you pay $0.00, you cannot co-own this item.";
@@ -138,9 +147,13 @@ const PriceSlider = ({id, priceShareInitialPercent, completeFunc=()=>{}, product
       <View style={{flex: 1, flexDirection: 'row', paddingLeft: 0, alignItems: 'center',justifyContent: 'space-between', alignSelf: 'center', alignSelf: 'center'}}>
       <View style={{borderRadius: 40, backgroundColor: constants.ORANGE, width: showPlusMinus?30:0, height: 30, justifyContent: 'center', alignItems: 'center'}}>
           <TouchableOpacity onPress={()=>{
-            if (pricePercent>=0) {
+            if (pricePercent>=minPercent + 4) {
               setPricePercent(pricePercent-4);
               setOutsideState(((pricePercent-4)*productPrice).toFixed(2));
+              setChanged(true);
+            } else if (pricePercent >= minPercent) {
+              setPricePercent(minPercent);
+              setOutsideState(((minPercent)*productPrice).toFixed(2));
               setChanged(true);
             }
 
@@ -190,8 +203,8 @@ const PriceSlider = ({id, priceShareInitialPercent, completeFunc=()=>{}, product
     // markerStyle={{marginTop: 15,justifyContent: 'center', alignItems: 'center'}}
     smoothSnapped={true}
     sliderLength={maximumWidth * remainingPercent/100}
-    step = {4}
-    min={4}
+    step = {4 }
+    min={minPercent}
     max={remainingPercent+2}
     markerSize={100}
     showSteps={true}
