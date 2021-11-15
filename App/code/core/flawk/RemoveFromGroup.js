@@ -6,7 +6,8 @@ const RemoveFromGroupFunction = ({path, splits, user, setHook}) => {
 
 	useEffect(()=> {
 		setHook(()=> {
-			updateFirebase({splits: {...splits, [user.uid]: .04}});
+		    delete splits[user.uid];
+			updateFirebase({splits: splits});
 		})
 	}, []);
 	
