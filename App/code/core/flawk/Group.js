@@ -24,7 +24,7 @@ import Wrapper from 'App/components/Wrapper';
 import Countdown from 'App/components/Countdown';
 import StripeCheckout from 'App/code/stripe/StripeCheckout';
 
-import ChatComponent from './ChatComponent';
+import ChatEntry from './chat/ChatEntry';
 
 const barHeight = 25;
 var initialPercentTemp;
@@ -73,7 +73,7 @@ function Group({route, navigation}) {
   
   return (<>
   <User setUser={setCurrentUser} />
-  <Wrapper header footer headerLeft=["back"] headerRight=["share", data.id]>
+  <Wrapper header footer headerLeft={["back"]} headerRight={["share", data.id]}>
 
       <ChatEntry navigation={navigation} />
   </Wrapper>
