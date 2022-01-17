@@ -7,7 +7,6 @@ import {
   Button,
   TouchableOpacity,
 } from 'react-native';
-import BubbleInput from 'react-native-bubble-input';
 import {constants} from 'App/constants';
 import ProgressHeader from 'App/components/ProgressHeader';
 import {firebase, db} from 'App/firebase/config';

@@ -14,8 +14,8 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 import {Input} from './Input';
 import {emailChanged, passwordChanged} from 'App/redux/actions';
-import {firebase} from 'App/firebase/config';
-import auth from '@react-native-firebase/auth';
+import {firebase, au} from 'App/firebase/config';
+// import auth from '@react-native-firebase/auth';
 import LinearGradient from 'react-native-linear-gradient';
 
 
@@ -54,11 +54,14 @@ const MyFormPhone = ({registration, navigation, instructions}) => {
   // }
   // Handle the button press
   async function signInWithPhoneNumber() {
-    auth().signInWithPhoneNumber("+1"+phone.replace("-","")).then((confirmation)=>{
+    console.log("try to sign in ", "AUTH", au);
+    au.signInWithPhoneNumber("+1"+phone.replace("-","")).then((confirmation)=>{
+      console.log('signed in');
       setConfirm(confirmation);
       setErrorMessage("");
       setLoadState(false);
       Keyboard.dismiss();
+      
     }).catch((err)=>{
       if (err.code === "auth/too-many-requests") {
         setErrorMessage("Unusual login activity. Try again in a few minutes.");
@@ -81,8 +84,9 @@ const MyFormPhone = ({registration, navigation, instructions}) => {
     //   console.log('Invalid code.');
     // }
     confirm.confirm(code).then(()=>{
+            console.log("CORRECT");
     }).catch(err=>{
-      console.log(err);
+      console.log("CODE FALSE");
       setErrorMessage('Invalid code.');
       setLoadState(false);
     });
@@ -460,7 +464,9 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(255,255,255,0.2)',
     borderColor: constants.LAVENDER,
     borderRadius: 20,
-    width: 50, height: 80,
+    // width: 50, height: 80,
+    flex: 1,
+    marginHorizontal: 2, 
     paddingVertical: 20,
     paddingHorizontal: 10,
     justifyContent: 'center', 

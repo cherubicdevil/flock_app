@@ -23,6 +23,7 @@ const WrapperApp = () => {
   </Provider>
 }
 
+
 const App = () => {
   const [aggState, setState] = useState({isLoaded: false, loggedIn: null, userData: null});
   const [stopLoop, setStopLoop] = useState(false)
@@ -39,14 +40,18 @@ const App = () => {
     // setIsLoaded(true)
     setState({isLoaded: true});
     au.onAuthStateChanged((user) => {
-      
+      console.log("AUTH state has CHANGED", user);
       if (user) {
-        fetchUserData(user).then((userdat) => {
-          // setUserData(userdat || {eggCoins: 0, likedVideos: [], customerId: 'none'});
-          // setLoggedIn(true);
-          console.log('MY USER DAT', userdat)
-          setState({loggedIn: true, userData: userdat || {eggCoins: 0, likedVideos: [], customerId: 'none'}});
-        }).catch();
+        // fetchUserData(user).then((userdat) => {
+        //   // setUserData(userdat || {eggCoins: 0, likedVideos: [], customerId: 'none'});
+        //   // setLoggedIn(true);
+        //   console.log('MY USER DAT', userdat)
+        //   setState({loggedIn: true, userData: userdat || {eggCoins: 0, likedVideos: [], customerId: 'none'}});
+        // }).catch((err)=>{
+        //   setState({loggedIn: true, userData: {eggCoins: 0, likedVideos: [], customerId: 'none'}});
+        // });
+        setState({loggedIn: true, userData: {eggCoins: 0, likedVideos: [], customerId: 'none'}});
+        console.log("stuff");
         dispatch({type: 'guest_off'})
         
       } else {

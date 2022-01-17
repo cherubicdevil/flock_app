@@ -50,7 +50,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 //import {useFocusEffect} from 'react-navigation-hooks';
 import {useFocusEffect} from '@react-navigation/native';
-import {database} from 'firebase';
+// import {database} from 'firebase';
 
 const ICON_SIZE = 37;
 const config = {

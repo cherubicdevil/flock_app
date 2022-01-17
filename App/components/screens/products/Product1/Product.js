@@ -435,13 +435,12 @@ var goBackFunc = navigation.goBack;
                 height: '100%',
                 flex: 1,
               }}>
-              <View style={{flex:1, height: 50, justifyContent: 'center'}}>
+              <View style={{height: 50, justifyContent: 'center'}}>
                 <TouchableOpacity style={{height: "100%", justifyContent: 'center'}} onPress= {() => {
 
                   navigation.navigate('StartFlock', {index: 0, product: route.params.album, data:{}, flockId: (Math.floor(Math.random() * 10000)).toString().padStart(5,0)});
     
                 }}
-    
                   >
                     <Text style={{textAlign: 'center', color: 'white', fontWeight: 'bold', fontSize: 13}}>{flockAr.length > 0?"Start Flock":"Start Your Flock"}</Text>
                 </TouchableOpacity>

@@ -31,13 +31,6 @@ import AnimatedModal from 'App/components/AnimatedModal';
 import Checkout from 'App/components/Checkout';
 import {useFocusEffect} from '@react-navigation/native';
 // import NumericTextInput from 'App/components'
-import {
-  DrawerContentScrollView,
-  DrawerItemList,
-  DrawerItem,
-  createDrawerNavigator,
-  useIsDrawerOpen,
-} from '@react-navigation/drawer';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import {createStackNavigator} from '@react-navigation/stack';
 import {useSelector, useDispatch} from 'react-redux';

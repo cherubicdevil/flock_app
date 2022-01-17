@@ -47,7 +47,7 @@ db.settings({
   console.log('done setting');
 });
 
-const au = firebase.auth();
+const au = auth();
 // au.useEmulator("http://localhost:9099");
 
 

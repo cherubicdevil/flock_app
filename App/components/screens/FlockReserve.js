@@ -3,7 +3,6 @@ import {View, Text, SafeAreaView, Image, Modal, Button, TouchableOpacity, Scroll
 import {Calendar} from 'react-native-calendars';
 import moment from 'moment';
 import {firebase, db, au} from 'App/firebase/config';
-var seedrandom = require('seedrandom');
 import AnimatedModal from 'App/components/AnimatedModal';
 import {constants} from 'App/constants';
 import LinearGradient from 'react-native-linear-gradient';

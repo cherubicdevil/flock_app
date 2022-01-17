@@ -8,7 +8,6 @@ import SearchPage from 'App/components/screens/SearchPage';
 import Carousel from 'App/components/screens/videopage/Carousel';
 import Home from 'App/components/screens/home/Home';
 import CamNavigator from './CamNavigator';
-import Chat from 'App/components/screens/chat/Chat';
 import Egg from 'App/components/screens/Egg';
 import Login2 from 'App/components/screens/login/Login2';
 import Terms from 'App/components/screens/login/Terms';
@@ -31,7 +30,7 @@ import ProfileMain from 'App/components/screens/profile/ProfileMain';
 import CustomBar from './CustomBar';
 import StartFlock from 'App/components/screens/StartFlock';
 import StartFlockNavigator from 'App/components/screens/StartFlockNavigator';
-import ChatInterface from 'App/components/screens/chat/ChatInterface';
+import Group from 'App/code/core/flawk/Group';
 import Info from 'App/components/screens/chat/info/Info';
 import FlockChatComplete from 'App/components/screens/FlockChatComplete';
 import FlockReserve from 'App/components/screens/FlockReserve';
@@ -96,7 +95,7 @@ const Tabs = () => {
     
     options={{
       unmountOnBlur:true,
-      tabBarVisible: false,
+      tabBarVisible: true,
       title: 'CamScreen',
       cap: 'add',
       image: require('App/Assets/Images/Add_Icon.png'),
@@ -152,7 +151,7 @@ const Tabs = () => {
   />
   <Tab.Screen
     name="Chat"
-    component={Chat}
+    component={Group}
     options={{
       tabBarVisible: false,
       title: 'Chat',
@@ -220,7 +219,7 @@ const AppNavigator5 = () => {
         />
         <Stack.Screen
           name="ChatInterface"
-          component={ChatInterface}
+          component={Group}
           options={{
             unmountOnBlur: true,
             tabBarVisible: true,
@@ -228,7 +227,7 @@ const AppNavigator5 = () => {
         />
         <Stack.Screen
           name="FlockChatComplete"
-          component={ChatInterface}
+          component={Group}
           options={{
             tabBarVisible: true,
           }}

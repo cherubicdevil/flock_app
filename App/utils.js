@@ -43,17 +43,14 @@
 import {constants} from 'App/constants';
 import moment from 'moment';
 import {throttle} from 'lodash';
-import {firebase, db, au} from 'App/firebase/config';
-import ImagePicker from 'react-native-image-picker';
+import {firebase, db, au} from 'App/code/firebase/config';
 import {Animated, Share, Linking} from 'react-native';
 import {createThumbnail} from 'react-native-create-thumbnail';
 import {useDispatch} from 'react-redux';
 import {ShareDialog, LoginButton, AccessToken} from 'react-native-fbsdk';
 import { AppInstalledChecker, CheckPackageInstallation } from 'react-native-check-app-install';
-import CameraRoll from '@react-native-community/cameraroll';
-const cheerio = require('react-native-cheerio')
-const stringSimilarity = require("string-similarity");
 import {createToken, Card} from '@stripe/stripe-react-native';
+
 // var sizeOf = require('image-size');
 
 
@@ -305,12 +302,13 @@ const fetchGlobalFlocks = async () => {
   });
 };
 
+
 const fetchFlockables = async (lastVisible = null) => {
   return new Promise(async (resolve) => {
-    var filtered = await db.collection('chatGroups')
+    var filtered = await db.collection('products')
       .limit(10)
-      .orderBy("time", "desc")
-      .where('completed', '==', false)
+      // .orderBy("time", "desc")
+      // .where('completed', '==', false)
 
       if (lastVisible != null) {
         filtered = await filtered.startAfter(lastVisible);
@@ -796,247 +794,7 @@ const shuffle = (array) => {
 }
 
 
-const pinLocalFunc = (htmlBody, notBaseURL) => {
-  const imageDownloader = {
-    // Source: https://support.google.com/webmasters/answer/2598805?hl=en
-    // no gif, no png no svg
-    imageRegex: /(?:([^:\/?#]+):)?(?:\/\/([^\/?#]*))?([^?#]*\.(?:bmp|jpe?g|webp))(?:\?([^#]*))?(?:#(.*))?/i,
-  
-    extractImagesFromTags(dol) {
-      return imageDownloader.removeDuplicateOrEmpty(
-        [].slice
-          .apply(dol("img, a, [style]"))
-          .map(imageDownloader.extractImageFromElement)
-      );
-    },
-  
-    extractImageFromElement(element) {
-      if (element.name.toLowerCase() === "img") {
-        let src = element.attribs.src || element.attribs["data-src"];
-        if (src !== undefined && src !== "") {
-          const hashIndex = src.indexOf("#");
-          if (hashIndex >= 0) {
-            src = src.substr(0, hashIndex);
-          }
-        }
-        return { img: src || "", desc: element.attribs.alt || "" };
-      }
-  
-      return "";
-    },
-  
-    extractURLFromStyle(url) {
-      return url.replace(/^url\(["']?/, "").replace(/["']?\)$/, "");
-    },
-  
-    isImageURL(url) {
-      return (
-        // url.indexOf("data:image") === 0 || 
-        imageDownloader.imageRegex.test(url)
-      );
-    },
-  
-    relativeUrlToAbsolute(url) {
-      if (url.indexOf("/") === 0) {
-        // const index = global.notBaseURL.indexOf(".com") + 4;
-        const index = notBaseURL.indexOf(".com") + 4;
-        // return global.notBaseURL.substring(0, index).concat(url);
-        return notBaseURL.substring(0, index).concat(url);
-      } else if (!url.includes('http')){
-        const index = notBaseURL.indexOf(".com") + 4;
-        return notBaseURL.substring(0, index).concat("/"+url);
-      }
-      else {
-        return url;
-      }
-    },
-  
-    removeDuplicateOrEmpty(images) {
-      let hash = new Map();
-      for (let i = 0; i < images.length; i++) {
-        hash.set(images[i].img, images[i].desc);
-      }
-      //console.log(hash);
-      const result = [];
-      for (let [key, val] of hash) {
-        //console.log(key, val);
-        if (key !== "") {
-          result.push({ img: key, desc: val || "" });
-        }
-      }
-      //console.log(result.length);
-  
-      return result;
-    },
-  };
-  
-  const getImageUrl = ($, title) => {
-    var imageUrl = $('meta[property="og:image:secure_url"]').attr("content");
-    var imageUrl = $('meta[property="og:image"]').attr("content");
-    var images = imageDownloader.extractImagesFromTags($);
-    images.push({img: imageUrl});
-    // if (title) {
-    //   images = images.filter((item)=>{
-    //     return item.desc === undefined || stringSimilarity.compareTwoStrings(title, item.desc) > 0;
-    //   })
-    // }
-    // console.log(images);
-    if (!imageUrl && title) {
-      
-      // const newImages = [];
-      // for (const i = 0; i < images.length; i++) {
-      //   sizeOf(images[i].img, function (err, dimensions) {
-      //     if (dimensions.width * dimensions.height > 40000) {
-      //       newImages.push(images[i]);
-      //     }
-      //   });
-      // }
-      // var images = newImages;
-      const best = stringSimilarity.findBestMatch(
-        title || "",
-        images.map(function (element) {
-          return element.desc || "";
-        })
-      );
 
-
-      // console.log(title, 'hello', best.bestMatch.rating, images[best.bestMatchIndex].desc, images.filter((item)=>{
-      //   return stringSimilarity.compareTwoStrings(title, item.desc) > 0;
-      // }));
-      if (best.bestMatch.rating == 0) {
-        imageUrl = images[0].img;
-      } else {
-        imageUrl = images[best.bestMatchIndex].img;
-      }
-    }
-    images = images.filter((item)=>{
-      return item.img !== undefined;
-    })
-    images = images.map((item)=>{
-      const url = item.img;
-      if (url !== undefined && url.indexOf("?")>-1) {
-        return url.split("?")[0];
-      } else {
-        return url;
-      }
-    })
-    .map((url)=> {
-      const clean = url.replace(/^\/+|\/$/g, '');
-      if (clean.includes(".com")) { // absolute url
-        if (!clean.startsWith("http")) {
-
-          return "https://" + clean;
-        } else {
-          return clean;
-        }
-      } else {  // relative url
-        if (clean.startsWith("data")) {
-          return clean;
-        }
-        const index = notBaseURL.indexOf(".com") + 4;
-        // return global.notBaseURL.substring(0, index).concat(url);
-        return notBaseURL.substring(0, index).concat("/" +clean);
-      }
-    }).filter((url)=>!url.startsWith("data:"));
-    console.log("imageSet", images,)
-    return {image: imageUrl, imageSet: images};
-  };
-  const getPriceTitleImage = ($) => {
-    var imageUrl;
-  var price;
-  var title;
-
-  price = $("meta")
-    .filter(function () {
-      return (
-        $(this).attr("property") != null &&
-        $(this).attr("property").endsWith("price:amount")
-      );
-    })
-    .attr("content");
-  // console.log("Price: ", price);
-  if (!price) {
-    price = $("span:contains($), div:contains($)")
-      .filter(function () {
-        const lengthBool =
-          $(this).text().length > 2 && $(this).text().length < 20;
-        const element = $(this)[0];
-        const maxDepth = 6;
-        const recurse = (el, depth = 0) => {
-          if (el?.parent === null || el?.parent === undefined) {
-            return true;
-          } else {
-            if (el.parent.name === "a") {
-              return false;
-            } else {
-              return recurse(el?.parent, depth + 1);
-            }
-          }
-        };
-
-        return lengthBool && recurse(element);
-      })
-      .text()
-      .trim();
-  }
-  const prices = price.split('$');
-  if (prices[0] === "" && prices.length > 1) {
-    price = prices[1];
-  }
-
-  title =
-  $("meta[property='og:title']").attr("content") ||
-    $("meta")
-      .filter(function () {
-        return (
-          ($(this).attr("property") != null &&
-            $(this).attr("property").endsWith("title")) ||
-          ($(this).attr("name") != null &&
-            $(this).attr("name").endsWith("title"))
-        );
-      })
-      .attr("content") ||
-
-    $("title").text() ||
-    $('meta[name="keywords"]').attr("content");
-
-    console.log('before getimageurl');
-    var {image: imageUrl, imageSet: imageSet} = getImageUrl($, title)
-    // imageUrl = getImageUrl($, title);
-    imageUrl = imageDownloader.relativeUrlToAbsolute((imageUrl || "").trim());
-    if (imageUrl.startsWith('data')) {
-      //imageUrl = "too big";
-    }
-
-
-    return {image: imageUrl, imageSet: imageSet, price: price, title: title};
-}
-  var $ = cheerio.load(htmlBody);
-  // console.log(htmlBody);
-  
-  // console.log("STUFFFFFFF", $("title").text())
-const {price: price, image: imageUrl, title: title, imageSet: imageSet} = getPriceTitleImage($);
-// console.log('url', notBaseURL);
-var tempBrand = notBaseURL.split('.com')[0].split(".");
-if (tempBrand[1] === undefined) {
-  const http = tempBrand[0].split("//")[1];
-  if (http !== undefined) {
-    tempBrand=http;
-  }
-} else {
-  tempBrand = tempBrand[1];
-}
-const data = {
-  url: notBaseURL,
-  brand: tempBrand,
-  title: title.trim().split(/[^/\S ]/)[0],
-  image: imageUrl.indexOf("?")>-1?imageUrl.split("?")[0]:imageUrl,
-  price: price.split("\n")[0],
-  imageSet: imageSet,
-};
-// console.log(data);
-return data;
-}
 
 const rentPrice = (totalPrice) => {
 return (.15 * totalPrice).toFixed(2);

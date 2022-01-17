@@ -19,13 +19,13 @@ import {firebase, db, au} from 'App/firebase/config';
 import io from 'socket.io-client';
 import NavBar from 'App/components/common/NavBar';
 import {GiftedChat} from 'react-native-gifted-chat';
-import {
-  DrawerContentScrollView,
-  DrawerItemList,
-  DrawerItem,
-  createDrawerNavigator,
-  useIsDrawerOpen,
-} from '@react-navigation/drawer';
+// import {
+//   DrawerContentScrollView,
+//   DrawerItemList,
+//   DrawerItem,
+//   createDrawerNavigator,
+//   useIsDrawerOpen,
+// } from '@react-navigation/drawer';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import {createStackNavigator} from '@react-navigation/stack';
 import {useSelector, useDispatch} from 'react-redux';

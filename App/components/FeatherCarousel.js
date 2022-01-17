@@ -1,6 +1,5 @@
 import React, {useState, useRef} from 'react';
 import {View, Text, ScrollView, Button, Animated} from 'react-native';
-import Swiper from 'react-native-deck-swiper';
 
 const data = ['hello', 'world', 'hi', 'DO', 'MORE', 'OF', 'WHAT', 'MAKES', 'YOU', 'HAPPY'];
 

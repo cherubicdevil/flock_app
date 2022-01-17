@@ -78,19 +78,14 @@ const LoginCommon = ({content, children, lowerlink, navigation}) => {
       </View>
     </View>
 </TouchableWithoutFeedback>
-<TouchableOpacity style={{position:'absolute', alignSelf: 'center', bottom: '10%'}} onPress={()=>{
+<TouchableOpacity style={{alignSelf: 'center', bottom: '10%'}} onPress={()=>{
         navigation.goBack();
       }}>
         <View style={{justifyContent: 'center', alignItems: 'center', height:50, width: 50, backgroundColor: 'rgba(255,255,255,0.2)', borderRadius: 30}}>
         <Icon name="times" size={30} color="rgba(255,255,255,0.5)" />
         </View>
       </TouchableOpacity>
-<View style={{position: 'absolute',fontFamily: constants.FONT, bottom: '5%', alignItems: 'center', width: '100%'}}>
-      {/* <Text style={{color: 'white', marginBottom: 10}}>
-      Flock Shop Inc only uses your phone number to text you the entry code.
-      </Text> */}
-
-
+<View style={{fontFamily: constants.FONT, bottom: '5%', alignItems: 'center', width: '100%'}}>
       <View style={{padding:5, alignItems: 'center'}}>
         <View style={{flexDirection: 'row'}}>
         <TouchableOpacity onPress={()=>{
@@ -100,7 +95,7 @@ const LoginCommon = ({content, children, lowerlink, navigation}) => {
           navigation.navigate('Privacy');
         }}><Text style={{textAlign: 'center',fontFamily: constants.FONT, color: "rgba(255,255,255,0.5)", alignSelf: 'center'}}> Privacy Policy</Text></TouchableOpacity>
         </View>
-        <Text style={{textAlign: 'center',color: "rgba(255,255,255,0.5)"}}>© 2021, Flock Shop Inc. v1.6.1</Text>
+        <Text style={{textAlign: 'center',color: "rgba(255,255,255,0.5)"}}>© 2021 Flock Shop Inc. v1.6.1</Text>
       </View>
       </View>
   </LinearGradient>

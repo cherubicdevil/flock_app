@@ -71,35 +71,30 @@ const FeedItemLocal = React.memo(({al, navigation})=>{
 const FeedList= ({testArray, setTestArray, navigation, route, videoData, productBlurb=null, KeyContext= null, flockOrNot, feedItemCustom}) => {
   const [lastVisibles, setLastVisibles] = useState({rent: null, flock: null, post: null});
 
-  useEffect(()=>{
-    // fetchPostsFirst().then((ar)=>{
-    //   // console.log(ar);
-    // })
-    mounted = true;
-    console.log('mounted')
-    fetchRentables(lastVisibles.rent).then(({ar:ar1, lastVisible: lvr})=>{
-      console.log("HELLO WORLD??")
-      // setKeyArrRent([...keyArrRent,...ar]);
-      fetchFlockables(lastVisibles.flock).then(({ar:ar2, lastVisible: lvf}) => {
-        fetchPosts(lastVisibles.post).then(({ar:ar3, lastVisible: lvp})=> {
-          console.log('mounted', mounted, lastVisibles)
-          if (mounted) {
-            console.log('last visibles', lastVisibles)
-            lastVisibles.rent = lvr;
-            lastVisibles.flock = lvf;
-            lastVisibles.post = lvp;
-            // setLastVisibles({rent: lvr, flock: lvf, post: lvp})
-            setKeyVideoData([...keyVideoData, ...shuffle([...ar1, ...ar2,...ar3])])
-          }
+  // useEffect(()=>{
+  //   mounted = true;
+  //   console.log('mounted')
+  //   fetchRentables(lastVisibles.rent).then(({ar:ar1, lastVisible: lvr})=>{
+  //     console.log("HELLO WORLD??")
+  //     fetchFlockables(lastVisibles.flock).then(({ar:ar2, lastVisible: lvf}) => {
+  //       fetchPosts(lastVisibles.post).then(({ar:ar3, lastVisible: lvp})=> {
+  //         console.log('mounted', mounted, lastVisibles)
+  //         if (mounted) {
+  //           console.log('last visibles', lastVisibles)
+  //           lastVisibles.rent = lvr;
+  //           lastVisibles.flock = lvf;
+  //           lastVisibles.post = lvp;
+  //           setKeyVideoData([...keyVideoData, ...shuffle([...ar1, ...ar2,...ar3])])
+  //         }
 
-        });
+  //       });
         
-      })
-    })
-    return () => {
-      mounted = false;
-    }
-  },[]);
+  //     })
+  //   })
+  //   return () => {
+  //     mounted = false;
+  //   }
+  // },[]);
   const [myAr, setMyAr] = useState([]);
 
   const [refreshRotate, setRefreshRotate] = useState(new Animated.Value(-1));

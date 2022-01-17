@@ -68,7 +68,7 @@ const Circle = ({color='white'}) =>{
 }
 
 const ScreenTemplate = ({page, text="", children}) => {
-    return <View style={{backgroundColor:background, flex: 1}}>
+    return <View style={{backgroundColor:background, flex: 1, paddingBottom: 30}}>
             <View style={{flex:1, marginHorizontal:20, marginTop:'10%', height: '70%'}}>
                 <View style={{flex: 1,
                 // borderColor: 'yellow',

@@ -15,14 +15,14 @@ import {
   Alert,
   Modal,
 } from 'react-native';
-import AnimatedModal from 'App/components/AnimatedModal';
-import ShippingModal from 'App/components/ShippingModal';
+
 import {useSelector, useDispatch} from 'react-redux';
 import {confirmPaymentSheetPayment, useStripe} from '@stripe/stripe-react-native';
 import {throttle, debounce} from 'lodash';
+
 import {constants} from 'App/constants';
 
-const StripeCheckout = ({amount, children, completeFunc=()=>{}, setHook=()=>{}, hookDependency = [], delayedCharge=false}) => {
+const StripeCheckout = ({amount, completeFunc=()=>{}, setHook=()=>{}, hookDependency = [], delayedCharge=false}) => {
     const [shipModal, setShipModal] = useState(false);
     const [shippingDone, setShippingDone] = useState(false);
     const { initPaymentSheet, presentPaymentSheet } = useStripe();
@@ -34,11 +34,8 @@ const StripeCheckout = ({amount, children, completeFunc=()=>{}, setHook=()=>{}, 
 
     const [debounceStack, setDebounceStack] = useState([])
 
-    console.log('amount', amount)
-
     const fetchPaymentSheetParams = async () => {
     const idIsNone = select.customerId === "none" || select.customerId === undefined;
-    console.log('id is none?', idIsNone, select.customerId);
     const bodyData = {custId: idIsNone?null:select?.customerId, amount: amount, captureMethod: delayedCharge?"manual":"automatic"};
 
 
@@ -84,8 +81,6 @@ const StripeCheckout = ({amount, children, completeFunc=()=>{}, setHook=()=>{}, 
         ephemeralKey,
         customer,
     } = await fetchPaymentSheetParams();
-    console.log('customer id', customer)
-    console.log("MY PEYMENT ID", paymentIntent)
 
     const { error } = await initPaymentSheet({
         customerId: customer,
@@ -101,10 +96,6 @@ const StripeCheckout = ({amount, children, completeFunc=()=>{}, setHook=()=>{}, 
     }, 1000);
 
     const openPaymentSheet = async (context={}) => {
-        console.log("HI?")
-        console.log("PAYMENT SHEET", paymentIntentId);
-        console.log("UH", clientSecret)
-        // await confirmPaymentSheetPayment({clientSecret});
         if (amount < 0.50) {
             Alert.alert("Transaction must exceed $0.50");
             return;
@@ -156,67 +147,26 @@ const StripeCheckout = ({amount, children, completeFunc=()=>{}, setHook=()=>{}, 
 
 
     return () => {
-        console.log("unmounting");
+        // on unmount get rid of all the queued up actions
         while (debounceStack.length > 0) {
             initializePaymentSheet.cancel();
-            console.log('cancelling');
             debounceStack.shift();
         }
         }
-    
-    
-    // setHook([()=>console.log('fasdfasdfa;lfaskfdja;')])
+
     }, [amount]);
 
     useEffect(()=>{
-        console.log('changing hook function');
+        // changes hook function depending on necessary changes
+        // unsure if hookDependency should be in the above useEffect or this one.
         console.log('pay', paymentIntentId)
         setHook(()=>(context = {})=>{
-            console.log('opening payment sheet', context)
-            console.log("payment intent: ", paymentIntentId, "client secret", clientSecret);
             openPaymentSheet(context)
         });
     }, [...hookDependency, paymentIntentId])
 
 
-
-
-    const getShippingInfo = () => {
-        const hasShipping = select.shipping !== null && select.shipping !== "none";
-        if (!hasShipping) {
-            return <>
-            <Text>Looks like we don't have your Shipping Information. Please input it so we can get you your purchase.</Text>
-            <Button title="shipping" onPress={()=>{
-                setShipModal(true);
-            }}/>
-            </>
-        }
-    }
-    return <>{children}
-    
-    {/* <Button
-    variant="primary"
-    // disabled={!loading}
-    title="test stripe ui"
-    // onPress={()=>{openPaymentSheet()}}
-    onPress={()=>{
-        setShipModal(true)
-    }}
-  />
-  <AnimatedModal upPercent="55%"  nested = {false} keyboard={true} colored={false} visible={shipModal} close={()=>setShipModal(false)} content={
-                <ShippingModal close={()=>setShipModal(false)} 
-                completeFunc={()=>{
-                    // setTimeout(()=>{
-                    //     setShippingDone(true)
-                    // }, 500)
-                    // setLoading(!loading);
-                    openPaymentSheet();
-                }}
-                />
-                }/>
-                {getShippingInfo()}
- */}
-
+    return <>
             </>
 }
 

@@ -29,7 +29,6 @@ import {View, Modal, Text, Animated, TouchableOpacity, Dimensions, KeyboardAvoid
 import React, {useRef, useState, useEffect} from 'react';
 import MaskedViewIOS from '@react-native-community/masked-view';
 import LinearGradient from 'react-native-linear-gradient';
-import { AnimationObjectGroup } from 'three';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {Portal} from 'react-native-paper';
 
@@ -145,7 +144,7 @@ const AnimatedModal = ({
 
             </View>
             <KeyboardAvoidingView enabled={keyboard} behavior={behavior} style={{position: 'absolute', zIndex: 20, width: '100%', backgroundColor: 'transparent', height: upPercent, }}>
-            <View behavior="padding" style={{width: '100%', height: "100%", borderRadius: curve?100:0, borderBottomRightRadius: 0, borderBottomLeftRadius: 0, backgroundColor: bgcolor, paddingTop: noPadding?0:40, overflow: 'hidden'}}>
+            <View behavior="padding" style={{width: '100%', height: "100%", borderRadius: curve?Dimensions.get('window').width/10:0, borderBottomRightRadius: 0, borderBottomLeftRadius: 0, backgroundColor: bgcolor, paddingTop: noPadding?0:40, overflow: 'hidden'}}>
 
             
               {content}

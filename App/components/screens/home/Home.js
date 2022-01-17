@@ -21,9 +21,11 @@
  *
  *
  */
-
-import React, {useState, useEffect, createContext, useContext, Fragment} from 'react';
-import {SafeAreaView, View, Text, TextInput, Image, ImageBackground, TouchableOpacity, TouchableWithoutFeedback,ScrollView, Dimensions, Animated} from 'react-native';
+const io = require("socket.io-client");
+import React, {useState, useEffect, createContext, useContext, Fragment, useRef} from 'react';
+import {SafeAreaView, View, Text, TextInput, Image, ImageBackground, TouchableOpacity, TouchableWithoutFeedback,ScrollView, Dimensions, Animated,
+  FlatList
+} from 'react-native';
 import FeedList from './feed/FeedList';
 import {constants} from 'App/constants';
 import styles from './Home.style.ios';
@@ -84,6 +86,27 @@ const KeyContextProvider = (props) => {
     </KeyContext.Provider>
   );
 };
+
+const Socket = (props) => {
+  console.log("SOCKET", props.ref)
+  const {link, socketref, ...rest} = props;
+  useEffect(()=> {
+    console.log("SOCKETT GETTING MADE")
+    const socket = io(link)
+    console.log("ref", socketref, props.ref)
+    console.log(props);
+    if (socketref) {
+      console.log("reference assignment")
+      socketref.current = socket;
+    }
+    const propsList = Object.entries(rest);
+    propsList.map(([key, val])=> {
+      socket.on(key, val);
+    });
+
+  }, [])
+  return <></>;
+}
 
 const DataList = ({navigation, route}) => {
   const [testArray, setTestArray] = useState([]);
@@ -384,45 +407,24 @@ const HomeTabSwipe = ({videoData, navigation, route}) => {
 
 
 return <>
-{/* <Animated.View style={{backgroundColor: 'white', position: 'absolute', left: 0, bottom: 0, width:'100%', height: coverheight, opacity: coverfade, zIndex: 10000}} ><View style={{
-    backgroundColor: constants.PINK_BACKGROUND, height: '100%', width: '100%',
-    justifyContent: 'center', alignItems: 'center',
-}}/>
-<Image source={require('App/Assets/Images/flock-anim.gif')} style={{width: 200, height: 200, position: 'absolute', top: '30%', left: '30%'}} />
-</Animated.View> */}
-{navigator}
-{/* <Animated.View style={{backgroundColor: 'white', position: 'absolute', left: 0, bottom: 0, width:'100%', height: coverheight,  opacity: coverfade, zIndex: 10000}} ><View style={{
-    backgroundColor: constants.PINK_BACKGROUND, height: '100%', width: '100%',
-    justifyContent: 'center', alignItems: 'center',
-    // resizeMode:'contain'
-    overflow:'visible'
-}}/>
-<Image source={require('App/Assets/Images/flock_gif.gif')} style={{width: 300, height: 300, resizeMode:'contain', alignSelf: 'center', position: 'absolute', top:'20%'}} />
-</Animated.View> */}
+{/* {navigator} */}
+
+
+
 </>;
 
 
 }
 const Home = ({route, navigation, lastVisible = null}) => {
 
-
-  const [testString, setTestString] = useState("helloworld");
+  const socket = useRef(4);
+  const [serverData, setServerData] = useState([]);
   // {lastVisible} for keep track of firebase paging
 
 
 {/* <FeedList navigation={navigation} route={route} /> */}
 
 
-  useEffect(()=>{
-    // fetchChatGroups().then((ar) => {
-    //   setFlockData(ar);
-    //   setTestString("worldhello");
-    // });
-    // fetchRentGroups().then((ar) => {
-    //   setRentData(ar);
-    // });
-
-  }, []);
   return (
     <View style={{backgroundColor: constants.MENU_COLOR, flex: 1}}>
     <View style={{borderBottomEndRadius: 50, borderBottomLeftRadius: 50, overflow: 'hidden', height: Dimensions.get('window').height - constants.NAVBARHEIGHT,}}>
@@ -453,9 +455,32 @@ const Home = ({route, navigation, lastVisible = null}) => {
           />
           <Text style={{fontFamily: constants.FONT}}>Curating your clucks</Text>
         </View> */}
-        <KeyContextProvider>
+
+        {/* <KeyContextProvider>
         <HomeTabSwipe navigation={navigation} route= {route} videoData={route.params.videoData} />
-        </KeyContextProvider>
+        </KeyContextProvider> */}
+<Socket link={"http://localhost:8080"}
+  socketref = {socket}
+  giveFeatureStructure={(k) => {
+    console.log("getting features length");
+    socket.current.emit("offerPrefs", new Array(k).fill(0));
+    setTimeout(()=> {
+      socket.current.emit("requestClientData");
+    }, 2000)
+  }}
+  requestDataResult={(ar)=>{
+    setServerData(ar);
+  }}
+
+  dataChange={(product)=> {
+    setServerData([...serverData, product])
+    console.log(product);
+  }}
+
+  />
+<View style={{flex: 1, backgroundColor: constants.PINK_BACKGROUND}}>
+  <FeedList videoData={serverData.map((it)=>{ return {id: 23, product:it}})} />
+  </View>
       {/* </View> */}
     {/* </SafeAreaView> */}
     

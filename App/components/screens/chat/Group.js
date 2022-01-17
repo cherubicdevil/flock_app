@@ -1,9 +1,4 @@
 import React, {useEffect, useState, useRef,Fragment} from 'react';
-import {constants} from 'App/constants';
-import Collapsible from 'react-native-collapsible';
-import {useStore} from 'react-redux';
-import { Bubble } from 'react-native-gifted-chat'
-import Wrapper from 'App/components/Wrapper';
 import {
   Button,
   Image,
@@ -19,41 +14,29 @@ import {
   TextInput,
   KeyboardAvoidingView
 } from 'react-native';
-import NewTutorial from 'App/components/NewTutorial';
-import SmartCheckout from "App/components/SmartCheckout";
-import HeaderGradient from 'App/components/HeaderGradient';
-import Icon from 'react-native-vector-icons/FontAwesome';
-// import Slider from '@react-native-community/slider';
-import MultiSlider from '@ptomasroos/react-native-multi-slider';
-import Dialog from 'react-native-dialog';
-import {firebase, db, au} from 'App/firebase/config';
 import io from 'socket.io-client';
-import NavBar from 'App/components/common/NavBar';
-import {GiftedChat} from 'react-native-gifted-chat';
-import AnimatedModal from 'App/components/AnimatedModal';
-
-import TooltipFirst from 'App/components/TooltipFirst';
-
-import Checkout from 'App/components/Checkout';
+import Collapsible from 'react-native-collapsible';
+import {useStore} from 'react-redux';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import Dialog from 'react-native-dialog';
 import {useFocusEffect} from '@react-navigation/native';
-import PriceSlider from 'App/components/PriceSlider';
-import {toDateTime, checkFlockExpired} from 'App/utils';
-// import NumericTextInput from 'App/components'
-import {
-  DrawerContentScrollView,
-  DrawerItemList,
-  DrawerItem,
-  createDrawerNavigator,
-  useIsDrawerOpen,
-} from '@react-navigation/drawer';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import {createStackNavigator} from '@react-navigation/stack';
 import {useSelector, useDispatch} from 'react-redux';
 import LinearGradient from 'react-native-linear-gradient';
+
+import {firebase, db, au} from 'App/firebase/config';
+import Wrapper from 'App/components/Wrapper';
+import SmartCheckout from "App/components/SmartCheckout";
+import HeaderGradient from 'App/components/HeaderGradient';
+import AnimatedModal from 'App/components/AnimatedModal';
+import PriceSlider from 'App/components/PriceSlider';
 import Countdown from 'App/components/Countdown';
-import HowTo from 'App/HowTo';
 import ChatComponent from 'App/components/ChatComponent';
-import StripeCheckout from '../../StripeCheckout';
+import StripeCheckout from 'App/code/stripe/StripeCheckout';
+
+import {constants} from 'App/constants';
+import {toDateTime, checkFlockExpired} from 'App/utils';
 
 const barHeight = 25;
 var initialPercentTemp;
@@ -97,6 +80,10 @@ function ChatInterface({route, navigation}) {
   // const [UUID, setUUID] = useState(0);
   console.log('remaning percent', remainingPercent);
   console.log('importants', route.params.data.maximums);
+
+  const set4Percent = () => {
+
+  }
 
 
   useFocusEffect(()=>{
@@ -269,85 +256,10 @@ break;
   console.log('changing price');
   const yourPrice = route.params.data.maximums[user.uid];
   console.log('your price', route.params.data.maximums);
-  const ChangePayment = ({data, setState}) => {
-  const NumericTextInput = ({data=0}) => {
-    const [dataValue, setDataValue] = useState(data);
-    const [dialVisible, setDialVisible] = useState(false);
-    const dial = <Dialog.Container visible={dialVisible}>
-    <Dialog.Title>Confirm Change</Dialog.Title>
-    <Dialog.Description>
-      You will only be charged if the flock completes.
-    </Dialog.Description>
-    <Dialog.Button label="Cancel" onPress={()=>{
-      setDataValue(data);
-      setDialVisible(false);
-    }}/>
-    <Dialog.Button label="Confirm" onPress={()=>{
-      route.params.data.maximums[au.currentUser.uid] = dataValue;
-      route.params.data.memberIds.push(au.currentUser.uid);
-      setState(dataValue);
-      completeFunc(select.userInfo.customerId);
-      // setDataValue()
-      setDialVisible(false);
-    }}/>
-  </Dialog.Container>;
-    return <View style={{flexDirection:'row', alignItems: 'center'}}><TextInput
-    // contextMenuHidden={numeric}
-    style={{width: 75, backgroundColor: 'white', borderRadius: 40, paddingLeft: 20}}
-    keyboardType={"numeric"}
-    blurOnSubmit placeholder={"0.00"} onBlur = {(e)=> {
-        // console.log("BLUR", e.nativeEvent.text);
-    }} 
-    value={(typeof dataValue)==="string"?dataValue:dataValue.toFixed(2)}
-    defaultValue={data}
-    onChangeText={(text)=>{
-            if (text === "") {
-                setDataValue("");
-            } else {
-                setDataValue(parseInt(text.replace(".",""))/100);
-            }
-    }}
-    
-    />
-    {dial}
-    <Text style={{color: 'white', marginLeft: 10, width: 30}}>{100*(parseInt(dataValue) / route.params.data.product.price)>100?"100%":100*(parseInt(dataValue) / route.params.data.product.price)<1?"<1%":(100*parseInt(dataValue) / route.params.data.product.price).toFixed(0) + "%"}</Text>
-    <TouchableOpacity onPress={()=>{
-      if (dataValue !== data) {
-      setDialVisible(true);
-      }
-    }}>
-      <View style={{marginLeft: 10, borderRadius: 40, backgroundColor: 'green'}}>
-      <Icon name="check" size={10} color="white" />
-      </View>
-      </TouchableOpacity>
-    </View>;
-}
-return <ScrollView  style={{marginLeft: 15, overflow: 'visible', backgroundColor: 'yellow'}} keyboardShouldPersistTaps="never">
-  
-  <NumericTextInput data={data} />
-  </ScrollView>
-  }
-  
-  console.log("PARTOF?", partOf, part, route.params.data.memberIds, au.currentUser.uid);
-  console.log("ID", route.params.data.id);
-  console.log("priceshare", priceShare);
-  console.log(creditModal, "open?");
-  console.log(parseFloat(priceShare) / parseFloat(route.params.data.product.price) * 100);
-  // console.log("prices", priceShare, route.params.data.product.price, parseFloat(priceShare) / parseFloat(route.params.data.product.price) * 100);
-  
-  // useEffect(()=>{
-  //   giftedRef.current.scrollToBottom();
-  // },[]);
 
-  console.log("id? is a numbeer",route.params.data.id);
+  
   return (<>
-        <NewTutorial screenId = "chatinterface">
-        <Text style={{color: 'white', position: 'absolute', bottom: '55%', left: 20, fontFamily: 'Noteworthy-Bold', fontSize: 18}}>Pay attention to the specifications here.</Text>
-        <Text style={{color: 'white', position: 'absolute', top: 70, right: 20,width: 170, fontFamily: 'Noteworthy-Bold', fontSize: 18}}>Reach 100% before time runs out. Share!</Text>
-        <Text style={{color: 'white', position: 'absolute',  top: '20%', right: '30%',width: 150,fontFamily: 'Noteworthy-Bold', fontSize: 18}}>Change your ownership percentage.</Text>
-        <Text style={{position: 'absolute', bottom: 130, textAlign: 'center',alignSelf:'center', color: 'white', width: 250,fontFamily: 'Noteworthy-Bold', fontSize: 18}}>Once you join, you can chat with your fellow flockers.</Text>
-      </NewTutorial>
-  <Wrapper>
+  <Wrapper >
   
 <HeaderGradient navigation={navigation} absolute={false} >
   
@@ -400,7 +312,6 @@ return <ScrollView  style={{marginLeft: 15, overflow: 'visible', backgroundColor
             <PriceTextPreview remainingPercent={remainingPercent} productPrice={route.params.data.product.price} />
             }
             </View>
-            {/* <TooltipFirst tooltipId="slider" width={100} height={100} info="Slide to adjust your ownership."><Text>Hi</Text></TooltipFirst> */}
             <TouchableOpacity onPress={()=>{
               if (!route.params.data.completed) {
               navigation.navigate("Product", {album: route?.params?.data?.product, data: route.params.data, id: route?.params?.data?.id});
@@ -491,12 +402,15 @@ return <ScrollView  style={{marginLeft: 15, overflow: 'visible', backgroundColor
       </TouchableOpacity>
       </>:<View style={{position: 'absolute', bottom: 0, width: '100%', height: 100, backgroundColor: 'white'}}><View style={{height: '100%', backgroundColor: constants.PINK_BACKGROUND }}>
         <TouchableOpacity style={{width: '90%', height: 50, backgroundColor: constants.ORANGE, alignSelf: 'center', borderRadius: 30, justifyContent: 'center'}} onPress={()=>{
-          setInitialDialog(true);
+          // setInitialDialog(true);
+          // the above commented out for now...
+          // instead directly give it 4%
+          set4Percent();
           // setCreditModal(true);
-      }}><Text style={{color: 'white', alignSelf: 'center', fontWeight: 'bold'}}>JOIN</Text></TouchableOpacity></View></View>}
+      }}><Text style={{color: 'white', alignSelf: 'center', fontWeight: 'bold'}}>JOIN</Text>
+      </TouchableOpacity></View></View>}
     
       </Wrapper>
-      {/* <PreCheckout visible={creditModal} /> */}
       <StripeCheckout amount={(1.4 *priceStartPercent/100 * route.params.data.product.price).toFixed(2)} setHook={setStripeHook} delayedCharge={true} completeFunc = {(context)=>{
         // navigation.navigate()
         console.log('context', context)
@@ -651,10 +565,6 @@ const [infoModal, setInfoModal] = useState(false);
   </TouchableOpacity>
   </View>
   </View>
-    <AnimatedModal colored={true} colors={[constants.PEACH, constants.GREYORANGE]} nested={true} visible={infoModal} close={()=>{setInfoModal(false)}}>
-      <HowTo />
-
-    </AnimatedModal>
   </>;
 }
 

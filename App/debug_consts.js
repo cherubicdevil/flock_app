@@ -1,6 +1,6 @@
 export const debug_consts = {
 
-    DEBUG: false,
+    DEBUG: true,
     STRIPE_ENDPOINT: 'https://protected-thicket-47492.herokuapp.com',
     firebaseConfig: {
     appId: 'flock-46ffc',

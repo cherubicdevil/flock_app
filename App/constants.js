@@ -27,8 +27,9 @@ import {debug_consts} from 'App/debug_consts';
 
 
 
+const DEBUG = debug_consts.DEBUG;
 console.log("ENDPOINT_STRIPE", debug_consts.STRIPE_ENDPOINT);
-export const constants = {
+const constants = {
   API_URL: debug_consts.STRIPE_ENDPOINT,
   DEBUG: debug_consts.DEBUG,
   BLUE_FADE: "rgba(166,184,205,0.5)",
@@ -102,3 +103,5 @@ export const constants = {
   ALGOLIA_ID: 'QDYS7569GL',
   EGG_RATIO: 40,
 };
+
+export {constants, DEBUG};

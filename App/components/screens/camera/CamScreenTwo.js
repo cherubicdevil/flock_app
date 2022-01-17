@@ -23,7 +23,6 @@ import {
 import TooltipFirst from 'App/components/TooltipFirst';
 import HeaderGradient from 'App/components/HeaderGradient';
 import Icon from "react-native-vector-icons/FontAwesome";
-const cheerio = require('react-native-cheerio');
 import Dialog from 'react-native-dialog';
 import ResizeableImage from 'App/components/ResizeableImage';
 import {constants} from 'App/constants';
@@ -430,7 +429,9 @@ const CamScreenTwo = ({navigation, route}) => {
   .then(function(docRef) {
       console.log("Document written with ID: ", docRef.id);
       route.params.data.id = docRef.id;
-      navigation.navigate("Product", {album: route.params.data.product, data: route.params.data, id: docRef.id});
+      setNewImportVisible(false);
+      setModalOpen(false);
+      navigation.navigate("Product", {allowBack: false, album: route.params.data.product, data: route.params.data, id: docRef.id});
   })
   .catch(function(error) {
       console.error("Error adding document: ", error);
@@ -544,12 +545,12 @@ const CamScreenTwo = ({navigation, route}) => {
 
             <Dialog.Title>Saved</Dialog.Title>
             <Text style={{width: '80%', textAlign: 'center',  alignSelf: 'center',fontFamily: constants.FONT, marginBottom: 15, marginTop: -10,}}>Find your pinned product in Profile.</Text>
-<Image source={require('App/Assets/Images/pinExample.png')} style={{width:'100%',height: 500,resizeMode: 'contain',}} />
+{/*<Image source={require('App/Assets/Images/pinExample.png')} style={{width:'100%',height: 500,resizeMode: 'contain',}} />*/}
 {/* <View style={{height: newImportVisible?50:0, width: 100, position: 'absolute', bottom: 30, backgroundColor: constants.ORANGE, alignSelf: 'center',justifyContent: 'center', borderRadius: 40}}>
   <Text style={{color: 'white', textAlign: 'center'}}>Got it</Text>
 </View> */}
 <Dialog.Button label="Got it" onPress={()=>{
-  setStorage();
+  // setStorage();
   headerCloseFunc();
 }} style={{ width: '100%'}} />
 </Dialog.Container>
@@ -575,19 +576,23 @@ const CamScreenTwo = ({navigation, route}) => {
       </View>
       <View style={{position: 'absolute', zIndex: 10000, height:loading?50:0, width: loading?50:0, backgroundColor: 'black'}} />
     </KeyboardAvoidingView>
-    <AnimatedModal colored = {true} colors={['#ff7009', '#ff9966']} behind={false} upPercent={"90%"} visible={modalOpen} close={()=>setModalOpen(false)} content={
+    <AnimatedModal colored = {true} showClose={false} 
+    // colors={['#ff7009', '#ff9966']} 
+    colors={['rgba(0,0,0,0)', 'rgba(0,0,0,0)']}
+    behind={false} upPercent={"90%"} visible={modalOpen} close={()=>setModalOpen(false)} content={
       
     <View style={{height:"100%"}}>
-      <View style={{alignItems: 'center', width: '100%', height: 50, flexDirection: 'row', borderBottomWidth: 3, borderColor: constants.PINK_BACKGROUND_OPAQUE}}>
+      <View style={{alignItems: 'center', marginTop: -30, paddingHorizontal: 10, width: '100%', height: 50, flexDirection: 'row', borderBottomWidth: 3, borderColor: constants.PINK_BACKGROUND_OPAQUE}}>
 
         <TouchableOpacity 
-        style={{marginRight: 10, marginLeft: 30, paddingLeft: 15, paddingRight: 15, height: 40, justifyContent:'center', alignItems:'center', backgroundColor: "#d8d8d8", borderRadius: 50,}}
+        style={{marginRight: 10, paddingLeft: 15, paddingRight: 15, height: 35, justifyContent:'center', alignItems:'center', backgroundColor: "#d8d8d8", borderRadius: 50,}}
         onPress={()=> {
           Keyboard.dismiss();
           setModalOpen(false);
         }}>
           <Text style={{color: 'black'}}>close</Text>
           </TouchableOpacity>
+          
       <TextInput
       onSubmitEditing={searchFunc}
                   placeholder="Enter link or search by keyword"
@@ -606,7 +611,7 @@ const CamScreenTwo = ({navigation, route}) => {
                   // }}
       />
               <TouchableOpacity 
-        style={{marginRight: 30, marginLeft: 10, paddingLeft: 15, paddingRight: 15, height: 40, justifyContent:'center', alignItems:'center', backgroundColor:constants.ORANGE, borderRadius: 50,}}
+        style={{marginLeft: 10, paddingLeft: 15, paddingRight: 15, height: 35, justifyContent:'center', alignItems:'center', backgroundColor:constants.ORANGE, borderRadius: 50,}}
         onPress={
           searchFunc
           }>
@@ -674,6 +679,9 @@ const CamScreenTwo = ({navigation, route}) => {
                 }}
                 source={{uri: urlState}}
               />
+              <TouchableOpacity style={{alignSelf: 'center'}} onPress={()=> setModalOpen(false)}>
+              <Icon name="times" size={35} color={"grey"} />
+                </TouchableOpacity>
               <View style={{borderTopWidth:3, borderColor: constants.PINK_BACKGROUND_OPAQUE, width: '100%', backgroundColor: 'white', height: 80, justifyContent: 'space-around', flexDirection: 'row', padding: 15, alignItems: 'center'}}>
                 <TouchableOpacity hitSlop={{left:30, top: 30, bottom: 30, right: 30}} onPress={()=>{
                   try {

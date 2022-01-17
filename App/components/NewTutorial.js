@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {View, TouchableOpacity, Image} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { RGBADepthPacking } from 'three';
+
 import {Portal} from 'react-native-paper';
 import {useDispatch} from 'react-redux';
 
